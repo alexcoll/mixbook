@@ -1,12 +1,14 @@
 
 import React, { Component } from 'react';
+import { TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
-import { Container, Header, Title, Content, Text, H3, Button, Icon } from 'native-base';
-import { AppRegistry, View, Image } from 'react-native';
+import { Container, Header, Title, Content, Button, Icon, List, ListItem, InputGroup, Input, Picker, Text, Thumbnail } from 'native-base';
 
 import { openDrawer } from '../../actions/drawer';
-import myTheme from '../../themes/base-theme';
 import styles from './styles';
+
+const Item = Picker.Item;
+const camera = require('../../../img/camera.png');
 
 class Account extends Component {
 
@@ -14,33 +16,64 @@ class Account extends Component {
     openDrawer: React.PropTypes.func,
   }
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      selectedItem: undefined,
+      selected1: 'key0',
+      results: {
+        items: [],
+      },
+    };
+  }
+  onValueChange(value: string) {
+    this.setState({
+      selected1: value,
+    });
+  }
+
   render() {
     return (
-      <Container theme={myTheme} style={styles.container}>
-
+      <Container style={styles.container}>
         <Header>
-          <Title>Account</Title>
           <Button transparent onPress={this.props.openDrawer}>
             <Icon name="ios-menu" />
           </Button>
+
+          <Title>Account</Title>
         </Header>
 
-        <Content padder>
-          <H3>Account settings</H3>
-          <Text style={{ marginTop: 10 }}>
-            Settings go here
-          </Text>
-          <View>
-            <Image
-              style={{width: 200, height: 200}}
-            source={{uri: 'http://www.slate.com/content/dam/slate/blogs/moneybox/2015/08/16/donald_trump_on_immigration_build_border_fence_make_mexico_pay_for_it/483208412-real-estate-tycoon-donald-trump-flashes-the-thumbs-up.jpg.CROP.promo-xlarge2.jpg'}}
-            />
-          </View>
-        <Text style={{ marginTop: 100 }}>
-            Made by the boys of 103
-          </Text>
-        </Content>
+        <Content>
+          <TouchableOpacity>
+            <Thumbnail size={80} source={camera} style={{ alignSelf: 'center', marginTop: 20, marginBottom: 10 }} />
+          </TouchableOpacity>
+          <List>
+            <ListItem>
+              <InputGroup>
+                <Input inlineLabel label="First Name" placeholder="John" />
+              </InputGroup>
+            </ListItem>
+            <ListItem>
+              <InputGroup>
+                <Input inlineLabel label="Last Name" placeholder="Doe" />
+              </InputGroup>
+            </ListItem>
 
+            <ListItem>
+              <InputGroup>
+                <Icon name="ios-person" style={{ color: '#0A69FE' }} />
+                <Input placeholder="EMAIL" />
+              </InputGroup>
+            </ListItem>
+            <ListItem>
+              <InputGroup>
+                <Icon name="ios-unlock" style={{ color: '#0A69FE' }} />
+                <Input placeholder="PASSWORD" secureTextEntry />
+              </InputGroup>
+            </ListItem>
+          </List>
+          <Button style={{ alignSelf: 'center', marginTop: 20, marginBottom: 20 }}>Save</Button>
+        </Content>
       </Container>
     );
   }

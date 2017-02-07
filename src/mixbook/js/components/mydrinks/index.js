@@ -1,15 +1,16 @@
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Container, Header, Title, View, Button, Icon, Tabs } from 'native-base';
+import { Container, Header, Title, Content, Text, H3, Button, Icon, Tabs } from 'native-base';
 
 import { openDrawer } from '../../actions/drawer';
 import myTheme from '../../themes/base-theme';
+import styles from './styles';
 
-import TabOne from './tabOne';
-import TabTwo from './tabTwo';
+import TabSaved from './tabSaved';
+import TabMake from './tabMake';
 
-class NHTabs extends Component {  // eslint-disable-line
+class MyDrinks extends Component {
 
   static propTypes = {
     openDrawer: React.PropTypes.func,
@@ -17,21 +18,27 @@ class NHTabs extends Component {  // eslint-disable-line
 
   render() {
     return (
-      <Container theme={myTheme}>
-        <Header style={{ elevation: 0 }}>
-          <Title>Tabs</Title>
+      <Container theme={myTheme} style={styles.container}>
 
+        <Header>
           <Button transparent onPress={this.props.openDrawer}>
             <Icon name="ios-menu" />
           </Button>
+
+          <Title>My Drinks</Title>
+
+          <Button transparent>
+            <Icon name="md-search"/>
+          </Button>
         </Header>
 
-        <View>
-          <Tabs locked>
-            <TabOne tabLabel="Features" />
-            <TabTwo tabLabel="About" />
+        <Content>
+          <Tabs>
+            <TabMake tabLabel='Make Drink' />
+            <TabSaved tabLabel='Saved' />
           </Tabs>
-        </View>
+        </Content>
+
       </Container>
     );
   }
@@ -47,4 +54,4 @@ const mapStateToProps = state => ({
   navigation: state.cardNavigation,
 });
 
-export default connect(mapStateToProps, bindAction)(NHTabs);
+export default connect(mapStateToProps, bindAction)(MyDrinks);

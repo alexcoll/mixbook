@@ -9,6 +9,8 @@ import { closeDrawer } from './actions/drawer';
 
 import Home from './components/home/';
 import Recipes from './components/recipes/';
+import MyDrinks from './components/mydrinks/';
+import Ingredients from './components/ingredients/';
 import Account from './components/account/';
 import Settings from './components/settings/';
 import SplashPage from './components/splashscreen/';
@@ -78,6 +80,10 @@ class AppNavigator extends Component {
         return <SplashPage />;
       case 'home':
         return <Home />;
+      case 'mydrinks':
+        return <MyDrinks />;
+      case 'ingredients':
+        return <Ingredients />;
       case 'recipes':
         return <Recipes />;
       case 'settings':
