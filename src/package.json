@@ -1,0 +1,11 @@
+{
+  "name": "mixbook",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "The Boys of 103",
+  "license": "ISC"
+}
