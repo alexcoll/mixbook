@@ -17,12 +17,13 @@ export default class mixbook extends Component {
     return (
       <View style={styles.container}>
         <Text style={styles.welcome}>
-          Welcome to React Native!
+          Welcome to mixbook!
         </Text>
         <Text style={styles.instructions}>
-          To get started, edit index.android.js
-        </Text>
-        <Text style={styles.instructions}>
+          (c) 2017 by The Boys of 103
+          {'\n\n'}
+          This is a placeholder page. Start coding!
+          {'\n\n'}
           Double tap R on your keyboard to reload,{'\n'}
           Shake or press menu button for dev menu
         </Text>
