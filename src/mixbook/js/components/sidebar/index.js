@@ -8,6 +8,8 @@ import navigateTo from '../../actions/sideBarNav';
 import sidebarTheme from './sidebar-theme';
 import styles from './style';
 
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+
 const drawerCover = require('../../../img/drawer-cover.png');
 const drawerImage = require('../../../img/logo-kitchen-sink.png');
 
@@ -45,32 +47,40 @@ class SideBar extends Component {
         <List>
           <ListItem button iconLeft onPress={() => this.navigateTo('')} >
             <View style={styles.listItemContainer}>
-              <View style={[styles.iconContainer, { backgroundColor: '#0209D8', paddingLeft: 14 }]}>
-                <Icon name="ios-phone-portrait-outline" style={styles.sidebarIcon} />
+              <View style={[styles.iconContainer, {}]}>
+                <MaterialIcons name="local-bar" size={25} color="#4F8EF7" />
               </View>
-              <Text style={styles.text}>Make a drink</Text>
+              <Text style={styles.text}>My Drinks</Text>
             </View>
           </ListItem>
           <ListItem button iconLeft onPress={() => this.navigateTo('')} >
             <View style={styles.listItemContainer}>
-              <View style={[styles.iconContainer, { backgroundColor: '#0209D8', paddingLeft: 14 }]}>
-                <Icon name="ios-phone-portrait-outline" style={styles.sidebarIcon} />
+              <View style={[styles.iconContainer, {}]}>
+                <MaterialIcons name="local-grocery-store" size={25} color="#4F8EF7" />
+              </View>
+              <Text style={styles.text}>Ingredients</Text>
+            </View>
+          </ListItem>
+          <ListItem button iconLeft onPress={() => this.navigateTo('recipes')} >
+            <View style={styles.listItemContainer}>
+              <View style={[styles.iconContainer, {}]}>
+                <MaterialIcons name="public" size={25} color="#4F8EF7" />
               </View>
               <Text style={styles.text}>Recipes</Text>
             </View>
           </ListItem>
           <ListItem button iconLeft onPress={() => this.navigateTo('settings')} >
             <View style={styles.listItemContainer}>
-              <View style={[styles.iconContainer, { backgroundColor: '#0209D8', paddingLeft: 14 }]}>
-                <Icon name="md-search" style={styles.sidebarIcon} />
+              <View style={[styles.iconContainer, {}]}>
+                <MaterialIcons name="settings" size={25} color="#4F8EF7" />
               </View>
               <Text style={styles.text}>Settings</Text>
             </View>
           </ListItem>
           <ListItem button iconLeft onPress={() => this.navigateTo('account')} >
             <View style={styles.listItemContainer}>
-              <View style={[styles.iconContainer, { backgroundColor: '#0209D8', paddingLeft: 14 }]}>
-                <Icon name="ios-phone-portrait-outline" style={styles.sidebarIcon} />
+              <View style={[styles.iconContainer, {}]}>
+                <MaterialIcons name="account-circle" size={25} color="#4F8EF7" />
               </View>
               <Text style={styles.text}>Account</Text>
             </View>

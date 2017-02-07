@@ -38,8 +38,8 @@ module.exports = StyleSheet.create({
     width: 37,
     height: 37,
     borderRadius: 18,
-    marginRight: 12,
-    paddingLeft: 11,
+    marginRight: 4,
+    paddingLeft: 0,
     paddingTop: (Platform.OS === 'android') ? 7 : 5,
   },
   sidebarIcon: {
