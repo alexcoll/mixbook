@@ -9,7 +9,7 @@ import myTheme from '../../themes/base-theme';
 import styles from './styles';
 
 const launchscreenBg = require('../../../img/launchscreen-bg.png');
-const launchscreenLogo = require('../../../img/logo-kitchen-sink.png');
+const launchscreenLogo = require('../../../img/logo-mixbook.jpg');
 
 class Home extends Component { // eslint-disable-line
 
@@ -25,9 +25,10 @@ class Home extends Component { // eslint-disable-line
             <Image source={launchscreenLogo} style={styles.logo} />
           </View>
           <View style={{ alignItems: 'center', marginBottom: 50, backgroundColor: 'transparent' }}>
-            <H3 style={styles.text}>App to showcase</H3>
+            <H3 style={styles.text}>Mixbook</H3>
             <View style={{ marginTop: 8 }} />
-            <H3 style={styles.text}>NativeBase components</H3>
+            <H3 style={styles.text}>Mixology application</H3>
+            <H3 style={styles.text}>(c) 2017 by The Boys of 103</H3>
           </View>
           <View>
             <Button

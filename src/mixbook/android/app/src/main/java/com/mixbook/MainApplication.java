@@ -1,4 +1,4 @@
-package com.nativebasekitchensink;
+package com.mixbook;
 
 import android.app.Application;
 import android.util.Log;
