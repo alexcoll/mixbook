@@ -14,6 +14,7 @@ import Ingredients from './components/ingredients/';
 import AddAlcohol from './components/ingredients/addAlcohol';
 import AddMixer from './components/ingredients/addMixer';
 import Account from './components/account/';
+import Login from './components/login/';
 import Settings from './components/settings/';
 import SplashPage from './components/splashscreen/';
 import SideBar from './components/sidebar';
@@ -80,6 +81,8 @@ class AppNavigator extends Component {
     switch (props.scene.route.key) {
       case 'splashscreen':
         return <SplashPage />;
+      case 'login':
+        return <Login />;
       case 'home':
         return <Home />;
       case 'mydrinks':
