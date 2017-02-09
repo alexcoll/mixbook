@@ -3,19 +3,22 @@ var _reactRedux=require('react-redux');
 
 var _reactNative=require('react-native');
 var _LoginForm=require('./LoginForm');var _LoginForm2=babelHelpers.interopRequireDefault(_LoginForm);
-var _sideBarNav=require('../../actions/sideBarNav');var _sideBarNav2=babelHelpers.interopRequireDefault(_sideBarNav);var
-
-Login=function(_Component){babelHelpers.inherits(Login,_Component);babelHelpers.createClass(Login,[{key:'navigateTo',value:function navigateTo(
-
+var _sideBarNav=require('../../actions/sideBarNav');var _sideBarNav2=babelHelpers.interopRequireDefault(_sideBarNav);
+var _reactNativeNavigationReduxHelpers=require('react-native-navigation-redux-helpers');var
 
 
+_replaceAt=_reactNativeNavigationReduxHelpers.actions.replaceAt;var
 
 
-route){
-this.props.navigateTo(route,'myrecipes');
-}}]);
+Login=function(_Component){babelHelpers.inherits(Login,_Component);
 
-function Login(){babelHelpers.classCallCheck(this,Login);var _this=babelHelpers.possibleConstructorReturn(this,(Login.__proto__||Object.getPrototypeOf(Login)).call(this));_this.
+function Login(props){babelHelpers.classCallCheck(this,Login);var _this=babelHelpers.possibleConstructorReturn(this,(Login.__proto__||Object.getPrototypeOf(Login)).call(this,
+props));_this.
+
+
+
+
+
 
 
 
@@ -33,12 +36,18 @@ updatePassword=function(text){
 _this.setState({password:text});
 };_this.
 
-login=function(){
-_this._navigate.bind(_this);
-{}
-};_this.state={username:'',password:''};return _this;}babelHelpers.createClass(Login,[{key:'render',value:function render()
+_login=function(){
+navigator.replace({
+id:'login'});
 
-{
+{}
+};_this.state={username:'',password:''};return _this;}babelHelpers.createClass(Login,[{key:'replaceAt',value:function replaceAt(
+
+route){
+this.props.replaceAt('login',{key:route},this.props.navigation.key);
+}},{key:'render',value:function render()
+
+{var _this2=this;
 return(
 _react2.default.createElement(_reactNative.KeyboardAvoidingView,{behavior:'padding',style:styles.container},
 _react2.default.createElement(_reactNative.View,{style:styles.logoContainer},
@@ -52,13 +61,28 @@ _react2.default.createElement(_reactNative.View,{style:styles.formContainer},
 _react2.default.createElement(_LoginForm2.default,{
 updateUsername:this.updateUsername,
 updatePassword:this.updatePassword,
-login:this.login}))));
+login:this.login}),
+
+_react2.default.createElement(_reactNative.View,{style:styles.Bcontainer},
+_react2.default.createElement(_reactNative.TouchableOpacity,{
+style:styles.buttonContainer,
+onPress:function onPress(){return _this2.replaceAt('mydrinks');}},
+_react2.default.createElement(_reactNative.Text,{style:styles.buttonText},'LOGIN'))))));
 
 
 
 
 
-}}]);return Login;}(_react.Component);Login.propTypes={navigateTo:_react2.default.PropTypes.func};
+
+}},{key:'onSubmitPressed',value:function onSubmitPressed()
+
+{
+this.props.navigator.push({
+title:"Recipes",
+component:recipes});
+
+}}]);return Login;}(_react.Component);Login.propTypes={openDrawer:_react2.default.PropTypes.func,replaceAt:_react2.default.PropTypes.func,navigation:_react2.default.PropTypes.shape({key:_react2.default.PropTypes.string})};
+
 
 
 
@@ -84,7 +108,19 @@ width:300,
 fontSize:20,
 fontWeight:"bold",
 textAlign:'center',
-opacity:0.75}});
+opacity:0.75},
+
+buttonContainer:{
+backgroundColor:'#2980b9',
+paddingVertical:20},
+
+Bcontainer:{
+padding:20},
+
+buttonText:{
+textAlign:'center',
+color:'#FFFFFF',
+fontWeight:'700'}});
 
 
 
@@ -92,7 +128,8 @@ opacity:0.75}});
 
 function bindAction(dispatch){
 return{
-openDrawer:function(_openDrawer){function openDrawer(){return _openDrawer.apply(this,arguments);}openDrawer.toString=function(){return _openDrawer.toString();};return openDrawer;}(function(){return dispatch(openDrawer());})};
+openDrawer:function(_openDrawer){function openDrawer(){return _openDrawer.apply(this,arguments);}openDrawer.toString=function(){return _openDrawer.toString();};return openDrawer;}(function(){return dispatch(openDrawer());}),
+replaceAt:function replaceAt(routeKey,route,key){return dispatch(_replaceAt(routeKey,route,key));}};
 
 }
 

@@ -21,12 +21,8 @@ placeholder:'Password',
 style:styles.input,
 secureTextEntry:true,
 returnKeyType:'go',
-onChangeText:props.updatePassword}),
+onChangeText:props.updatePassword})));
 
-_react2.default.createElement(_reactNative.TouchableOpacity,{
-style:styles.buttonContainer,
-onPress:function onPress(){return props.login(props.username,props.password);}},
-_react2.default.createElement(_reactNative.Text,{style:styles.buttonText},'LOGIN'))));
 
 
 
@@ -43,13 +39,4 @@ padding:20},
 input:{
 height:40,
 backgroundColor:'rgba(255,255,255,0.7)',
-marginBottom:20},
-
-buttonContainer:{
-backgroundColor:'#2980b9',
-paddingVertical:20},
-
-buttonText:{
-textAlign:'center',
-color:'#FFFFFF',
-fontWeight:'700'}});
+marginBottom:20}});

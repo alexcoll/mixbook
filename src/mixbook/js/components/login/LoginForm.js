@@ -23,11 +23,7 @@ export default  LoginForm  = (props) => {
 					returnKeyType="go"
 					onChangeText = {props.updatePassword}
 					/>
-					<TouchableOpacity 
-						style={styles.buttonContainer}
-						onPress = { () => props.login(props.username, props.password)}>
-						<Text style={styles.buttonText}>LOGIN</Text>
-					</TouchableOpacity>
+					
 			</View>
 		);
 
@@ -45,14 +41,6 @@ const styles = StyleSheet.create({
 		backgroundColor: 'rgba(255,255,255,0.7)',
 		marginBottom: 20
 	},
-	buttonContainer: {
-		backgroundColor: '#2980b9',
-		paddingVertical: 20
-	},
-	buttonText: {
-		textAlign: 'center',
-		color: '#FFFFFF',
-		fontWeight: '700'
-	}
+
 
 });
