@@ -82,15 +82,7 @@ _react2.default.createElement(_nativeBase.View,{style:_style2.default.listItemCo
 _react2.default.createElement(_nativeBase.View,{style:[_style2.default.iconContainer,{}]},
 _react2.default.createElement(_MaterialIcons2.default,{name:'account-circle',size:25,color:'#4F8EF7'})),
 
-_react2.default.createElement(_nativeBase.Text,{style:_style2.default.text},'Account'))),
-
-
-_react2.default.createElement(_nativeBase.ListItem,{button:true,iconLeft:true,onPress:function onPress(){return _this2.navigateTo('login');}},
-_react2.default.createElement(_nativeBase.View,{style:_style2.default.listItemContainer},
-_react2.default.createElement(_nativeBase.View,{style:[_style2.default.iconContainer,{}]},
-_react2.default.createElement(_MaterialIcons2.default,{name:'settings',size:25,color:'#4F8EF7'})),
-
-_react2.default.createElement(_nativeBase.Text,{style:_style2.default.text},'Login'))))));
+_react2.default.createElement(_nativeBase.Text,{style:_style2.default.text},'Account'))))));
 
 
 

@@ -85,14 +85,6 @@ class SideBar extends Component {
               <Text style={styles.text}>Account</Text>
             </View>
           </ListItem>
-          <ListItem button iconLeft onPress={() => this.navigateTo('login')} >
-            <View style={styles.listItemContainer}>
-              <View style={[styles.iconContainer, {}]}>
-                <MaterialIcons name="settings" size={25} color="#4F8EF7" />
-              </View>
-              <Text style={styles.text}>Login</Text>
-            </View>
-          </ListItem>
         </List>
       </Content>
     );
