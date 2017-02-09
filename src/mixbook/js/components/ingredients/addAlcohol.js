@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { TouchableOpacity } from 'react-native';
+import { TouchableOpacity, Alert } from 'react-native';
 import { connect } from 'react-redux';
 import { actions } from 'react-native-navigation-redux-helpers';
 import { Container, Header, Title, Content, Button, Icon, List, ListItem, Text, Picker, Thumbnail, Input, InputGroup } from 'native-base';
 
 import styles from './styles';
+import store from 'react-native-simple-store';
 
 const Item = Picker.Item;
 const camera = require('../../../img/camera.png');
@@ -29,8 +30,12 @@ class AddAlcohol extends Component {
       selected1: 'key1',
       results: {
         items: []
-      }
-    }
+      },
+      inputBrand: '',
+      inputType: '',
+      inputFlavor: '',
+      inputProof: ''
+    };
   }
 
 
@@ -47,7 +52,15 @@ class AddAlcohol extends Component {
 
 
   onSubmit() {
-    this.replaceAt('ingredients')
+    store.get('ingredients').then((data) => {
+      var list = data.alcoholList;
+      list.push(this.state.inputBrand);
+      store.update('ingredients', {
+        alcoholList: list
+      }).then(() => {
+        this.replaceAt('ingredients');
+      })
+    });
   }
 
 
@@ -84,7 +97,12 @@ class AddAlcohol extends Component {
             </ListItem>
             <ListItem>
               <InputGroup>
-                <Input inlineLabel label="Brand" placeholder="McCormicks" />
+                <Input
+                  inlineLabel label="Brand"
+                  placeholder="McCormicks"
+                  value={this.state.inputBrand}
+                  onChangeText={inputBrand => this.setState({ inputBrand })}
+                />
               </InputGroup>
             </ListItem>
             <ListItem>

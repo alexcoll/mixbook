@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { TouchableOpacity } from 'react-native';
+import { TouchableOpacity, Alert } from 'react-native';
 import { connect } from 'react-redux';
 import { actions } from 'react-native-navigation-redux-helpers';
 import { Container, Header, Title, Content, Button, Icon, List, ListItem, Text, Picker, Thumbnail, Input, InputGroup } from 'native-base';
 
 import styles from './styles';
+import store from 'react-native-simple-store';
 
 const Item = Picker.Item;
 const camera = require('../../../img/camera.png');
@@ -29,8 +30,12 @@ class AddMixer extends Component {
       selected1: 'key1',
       results: {
         items: []
-      }
-    }
+      },
+      inputBrand: '',
+      inputType: '',
+      inputFlavor: '',
+      inputProof: ''
+    };
   }
 
 
@@ -47,7 +52,15 @@ class AddMixer extends Component {
 
 
   onSubmit() {
-    this.replaceAt('ingredients')
+    store.get('ingredients').then((data) => {
+      var list = data.mixerList;
+      list.push(this.state.inputBrand);
+      store.update('ingredients', {
+        mixerList: list
+      }).then(() => {
+        this.replaceAt('ingredients');
+      })
+    });
   }
 
 
@@ -59,7 +72,7 @@ class AddMixer extends Component {
             <Icon name="ios-arrow-back" />
           </Button>
 
-          <Title>Add Alcohol</Title>
+          <Title>Add Mixer</Title>
         </Header>
 
         <Content>
@@ -77,18 +90,21 @@ class AddMixer extends Component {
               >
                 <Item label="Soda" value="soda" />
                 <Item label="Juice" value="juice" />
-                <Item label="Syrup" value="syrup" />
-                <Item label="Energy Drink" value="energy_drink" />
               </Picker>
             </ListItem>
             <ListItem>
               <InputGroup>
-                <Input inlineLabel label="Brand" placeholder="McCormicks" />
+                <Input
+                  inlineLabel label="Brand"
+                  placeholder="Tropicana"
+                  value={this.state.inputBrand}
+                  onChangeText={inputBrand => this.setState({ inputBrand })}
+                />
               </InputGroup>
             </ListItem>
             <ListItem>
               <InputGroup>
-                <Input inlineLabel label="Flavor" placeholder="Green Apple" />
+                <Input inlineLabel label="Name" placeholder="Orange Juice" />
               </InputGroup>
             </ListItem>
           </List>

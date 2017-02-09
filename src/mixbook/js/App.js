@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, AsyncStorage, Alert } from 'react-native';
 import CodePush from 'react-native-code-push';
 
 import { Container, Content, Text, View } from 'native-base';
@@ -8,6 +8,7 @@ import Modal from 'react-native-modalbox';
 
 import AppNavigator from './AppNavigator';
 import ProgressBar from './components/loaders/ProgressBar';
+import store from 'react-native-simple-store';
 
 import theme from './themes/base-theme';
 
@@ -26,6 +27,7 @@ const styles = StyleSheet.create({
   },
 });
 
+
 class App extends Component {
 
   constructor(props) {
@@ -35,6 +37,10 @@ class App extends Component {
       showInstalling: false,
       downloadProgress: 0,
     };
+    store.save('ingredients', {
+      alcoholList: ['drink2', 'vodka'],
+      mixerList: ['coke', 'redbul']
+    })
   }
 
   componentDidMount() {

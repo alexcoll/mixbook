@@ -1,26 +1,27 @@
 
 import React, { Component } from 'react';
 
-import { Container, Content, Text, View, List, ListItem, Input, InputGroup, Button } from 'native-base';
+import { Container, Content, Text, View, InputGroup, Input, Button, List, ListItem, Fab, Icon, Footer } from 'native-base';
 
 import styles from './styles';
-
-var mixers = ['Sprite', 'Tonic water'];
+import store from 'react-native-simple-store';
 
 export default class TabMixer extends Component { // eslint-disable-line
 
   constructor(props) {
     super(props);
-    this.state = { inputText: '', displayType: 'all' };
+    this.state = {
+      inputText: '',
+      displayType: 'all',
+      active: 'true',
+      theList: ['error']
+    };
   }
 
-  onSubmit() {
-    if (this.state.inputText.length > 0) {
-      mixers.push(this.state.inputText);
-      this.setState({
-        inputText: '',
-      });
-    }
+  componentDidMount() {
+    store.get('ingredients').then((data) => {
+      this.setState({theList: data.mixerList});
+    });
   }
 
   render() { // eslint-disable-line
@@ -28,7 +29,7 @@ export default class TabMixer extends Component { // eslint-disable-line
       <Container style={styles.container}>
         <Content>
           <View>
-            <List dataArray={mixers}
+            <List dataArray={this.state.theList}
               renderRow={(item) =>
                 <ListItem>
                   <Text>{item}</Text>
@@ -37,31 +38,6 @@ export default class TabMixer extends Component { // eslint-disable-line
             </List>
           </View>
         </Content>
-        <View
-          style={{
-            alignSelf: 'flex-end',
-            flex: 0,
-            padding: 5,
-            flexDirection: 'row',
-          }}
-        >
-          <InputGroup
-            borderType="underline"
-            style={{ flex: 0.9 }}
-          >
-            <Input
-              placeholder="Add mixer"
-              value={this.state.inputText}
-              onChangeText={inputText => this.setState({ inputText })}
-              onSubmitEditing={() => this.onSubmit()}
-              maxLength={35}
-            />
-          </InputGroup>
-          <Button
-            style={{ flex: 0.1, marginLeft: 15 }}
-            onPress={() => this.onSubmit()}
-          > Add </Button>
-        </View>
       </Container>
     );
   }

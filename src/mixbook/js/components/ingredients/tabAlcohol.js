@@ -4,8 +4,7 @@ import React, { Component } from 'react';
 import { Container, Content, Text, View, InputGroup, Input, Button, List, ListItem, Fab, Icon, Footer } from 'native-base';
 
 import styles from './styles';
-
-var alcohols = ['vodka', 'tequila'];
+import store from 'react-native-simple-store';
 
 export default class TabAlcohol extends Component { // eslint-disable-line
 
@@ -14,17 +13,15 @@ export default class TabAlcohol extends Component { // eslint-disable-line
     this.state = {
       inputText: '',
       displayType: 'all',
-      active: 'true'
+      active: 'true',
+      theList: ['error']
     };
   }
 
-  onSubmit() {
-    if (this.state.inputText.length > 0) {
-      alcohols.push(this.state.inputText);
-      this.setState({
-        inputText: '',
-      });
-    }
+  componentDidMount() {
+    store.get('ingredients').then((data) => {
+      this.setState({theList: data.alcoholList});
+    });
   }
 
   render() { // eslint-disable-line
@@ -32,7 +29,7 @@ export default class TabAlcohol extends Component { // eslint-disable-line
       <Container style={styles.container}>
         <Content>
           <View>
-            <List dataArray={alcohols}
+            <List dataArray={this.state.theList}
               renderRow={(item) =>
                 <ListItem>
                   <Text>{item}</Text>

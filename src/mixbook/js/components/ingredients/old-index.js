@@ -1,9 +1,9 @@
 
 import React, { Component } from 'react';
-import { StyleSheet, View, AppRegistry, AsyncStorage } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { connect } from 'react-redux';
 import { actions } from 'react-native-navigation-redux-helpers';
-import { Header, Title, Content, Text, Button, Icon } from 'native-base';
+import { Container, Header, Title, Content, Text, H3, Button, Icon, Tabs, Fab } from 'native-base';
 
 import { openDrawer } from '../../actions/drawer';
 import myTheme from '../../themes/base-theme';
@@ -11,11 +11,9 @@ import styles from './styles';
 
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import ActionButton from 'react-native-action-button';
-import ScrollableTabView from 'react-native-scrollable-tab-view'
 
 import TabAlcohol from './tabAlcohol';
 import TabMixers from './tabMixer';
-
 
 const abstyles = StyleSheet.create({
   actionButtonIcon: {
@@ -33,7 +31,9 @@ class Ingredients extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {selectedTab:'Alcohol'};
+    this.state = {
+      active: false
+    };
   }
 
   static propTypes = {
@@ -52,7 +52,7 @@ class Ingredients extends Component {
 
   render() {
     return (
-      <View style={tstyles.container}>
+      <Container theme={myTheme} style={styles.container}>
         <Header>
           <Button transparent onPress={this.props.openDrawer}>
             <Icon name="ios-menu" />
@@ -64,51 +64,38 @@ class Ingredients extends Component {
             <Icon name="md-search"/>
           </Button>
         </Header>
-          <ScrollableTabView>
-            <TabAlcohol tabLabel="Alcohol" />
-            <TabMixers tabLabel="Mixers" />
-          </ScrollableTabView>
+        <Content>
+          <Tabs>
+            <TabAlcohol tabLabel='Alcohol' />
+            <TabMixers tabLabel='Mixers' />
+          </Tabs>
+        </Content>
+        <Fab
+          active={this.state.active}
+          direction="up"
+          containerStyle={{ marginLeft: 10 }}
+          style={{ backgroundColor: '#5067FF' }}
+          position="bottomRight"
+          onPress={() => this.setState({ active: !this.state.active })}
+        >
+          <Icon name="md-add" />
+          <Button
+            onPress={() => this.replaceAt('addAlcohol')}
+          >
+            <MaterialIcons name="local-bar" size={25} color="white" />
 
-          <ActionButton buttonColor="rgba(231,76,60,1)">
-            <ActionButton.Item
-              buttonColor='#9b59b6'
-              title="Add Alcohol"
-              onPress={() => this.replaceAt('addAlcohol')}
-            >
-              <MaterialIcons name="local-bar" size={25} color="white" style={styles.actionButtonIcon}/>
-            </ActionButton.Item>
-            <ActionButton.Item
-              buttonColor='#3498db'
-              title="Add Mixer"
-              onPress={() => this.replaceAt('addMixer')}
-            >
-              <MaterialIcons name="local-drink" size={25} color="white" style={styles.actionButtonIcon}/>
-            </ActionButton.Item>
-          </ActionButton>
-      </View>
+          </Button>
+          <Button
+            onPress={() => this.replaceAt('addMixer')}
+          >
+            <MaterialIcons name="local-drink" size={25} color="white" />
+          </Button>
+        </Fab>
+      </Container>
 
     );
   }
 }
-
-const tstyles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-});
 
 
 function bindAction(dispatch) {
