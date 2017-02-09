@@ -50,6 +50,14 @@ class Login extends Component {
 	render() {
 		return (
 			<KeyboardAvoidingView behavior="padding" style={styles.container}>
+				<View style={styles.noAccount}>
+						<TouchableOpacity 
+							style={styles.noAccountingButtonContainer}
+							onPress={() => this.replaceAt('mydrinks')}>
+						<Text style={styles.noAccountButtonText}>Continue with no account</Text>
+					</TouchableOpacity>
+				</View>
+
 				<View style={styles.logoContainer}>
 					<Image 
 						style={styles.logo}
@@ -88,6 +96,17 @@ class Login extends Component {
 
 
 const styles = StyleSheet.create({
+	noAccount: {
+		top: 5,
+		left: 5,
+		width: 100,
+		height: 150
+	},
+	noAccountButtonText: {
+		textAlign: 'center',
+		color: '#FFFFFF',
+		fontWeight: '400'
+	},
 	container: {
 		flex:1,
 		backgroundColor: '#3498db'
@@ -110,12 +129,18 @@ const styles = StyleSheet.create({
 		textAlign: 'center',
 		opacity: 0.75
 	},
-		buttonContainer: {
+	buttonContainer: {
 		backgroundColor: '#2980b9',
-		paddingVertical: 20
+		paddingVertical: 20,
+		
 	},
 	Bcontainer: {
 		padding: 20
+	},
+	noAccountingButtonContainer: {
+		backgroundColor: '#2980b9',
+		paddingVertical: 2,
+		height: 42
 	},
 	buttonText: {
 		textAlign: 'center',
