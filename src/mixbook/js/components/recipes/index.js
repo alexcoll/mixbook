@@ -7,9 +7,9 @@ import { openDrawer } from '../../actions/drawer';
 import myTheme from '../../themes/base-theme';
 import styles from './styles';
 
-import TabOne from './tabOne';
-import TabTwo from './tabTwo';
-import TabThree from './tabThree';
+import TabFeatured from './tabFeatured';
+import TabPopular from './tabPopular';
+import TabNew from './tabNew';
 
 class Recipes extends Component {
 
@@ -35,9 +35,9 @@ class Recipes extends Component {
 
         <Content>
           <Tabs>
-            <TabOne tabLabel='Featured' />
-            <TabTwo tabLabel='Popular' />
-            <TabThree tabLabel='New' />
+            <TabFeatured tabLabel='Featured' />
+            <TabPopular tabLabel='Popular' />
+            <TabNew tabLabel='New' />
           </Tabs>
         </Content>
 
