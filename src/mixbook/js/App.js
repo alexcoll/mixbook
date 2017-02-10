@@ -38,8 +38,8 @@ class App extends Component {
       downloadProgress: 0,
     };
     store.save('ingredients', {
-      alcoholList: ['drink2', 'vodka'],
-      mixerList: ['coke', 'redbul']
+      alcoholList: ['Whiskey', 'Vodka'],
+      mixerList: ['Coke', 'Redbull']
     })
   }
 

@@ -68,7 +68,13 @@ class Account extends Component {
             <ListItem>
               <InputGroup>
                 <Icon name="ios-unlock" style={{ color: '#0A69FE' }} />
-                <Input placeholder="PASSWORD" secureTextEntry />
+                <Input placeholder="OLD PASSWORD" secureTextEntry />
+              </InputGroup>
+            </ListItem>
+            <ListItem>
+              <InputGroup>
+                <Icon name="ios-unlock" style={{ color: '#0A69FE' }} />
+                <Input placeholder="NEW PASSWORD" secureTextEntry />
               </InputGroup>
             </ListItem>
           </List>

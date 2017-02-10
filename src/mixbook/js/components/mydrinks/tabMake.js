@@ -27,7 +27,7 @@ export default class TabMake extends Component { // eslint-disable-line
             <ListItem>
               <Thumbnail source={{uri: 'http://www.origlio.com/sites/default/files/beverage/Hamms_Special-Light.png'}} />
               <Text>Hamms Special Light </Text>
-              <Text note>The highest of quality of brews</Text>
+              <Text note>The highest quality of brews</Text>
             </ListItem>
           </List>
         </Content>
