@@ -35,7 +35,7 @@ class Recipes extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {selectedTab:'Featured'};
+    this.state = {selectedTab:'New'};
   }
 
   static propTypes = {
@@ -67,9 +67,9 @@ class Recipes extends Component {
           </Button>
         </Header>
           <ScrollableTabView>
+            <TabNew tabLabel="New" />
             <TabFeatured tabLabel="Featured" />
             <TabPopular tabLabel="Popular" />            
-            <TabNew tabLabel="New" />
           </ScrollableTabView>
 
           <ActionButton buttonColor="rgba(231,76,60,1)">

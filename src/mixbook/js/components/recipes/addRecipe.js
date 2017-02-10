@@ -31,7 +31,8 @@ class AddAlcohol extends Component {
       },
       inputName:'',
       inputMixer:'',
-      inputAlcohol:''
+      inputAlcohol:'',
+      inputInstructions:''
     };
   }
 
@@ -57,13 +58,18 @@ class AddAlcohol extends Component {
     }
     if(this.state.inputAlcohol == '')
     {
-      alert('Please add some alcohol you fucking geed');
+      alert('Please add alcohol to your recipe!');
+      return;
+    }
+    if(this.state.inputInstructions == '')
+    {
+      alert('Please enter some instructions for your recipe!');
       return;
     }
 
     store.get('recipes').then((data) => {
       var list = data.alcoholList;
-      list.push(this.state.inputBrand);
+      list.push(this.state.inputName);
       store.update('recipes', {
         alcoholList: list
       }).then(() => {
@@ -101,7 +107,7 @@ class AddAlcohol extends Component {
                   inlineLabel label="Name"
                   placeholder="Screwdriver"
                   value={this.state.inputName}
-                  onChangeText={inputName => this.setState({ inputName: text })}
+                  onChangeText={inputName => this.setState({ inputName })}
                 />
               </InputGroup>
             </ListItem>
@@ -109,7 +115,8 @@ class AddAlcohol extends Component {
               <InputGroup>
                 <Input inlineLabel label="Alcohol" 
                 placeholder="Vodka, Rum..." 
-                onChangeText={inputAlcohol => this.setState({ inputAlcohol: text  })}
+                value={this.state.inputAlcohol}
+                onChangeText={inputAlcohol => this.setState({ inputAlcohol })}
                 />
               </InputGroup>
             </ListItem>
@@ -118,14 +125,25 @@ class AddAlcohol extends Component {
                 <Input
                   inlineLabel label="Mixers"
                   placeholder="Orange Juice, Lemonade..."
-                  onChangeText={inputMixer => this.setState({ inputMixer: text  })}
+                  value={this.state.inputMixer}
+                  onChangeText={inputMixer => this.setState({ inputMixer })}
+                />
+              </InputGroup>
+            </ListItem>
+            <ListItem>
+              <InputGroup>
+                <Input
+                  inlineLabel label="Instructions"
+                  placeholder="First mix x with y..."
+                  value={this.state.inputInstructions}
+                  onChangeText={inputInstructions => this.setState({ inputInstructions })}
                 />
               </InputGroup>
             </ListItem>
           </List>
           <Button
             style={{ alignSelf: 'center', marginTop: 20, marginBottom: 20 }}
-            onPress={() => this.replaceAt('recipes')}
+            onPress={() => this.onSubmit()}
           >
             Add
           </Button>

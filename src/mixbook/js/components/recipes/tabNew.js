@@ -7,6 +7,14 @@ import styles from './styles';
 
 export default class TabNew extends Component { // eslint-disable-line
 
+
+  componentDidMount() {
+    store.get('recipes').then((data) => {
+      this.setState({theList: data.recipeList});
+    });
+  }
+
+
   render() { // eslint-disable-line
     return (
       <Container style={styles.container}>
