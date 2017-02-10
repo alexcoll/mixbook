@@ -23,11 +23,41 @@ CREATE TABLE IF NOT EXISTS `mixbookdb`.`users` (
   `password` VARCHAR(255) NOT NULL,
   `first_name` VARCHAR(255) NOT NULL,
   `last_name` VARCHAR(255) NOT NULL,
-  `nickname` VARCHAR(255) NULL,
-  `age` DATE NOT NULL,
   `email` VARCHAR(255) NOT NULL,
-  `phone_number` VARCHAR(20) NULL,
+  `ENABLED` TINYINT(1) NOT NULL,
+  `LASTPASSWORDRESETDATE` TIMESTAMP NOT NULL,
   PRIMARY KEY (`user_id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE utf8mb4_unicode_ci
+ROW_FORMAT = DYNAMIC;
+
+
+-- -----------------------------------------------------
+-- Table `mixbookdb`.`AUTHORITY`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mixbookdb`.`AUTHORITY` (
+  `ID` BIGINT NOT NULL AUTO_INCREMENT,
+  `NAME` VARCHAR(50) NOT NULL,
+  PRIMARY KEY (id),
+  UNIQUE (NAME))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE utf8mb4_unicode_ci
+ROW_FORMAT = DYNAMIC;
+
+
+-- -----------------------------------------------------
+-- Table `mixbookdb`.`USER_AUTHORITY`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mixbookdb`.`USER_AUTHORITY` (
+  `USER_ID` BIGINT NOT NULL,
+  `AUTHORITY_ID` BIGINT NOT NULL,
+  PRIMARY KEY (USER_ID, AUTHORITY_ID),
+  INDEX `fk_AUTHORITY1_idx` (`AUTHORITY_ID` ASC),
+  INDEX `fk_users_idx` (`USER_ID` ASC),
+  CONSTRAINT `fk_users` FOREIGN KEY (`USER_ID`) REFERENCES `mixbookdb`.`users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_AUTHORITY1` FOREIGN KEY (`AUTHORITY_ID`) REFERENCES `mixbookdb`.`AUTHORITY` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE utf8mb4_unicode_ci
@@ -46,6 +76,15 @@ ADD UNIQUE INDEX `ix_users_username` (`username`);
 -- -----------------------------------------------------
 ALTER TABLE `users`
 ADD UNIQUE INDEX `ix_users_email` (`email`);
+
+
+-- -----------------------------------------------------
+-- Populate `mixbookdb`.`AUTHORITY`
+-- -----------------------------------------------------
+INSERT INTO AUTHORITY(ID, NAME)
+VALUES (1, 'ROLE_USER');
+INSERT INTO AUTHORITY(ID, NAME)
+VALUES (2, 'ROLE_ADMIN');
 
 
 SET SQL_MODE=@OLD_SQL_MODE;
