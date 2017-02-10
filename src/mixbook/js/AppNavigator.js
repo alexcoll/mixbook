@@ -13,6 +13,7 @@ import MyDrinks from './components/mydrinks/';
 import Ingredients from './components/ingredients/';
 import AddAlcohol from './components/ingredients/addAlcohol';
 import AddMixer from './components/ingredients/addMixer';
+import AddRecipe from './components/recipes/addRecipe';
 import Account from './components/account/';
 import Login from './components/login/';
 import Settings from './components/settings/';
@@ -100,6 +101,8 @@ class AppNavigator extends Component {
         return <AddAlcohol />;
       case 'addMixer':
         return <AddMixer />;
+      case 'addRecipe':
+        return <AddRecipe />;
       case 'newAccount':
         return <NewAccount />;
       default :
