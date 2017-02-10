@@ -87,10 +87,20 @@ class NewAccount extends Component {
     	this.props.replaceAt('newAccount', { key: route }, this.props.navigation.key);
 	}
 
+	replaceAt(route) {
+		this.props.replaceAt('newAccount', { key: route }, this.props.navigation.key);
+	}
+
 	render() {
 		return (
 			<KeyboardAvoidingView behavior="padding" style={styles.container}>
-
+				<View style={styles.noAccount}>
+						<TouchableOpacity 
+							style={styles.noAccountingButtonContainer}
+							onPress={() => this.replaceAt('login')}>
+						<Text style={styles.noAccountButtonText}>Go back to login screen</Text>
+					</TouchableOpacity>
+				</View>
 				<View style={styles.logoContainer}>
 					<Image 
 						style={styles.logo}
@@ -125,7 +135,6 @@ class NewAccount extends Component {
 		top: 5,
 		left: 5,
 		width: 100,
-		height: 150
 	},
 	noAccountButtonText: {
 		textAlign: 'center',
