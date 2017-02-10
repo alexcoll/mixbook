@@ -15,19 +15,19 @@ export default class TabSaved extends Component { // eslint-disable-line
         <Content>
           <List>
             <ListItem>
-              <Thumbnail source={placeholder} />
-              <Text>Drink 1</Text>
-              <Text note>Description</Text>
+              <Thumbnail source={{uri: 'http://www.jimbeam.com/sites/default/files/product/8188_JBW_Straight_R1_EURO.png?crc=e6885ecf'}} />
+              <Text>Jim Beam</Text>
+              <Text note>Jim Beam recommended with Coke</Text>
             </ListItem>
             <ListItem>
-              <Thumbnail source={placeholder} />
-              <Text>Drink 2</Text>
-              <Text note>Description</Text>
+              <Thumbnail source={{uri: 'http://del.h-cdn.co/assets/cm/15/10/54f685750c488_-_the_ultimate_ketel_one_lemonade_hires-xl.jpg'}} />
+              <Text>Vodka Lemonade</Text>
+              <Text note>Any vodka mixed with lemondade</Text>
             </ListItem>
             <ListItem>
-              <Thumbnail source={placeholder} />
-              <Text>Drink 3</Text>
-              <Text note>Description</Text>
+              <Thumbnail source={{uri: 'http://www.origlio.com/sites/default/files/beverage/Hamms_Special-Light.png'}} />
+              <Text>Hamms Special Light </Text>
+              <Text note>The highest quality of brews</Text>
             </ListItem>
           </List>
         </Content>

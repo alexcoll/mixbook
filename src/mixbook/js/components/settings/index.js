@@ -16,27 +16,12 @@ class Settings extends Component {
     super(props);
     this.state = {
       checkbox1: true,
-      checkbox2: true,
-      checkbox3: true,
-      checkbox4: false,
     };
   }
 
   toggleSwitch1() {
     this.setState({
       checkbox1: !this.state.checkbox1,
-    });
-  }
-
-  toggleSwitch2() {
-    this.setState({
-      checkbox2: !this.state.checkbox2,
-    });
-  }
-
-  toggleSwitch3() {
-    this.setState({
-      checkbox3: !this.state.checkbox3,
     });
   }
 
@@ -56,14 +41,6 @@ class Settings extends Component {
             <ListItem button onPress={() => this.toggleSwitch1()}>
               <CheckBox checked={this.state.checkbox1} onPress={() => this.toggleSwitch1()} />
               <Text>Stay logged in</Text>
-            </ListItem>
-            <ListItem button onPress={() => this.toggleSwitch2()}>
-              <CheckBox checked={this.state.checkbox2} onPress={() => this.toggleSwitch2()} />
-              <Text>Setting 2</Text>
-            </ListItem>
-            <ListItem button onPress={() => this.toggleSwitch2()}>
-              <CheckBox checked={this.state.checkbox2} onPress={() => this.toggleSwitch2()} />
-              <Text>Setting 3</Text>
             </ListItem>
           </List>
         </Content>
