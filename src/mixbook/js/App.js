@@ -41,6 +41,9 @@ class App extends Component {
       alcoholList: ['Whiskey', 'Vodka'],
       mixerList: ['Coke', 'Redbull']
     })
+    store.save('recipes', {
+      recipeList: ['Rum & Coke', 'Screwdriver'],
+    })
   }
 
   componentDidMount() {
