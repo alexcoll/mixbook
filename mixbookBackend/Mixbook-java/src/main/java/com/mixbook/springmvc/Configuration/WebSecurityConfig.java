@@ -54,15 +54,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		.exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
 		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
 		.authorizeRequests()
-		.antMatchers(
-				HttpMethod.GET,
-				"/",
-				"/*.html",
-				"/favicon.ico",
-				"/**/*.html",
-				"/**/*.css",
-				"/**/*.js"
-				).permitAll()
 		.antMatchers("/auth/**").permitAll()
 		.antMatchers("/user/createUser").permitAll()
 		.anyRequest().authenticated();
