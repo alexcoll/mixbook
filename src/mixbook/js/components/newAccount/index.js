@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-
+import AccountForm from './accountForm';
 import { StyleSheet, View, Image, Text, KeyboardAvoidingView, TouchableOpacity } from 'react-native';
-import LoginForm from './LoginForm';
 import navigateTo from '../../actions/sideBarNav';
 import { actions } from 'react-native-navigation-redux-helpers';
 
@@ -10,87 +9,109 @@ const {
   replaceAt,
 } = actions;
 
-class Login extends Component {
-	
+class NewAccount extends Component {
+
 	constructor(props) {
 		super(props)
 		this.state = {
-			email: '',
-			password:''
+			FirstName: '',
+			LastName:'',
+			Email:'',
+			Password1:'',
+			Password2:''
 		}
 	}
 
-	  static propTypes = {
-    openDrawer: React.PropTypes.func,
-    replaceAt: React.PropTypes.func,
-    navigation: React.PropTypes.shape({
-      key: React.PropTypes.string,
-    }),
-}
+	static propTypes = {
+    	openDrawer: React.PropTypes.func,
+    	replaceAt: React.PropTypes.func,
+    	navigation: React.PropTypes.shape({
+      		key: React.PropTypes.string,
+    	}),
+	}
+
+	updateFirstName = (text) => {
+		this.setState({FirstName: text})
+	}
+
+	updateLastName = (text) => {
+		this.setState({LastName: text})
+	}
 
 	updateEmail = (text) => {
-		this.setState({email: text})
+		this.setState({Email: text})
 	}
 
-	updatePassword = (text) => {
-		this.setState({password: text})
+	updatePassword1 = (text) => {
+		this.setState({Password1: text})
 	}
 
+	updatePassword2 = (text) => {
+		this.setState({Password2: text})
+	}
+
+	createAccount = () => {
+		alert('First Name: ' + this.state.FirstName + 
+				'\nLast Name: ' + this.state.LastName +
+				'\nEmail: ' + this.state.Email +
+				'\nPassword: ' + this.state.Password1);
+	}
 
 	onClick(route) {
-
-		if(this.state.email.indexOf('@') == -1 || this.state.email.indexOf('.') == -1)
+		var pass = true;
+		if(this.state.FirstName == '')
+		{
+			alert('Please enter your first name');
+			return;
+		}
+		if(this.state.LastName == '')
+		{
+			alert('Please enter your last name');
+			return;
+		}
+		if(this.state.Email.indexOf('@') == -1 || this.state.Email.indexOf('.') == -1)
 		{
 			alert('Please enter a valid email');
 			return;
 		}
-		if(this.state.password == '')
+		if(this.state.Password1 == '' || this.state.Password2 == '')
 		{
 			alert('Please enter a password');
 			return;
 		}
-    	this.props.replaceAt('login', { key: route }, this.props.navigation.key);
-	}
-
-	replaceAt(route) {
-		this.props.replaceAt('login', { key: route }, this.props.navigation.key);
+		if(this.state.Password1 != this.state.Password2)
+		{
+			alert('Please enter matching passwords');
+			return;
+		}
+    	this.props.replaceAt('newAccount', { key: route }, this.props.navigation.key);
 	}
 
 	render() {
 		return (
 			<KeyboardAvoidingView behavior="padding" style={styles.container}>
-				<View style={styles.noAccount}>
-						<TouchableOpacity 
-							style={styles.noAccountingButtonContainer}
-							onPress={() => this.replaceAt('mydrinks')}>
-						<Text style={styles.noAccountButtonText}>Continue With No Account</Text>
-					</TouchableOpacity>
-				</View>
-				<View style={styles.newAccount}>
-						<TouchableOpacity 
-							style={styles.newAccountButtonContainer}
-							onPress={() => this.replaceAt('newAccount')}>
-						<Text style={styles.noAccountButtonText}>Create An Account</Text>
-					</TouchableOpacity>
-				</View>				
+
 				<View style={styles.logoContainer}>
 					<Image 
 						style={styles.logo}
 						source={require('../../../img/drink-emoji.png')} 
 						/>
-						<Text style={styles.title}>Welcome To Mixbook!</Text>
+						<Text style={styles.title}>Please enter your information</Text>
 				</View>
 				<View style ={styles.formContainer}>
-					<LoginForm 
+					<AccountForm 
+						updateFirstName = {this.updateFirstName}
+						updateLastName = {this.updateLastName}
 						updateEmail = {this.updateEmail}
-						updatePassword = {this.updatePassword}
-						login = {this.login}
+						updatePassword1 = {this.updatePassword1}
+						updatePassword2 = {this.updatePassword2}
+						onClick = {this.onClick}
 					/>
 					<View style={styles.Bcontainer}>
 					<TouchableOpacity 
 						style={styles.buttonContainer}
-						onPress={() => this.onClick('mydrinks')}>
-						<Text style={styles.buttonText}>LOGIN</Text>
+						onPress={() => this.onClick('login')}>
+						<Text style={styles.buttonText}>Create Account!</Text>
 					</TouchableOpacity>
 					</View>
 				</View>
@@ -98,29 +119,13 @@ class Login extends Component {
 
 		);
 	}
-
-	onSubmitPressed() {
-        this.props.navigator.push({
-            title: "Recipes",
-            component: recipes,
-        });
-    }
-
 }
-
-
-
-const styles = StyleSheet.create({
+	const styles = StyleSheet.create({
 	noAccount: {
 		top: 5,
 		left: 5,
 		width: 100,
-	},
-	newAccount: {
-		position: 'absolute',
-		top: 5,
-		right: 5,
-		width: 100,
+		height: 150
 	},
 	noAccountButtonText: {
 		textAlign: 'center',
@@ -162,11 +167,6 @@ const styles = StyleSheet.create({
 		paddingVertical: 2,
 		height: 42
 	},
-	newAccountButtonContainer: {
-		backgroundColor: '#2980b9',
-		paddingVertical: 2,
-		height: 42
-	},
 	buttonText: {
 		textAlign: 'center',
 		color: '#FFFFFF',
@@ -187,4 +187,4 @@ const mapStateToProps = state => ({
   navigation: state.cardNavigation,
 });
 
-export default connect(mapStateToProps, bindAction)(Login);
+export default connect(mapStateToProps, bindAction)(NewAccount);
