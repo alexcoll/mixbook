@@ -50,7 +50,40 @@ class NewAccount extends Component {
 		this.setState({Password2: text})
 	}
 
-	replaceAt(route) {
+	createAccount = () => {
+		alert('First Name: ' + this.state.FirstName + 
+				'\nLast Name: ' + this.state.LastName +
+				'\nEmail: ' + this.state.Email +
+				'\nPassword: ' + this.state.Password1);
+	}
+
+	onClick(route) {
+		var pass = true;
+		if(this.state.FirstName == '')
+		{
+			alert('Please enter your first name');
+			return;
+		}
+		if(this.state.LastName == '')
+		{
+			alert('Please enter your last name');
+			return;
+		}
+		if(this.state.Email.indexOf('@') == -1 || this.state.Email.indexOf('.') == -1)
+		{
+			alert('Please enter a valid email');
+			return;
+		}
+		if(this.state.Password1 == '' || this.state.Password2 == '')
+		{
+			alert('Please enter a password');
+			return;
+		}
+		if(this.state.Password1 != this.state.Password2)
+		{
+			alert('Please enter matching passwords');
+			return;
+		}
     	this.props.replaceAt('newAccount', { key: route }, this.props.navigation.key);
 	}
 
@@ -72,11 +105,12 @@ class NewAccount extends Component {
 						updateEmail = {this.updateEmail}
 						updatePassword1 = {this.updatePassword1}
 						updatePassword2 = {this.updatePassword2}
+						onClick = {this.onClick}
 					/>
 					<View style={styles.Bcontainer}>
 					<TouchableOpacity 
 						style={styles.buttonContainer}
-						onPress={() => this.replaceAt('login')}>
+						onPress={() => this.onClick('login')}>
 						<Text style={styles.buttonText}>Create Account!</Text>
 					</TouchableOpacity>
 					</View>

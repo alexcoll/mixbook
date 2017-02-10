@@ -15,7 +15,7 @@ class Login extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			username: '',
+			email: '',
 			password:''
 		}
 	}
@@ -28,23 +28,32 @@ class Login extends Component {
     }),
 }
 
-	updateUsername = (text) => {
-		this.setState({username: text})
+	updateEmail = (text) => {
+		this.setState({email: text})
 	}
 
 	updatePassword = (text) => {
 		this.setState({password: text})
 	}
 
-	_login = () => {
-		navigator.replace({
-        id: 'login',
-      });
-		{/*alert('username: ' + this.state.username + '\npassword: ' + this.state.password)*/}
+
+	onClick(route) {
+
+		if(this.state.email.indexOf('@') == -1 || this.state.email.indexOf('.') == -1)
+		{
+			alert('Please enter a valid email');
+			return;
+		}
+		if(this.state.password == '')
+		{
+			alert('Please enter a password');
+			return;
+		}
+    	this.props.replaceAt('login', { key: route }, this.props.navigation.key);
 	}
 
 	replaceAt(route) {
-    	this.props.replaceAt('login', { key: route }, this.props.navigation.key);
+		this.props.replaceAt('login', { key: route }, this.props.navigation.key);
 	}
 
 	render() {
@@ -73,14 +82,14 @@ class Login extends Component {
 				</View>
 				<View style ={styles.formContainer}>
 					<LoginForm 
-						updateUsername = {this.updateUsername}
+						updateEmail = {this.updateEmail}
 						updatePassword = {this.updatePassword}
 						login = {this.login}
 					/>
 					<View style={styles.Bcontainer}>
 					<TouchableOpacity 
 						style={styles.buttonContainer}
-						onPress={() => this.replaceAt('mydrinks')}>
+						onPress={() => this.onClick('mydrinks')}>
 						<Text style={styles.buttonText}>LOGIN</Text>
 					</TouchableOpacity>
 					</View>

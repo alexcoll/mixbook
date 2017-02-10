@@ -13,7 +13,7 @@ export default  LoginForm  = (props) => {
 					keyboardType="email-address"
 					autoCapitalize="none"
 					autoCorrect={false}
-					onChangeText = {props.updateUsername}
+					onChangeText = {props.updateEmail}
 					/>
 				<TextInput 
 					underlineColorAndroid={'transparent'}
