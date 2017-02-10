@@ -1,10 +1,24 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Image, TextInput, TouchableOpacity, Text } from 'react-native';
 
-export default  LoginForm  = (props) => {
+export default  AccountForm  = (props) => {
 			
 		return (
 			<View style={styles.container}>
+				<TextInput 
+					underlineColorAndroid={'transparent'}
+					placeholder="First Name"
+					style={styles.input}
+					returnKeyType="next"
+					autoCorrect={false}
+					/>
+				<TextInput 
+					underlineColorAndroid={'transparent'}
+					placeholder="Last Name"
+					style={styles.input}
+					returnKeyType="next"
+					autoCorrect={false}
+					/>
 				<TextInput 
 					underlineColorAndroid={'transparent'}
 					placeholder="Email"
@@ -13,7 +27,6 @@ export default  LoginForm  = (props) => {
 					keyboardType="email-address"
 					autoCapitalize="none"
 					autoCorrect={false}
-					onChangeText = {props.updateUsername}
 					/>
 				<TextInput 
 					underlineColorAndroid={'transparent'}
@@ -21,9 +34,18 @@ export default  LoginForm  = (props) => {
 					style={styles.input}
 					secureTextEntry
 					returnKeyType="go"
-					onChangeText = {props.updatePassword}
-					/>
-					
+					autoCapitalize="none"
+					autoCorrect={false}
+					/>	
+				<TextInput 
+					underlineColorAndroid={'transparent'}
+					placeholder="Enter Password Again"
+					style={styles.input}
+					secureTextEntry
+					returnKeyType="go"
+					autoCapitalize="none"
+					autoCorrect={false}
+					/>				
 			</View>
 		);
 

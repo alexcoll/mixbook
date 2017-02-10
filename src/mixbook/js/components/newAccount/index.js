@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-
+import AccountForm from './accountForm';
 import { StyleSheet, View, Image, Text, KeyboardAvoidingView, TouchableOpacity } from 'react-native';
-import LoginForm from './LoginForm';
 import navigateTo from '../../actions/sideBarNav';
 import { actions } from 'react-native-navigation-redux-helpers';
 
@@ -10,8 +9,8 @@ const {
   replaceAt,
 } = actions;
 
-class Login extends Component {
-	
+class NewAccount extends Component {
+
 	constructor(props) {
 		super(props)
 		this.state = {
@@ -20,68 +19,38 @@ class Login extends Component {
 		}
 	}
 
-	  static propTypes = {
-    openDrawer: React.PropTypes.func,
-    replaceAt: React.PropTypes.func,
-    navigation: React.PropTypes.shape({
-      key: React.PropTypes.string,
-    }),
-}
-
-	updateUsername = (text) => {
-		this.setState({username: text})
-	}
-
-	updatePassword = (text) => {
-		this.setState({password: text})
-	}
-
-	_login = () => {
-		navigator.replace({
-        id: 'login',
-      });
-		{/*alert('username: ' + this.state.username + '\npassword: ' + this.state.password)*/}
+	static propTypes = {
+    	openDrawer: React.PropTypes.func,
+    	replaceAt: React.PropTypes.func,
+    	navigation: React.PropTypes.shape({
+      		key: React.PropTypes.string,
+    	}),
 	}
 
 	replaceAt(route) {
-    	this.props.replaceAt('login', { key: route }, this.props.navigation.key);
+    	this.props.replaceAt('newAccount', { key: route }, this.props.navigation.key);
 	}
 
 	render() {
 		return (
 			<KeyboardAvoidingView behavior="padding" style={styles.container}>
-				<View style={styles.noAccount}>
-						<TouchableOpacity 
-							style={styles.noAccountingButtonContainer}
-							onPress={() => this.replaceAt('mydrinks')}>
-						<Text style={styles.noAccountButtonText}>Continue With No Account</Text>
-					</TouchableOpacity>
-				</View>
-				<View style={styles.newAccount}>
-						<TouchableOpacity 
-							style={styles.newAccountButtonContainer}
-							onPress={() => this.replaceAt('newAccount')}>
-						<Text style={styles.noAccountButtonText}>Create An Account</Text>
-					</TouchableOpacity>
-				</View>				
+
 				<View style={styles.logoContainer}>
 					<Image 
 						style={styles.logo}
 						source={require('../../../img/drink-emoji.png')} 
 						/>
-						<Text style={styles.title}>Welcome To Mixbook!</Text>
+						<Text style={styles.title}>Please enter your information</Text>
 				</View>
 				<View style ={styles.formContainer}>
-					<LoginForm 
-						updateUsername = {this.updateUsername}
-						updatePassword = {this.updatePassword}
-						login = {this.login}
+					<AccountForm 
+
 					/>
 					<View style={styles.Bcontainer}>
 					<TouchableOpacity 
 						style={styles.buttonContainer}
-						onPress={() => this.replaceAt('mydrinks')}>
-						<Text style={styles.buttonText}>LOGIN</Text>
+						onPress={() => this.replaceAt('login')}>
+						<Text style={styles.buttonText}>Create Account!</Text>
 					</TouchableOpacity>
 					</View>
 				</View>
@@ -89,29 +58,13 @@ class Login extends Component {
 
 		);
 	}
-
-	onSubmitPressed() {
-        this.props.navigator.push({
-            title: "Recipes",
-            component: recipes,
-        });
-    }
-
 }
-
-
-
-const styles = StyleSheet.create({
+	const styles = StyleSheet.create({
 	noAccount: {
 		top: 5,
 		left: 5,
 		width: 100,
-	},
-	newAccount: {
-		position: 'absolute',
-		top: 5,
-		right: 5,
-		width: 100,
+		height: 150
 	},
 	noAccountButtonText: {
 		textAlign: 'center',
@@ -153,11 +106,6 @@ const styles = StyleSheet.create({
 		paddingVertical: 2,
 		height: 42
 	},
-	newAccountButtonContainer: {
-		backgroundColor: '#2980b9',
-		paddingVertical: 2,
-		height: 42
-	},
 	buttonText: {
 		textAlign: 'center',
 		color: '#FFFFFF',
@@ -178,4 +126,4 @@ const mapStateToProps = state => ({
   navigation: state.cardNavigation,
 });
 
-export default connect(mapStateToProps, bindAction)(Login);
+export default connect(mapStateToProps, bindAction)(NewAccount);
