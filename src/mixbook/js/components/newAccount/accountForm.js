@@ -11,6 +11,7 @@ export default  AccountForm  = (props) => {
 					style={styles.input}
 					returnKeyType="next"
 					autoCorrect={false}
+					onChangeText = {props.updateFirstName}
 					/>
 				<TextInput 
 					underlineColorAndroid={'transparent'}
@@ -18,6 +19,7 @@ export default  AccountForm  = (props) => {
 					style={styles.input}
 					returnKeyType="next"
 					autoCorrect={false}
+					onChangeText = {props.updateLastName}
 					/>
 				<TextInput 
 					underlineColorAndroid={'transparent'}
@@ -27,6 +29,7 @@ export default  AccountForm  = (props) => {
 					keyboardType="email-address"
 					autoCapitalize="none"
 					autoCorrect={false}
+					onChangeText = {props.updateEmail}
 					/>
 				<TextInput 
 					underlineColorAndroid={'transparent'}
@@ -36,6 +39,7 @@ export default  AccountForm  = (props) => {
 					returnKeyType="go"
 					autoCapitalize="none"
 					autoCorrect={false}
+					onChangeText = {props.updatePassword1}
 					/>	
 				<TextInput 
 					underlineColorAndroid={'transparent'}
@@ -45,6 +49,7 @@ export default  AccountForm  = (props) => {
 					returnKeyType="go"
 					autoCapitalize="none"
 					autoCorrect={false}
+					onChangeText = {props.updatePassword2}
 					/>				
 			</View>
 		);

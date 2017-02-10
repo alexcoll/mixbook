@@ -14,8 +14,11 @@ class NewAccount extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			username: '',
-			password:''
+			FirstName: '',
+			LastName:'',
+			Email:'',
+			Password1:'',
+			Password2:''
 		}
 	}
 
@@ -25,6 +28,26 @@ class NewAccount extends Component {
     	navigation: React.PropTypes.shape({
       		key: React.PropTypes.string,
     	}),
+	}
+
+	updateFirstName = (text) => {
+		this.setState({FirstName: text})
+	}
+
+	updateLastName = (text) => {
+		this.setState({LastName: text})
+	}
+
+	updateEmail = (text) => {
+		this.setState({Email: text})
+	}
+
+	updatePassword1 = (text) => {
+		this.setState({Password1: text})
+	}
+
+	updatePassword2 = (text) => {
+		this.setState({Password2: text})
 	}
 
 	replaceAt(route) {
@@ -44,7 +67,11 @@ class NewAccount extends Component {
 				</View>
 				<View style ={styles.formContainer}>
 					<AccountForm 
-
+						updateFirstName = {this.updateFirstName}
+						updateLastName = {this.updateLastName}
+						updateEmail = {this.updateEmail}
+						updatePassword1 = {this.updatePassword1}
+						updatePassword2 = {this.updatePassword2}
 					/>
 					<View style={styles.Bcontainer}>
 					<TouchableOpacity 
