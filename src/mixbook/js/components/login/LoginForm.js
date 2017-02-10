@@ -7,13 +7,13 @@ export default  LoginForm  = (props) => {
 			<View style={styles.container}>
 				<TextInput 
 					underlineColorAndroid={'transparent'}
-					placeholder="Username"
+					placeholder="Email"
 					style={styles.input}
 					returnKeyType="next"
 					keyboardType="email-address"
 					autoCapitalize="none"
 					autoCorrect={false}
-					onChangeText = {props.updateUsername}
+					onChangeText = {props.updateEmail}
 					/>
 				<TextInput 
 					underlineColorAndroid={'transparent'}

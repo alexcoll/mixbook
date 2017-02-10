@@ -19,6 +19,7 @@ import Settings from './components/settings/';
 import SplashPage from './components/splashscreen/';
 import SideBar from './components/sidebar';
 import statusBarColor from './themes/base-theme';
+import NewAccount from './components/newAccount';
 
 const {
   popRoute,
@@ -99,6 +100,8 @@ class AppNavigator extends Component {
         return <AddAlcohol />;
       case 'addMixer':
         return <AddMixer />;
+      case 'newAccount':
+        return <NewAccount />;
       default :
         return <Home />;
     }
