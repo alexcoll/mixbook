@@ -14,7 +14,7 @@ const {
   replaceAt,
 } = actions;
 
-class AddAlcohol extends Component {
+class AddRecipe extends Component {
 
   static propTypes = {
     replaceAt: React.PropTypes.func,
@@ -68,10 +68,10 @@ class AddAlcohol extends Component {
     }
 
     store.get('recipes').then((data) => {
-      var list = data.alcoholList;
+      var list = data.recipeList;
       list.push(this.state.inputName);
       store.update('recipes', {
-        alcoholList: list
+        recipeList: list
       }).then(() => {
         this.replaceAt('recipes');
       })
@@ -163,4 +163,4 @@ const mapStateToProps = state => ({
   navigation: state.cardNavigation,
 });
 
-export default connect(mapStateToProps, bindAction)(AddAlcohol);
+export default connect(mapStateToProps, bindAction)(AddRecipe);
