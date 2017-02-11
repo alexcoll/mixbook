@@ -82,7 +82,8 @@ public class UserController {
 	@RequestMapping(value = "/editUser",
 			method = RequestMethod.POST)
 	@ResponseBody
-	public JsonResponse editUser(@RequestHeader("Authorization") String token, @RequestBody User user) {
+	public JsonResponse editUser(HttpServletRequest request, @RequestBody User user) {
+		String token = request.getHeader(tokenHeader);
 		String username = jwtTokenUtil.getUsernameFromToken(token);
 		user.setUsername(username);
 		userService.editUser(user);

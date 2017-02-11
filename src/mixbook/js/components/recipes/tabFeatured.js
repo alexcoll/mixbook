@@ -20,7 +20,7 @@ export default class TabFeatured extends Component { // eslint-disable-line
           <Card>
             <CardItem>
               <Text>
-               This will pull from the database and populate with the featured drinks
+                This will pull from the database and populate with the featured drinks
               </Text>
             </CardItem>
           </Card>

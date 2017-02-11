@@ -11,7 +11,7 @@ import styles from './style';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 const drawerCover = require('../../../img/drawer-cover.png');
-const drawerImage = require('../../../img/logo-kitchen-sink.png');
+const drawerImage = require('../../../img/pic-harryshop.png');
 
 class SideBar extends Component {
 

@@ -2,17 +2,18 @@
 import React, { Component } from 'react';
 import { Alert, View } from 'react-native';
 
-import { Container, Content, Text, Button, List, ListItem, Icon } from 'native-base';
+import { Container, Content, Text, List, ListItem, Icon, Button } from 'native-base';
 
 import styles from './styles';
 import store from 'react-native-simple-store';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
-export default class TabMixer extends Component { // eslint-disable-line
+export default class TabRecipes extends Component { // eslint-disable-line
 
   constructor(props) {
     super(props);
     this.state = {
+      inputText: '',
       displayType: 'all',
       active: 'true',
       theList: ['error']
@@ -20,8 +21,8 @@ export default class TabMixer extends Component { // eslint-disable-line
   }
 
   componentDidMount() {
-    store.get('ingredients').then((data) => {
-      this.setState({theList: data.mixerList});
+    store.get('recipes').then((data) => {
+      this.setState({theList: data.recipeList});
     });
   }
 
@@ -31,8 +32,8 @@ export default class TabMixer extends Component { // eslint-disable-line
     if (index > -1) {
       list.splice(index, 1);
       this.setState({theList: list});
-      store.update('ingredients', {
-        mixerList: list
+      store.update('recipes', {
+        recipeList: list
       });
     }
   }
@@ -64,8 +65,8 @@ export default class TabMixer extends Component { // eslint-disable-line
 
   render() { // eslint-disable-line
     return (
-      <Container style={styles.container}>
-        <Content>
+      <Container>
+         <Content>
           <View>
             <List dataArray={this.state.theList}
               renderRow={(item) =>

@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { StyleSheet, View, AppRegistry, AsyncStorage } from 'react-native';
+import { StyleSheet, View, AppRegistry, AsyncStorage, Alert } from 'react-native';
 import { connect } from 'react-redux';
 import { actions } from 'react-native-navigation-redux-helpers';
 import { Header, Title, Content, Text, Button, Icon } from 'native-base';
@@ -13,10 +13,10 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import ActionButton from 'react-native-action-button';
 import ScrollableTabView from 'react-native-scrollable-tab-view'
 
+import TabRecipes from './tabRecipes';
 import TabFeatured from './tabFeatured';
-import TabNew from './tabNew';
 import TabPopular from './tabPopular';
-import TabAlcohol from './addRecipe';
+import AddRecipe from './addRecipe';
 
 
 const abstyles = StyleSheet.create({
@@ -35,7 +35,7 @@ class Recipes extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {selectedTab:'New'};
+    this.state = {selectedTab:'Recipes'};
   }
 
   static propTypes = {
@@ -45,7 +45,6 @@ class Recipes extends Component {
       key: React.PropTypes.string,
     }),
   }
-
 
   replaceAt(route) {
     this.props.replaceAt('recipes', { key: route }, this.props.navigation.key);
@@ -67,9 +66,9 @@ class Recipes extends Component {
           </Button>
         </Header>
           <ScrollableTabView>
-            <TabNew tabLabel="New" />
+            <TabRecipes tabLabel="Recipes" />
             <TabFeatured tabLabel="Featured" />
-            <TabPopular tabLabel="Popular" />            
+            <TabPopular tabLabel="Popular" />
           </ScrollableTabView>
 
           <ActionButton buttonColor="rgba(231,76,60,1)">
