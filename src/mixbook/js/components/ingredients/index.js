@@ -59,10 +59,6 @@ class Ingredients extends Component {
           </Button>
 
           <Title>Recipes</Title>
-
-          <Button transparent>
-            <Icon name="md-search"/>
-          </Button>
         </Header>
           <ScrollableTabView>
             <TabAlcohol tabLabel="Alcohol" />
