@@ -25,8 +25,8 @@ module.exports = StyleSheet.create({
     left: (Platform.OS === 'android') ? deviceWidth / 10 : deviceWidth / 9,
     // top: (Platform.OS === 'android') ? 45 : 55,
     top: (Platform.OS === 'android') ? deviceHeight / 13 : deviceHeight / 12,
-    width: 210,
-    height: 75,
+    width: 275,
+    height: 100,
     resizeMode: 'cover',
   },
   listItemContainer: {

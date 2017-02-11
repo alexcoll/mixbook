@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { StyleSheet, View, AppRegistry, AsyncStorage } from 'react-native';
+import { StyleSheet, View, AppRegistry, AsyncStorage, Alert } from 'react-native';
 import { connect } from 'react-redux';
 import { actions } from 'react-native-navigation-redux-helpers';
 import { Header, Title, Content, Text, Button, Icon } from 'native-base';
@@ -45,7 +45,6 @@ class Recipes extends Component {
       key: React.PropTypes.string,
     }),
   }
-
 
   replaceAt(route) {
     this.props.replaceAt('recipes', { key: route }, this.props.navigation.key);

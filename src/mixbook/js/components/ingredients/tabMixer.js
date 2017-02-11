@@ -1,8 +1,8 @@
 
 import React, { Component } from 'react';
-import { Alert } from 'react-native';
+import { Alert, View } from 'react-native';
 
-import { Container, Content, Text, View, InputGroup, Input, Button, List, ListItem, Fab, Icon, Footer } from 'native-base';
+import { Container, Content, Text, Button, List, ListItem, Icon } from 'native-base';
 
 import styles from './styles';
 import store from 'react-native-simple-store';
@@ -34,7 +34,6 @@ export default class TabMixer extends Component { // eslint-disable-line
       store.update('ingredients', {
         mixerList: list
       });
-
     }
   }
 
@@ -61,7 +60,6 @@ export default class TabMixer extends Component { // eslint-disable-line
       ],
       { cancelable: false }
     )
-
   }
 
   render() { // eslint-disable-line
