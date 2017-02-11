@@ -6,7 +6,7 @@ import { Container, Content, Card, CardItem, Text, View, List, ListItem, Fab, Ic
 import styles from './styles';
 import store from 'react-native-simple-store';
 
-export default class TabNew extends Component { // eslint-disable-line
+export default class TabRecipes extends Component { // eslint-disable-line
 
   constructor(props) {
     super(props);
@@ -41,7 +41,7 @@ export default class TabNew extends Component { // eslint-disable-line
                   }}>
                     <View>
                       <Text>{item}</Text>
-                      <Button style={{ height: 50, backgroundColor: 'steelblue', right:10}} 
+                      <Button style={{ height: 50, backgroundColor: 'steelblue', right:10}}
                       // onPress={() => this.onSubmit({item})}
                       >
                         <Text> Remove Item</Text>
