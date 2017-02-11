@@ -1,17 +1,18 @@
 
 import React, { Component } from 'react';
+import { Alert } from 'react-native';
 
 import { Container, Content, Text, View, InputGroup, Input, Button, List, ListItem, Fab, Icon, Footer } from 'native-base';
 
 import styles from './styles';
 import store from 'react-native-simple-store';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 export default class TabAlcohol extends Component { // eslint-disable-line
 
   constructor(props) {
     super(props);
     this.state = {
-      inputText: '',
       displayType: 'all',
       active: 'true',
       theList: ['error']
@@ -24,17 +25,44 @@ export default class TabAlcohol extends Component { // eslint-disable-line
     });
   }
 
- // onSubmit(item) {
- //    store.get('ingredients').then((data) => {
- //      var list = data.alcoholList;
- //      store.delete(item);
- //      store.update('ingredients', {
- //        alcoholList: list
- //      }).then(() => {
- //        this.replaceAt('ingredients');
- //      })
- //    });
- //  }
+  onListItemRemove(item) {
+    var list = this.state.theList;
+    var index = list.indexOf(item);
+    if (index > -1) {
+      list.splice(index, 1);
+      this.setState({theList: list});
+      store.update('ingredients', {
+        alcoholList: list
+      });
+
+    }
+  }
+
+  onListItemEdit(item) {
+    Alert.alert(
+      item,
+      'Not implemented yet',
+      [
+        {text: 'Cool'},
+        {text: 'Work harder', style: 'cancel'},
+      ],
+      { cancelable: false }
+    )
+  }
+
+  onListItemTap(item) {
+    Alert.alert(
+      "Edit " + item,
+      'What do you want to do?',
+      [
+        {text: 'Delete', onPress: () => this.onListItemRemove(item)},
+        {text: 'Cancel', style: 'cancel'},
+        {text: 'Edit', onPress: () => this.onListItemEdit(item)},
+      ],
+      { cancelable: false }
+    )
+
+  }
 
   render() { // eslint-disable-line
     return (
@@ -44,21 +72,13 @@ export default class TabAlcohol extends Component { // eslint-disable-line
             <List dataArray={this.state.theList}
               renderRow={(item) =>
                 <ListItem>
-
-                  <View style={{
-                    // flex: 1,
-                    // flexDirection: 'row',
-                    // justifyContent: 'space-between'}
-                  }}>
-                    <View>
-                      <Text>{item}</Text>
-                      <Button style={{ height: 50, backgroundColor: 'steelblue', right:10}} 
-                      // onPress={() => this.onSubmit({item})}
-                      >
-                        <Text> Remove Item</Text>
-                      </Button>
-                    </View>
-                  </View>
+                  <Text>{item}</Text>
+                  <Button
+                    style={{ alignSelf: 'center', marginTop: 20, marginBottom: 20 }}
+                    onPress={() => this.onListItemTap(item)}
+                  >
+                    <MaterialIcons name="local-drink" size={25} color="white" style={styles.actionButtonIcon}/>
+                  </Button>
                 </ListItem>
               }>
             </List>
