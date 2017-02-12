@@ -84,12 +84,16 @@ public class User implements Serializable {
 			inverseJoinColumns = {@JoinColumn(name = "AUTHORITY_ID", referencedColumnName = "ID")})
 	private List<Authority> authorities;
 
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+	private Set<Inventory> inventories = new HashSet<Inventory>(0);
+
 	public User() {
 
 	}
 
 	public User(Integer user_id, String username, String password, String first_name, String last_name,
-			String email, Boolean enabled, Date lastPasswordResetDate, List<Authority> authorities) {
+			String email, Boolean enabled, Date lastPasswordResetDate, List<Authority> authorities, 
+			Set<Inventory> inventories) {
 		this.user_id = user_id;
 		this.username = username;	
 		this.password = password;
@@ -99,6 +103,7 @@ public class User implements Serializable {
 		this.enabled = enabled;
 		this.lastPasswordResetDate = lastPasswordResetDate;
 		this.authorities = authorities;
+		this.inventories = inventories;
 	}
 
 	public Integer getUserId() {
@@ -170,6 +175,14 @@ public class User implements Serializable {
 
 	public void setLastPasswordResetDate(Date lastPasswordResetDate) {
 		this.lastPasswordResetDate = lastPasswordResetDate;
+	}
+
+	public Set<Inventory> getInventories() {
+		return inventories;
+	}
+
+	public void setInventories(Set<Inventory> inventories) {
+		this.inventories = inventories;
 	}
 
 	@Override
