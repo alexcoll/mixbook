@@ -85,4 +85,18 @@ public class UserDaoImpl extends AbstractDao<Integer, User> implements UserDao {
 
 	}
 
+	public void changeEmail(User user) {
+		Query q = getSession().createQuery("update User set email = :email where username = :username");
+		q.setParameter("email", user.getEmail());
+		q.setParameter("username", user.getUsername());
+		q.executeUpdate();
+	}
+
+	public void changePassword(User user) {
+		Query q = getSession().createQuery("update User set password = :password where username = :username");
+		q.setParameter("password", user.getPassword());
+		q.setParameter("username", user.getUsername());
+		q.executeUpdate();
+	}
+
 }

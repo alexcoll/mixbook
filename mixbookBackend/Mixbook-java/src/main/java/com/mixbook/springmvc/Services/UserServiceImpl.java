@@ -17,7 +17,7 @@ import com.mixbook.springmvc.Models.User;
 @Service("userService")
 @Transactional
 public class UserServiceImpl implements UserService {
-	
+
 	@Autowired
 	private UserDao dao;
 
@@ -63,6 +63,16 @@ public class UserServiceImpl implements UserService {
 		dao.editUser(user);
 	}
 
+	public void changeEmail(User user) {
+		dao.changeEmail(user);
+	}
+
+	public void changePassword(User user) {
+		Date currentTimestamp = new Date();
+		user.setLastPasswordResetDate(currentTimestamp);
+		dao.changePassword(user);
+	}
+
 	public boolean isUserEmailUnique(String email) {
 		User user = findByEmail(email);
 		if (user == null) {
@@ -82,5 +92,5 @@ public class UserServiceImpl implements UserService {
 			return false;
 		}
 	}
-	
+
 }
