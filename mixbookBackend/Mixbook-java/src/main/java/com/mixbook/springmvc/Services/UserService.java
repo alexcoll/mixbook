@@ -19,6 +19,10 @@ public interface UserService {
 	void deleteUser(User user);
 
 	void editUser(User user);
+	
+	void changeEmail(User user);
+	
+	void changePassword(User user);
 
 	boolean isUserEmailUnique(String email);
 

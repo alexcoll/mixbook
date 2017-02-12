@@ -65,6 +65,28 @@ ROW_FORMAT = DYNAMIC;
 
 
 -- -----------------------------------------------------
+-- Table `mixbookdb`.`inventories`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mixbookdb`.`inventories` (
+  `inventories_id` BIGINT NOT NULL AUTO_INCREMENT,
+  `user_id` BIGINT NOT NULL,
+  `brand` VARCHAR(255) NOT NULL,
+  `type` VARCHAR(255) NOT NULL,
+  `style` VARCHAR(255) NOT NULL,
+  PRIMARY KEY (`inventories_id`),
+  INDEX `fk_users_inventories1_idx` (`user_id` ASC),
+  CONSTRAINT `fk_users_inventories1`
+    FOREIGN KEY (`user_id`)
+    REFERENCES `mixbookdb`.`users` (`user_id`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE utf8mb4_unicode_ci
+ROW_FORMAT = DYNAMIC;
+
+
+-- -----------------------------------------------------
 -- Alter `mixbookdb`.`users` to add unique index
 -- -----------------------------------------------------
 ALTER TABLE `users`

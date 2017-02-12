@@ -90,4 +90,26 @@ public class UserController {
 		return new JsonResponse("OK","");
 	}
 
+	@RequestMapping(value = "/changeEmail",
+			method = RequestMethod.POST)
+	@ResponseBody
+	public JsonResponse changeEmail(HttpServletRequest request, @RequestBody User user) {
+		String token = request.getHeader(tokenHeader);
+		String username = jwtTokenUtil.getUsernameFromToken(token);
+		user.setUsername(username);
+		userService.changeEmail(user);
+		return new JsonResponse("OK","");
+	}
+
+	@RequestMapping(value = "/changePassword",
+			method = RequestMethod.POST)
+	@ResponseBody
+	public JsonResponse changePassword(HttpServletRequest request, @RequestBody User user) {
+		String token = request.getHeader(tokenHeader);
+		String username = jwtTokenUtil.getUsernameFromToken(token);
+		user.setUsername(username);
+		userService.changePassword(user);
+		return new JsonResponse("OK","");
+	}
+
 }
