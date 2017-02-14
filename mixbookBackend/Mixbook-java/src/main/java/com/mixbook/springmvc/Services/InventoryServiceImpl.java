@@ -15,15 +15,15 @@ public class InventoryServiceImpl implements InventoryService {
 	private InventoryDao dao;
 
 	public void addIngredientToInventory(Inventory inventory) {
-
+		dao.addIngredientToInventory(inventory);
 	}
 
 	public void deleteIngredientFromInventory(Inventory inventory) {
-
+		dao.deleteIngredientFromInventory(inventory);
 	}
 
 	public void editIngredientInInventory(Inventory inventory) {
-
+		dao.editIngredientInInventory(inventory);
 	}
 
 }
