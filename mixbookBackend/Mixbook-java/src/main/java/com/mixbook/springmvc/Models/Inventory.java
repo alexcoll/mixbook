@@ -23,8 +23,8 @@ public class Inventory implements Serializable {
 	private Integer inventories_id;
 
 	@NotNull
-	@Column(name = "user_id", nullable = false)
-	private Integer user_id;
+	@Column(name = "users_user_id", nullable = false)
+	private Integer users_user_id;
 
 	@NotNull
 	@Size(max=255)   
@@ -49,10 +49,10 @@ public class Inventory implements Serializable {
 
 	}
 
-	public Inventory(Integer inventories_id, Integer user_id, String brand, String type,
+	public Inventory(Integer inventories_id, Integer users_user_id, String brand, String type,
 			String style, User user) {
 		this.inventories_id = inventories_id;
-		this.user_id = user_id;
+		this.users_user_id = users_user_id;
 		this.brand = brand;
 		this.type = type;
 		this.style = style;
@@ -67,12 +67,12 @@ public class Inventory implements Serializable {
 		this.inventories_id = inventories_id;
 	}
 
-	public Integer getUserId() {
-		return user_id;
+	public Integer getUsersUserId() {
+		return users_user_id;
 	}
 
-	public void setUserId(Integer user_id) {
-		this.user_id = user_id;
+	public void setUsersUserId(Integer users_user_id) {
+		this.users_user_id = users_user_id;
 	}
 
 	public String getBrand() {
@@ -112,7 +112,7 @@ public class Inventory implements Serializable {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((inventories_id == null) ? 0 : inventories_id.hashCode());
-		result = prime * result + ((user_id == null) ? 0 : user_id.hashCode());
+		result = prime * result + ((users_user_id == null) ? 0 : users_user_id.hashCode());
 		return result;
 	}
 
@@ -130,10 +130,10 @@ public class Inventory implements Serializable {
 				return false;
 		} else if (!inventories_id.equals(other.inventories_id))
 			return false;
-		if (user_id == null) {
-			if (other.user_id != null)
+		if (users_user_id == null) {
+			if (other.users_user_id != null)
 				return false;
-		} else if (!user_id.equals(other.user_id))
+		} else if (!users_user_id.equals(other.users_user_id))
 			return false;
 		return true;
 	}

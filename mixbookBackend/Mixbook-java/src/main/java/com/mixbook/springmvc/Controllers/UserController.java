@@ -41,8 +41,7 @@ public class UserController {
 	@Autowired
 	UserService userService;
 
-	@Value("${jwt.header}")
-	private String tokenHeader;
+	private String tokenHeader = "Authorization";
 
 	@Autowired
 	private JwtTokenUtil jwtTokenUtil;

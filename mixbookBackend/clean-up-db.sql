@@ -13,6 +13,7 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- -----------------------------------------------------
 TRUNCATE `mixbookdb`.`users`;
 TRUNCATE `mixbookdb`.`USER_AUTHORITY`;
+TRUNCATE `mixbookdb`.`inventories`;
 
 -- -----------------------------------------------------
 -- Set foreign key checks back on

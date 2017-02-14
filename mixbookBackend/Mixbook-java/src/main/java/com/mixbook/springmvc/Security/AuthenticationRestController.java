@@ -26,8 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 public class AuthenticationRestController {
 
-	@Value("${jwt.header}")
-	private String tokenHeader;
+	private String tokenHeader = "Authorization";
 
 	@Autowired
 	private AuthenticationManager authenticationManager;
@@ -38,7 +37,6 @@ public class AuthenticationRestController {
 	@Autowired
 	private UserDetailsService userDetailsService;
 
-	@Transactional
 	@RequestMapping(value = "/auth", method = RequestMethod.POST)
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest, Device device) throws AuthenticationException {
 
@@ -56,7 +54,6 @@ public class AuthenticationRestController {
 		return ResponseEntity.ok(new JwtAuthenticationResponse(token));
 	}
 
-	@Transactional
 	@RequestMapping(value = "/refresh", method = RequestMethod.GET)
 	public ResponseEntity<?> refreshAndGetAuthenticationToken(HttpServletRequest request) {
 		String token = request.getHeader(tokenHeader);
