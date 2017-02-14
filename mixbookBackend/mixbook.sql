@@ -69,14 +69,14 @@ ROW_FORMAT = DYNAMIC;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mixbookdb`.`inventories` (
   `inventories_id` BIGINT NOT NULL AUTO_INCREMENT,
-  `user_id` BIGINT NOT NULL,
+  `users_user_id` BIGINT NOT NULL,
   `brand` VARCHAR(255) NOT NULL,
   `type` VARCHAR(255) NOT NULL,
   `style` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`inventories_id`),
-  INDEX `fk_users_inventories1_idx` (`user_id` ASC),
+  INDEX `fk_users_inventories1_idx` (`users_user_id` ASC),
   CONSTRAINT `fk_users_inventories1`
-    FOREIGN KEY (`user_id`)
+    FOREIGN KEY (`users_user_id`)
     REFERENCES `mixbookdb`.`users` (`user_id`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION)

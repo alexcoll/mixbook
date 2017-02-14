@@ -1,4 +1,4 @@
-package com.mixbook.springmvc.Configuration;
+package com.mixbook.springmvc.Security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -16,12 +16,12 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import com.mixbook.springmvc.Security.JwtAuthenticationEntryPoint;
-import com.mixbook.springmvc.Security.JwtAuthenticationTokenFilter;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableTransactionManagement
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
@@ -44,7 +44,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Bean
 	public JwtAuthenticationTokenFilter authenticationTokenFilterBean() throws Exception {
-		return new JwtAuthenticationTokenFilter();
+		JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter = new JwtAuthenticationTokenFilter();
+		jwtAuthenticationTokenFilter.setAuthenticationManager(super.authenticationManagerBean());
+		return jwtAuthenticationTokenFilter;
 	}
 
 	@Override
@@ -62,7 +64,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		httpSecurity.headers().cacheControl();
 	}
 
-	@Bean(name = BeanIds.AUTHENTICATION_MANAGER)
+	@Bean
 	@Override
 	public AuthenticationManager authenticationManagerBean() throws Exception {
 		return super.authenticationManagerBean();
