@@ -50,19 +50,15 @@ class AddRecipe extends Component {
 
 
   onSubmit() {
-
-    if(this.state.inputName == '')
-    {
+    if(this.state.inputName == '') {
       alert('Please enter a name for the recipe!');
       return;
     }
-    if(this.state.inputAlcohol == '')
-    {
+    if(this.state.inputAlcohol == '') {
       alert('Please add alcohol to your recipe!');
       return;
     }
-    if(this.state.inputInstructions == '')
-    {
+    if(this.state.inputInstructions == '') {
       alert('Please enter some instructions for your recipe!');
       return;
     }
@@ -89,11 +85,11 @@ class AddRecipe extends Component {
     return (
       <Container style={styles.container}>
         <Header>
-          <Button transparent onPress={() => this.replaceAt('ingredients')}>
+          <Button transparent onPress={() => this.replaceAt('recipes')}>
             <Icon name="ios-arrow-back" />
           </Button>
 
-          <Title>Add Alcohol</Title>
+          <Title>Add Recipe</Title>
         </Header>
 
         <Content>
@@ -113,8 +109,8 @@ class AddRecipe extends Component {
             </ListItem>
             <ListItem>
               <InputGroup>
-                <Input inlineLabel label="Alcohol" 
-                placeholder="Vodka, Rum..." 
+                <Input inlineLabel label="Alcohol"
+                placeholder="Vodka, Rum..."
                 value={this.state.inputAlcohol}
                 onChangeText={inputAlcohol => this.setState({ inputAlcohol })}
                 />
