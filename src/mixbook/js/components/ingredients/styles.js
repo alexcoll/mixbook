@@ -30,9 +30,14 @@ module.exports = StyleSheet.create({
     padding: 12,
     flexDirection: 'row',
     alignItems: 'center'
+  },
+
+  editButton: {
+    alignSelf: 'flex-end',
+    },
+
+  listText: {
+    alignSelf: 'flex-start'
   }
 
 });
-
-
-

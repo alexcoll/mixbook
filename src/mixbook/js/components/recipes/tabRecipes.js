@@ -65,7 +65,7 @@ export default class TabRecipes extends Component { // eslint-disable-line
 
   render() { // eslint-disable-line
     return (
-      <Container>
+      <Container style={styles.container}>
          <Content>
           <View>
             <List dataArray={this.state.theList}
@@ -76,7 +76,7 @@ export default class TabRecipes extends Component { // eslint-disable-line
                     style={{ alignSelf: 'flex-end', marginTop: 20, marginBottom: 20, marginLeft: 220 }}
                     onPress={() => this.onListItemTap(item)}
                   >
-                    <MaterialIcons name="local-drink" size={25} color="white" style={styles.actionButtonIcon}/>
+                    <MaterialIcons name="mode-edit" size={25} color="white" style={styles.actionButtonIcon}/>
                   </Button>
                 </ListItem>
               }>

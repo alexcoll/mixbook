@@ -58,7 +58,7 @@ class Ingredients extends Component {
             <Icon name="ios-menu" />
           </Button>
 
-          <Title>Recipes</Title>
+          <Title>Ingredients</Title>
         </Header>
           <ScrollableTabView>
             <TabAlcohol tabLabel="Alcohol" />

@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { Alert, View } from 'react-native';
 
-import { Container, Content, Text, Button, List, ListItem, Icon } from 'native-base';
+import { Container, Content, Grid, Col, Text, Button, List, ListItem, Icon } from 'native-base';
 
 import styles from './styles';
 import store from 'react-native-simple-store';
@@ -19,11 +19,13 @@ export default class TabMixer extends Component { // eslint-disable-line
     };
   }
 
+
   componentDidMount() {
     store.get('ingredients').then((data) => {
       this.setState({theList: data.mixerList});
     });
   }
+
 
   onListItemRemove(item) {
     var list = this.state.theList;
@@ -37,6 +39,7 @@ export default class TabMixer extends Component { // eslint-disable-line
     }
   }
 
+
   onListItemEdit(item) {
     Alert.alert(
       item,
@@ -45,9 +48,10 @@ export default class TabMixer extends Component { // eslint-disable-line
         {text: 'Cool'},
         {text: 'Work harder', style: 'cancel'},
       ],
-      { cancelable: false }
+      { cancelable: true }
     )
   }
+
 
   onListItemTap(item) {
     Alert.alert(
@@ -58,9 +62,10 @@ export default class TabMixer extends Component { // eslint-disable-line
         {text: 'Cancel', style: 'cancel'},
         {text: 'Edit', onPress: () => this.onListItemEdit(item)},
       ],
-      { cancelable: false }
+      { cancelable: true }
     )
   }
+
 
   render() { // eslint-disable-line
     return (
@@ -70,13 +75,20 @@ export default class TabMixer extends Component { // eslint-disable-line
             <List dataArray={this.state.theList}
               renderRow={(item) =>
                 <ListItem>
-                  <Text>{item}</Text>
-                  <Button
-                    style={{ alignSelf: 'center', marginTop: 20, marginBottom: 20 }}
-                    onPress={() => this.onListItemTap(item)}
-                  >
-                    <MaterialIcons name="local-drink" size={25} color="white" style={styles.actionButtonIcon}/>
-                  </Button>
+                  <Grid>
+                    <Col>
+                      <Text style={styles.listTest}>{item}</Text>
+                    </Col>
+                    <Col>
+                      <Button
+                        transparent
+                        style={styles.editButton}
+                        onPress={() => this.onListItemTap(item)}
+                      >
+                        <MaterialIcons name="mode-edit" size={25} color="gray" style={styles.actionButtonIcon}/>
+                      </Button>
+                    </Col>
+                  </Grid>
                 </ListItem>
               }>
             </List>
