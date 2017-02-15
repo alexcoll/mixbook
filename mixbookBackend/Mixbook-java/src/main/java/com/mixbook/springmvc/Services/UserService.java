@@ -28,4 +28,16 @@ public interface UserService {
 
 	boolean isUsernameUnique(String username);
 	
+	boolean isUserInfoValid(User user);
+	
+	boolean isUserEmailValid(String email);
+	
+	boolean isUserPasswordValid(String password);
+	
+	boolean isUserUsernameValid(String username);
+	
+	boolean isUserFirstNameValid(String first_name);
+	
+	boolean isUserLastNameValid(String last_name);
+	
 }

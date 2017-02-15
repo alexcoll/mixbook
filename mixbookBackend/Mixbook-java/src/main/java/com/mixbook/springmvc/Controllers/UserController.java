@@ -56,6 +56,9 @@ public class UserController {
 			headers = {"Content-type=application/json"})
 	@ResponseBody
 	public JsonResponse createUser(@RequestBody User user) {
+		if (userService.isUserInfoValid(user) == false) {
+			return new JsonResponse("FAILED","User info is invalid");
+		}
 		if (userService.isUserEmailUnique(user.getEmail()) == false) {
 			return new JsonResponse("FAILED","Email is already taken");
 		}
@@ -82,6 +85,16 @@ public class UserController {
 			method = RequestMethod.POST)
 	@ResponseBody
 	public JsonResponse editUser(HttpServletRequest request, @RequestBody User user) {
+		if (user.getFirstName() != null) {
+			if (userService.isUserFirstNameValid(user.getFirstName()) == false) {
+				return new JsonResponse("FAILED","Invalid first name format");
+			}
+		}
+		if (user.getLastName() != null) {
+			if (userService.isUserLastNameValid(user.getLastName()) == false) {
+				return new JsonResponse("FAILED","Invalid last name format");
+			}
+		}
 		String token = request.getHeader(tokenHeader);
 		String username = jwtTokenUtil.getUsernameFromToken(token);
 		user.setUsername(username);
@@ -93,6 +106,9 @@ public class UserController {
 			method = RequestMethod.POST)
 	@ResponseBody
 	public JsonResponse changeEmail(HttpServletRequest request, @RequestBody User user) {
+		if (userService.isUserEmailValid(user.getEmail()) == false) {
+			return new JsonResponse("FAILED","Invalid email format");
+		}
 		String token = request.getHeader(tokenHeader);
 		String username = jwtTokenUtil.getUsernameFromToken(token);
 		user.setUsername(username);
@@ -104,6 +120,9 @@ public class UserController {
 			method = RequestMethod.POST)
 	@ResponseBody
 	public JsonResponse changePassword(HttpServletRequest request, @RequestBody User user) {
+		if (userService.isUserPasswordValid(user.getPassword()) == false) {
+			return new JsonResponse("FAILED","Invalid password format");
+		}
 		String token = request.getHeader(tokenHeader);
 		String username = jwtTokenUtil.getUsernameFromToken(token);
 		user.setUsername(username);
