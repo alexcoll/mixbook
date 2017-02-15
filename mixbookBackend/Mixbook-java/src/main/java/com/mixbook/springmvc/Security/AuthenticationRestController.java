@@ -2,6 +2,7 @@ package com.mixbook.springmvc.Security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mobile.device.Device;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -40,18 +41,22 @@ public class AuthenticationRestController {
 	@RequestMapping(value = "/auth", method = RequestMethod.POST)
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest, Device device) throws AuthenticationException {
 
-		final Authentication authentication = authenticationManager.authenticate(
-				new UsernamePasswordAuthenticationToken(
-						authenticationRequest.getUsername(),
-						authenticationRequest.getPassword()
-						)
-				);
-		SecurityContextHolder.getContext().setAuthentication(authentication);
+		try {
+			final Authentication authentication = authenticationManager.authenticate(
+					new UsernamePasswordAuthenticationToken(
+							authenticationRequest.getUsername(),
+							authenticationRequest.getPassword()
+							)
+					);
+			SecurityContextHolder.getContext().setAuthentication(authentication);
+			final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
+			final String token = jwtTokenUtil.generateToken(userDetails, device);
 
-		final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
-		final String token = jwtTokenUtil.generateToken(userDetails, device);
-
-		return ResponseEntity.ok(new JwtAuthenticationResponse(token));
+			return ResponseEntity.ok(new JwtAuthenticationResponse(token));
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+		}
+		
 	}
 
 	@RequestMapping(value = "/refresh", method = RequestMethod.GET)
