@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.mixbook.springmvc.DAO.InventoryDao;
 import com.mixbook.springmvc.Models.Inventory;
+import com.mixbook.springmvc.Models.User;
 
 @Service("inventoryService")
 @Transactional
@@ -14,16 +15,16 @@ public class InventoryServiceImpl implements InventoryService {
 	@Autowired
 	private InventoryDao dao;
 
-	public void addIngredientToInventory(Inventory inventory) {
-		dao.addIngredientToInventory(inventory);
+	public void addIngredientToInventory(Inventory inventory, User user) {
+		dao.addIngredientToInventory(inventory, user);
 	}
 
-	public void deleteIngredientFromInventory(Inventory inventory) {
-		dao.deleteIngredientFromInventory(inventory);
+	public void deleteIngredientFromInventory(Inventory inventory, User user) {
+		dao.deleteIngredientFromInventory(inventory, user);
 	}
 
-	public void editIngredientInInventory(Inventory inventory) {
-		dao.editIngredientInInventory(inventory);
+	public void editIngredientInInventory(Inventory inventory, User user) {
+		dao.editIngredientInInventory(inventory, user);
 	}
 
 }
