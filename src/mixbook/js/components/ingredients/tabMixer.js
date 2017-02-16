@@ -21,28 +21,31 @@ export default class TabMixer extends Component { // eslint-disable-line
 
 
   componentDidMount() {
-    store.get('ingredients').then((data) => {
-      this.setState({theList: data.mixerList});
+    store.get('mixers').then((data) => {
+      this.setState({theList: data});
     });
+  }
+
+
+  checkListName(data) {
+    return data.name == this;
   }
 
 
   onListItemRemove(item) {
     var list = this.state.theList;
-    var index = list.indexOf(item);
+    var index = list.findIndex(this.checkListName, item.name);
     if (index > -1) {
       list.splice(index, 1);
       this.setState({theList: list});
-      store.update('ingredients', {
-        mixerList: list
-      });
+      store.save('mixers', this.state.theList);
     }
   }
 
 
   onListItemEdit(item) {
     Alert.alert(
-      item,
+      "Edit " + item.brand + " " + item.name,
       'Not implemented yet',
       [
         {text: 'Cool'},
@@ -55,7 +58,7 @@ export default class TabMixer extends Component { // eslint-disable-line
 
   onListItemTap(item) {
     Alert.alert(
-      item,
+      "Edit " + item.brand + " " + item.name,
       'What do you want to do?',
       [
         {text: 'Delete', onPress: () => this.onListItemRemove(item)},
@@ -73,17 +76,18 @@ export default class TabMixer extends Component { // eslint-disable-line
         <Content>
           <View>
             <List dataArray={this.state.theList}
-              renderRow={(item) =>
+              renderRow={(data) =>
                 <ListItem>
                   <Grid>
                     <Col>
-                      <Text style={styles.listTest}>{item}</Text>
+                      <Text style={styles.listTest}>{data.brand} {data.name}</Text>
+                      <Text style={styles.listTest}>{data.type}</Text>
                     </Col>
                     <Col>
                       <Button
                         transparent
                         style={styles.editButton}
-                        onPress={() => this.onListItemTap(item)}
+                        onPress={() => this.onListItemTap(data)}
                       >
                         <MaterialIcons name="mode-edit" size={25} color="gray" style={styles.actionButtonIcon}/>
                       </Button>

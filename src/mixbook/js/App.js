@@ -37,13 +37,21 @@ class App extends Component {
       showInstalling: false,
       downloadProgress: 0,
     };
-    store.save('ingredients', {
+    /*store.save('ingredients', {
       alcoholList: ['Whiskey', 'Vodka'],
       mixerList: ['Coke', 'Redbull']
-    })
+    })*/
     store.save('recipes', {
       recipeList: ['Rum & Coke', 'Screwdriver'],
     })
+    store.save('alcohol', [
+        {name: "McCormicks", type: "Vodka", proof: 80},
+        {name: "Seagreams", type: "Gin", proof: 76}
+    ]);
+    store.save('mixers', [
+        {brand: "Red Bull", name: "Energy Drink", type: "Soda"},
+        {brand: "Tropicana", name: "Orange Juice", type: "Juice"}
+    ]);
   }
 
   componentDidMount() {

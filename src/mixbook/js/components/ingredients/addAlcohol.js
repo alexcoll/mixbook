@@ -39,9 +39,9 @@ class AddAlcohol extends Component {
   }
 
 
-  onValueChange (value: string) {
+  onValueChange(value: string) {
     this.setState({
-      selected1 : value
+      inputType: value
     });
   }
 
@@ -52,12 +52,11 @@ class AddAlcohol extends Component {
 
 
   onSubmit() {
-    store.get('ingredients').then((data) => {
-      var list = data.alcoholList;
-      list.push(this.state.inputBrand);
-      store.update('ingredients', {
-        alcoholList: list
-      }).then(() => {
+    store.get('alcohol').then((data) => {
+      var list = data;
+      var item = {name: this.state.inputBrand, type: this.state.inputType, proof: this.state.inputProof};
+      list.push(item);
+      store.update('alcohol', list).then(() => {
         this.replaceAt('ingredients');
       })
     });
@@ -116,6 +115,8 @@ class AddAlcohol extends Component {
                   inlineLabel label="Proof"
                   placeholder="80"
                   keyboardType="numeric"
+                  value={this.state.inputProof}
+                  onChangeText={inputProof => this.setState({ inputProof })}
                 />
               </InputGroup>
             </ListItem>
