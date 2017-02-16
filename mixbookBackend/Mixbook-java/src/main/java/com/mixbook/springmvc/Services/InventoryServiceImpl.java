@@ -23,8 +23,4 @@ public class InventoryServiceImpl implements InventoryService {
 		dao.deleteIngredientFromInventory(inventory, user);
 	}
 
-	public void editIngredientInInventory(Inventory inventory, User user) {
-		dao.editIngredientInInventory(inventory, user);
-	}
-
 }

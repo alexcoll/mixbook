@@ -59,16 +59,4 @@ public class InventoryController {
 		return new JsonResponse("OK","");
 	}
 
-	@RequestMapping(value = "/editIngredientInInventory",
-			method = RequestMethod.POST)
-	@ResponseBody
-	public JsonResponse editIngredientInInventory(HttpServletRequest request, @RequestBody Inventory inventory) {
-		String token = request.getHeader(tokenHeader);
-		String username = jwtTokenUtil.getUsernameFromToken(token);
-		User user = new User();
-		user.setUsername(username);
-		inventoryService.editIngredientInInventory(inventory, user);
-		return new JsonResponse("OK","");
-	}
-
 }

@@ -9,6 +9,4 @@ public interface InventoryDao {
 
 	void deleteIngredientFromInventory(Inventory inventory, User user);
 
-	void editIngredientInInventory(Inventory inventory, User user);
-
 }
