@@ -17,7 +17,7 @@ export default class TabAlcohol extends Component { // eslint-disable-line
     this.state = {
       displayType: 'all',
       active: 'true',
-      theList: ['error']
+      theList: [{name: 'error', type: "Error", proof: 0}]
     };
   }
 

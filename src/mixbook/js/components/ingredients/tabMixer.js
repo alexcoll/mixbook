@@ -15,7 +15,7 @@ export default class TabMixer extends Component { // eslint-disable-line
     this.state = {
       displayType: 'all',
       active: 'true',
-      theList: ['error']
+      theList: [{brand: 'error', name: "error", type: 'error'}]
     };
   }
 

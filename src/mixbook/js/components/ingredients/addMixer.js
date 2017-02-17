@@ -32,7 +32,7 @@ class AddMixer extends Component {
         items: []
       },
       inputBrand: '',
-      inputType: '',
+      inputType: 'Soda',
       inputName: ''
     };
   }
@@ -55,9 +55,11 @@ class AddMixer extends Component {
       var list = data;
       var item = {brand: this.state.inputBrand, name: this.state.inputName, type: this.state.inputType};
       list.push(item);
-      store.update('mixers', list).then(() => {
+      store.save('mixers', list).then(() => {
         this.replaceAt('ingredients');
-      })
+      }).catch(error => {
+        console.warn(error.message);
+      });
     });
   }
 
@@ -83,7 +85,7 @@ class AddMixer extends Component {
               <Picker
                 iosHeader="Select one"
                 mode="dropdown"
-                selectedValue={this.state.selected1}
+                selectedValue={this.state.inputType}
                 onValueChange={this.onValueChange.bind(this)} // eslint-disable-line
               >
                 <Item label="Soda" value="soda" />

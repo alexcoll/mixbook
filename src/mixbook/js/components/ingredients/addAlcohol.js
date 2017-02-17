@@ -32,7 +32,7 @@ class AddAlcohol extends Component {
         items: []
       },
       inputBrand: '',
-      inputType: '',
+      inputType: 'Vodka',
       inputFlavor: '',
       inputProof: ''
     };
@@ -56,9 +56,11 @@ class AddAlcohol extends Component {
       var list = data;
       var item = {name: this.state.inputBrand, type: this.state.inputType, proof: this.state.inputProof};
       list.push(item);
-      store.update('alcohol', list).then(() => {
+      store.save('alcohol', list).then(() => {
         this.replaceAt('ingredients');
-      })
+      }).catch(error => {
+        console.error(error.message);
+      });
     });
   }
 
@@ -84,7 +86,7 @@ class AddAlcohol extends Component {
               <Picker
                 iosHeader="Select one"
                 mode="dropdown"
-                selectedValue={this.state.selected1}
+                selectedValue={this.state.inputType}
                 onValueChange={this.onValueChange.bind(this)} // eslint-disable-line
               >
                 <Item label="Vodka" value="vodka" />
