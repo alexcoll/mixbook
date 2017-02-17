@@ -5,6 +5,14 @@ const { StyleSheet } = React;
 
 module.exports = StyleSheet.create({
   container: {
-    backgroundColor: 'white',
+    backgroundColor: 'white'
   },
+
+  editButton: {
+    alignSelf: 'flex-end'
+    },
+
+  listText: {
+    alignSelf: 'flex-start'
+  }
 });

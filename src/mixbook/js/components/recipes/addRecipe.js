@@ -26,21 +26,11 @@ class AddRecipe extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      results: {
-        items: []
-      },
-      inputName:'',
-      inputMixer:'',
-      inputAlcohol:'',
-      inputInstructions:''
+      inputName: '',
+      inputMixers: '',
+      inputAlcohol: '',
+      inputInstructions: ''
     };
-  }
-
-
-  onValueChange (value: string) {
-    this.setState({
-      selected1 : value
-    });
   }
 
 
@@ -50,36 +40,39 @@ class AddRecipe extends Component {
 
 
   onSubmit() {
-    if(this.state.inputName == '') {
+    if (this.state.inputName == '') {
       alert('Please enter a name for the recipe!');
       return;
     }
-    if(this.state.inputAlcohol == '') {
+    if (this.state.inputAlcohol == '') {
       alert('Please add alcohol to your recipe!');
       return;
     }
-    if(this.state.inputInstructions == '') {
+    if (this.state.inputInstructions == '') {
       alert('Please enter some instructions for your recipe!');
       return;
     }
 
     store.get('recipes').then((data) => {
-      var list = data.recipeList;
-      list.push(this.state.inputName);
-      store.update('recipes', {
-        recipeList: list
-      }).then(() => {
+      var list = data;
+      var item = {
+        name: this.state.inputName,
+        alcohol: this.state.inputAlcohol,
+        mixers: this.state.inputMixers,
+        instructions: this.state.inputInstructions
+      };
+      list.push(item);
+      store.save('recipes', list).then(() => {
         this.replaceAt('recipes');
-      })
+      });
     });
-
-
   }
 
 
   replaceAt(route) {
     this.props.replaceAt('addRecipe', { key: route }, this.props.navigation.key);
   }
+
 
   render() {
     return (
@@ -121,8 +114,8 @@ class AddRecipe extends Component {
                 <Input
                   inlineLabel label="Mixers"
                   placeholder="Orange Juice, Lemonade..."
-                  value={this.state.inputMixer}
-                  onChangeText={inputMixer => this.setState({ inputMixer })}
+                  value={this.state.inputMixers}
+                  onChangeText={inputMixers => this.setState({ inputMixers })}
                 />
               </InputGroup>
             </ListItem>

@@ -21,28 +21,44 @@ class App extends Component {
 
 
   setupAsyncStore() {
-    // Setup recipies store
-    store.save('recipes', {
+    // Setup recipes store
+    /*store.save('recipes', {
       recipeList: ['Rum & Coke', 'Screwdriver'],
-    })
+    })*/
+    store.get('recipes').then((data) => {
+      if (data == null) {
+        store.save('recipes', [ ]).catch(error => {
+          console.warn("error getting recipes key from store");
+        });
+      }
+    }).catch(error => {
+      console.warn("error getting recipes key from store");
+    });
 
     // Setup alcohol list
-    store.save('alcohol', [
+    /*store.save('alcohol', [
         {name: "McCormicks", type: "Vodka", proof: 80},
         {name: "Seagreams", type: "Gin", proof: 76}
-    ]);
+    ]);*/
+    store.get('alcohol').then((data) => {
+      if (data == null) {
+        store.save('alcohol', [ ]).catch(error => {
+          console.warn("error getting alcohol key from store");
+        });
+      }
+    }).catch(error => {
+      console.warn("error getting alcohol key from store");
+    });
 
     // Setup mixer list
-    store.save('mixers', [
+    /*store.save('mixers', [
         {brand: "Red Bull", name: "Energy Drink", type: "Soda"},
         {brand: "Tropicana", name: "Orange Juice", type: "Juice"}
-    ]);
-    store.get('mixers').then(data => {
+    ]);*/
+    store.get('mixers').then((data) => {
       if (data == null) {
-        store.save('mixers', []).then(data1 => {
-          if (data1 == null) {
-            console.warn("error with mixer store");
-          }
+        store.save('mixers', [ ]).catch(error => {
+          console.warn("error getting mixers key from store");
         });
       }
     }).catch(error => {
