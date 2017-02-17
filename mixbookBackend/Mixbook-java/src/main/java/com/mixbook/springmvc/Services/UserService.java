@@ -19,9 +19,25 @@ public interface UserService {
 	void deleteUser(User user);
 
 	void editUser(User user);
+	
+	void changeEmail(User user);
+	
+	void changePassword(User user);
 
 	boolean isUserEmailUnique(String email);
 
 	boolean isUsernameUnique(String username);
+	
+	boolean isUserInfoValid(User user);
+	
+	boolean isUserEmailValid(String email);
+	
+	boolean isUserPasswordValid(String password);
+	
+	boolean isUserUsernameValid(String username);
+	
+	boolean isUserFirstNameValid(String first_name);
+	
+	boolean isUserLastNameValid(String last_name);
 	
 }

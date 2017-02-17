@@ -1,5 +1,5 @@
 -- -----------------------------------------------------
--- Select database `activitizedbtest`
+-- Select database `mixbookdb`
 -- -----------------------------------------------------
 USE `mixbookdb`;
 
@@ -13,6 +13,7 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- -----------------------------------------------------
 TRUNCATE `mixbookdb`.`users`;
 TRUNCATE `mixbookdb`.`USER_AUTHORITY`;
+TRUNCATE `mixbookdb`.`user_has_brand`;
 
 -- -----------------------------------------------------
 -- Set foreign key checks back on

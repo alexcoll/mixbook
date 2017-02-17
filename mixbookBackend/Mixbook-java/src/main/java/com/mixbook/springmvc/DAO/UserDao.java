@@ -20,4 +20,8 @@ public interface UserDao {
 
 	void editUser(User user);
 	
+	void changeEmail(User user);
+	
+	void changePassword(User user);
+	
 }
