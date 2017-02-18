@@ -27,6 +27,7 @@ class NewAccount extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
+			inputUsername: '',
 			inputFirstName: '',
 			inputLastName:'',
 			inputEmail:'',
@@ -40,6 +41,10 @@ class NewAccount extends Component {
 		this.props.replaceAt('newAccount', { key: route }, this.props.navigation.key);
 	}
 
+
+	updateUsername = (text) => {
+		this.setState({inputUsername: text})
+	}
 
 	updateFirstName = (text) => {
 		this.setState({inputFirstName: text})
@@ -62,72 +67,117 @@ class NewAccount extends Component {
 	}
 
 
-	submitToServer() {
-		return fetch('https://activitize.net/mixbook/user/createUser', {
-  		method: 'POST',
-  		headers: {
-    		'Accept': 'application/json',
-    		'Content-Type': 'application/json',
-  		},
-  		body: JSON.stringify({
-				username: "test",
-				password: "test",
-				firstName: "Test",
-				lastName: "User",
-				email: "test@example.com"
-			})
-		});
-	}
-
-
-	onSubmit() {
-		// Make sure all of the input fields are filled out and valid
-		if (this.state.inputFirstName == '') {
+	checkInput() {
+    if (this.state.inputUsername == '') {
+			alert('Please enter a username');
+			return false;
+		}
+    if (this.state.inputFirstName == '') {
 			alert('Please enter your first name');
-			return;
+			return false;
 		}
 		if (this.state.inputLastName == '') {
 			alert('Please enter your last name');
-			return;
+			return false;
 		}
 		if (this.state.inputEmail.indexOf('@') == -1 || this.state.inputEmail.indexOf('.') == -1) {
-			alert('Please enter a valid email');
-			return;
+			alert('Please enter a valid email address');
+			return false;
 		}
 		if (this.state.inputPassword1 == '' || this.state.inputPassword2 == '') {
 			alert('Please enter a password');
-			return;
+			return false;
 		}
 		if (this.state.inputPassword1 != this.state.inputPassword2) {
 			alert('Please enter matching passwords');
-			return;
+			return false;
 		}
 
-		// Send create account request to the server
-		var result = true;
+    return true;
+  }
 
 
+	showServerErrorAlert(response) {
+    Alert.alert(
+      "Server/Network Error",
+      "Got response: " + response.status + " " + response.statusText,
+      [
+        {text: 'Dismiss', style: 'cancel'}
+      ],
+      { cancelable: true }
+    );
+  }
+
+
+  showServerInvalidAlert(json) {
+  	Alert.alert(
+      "Error",
+      json.errorMessage,
+      [
+        {text: 'Dismiss', style: 'cancel'}
+      ],
+      { cancelable: true }
+    );
+  }
+
+
+  submitToServer() {
+    return fetch('https://activitize.net/mixbook/user/createUser', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        username: this.state.inputUsername,
+				password: this.state.inputPassword1,
+				firstName: this.state.inputFirstName,
+				lastName: this.state.inputLastName,
+				email: this.state.inputEmail
+      })
+    })
+    .then(async (response) => {
+      if (response.status == 200) {
+        var json = await response.json();
+        if (json.responseStatus == "OK") {
+        	this.goToLogin();
+        } else {
+        	this.showServerInvalidAlert(json);
+        }
+      } else if (response.status == 401) {
+        this.showBadInfoAlert();
+        return;
+      } else {
+        this.showServerErrorAlert(response);
+        return;
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+  }
+
+
+  onSubmit() {
+    // Do some simple input syntax checking
+    if (this.checkInput()) {
+      // Send info to server
+      this.submitToServer();
+    }
+  }
+
+
+	goToLogin() {
     // Go back to login screen if successful
-    if (result) {
-    	this.replaceAt('login');
-    	Alert.alert(
-        "Account Created",
-        'Please log in with your new credentials',
-        [
-          {text: 'Dismiss', style: 'cancel'}
-        ],
-        { cancelable: true }
-      );
-		} else {
-			Alert.alert(
-        "Create Account Failed",
-        'Something went wrong on the server. Please try again. Maybe someone already is using that email?',
-        [
-          {text: 'Dismiss', style: 'cancel'}
-        ],
-        { cancelable: true }
-      );
-		}
+    this.replaceAt('login');
+    Alert.alert(
+      "Account Created",
+      'Please log in with your new credentials',
+	    [
+        {text: 'Dismiss', style: 'cancel'}
+      ],
+	    { cancelable: true }
+    );
 	}
 
 
@@ -144,15 +194,16 @@ class NewAccount extends Component {
 				</View>
 
 				<View style={styles.logoContainer}>
-					<Image
+					{/*<Image
 						style={styles.logo}
 						source={require('../../../img/drink-emoji.png')}
-						/>
+					/>*/}
 						<Text style={styles.title}>Create a Mixbook account:</Text>
 				</View>
 
 				<View style ={styles.formContainer}>
 					<AccountForm
+						updateUsername = {this.updateUsername}
 						updateFirstName = {this.updateFirstName}
 						updateLastName = {this.updateLastName}
 						updateEmail = {this.updateEmail}

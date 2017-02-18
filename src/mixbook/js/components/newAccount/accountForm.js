@@ -6,6 +6,14 @@ export default AccountForm = (props) => {
 		<View style={styles.container}>
 			<TextInput
 				underlineColorAndroid={'transparent'}
+				placeholder="Username"
+				style={styles.input}
+				returnKeyType="next"
+				autoCorrect={false}
+				onChangeText = {props.updateUsername}
+			/>
+			<TextInput
+				underlineColorAndroid={'transparent'}
 				placeholder="First Name"
 				style={styles.input}
 				returnKeyType="next"

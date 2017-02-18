@@ -30,6 +30,7 @@ class Account extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      inputUsername: '',
       inputFirstName: '',
       inputLastName: '',
       inputEmail: '',
@@ -48,9 +49,10 @@ class Account extends Component {
   componentDidMount() {
     store.get('account').then((data) => {
       this.setState({
+        inputUsername: data.userInfo.username,
         inputFirstName: data.userInfo.firstName,
         inputLastName: data.userInfo.lastName,
-        inputEmail: data.userInfo.email,
+        inputEmail: data.userInfo.email
       });
     }).catch((error) => {
       console.warn("error getting settings from local store");
@@ -69,7 +71,7 @@ class Account extends Component {
   }
 
   onSubmit() {
-
+    alert("not implemented");
     return;
   }
 
@@ -94,6 +96,17 @@ class Account extends Component {
             />
           </TouchableOpacity>
           <List>
+            <ListItem>
+              <InputGroup>
+                <Input
+                  disabled
+                  inlineLabel label="Username"
+                  placeholder="user"
+                  value={this.state.inputUsername}
+                  onChangeText={(inputUsername) => this.setState({ inputUsername })}
+                />
+              </InputGroup>
+            </ListItem>
             <ListItem>
               <InputGroup>
                 <Input

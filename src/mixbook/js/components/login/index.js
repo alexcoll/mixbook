@@ -48,23 +48,7 @@ class Login extends Component {
   }
 
 
-  submitToServer() {
-    return fetch('https://activitize.net/mixbook/auth', {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        username: this.state.inputUsername,
-        password: this.state.inputPassword
-      })
-    });
-  }
-
-
-  onSubmitLogin() {
-    // Do some simple input syntax checking
+  checkInput() {
     if (this.state.inputUsername == '') {
       Alert.alert(
         "Invalid Username",
@@ -74,7 +58,7 @@ class Login extends Component {
         ],
         { cancelable: true }
       );
-      return;
+      return false;
     }
 
     if (this.state.inputPassword == '') {
@@ -86,40 +70,95 @@ class Login extends Component {
         ],
         { cancelable: true }
       );
-      return;
+      return false;
     }
 
-    // Contact server to authenticate, get user profile and token
-    var isAuthenticated = false;
+    return true;
+  }
 
-    // Store account details into local store
-    if (isAuthenticated) {
-      store.save('account', {
-        isLoggedIn: true,
-        isGuest: false,
-        userInfo: {
-          username: this.state.inputUsername,
-          email: "placeholder@example.com",
-          firstName: "Place",
-          lastName: "Holder",
-          thumbnail: "../../../img/camera.png",
-          token: ""
-        }
-      }).then(() => {
-        this.replaceAt('mydrinks');
-      }).catch((error) => {
-        console.warn("error updating account local store");
-        console.warn(error.message);
+
+  showServerErrorAlert(response) {
+    Alert.alert(
+      "Server Error",
+      "Got response: " + response.status + " " + response.statusText,
+      [
+        {text: 'Dismiss', style: 'cancel'}
+      ],
+      { cancelable: true }
+    );
+  }
+
+
+  showBadInfoAlert() {
+    Alert.alert(
+      "Authenitcation Failed",
+      'Incorrect Email/Password, please try again.',
+      [
+        {text: 'Dismiss', style: 'cancel'}
+      ],
+      { cancelable: true }
+    );
+  }
+
+
+  submitToServer() {
+    return fetch('https://activitize.net/mixbook/auth', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        username: this.state.inputUsername,
+        password: this.state.inputPassword
       })
-    } else {
-      Alert.alert(
-        "Authenitcation Failed",
-        'Incorrect Email/Password, please try again.',
-        [
-          {text: 'Dismiss', style: 'cancel'}
-        ],
-        { cancelable: true }
-      );
+    })
+    .then(async (response) => {
+      if (response.status == 200) {
+        var json = await response.json();
+        this.updateDatabase(json);
+        return;
+      } else if (response.status == 401) {
+        this.showBadInfoAlert();
+        return;
+      } else {
+        this.showServerErrorAlert(response);
+        return;
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+  }
+
+
+  updateDatabase(json) {
+    // Store account details into local store
+    store.save('account', {
+      isLoggedIn: true,
+      isGuest: false,
+      userInfo: {
+        username: this.state.inputUsername,
+        email: "placeholder@example.com",
+        firstName: "John",
+        lastName: "Doe",
+        thumbnail: "../../../img/camera.png",
+        token: json.token
+      }
+    }).then(() => {
+      this.replaceAt('mydrinks');
+    }).catch((error) => {
+      console.warn("error updating account local store");
+      console.warn(error.message);
+    })
+  }
+
+
+  onSubmitLogin() {
+    // Do some simple input syntax checking
+    if (this.checkInput()) {
+      // Send info to server
+      this.submitToServer();
     }
   }
 
