@@ -1,190 +1,217 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { StyleSheet, View, Image, Text, KeyboardAvoidingView, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Image, Text, KeyboardAvoidingView, TouchableOpacity, Alert } from 'react-native';
 import LoginForm from './LoginForm';
 import navigateTo from '../../actions/sideBarNav';
 import { actions } from 'react-native-navigation-redux-helpers';
+
+import styles from './styles';
+
+import store from 'react-native-simple-store';
 
 const {
   replaceAt,
 } = actions;
 
 class Login extends Component {
-	
-	constructor(props) {
-		super(props)
-		this.state = {
-			email: '',
-			password:''
-		}
-	}
 
-	  static propTypes = {
+  static propTypes = {
     openDrawer: React.PropTypes.func,
     replaceAt: React.PropTypes.func,
     navigation: React.PropTypes.shape({
       key: React.PropTypes.string,
-    }),
-}
-
-	updateEmail = (text) => {
-		this.setState({email: text})
-	}
-
-	updatePassword = (text) => {
-		this.setState({password: text})
-	}
+    })
+  }
 
 
-	onClick(route) {
+  constructor(props) {
+    super(props)
+    this.state = {
+      inputUsername: '',
+      inputPassword: ''
+    }
+  }
 
-		if(this.state.email.indexOf('@') == -1 || this.state.email.indexOf('.') == -1)
-		{
-			alert('Please enter a valid email');
-			return;
-		}
-		if(this.state.password == '')
-		{
-			alert('Please enter a password');
-			return;
-		}
-    	this.props.replaceAt('login', { key: route }, this.props.navigation.key);
-	}
 
-	replaceAt(route) {
-		this.props.replaceAt('login', { key: route }, this.props.navigation.key);
-	}
+  replaceAt(route) {
+    this.props.replaceAt('login', { key: route }, this.props.navigation.key);
+  }
 
-	render() {
-		return (
-			<KeyboardAvoidingView behavior="padding" style={styles.container}>
-				<View style={styles.noAccount}>
-						<TouchableOpacity 
-							style={styles.noAccountingButtonContainer}
-							onPress={() => this.replaceAt('mydrinks')}>
-						<Text style={styles.noAccountButtonText}>Continue With No Account</Text>
-					</TouchableOpacity>
-				</View>
-				<View style={styles.newAccount}>
-						<TouchableOpacity 
-							style={styles.newAccountButtonContainer}
-							onPress={() => this.replaceAt('newAccount')}>
-						<Text style={styles.noAccountButtonText}>Create An Account</Text>
-					</TouchableOpacity>
-				</View>				
-				<View style={styles.logoContainer}>
-					<Image 
-						style={styles.logo}
-						source={require('../../../img/drink-emoji.png')} 
-						/>
-						<Text style={styles.title}>Welcome To Mixbook!</Text>
-				</View>
-				<View style ={styles.formContainer}>
-					<LoginForm 
-						updateEmail = {this.updateEmail}
-						updatePassword = {this.updatePassword}
-						login = {this.login}
-					/>
-					<View style={styles.Bcontainer}>
-					<TouchableOpacity 
-						style={styles.buttonContainer}
-						onPress={() => this.onClick('mydrinks')}>
-						<Text style={styles.buttonText}>LOGIN</Text>
-					</TouchableOpacity>
-					</View>
-				</View>
-			</KeyboardAvoidingView>
 
-		);
-	}
+  updateUsername = (text) => {
+    this.setState({inputUsername: text})
+  }
 
-	onSubmitPressed() {
-        this.props.navigator.push({
-            title: "Recipes",
-            component: recipes,
-        });
+  updatePassword = (text) => {
+    this.setState({inputPassword: text})
+  }
+
+
+  submitToServer() {
+    return fetch('https://activitize.net/mixbook/auth', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        username: this.state.inputUsername,
+        password: this.state.inputPassword
+      })
+    });
+  }
+
+
+  onSubmitLogin() {
+    // Do some simple input syntax checking
+    if (this.state.inputUsername == '') {
+      Alert.alert(
+        "Invalid Username",
+        'Username field cannot be blank',
+        [
+          {text: 'Dismiss', style: 'cancel'}
+        ],
+        { cancelable: true }
+      );
+      return;
     }
 
+    if (this.state.inputPassword == '') {
+      Alert.alert(
+        "Invalid Password",
+        'Password field cannot be blank',
+        [
+          {text: 'Dismiss', style: 'cancel'}
+        ],
+        { cancelable: true }
+      );
+      return;
+    }
+
+    // Contact server to authenticate, get user profile and token
+    var isAuthenticated = false;
+
+    // Store account details into local store
+    if (isAuthenticated) {
+      store.save('account', {
+        isLoggedIn: true,
+        isGuest: false,
+        userInfo: {
+          username: this.state.inputUsername,
+          email: "placeholder@example.com",
+          firstName: "Place",
+          lastName: "Holder",
+          thumbnail: "../../../img/camera.png",
+          token: ""
+        }
+      }).then(() => {
+        this.replaceAt('mydrinks');
+      }).catch((error) => {
+        console.warn("error updating account local store");
+        console.warn(error.message);
+      })
+    } else {
+      Alert.alert(
+        "Authenitcation Failed",
+        'Incorrect Email/Password, please try again.',
+        [
+          {text: 'Dismiss', style: 'cancel'}
+        ],
+        { cancelable: true }
+      );
+    }
+  }
+
+
+  onSubmitNoAccount() {
+    store.save('account', {
+      isLoggedIn: true,
+      isGuest: true,
+      userInfo: {
+        username: "guest_user",
+        email: "guest@mixbook.com",
+        firstName: "Guest",
+        lastName: "User",
+        thumbnail: "../../../img/camera.png",
+        token: ""
+      }
+    }).then(() => {
+      this.replaceAt('mydrinks');
+    }).catch((error) => {
+      console.warn("error updating account local store");
+      console.warn(error.message);
+    })
+  }
+
+
+  onSubmitCreateAccount() {
+    this.replaceAt('newAccount');
+  }
+
+
+  render() {
+    return (
+      <KeyboardAvoidingView behavior="padding" style={styles.container}>
+        <View style={styles.noAccount}>
+          <TouchableOpacity
+            style={styles.noAccountingButtonContainer}
+            onPress={() => this.onSubmitNoAccount()}
+          >
+            <Text style={styles.noAccountButtonText}>Continue With No Account</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.newAccount}>
+          <TouchableOpacity
+            style={styles.newAccountButtonContainer}
+            onPress={() => this.onSubmitCreateAccount()}>
+            <Text style={styles.noAccountButtonText}>Create An Account</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.logoContainer}>
+          <Image
+            style={styles.logo}
+            source={require('../../../img/drink-emoji.png')}
+          />
+          <Text style={styles.title}>Welcome To Mixbook!</Text>
+        </View>
+        <View style ={styles.formContainer}>
+          <LoginForm
+            updateUsername = {this.updateUsername}
+            updatePassword = {this.updatePassword}
+            login = {this.login}
+          />
+          <View style={styles.Bcontainer}>
+            <TouchableOpacity
+              style={styles.buttonContainer}
+              onPress={() => this.onSubmitLogin()}
+            >
+              <Text style={styles.buttonText}>Login</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </KeyboardAvoidingView>
+    );
+  }
+
+  onSubmitPressed() {
+    this.props.navigator.push({
+      title: "Recipes",
+      component: recipes
+    });
+  }
+
 }
 
+  function bindAction(dispatch) {
+    return {
+      openDrawer: () => dispatch(openDrawer()),
+      replaceAt: (routeKey, route, key) => dispatch(replaceAt(routeKey, route, key))
+    };
+  }
 
+  const mapStateToProps = state => ({
+    navigation: state.cardNavigation
+  });
 
-const styles = StyleSheet.create({
-	noAccount: {
-		top: 5,
-		left: 5,
-		width: 100,
-	},
-	newAccount: {
-		position: 'absolute',
-		top: 5,
-		right: 5,
-		width: 100,
-	},
-	noAccountButtonText: {
-		textAlign: 'center',
-		color: '#FFFFFF',
-		fontWeight: '400'
-	},
-	container: {
-		flex:1,
-		backgroundColor: '#3498db'
-	},
-	logoContainer: {
-		alignItems: 'center',
-		flexGrow: 1,
-		justifyContent: 'center'
-	},
-	logo: {
-		width:150,
-		height:150
-	},
-	title: {
-		color: '#FFF',
-		marginTop: 10,
-		width: 300,
-		fontSize: 20,
-		fontWeight: "bold",
-		textAlign: 'center',
-		opacity: 0.75
-	},
-	buttonContainer: {
-		backgroundColor: '#2980b9',
-		paddingVertical: 20,
-		
-	},
-	Bcontainer: {
-		padding: 20
-	},
-	noAccountingButtonContainer: {
-		backgroundColor: '#2980b9',
-		paddingVertical: 2,
-		height: 42
-	},
-	newAccountButtonContainer: {
-		backgroundColor: '#2980b9',
-		paddingVertical: 2,
-		height: 42
-	},
-	buttonText: {
-		textAlign: 'center',
-		color: '#FFFFFF',
-		fontWeight: '700'
-	}
-
-});
-
-
-function bindAction(dispatch) {
-  return {
-    openDrawer: () => dispatch(openDrawer()),
-    replaceAt: (routeKey, route, key) => dispatch(replaceAt(routeKey, route, key)),
-  };
-}
-
-const mapStateToProps = state => ({
-  navigation: state.cardNavigation,
-});
-
-export default connect(mapStateToProps, bindAction)(Login);
+  export default connect(mapStateToProps, bindAction)(Login);

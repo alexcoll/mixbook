@@ -1,7 +1,6 @@
 
 import React, { Component } from 'react';
 import { StyleSheet, AsyncStorage, Alert } from 'react-native';
-//import CodePush from 'react-native-code-push';
 
 import { Container, Content, Text, View } from 'native-base';
 import Modal from 'react-native-modalbox';
@@ -21,6 +20,34 @@ class App extends Component {
 
 
   setupAsyncStore() {
+    // Setup account store
+    store.get('account').then((data) => {
+      if (data == null) {
+        store.save('account', {
+          isLoggedIn: false,
+          isGuest: false,
+          userInfo: {}
+        }).catch(error => {
+          console.warn("error getting account key from store");
+        });
+      }
+    }).catch(error => {
+      console.warn("error getting account key from store");
+    });
+
+    // Setup settings store
+    store.get('settings').then((data) => {
+      if (data == null) {
+        store.save('settings', {
+          doStuff: true
+        }).catch(error => {
+          console.warn("error getting account key from store");
+        });
+      }
+    }).catch(error => {
+      console.warn("error getting account key from store");
+    });
+
     // Setup recipes store
     /*store.save('recipes', {
       recipeList: ['Rum & Coke', 'Screwdriver'],

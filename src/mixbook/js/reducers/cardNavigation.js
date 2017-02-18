@@ -1,5 +1,7 @@
-
 import { cardStackReducer } from 'react-native-navigation-redux-helpers';
+
+import store from 'react-native-simple-store';
+
 
 const initialState = {
   key: 'global',
