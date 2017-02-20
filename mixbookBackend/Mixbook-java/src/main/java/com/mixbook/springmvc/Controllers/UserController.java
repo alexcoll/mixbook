@@ -143,4 +143,18 @@ public class UserController {
 		return new JsonResponse("OK","");
 	}
 
+	@RequestMapping(value = "/getUserInfo", method = RequestMethod.GET)
+	@ResponseBody
+	public User getUserInfo(HttpServletRequest request) {
+		String token = request.getHeader(tokenHeader);
+		String username = jwtTokenUtil.getUsernameFromToken(token);
+		User user = userService.findByEntityUsername(username);
+		User tempUser = new User();
+		tempUser.setUsername(username);
+		tempUser.setEmail(user.getEmail());
+		tempUser.setFirstName(user.getFirstName());
+		tempUser.setLastName(user.getLastName());
+		return tempUser;
+	}
+
 }
