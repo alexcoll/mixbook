@@ -1411,6 +1411,68 @@ INSERT INTO brand(brand_id, style_brand_id, brand_name)
 VALUES (568, 35, 'WKD Original');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
 VALUES (569, 35, 'WKD Red');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (570, 36, 'Apple');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (571, 36, 'Banana');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (572, 36, 'Blackberries');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (573, 36, 'Blueberries');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (574, 36, 'Cherry');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (575, 36, 'Coconut');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (576, 36, 'Cucumber');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (577, 36, 'Frozen Peaches');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (578, 36, 'Green Olives');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (579, 36, 'Kiwi');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (580, 36, 'Lemon');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (581, 36, 'Lemon Balm');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (582, 36, 'Lime');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (583, 36, 'Mango');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (584, 36, 'Mango Puree');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (585, 36, 'Maraschino Cherry');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (586, 36, 'Melon');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (587, 36, 'Olives');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (588, 36, 'Orange');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (589, 36, 'Passionfruit');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (590, 36, 'Passionfruit Puree');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (591, 36, 'Peach');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (592, 36, 'Peach Puree');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (593, 36, 'Pear');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (594, 36, 'Pineapple');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (595, 36, 'Pomegranate');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (596, 36, 'Raspberry');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (597, 36, 'Raspberry Puree');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (598, 36, 'Strawberry Puree');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (599, 36, 'Tomatoes');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (600, 36, 'Watermelon');
 
 
 SET SQL_MODE=@OLD_SQL_MODE;
