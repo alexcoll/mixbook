@@ -164,6 +164,20 @@ ADD UNIQUE INDEX `ix_type_name` (`type_name`);
 
 
 -- -----------------------------------------------------
+-- Alter `mixbookdb`.`style` to add unique index
+-- -----------------------------------------------------
+ALTER TABLE `style`
+ADD UNIQUE INDEX `ix_style_name` (`style_name`);
+
+
+-- -----------------------------------------------------
+-- Alter `mixbookdb`.`brand` to add unique index
+-- -----------------------------------------------------
+ALTER TABLE `brand`
+ADD UNIQUE INDEX `ix_brand_name` (`brand_name`);
+
+
+-- -----------------------------------------------------
 -- Populate `mixbookdb`.`AUTHORITY`
 -- -----------------------------------------------------
 INSERT INTO AUTHORITY(ID, NAME)
