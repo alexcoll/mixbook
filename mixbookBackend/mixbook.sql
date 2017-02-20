@@ -1473,6 +1473,180 @@ INSERT INTO brand(brand_id, style_brand_id, brand_name)
 VALUES (599, 36, 'Tomatoes');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
 VALUES (600, 36, 'Watermelon');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (601, 37, 'Allspice');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (602, 37, 'Almond Extract');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (603, 37, 'Almond Milk');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (604, 37, 'Apricot Jam');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (605, 37, 'Basil Leaves');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (606, 37, 'Black Tea');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (607, 37, 'Brown Sugar');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (608, 37, 'Brown Toast');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (609, 37, 'Butter');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (610, 37, 'Camomile Tea');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (611, 37, 'Cardamom');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (612, 37, 'Cardamom Pods');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (613, 37, 'Cayenne Pepper');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (614, 37, 'Celery');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (615, 37, 'Celery Salt');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (616, 37, 'Chili Peppers');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (617, 37, 'Chocolate');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (618, 37, 'Chocolate Ice Cream');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (619, 37, 'Chocolate Milk');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (620, 37, 'Chocolate Sauce');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (621, 37, 'Cinnamon');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (622, 37, 'Cloves');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (623, 37, 'Cocoa Powder');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (624, 37, 'Coconut Cream');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (625, 37, 'Coconut Milk');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (626, 37, 'Coffee');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (627, 37, 'Coffee Beans');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (628, 37, 'Coffee Ice Cream');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (629, 37, 'Cream');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (630, 37, 'Dark Chocolate Powder');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (631, 37, 'Demerara Sugar');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (632, 37, 'Desiccated Coconut');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (633, 37, 'Double Cream');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (634, 37, 'Earl Grey Tea');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (635, 37, 'Egg White');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (636, 37, 'Egg Yolk');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (637, 37, 'Eggnog');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (638, 37, 'Espresso Coffee');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (639, 37, 'Friji Chocolate Milkshake');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (640, 37, 'Ginger');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (641, 37, 'Gingerbread');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (642, 37, 'Green Food Colouring');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (643, 37, 'Green Tea');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (644, 37, 'Ground Coffee Beans');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (645, 37, 'Honey');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (646, 37, 'Hot Chocolate');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (647, 37, 'Icing Sugar');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (648, 37, 'Jasmine Tea');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (649, 37, 'Jelly');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (650, 37, 'Lemon Ice Cream');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (651, 37, 'Lemon Sorbet');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (652, 37, 'Lime Popsicle');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (653, 37, 'Mango Sorbet');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (654, 37, 'Marmalade');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (655, 37, 'Mascarpone');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (656, 37, 'Milk');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (657, 37, 'Milk Chocolate Powder');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (658, 37, 'Mincemeat');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (659, 37, 'Mint Leaves');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (660, 37, 'Natural Yoghurt');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (661, 37, 'Nutella');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (662, 37, 'Nutmeg');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (663, 37, 'Onion');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (664, 37, 'Oreo Cookie');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (665, 37, 'Pepper');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (666, 37, 'Peppermint');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (667, 37, 'Pink Peppercorn');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (668, 37, 'Popcorn');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (669, 37, 'Pumpkin Puree');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (670, 37, 'Rosemary');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (671, 37, 'Rum and Raisin Ice Cream');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (672, 37, 'Salt');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (673, 37, 'Single Cream');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (674, 37, 'Skittles');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (675, 37, 'Soy Sauce');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (676, 37, 'Steamed Milk');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (677, 37, 'Strawberry Vanilla Ice Cream');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (678, 37, 'Sugar');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (679, 37, 'Sweetened Condensed Milk');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (680, 37, 'Tabasco Sauce');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (681, 37, 'Vanilla Essence');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (682, 37, 'Vanilla Ice Cream');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (683, 37, 'Vanilla Pod');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (684, 37, 'Wasabi');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (685, 37, 'Whipped Cream');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (686, 37, 'White Balsamic Vinegar');
+INSERT INTO brand(brand_id, style_brand_id, brand_name)
+VALUES (687, 37, 'Worcestershire Sauce');
 
 
 SET SQL_MODE=@OLD_SQL_MODE;
