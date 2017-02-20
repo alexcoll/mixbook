@@ -143,6 +143,86 @@ ROW_FORMAT = DYNAMIC;
 
 
 -- -----------------------------------------------------
+-- Table `mixbookdb`.`recipe`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mixbookdb`.`recipe` (
+  `recipe_id` BIGINT NOT NULL AUTO_INCREMENT,
+  `user_recipe_id` BIGINT NOT NULL,
+  `recipe_name` VARCHAR(255) NOT NULL,
+  `directions` TEXT NOT NULL,
+  `number_of_ingredients` TINYINT(1) NOT NULL,
+  `difficulty` TINYINT(1) NOT NULL,
+  `number_of_five_star_ratings` INT(11) NOT NULL,
+  `number_of_four_star_ratings` INT(11) NOT NULL,
+  `number_of_three_star_ratings` INT(11) NOT NULL,
+  `number_of_two_star_ratings` INT(11) NOT NULL,
+  `number_of_one_star_ratings` INT(11) NOT NULL,
+  PRIMARY KEY (`recipe_id`),
+  INDEX `fk_user_recipe1_idx` (`user_recipe_id` ASC),
+  CONSTRAINT `fk_user_recipe1`
+    FOREIGN KEY (`user_recipe_id`)
+    REFERENCES `mixbookdb`.`users` (`user_id`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE utf8mb4_unicode_ci
+ROW_FORMAT = DYNAMIC;
+
+
+-- -----------------------------------------------------
+-- Table `mixbookdb`.`recipe_has_brand`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mixbookdb`.`recipe_has_brand` (
+  `recipe_recipe_id` BIGINT NOT NULL,
+  `brand_brand_id` BIGINT NOT NULL,
+  PRIMARY KEY (`recipe_recipe_id`, `brand_brand_id`),
+  INDEX `fk_recipe_has_brand_brand_brand1_idx` (`brand_brand_id` ASC),
+  INDEX `fk_recipe_has_brand_recipe_idx` (`recipe_recipe_id` ASC),
+  CONSTRAINT `fk_recipe_has_brand_recipe`
+    FOREIGN KEY (`recipe_recipe_id`)
+    REFERENCES `mixbookdb`.`recipe` (`recipe_id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_recipe_has_brand_brand_brand1`
+    FOREIGN KEY (`brand_brand_id`)
+    REFERENCES `mixbookdb`.`brand` (`brand_id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE utf8mb4_unicode_ci
+ROW_FORMAT = DYNAMIC;
+
+
+-- -----------------------------------------------------
+-- Table `mixbookdb`.`users_recipe_has_review`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mixbookdb`.`users_recipe_has_review` (
+  `users_user_id` BIGINT NOT NULL,
+  `recipe_recipe_id` BIGINT NOT NULL,
+  `review_commentary` TEXT NOT NULL,
+  `rating` TINYINT(1) NOT NULL,
+  PRIMARY KEY (`users_user_id`, `recipe_recipe_id`),
+  INDEX `fk_users_recipe_has_review_recipe1_idx` (`recipe_recipe_id` ASC),
+  INDEX `fk_users_recipe_has_review_users_idx` (`users_user_id` ASC),
+  CONSTRAINT `fk_users_recipe_has_review_users`
+    FOREIGN KEY (`users_user_id`)
+    REFERENCES `mixbookdb`.`users` (`user_id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_users_recipe_has_review_recipe1`
+    FOREIGN KEY (`recipe_recipe_id`)
+    REFERENCES `mixbookdb`.`recipe` (`recipe_id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE utf8mb4_unicode_ci
+ROW_FORMAT = DYNAMIC;
+
+
+-- -----------------------------------------------------
 -- Alter `mixbookdb`.`users` to add unique index
 -- -----------------------------------------------------
 ALTER TABLE `users`
@@ -175,6 +255,13 @@ ADD UNIQUE INDEX `ix_style_name` (`style_name`);
 -- -----------------------------------------------------
 ALTER TABLE `brand`
 ADD UNIQUE INDEX `ix_brand_name` (`brand_name`);
+
+
+-- -----------------------------------------------------
+-- Alter `mixbookdb`.`recipe` to add unique index
+-- -----------------------------------------------------
+ALTER TABLE `recipe`
+ADD UNIQUE `ix_recipe_user_name` (`user_recipe_id`, `recipe_name`);
 
 
 -- -----------------------------------------------------
