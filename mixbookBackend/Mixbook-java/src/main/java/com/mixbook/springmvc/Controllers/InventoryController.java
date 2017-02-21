@@ -24,7 +24,6 @@ import com.mixbook.springmvc.Services.InventoryService;
 
 @Controller
 @RequestMapping("/inventory")
-@SessionAttributes("roles")
 public class InventoryController {
 
 	@Autowired

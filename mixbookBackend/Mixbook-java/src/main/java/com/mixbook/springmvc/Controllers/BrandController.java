@@ -14,7 +14,6 @@ import com.mixbook.springmvc.Services.BrandService;
 
 @Controller
 @RequestMapping("/brand")
-@SessionAttributes("roles")
 public class BrandController {
 
 	@Autowired
