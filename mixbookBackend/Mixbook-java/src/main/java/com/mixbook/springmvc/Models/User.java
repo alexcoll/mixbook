@@ -91,7 +91,7 @@ public class User implements Serializable {
 	nullable = false, updatable = false) })
 	private Set<Brand> brands = new HashSet<Brand>(0);
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "recipe")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
 	private Set<Recipe> recipes = new HashSet<Recipe>(0);
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.user", cascade=CascadeType.ALL)
