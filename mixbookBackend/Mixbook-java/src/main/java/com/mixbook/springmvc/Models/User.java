@@ -84,8 +84,18 @@ public class User implements Serializable {
 			inverseJoinColumns = {@JoinColumn(name = "AUTHORITY_ID", referencedColumnName = "ID")})
 	private List<Authority> authorities;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
-	private Set<Inventory> inventories = new HashSet<Inventory>(0);
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinTable(name = "user_has_brand", joinColumns = {
+			@JoinColumn(name = "user_user_id", nullable = false, updatable = false) },
+	inverseJoinColumns = { @JoinColumn(name = "brand_brand_id",
+	nullable = false, updatable = false) })
+	private Set<Brand> brands = new HashSet<Brand>(0);
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "recipe")
+	private Set<Recipe> recipes = new HashSet<Recipe>(0);
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.user", cascade=CascadeType.ALL)
+	private Set<UserRecipeHasReview> userRecipeHasReviews = new HashSet<UserRecipeHasReview>(0);
 
 	public User() {
 
@@ -93,7 +103,7 @@ public class User implements Serializable {
 
 	public User(Integer user_id, String username, String password, String first_name, String last_name,
 			String email, Boolean enabled, Date lastPasswordResetDate, List<Authority> authorities, 
-			Set<Inventory> inventories) {
+			Set<Brand> brands, Set<Recipe> recipes, Set<UserRecipeHasReview> userRecipeHasReviews) {
 		this.user_id = user_id;
 		this.username = username;	
 		this.password = password;
@@ -103,7 +113,9 @@ public class User implements Serializable {
 		this.enabled = enabled;
 		this.lastPasswordResetDate = lastPasswordResetDate;
 		this.authorities = authorities;
-		this.inventories = inventories;
+		this.brands = brands;
+		this.recipes = recipes;
+		this.userRecipeHasReviews = userRecipeHasReviews;
 	}
 
 	public Integer getUserId() {
@@ -177,12 +189,28 @@ public class User implements Serializable {
 		this.lastPasswordResetDate = lastPasswordResetDate;
 	}
 
-	public Set<Inventory> getInventories() {
-		return inventories;
+	public Set<Brand> getBrands() {
+		return brands;
 	}
 
-	public void setInventories(Set<Inventory> inventories) {
-		this.inventories = inventories;
+	public void setBrands(Set<Brand> brands) {
+		this.brands = brands;
+	}
+
+	public Set<Recipe> getRecipes() {
+		return recipes;
+	}
+
+	public void setRecipes(Set<Recipe> recipes) {
+		this.recipes = recipes;
+	}
+
+	public Set<UserRecipeHasReview> getUserRecipeHasReviews() {
+		return userRecipeHasReviews;
+	}
+
+	public void setUserRecipeHasReviews(Set<UserRecipeHasReview> userRecipeHasReviews) {
+		this.userRecipeHasReviews = userRecipeHasReviews;
 	}
 
 	@Override

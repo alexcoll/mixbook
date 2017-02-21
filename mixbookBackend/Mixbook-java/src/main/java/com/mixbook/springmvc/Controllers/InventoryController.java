@@ -1,5 +1,7 @@
 package com.mixbook.springmvc.Controllers;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +14,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
-import com.mixbook.springmvc.Models.Inventory;
+import com.mixbook.springmvc.Exceptions.MaxInventoryItemsException;
+import com.mixbook.springmvc.Models.Brand;
 import com.mixbook.springmvc.Models.JsonResponse;
+import com.mixbook.springmvc.Models.Type;
 import com.mixbook.springmvc.Models.User;
 import com.mixbook.springmvc.Security.JwtTokenUtil;
 import com.mixbook.springmvc.Services.InventoryService;
@@ -26,37 +30,47 @@ public class InventoryController {
 	@Autowired
 	InventoryService inventoryService;
 
-	@Value("${jwt.header}")
-	private String tokenHeader;
+	private String tokenHeader = "Authorization";
 
 	@Autowired
 	private JwtTokenUtil jwtTokenUtil;
 
-	@Autowired
-	private UserDetailsService userDetailsService;
-
 	@RequestMapping(value = "/addIngredientToInventory",
 			method = RequestMethod.POST)
 	@ResponseBody
-	public JsonResponse addIngredientToInventory(HttpServletRequest request, @RequestBody Inventory inventory) {
+	public JsonResponse addIngredientToInventory(HttpServletRequest request, @RequestBody Brand brand) {
 		String token = request.getHeader(tokenHeader);
 		String username = jwtTokenUtil.getUsernameFromToken(token);
 		User user = new User();
 		user.setUsername(username);
-		inventoryService.addIngredientToInventory(inventory, user);
+		try {
+			inventoryService.addIngredientToInventory(brand, user);
+		} catch (MaxInventoryItemsException e) {
+			return new JsonResponse("FAILED","Exceeded maximum of 20 items in inventory");
+		}
 		return new JsonResponse("OK","");
 	}
 
 	@RequestMapping(value = "/deleteIngredientFromInventory",
 			method = RequestMethod.POST)
 	@ResponseBody
-	public JsonResponse deleteIngredientFromInventory(HttpServletRequest request, @RequestBody Inventory inventory) {
+	public JsonResponse deleteIngredientFromInventory(HttpServletRequest request, @RequestBody Brand brand) {
 		String token = request.getHeader(tokenHeader);
 		String username = jwtTokenUtil.getUsernameFromToken(token);
 		User user = new User();
 		user.setUsername(username);
-		inventoryService.deleteIngredientFromInventory(inventory, user);
+		inventoryService.deleteIngredientFromInventory(brand, user);
 		return new JsonResponse("OK","");
+	}
+
+	@RequestMapping(value = "/getUserInventory", method = RequestMethod.GET)
+	@ResponseBody
+	public List<Brand> getUserInventory(HttpServletRequest request) {
+		String token = request.getHeader(tokenHeader);
+		String username = jwtTokenUtil.getUsernameFromToken(token);
+		User user = new User();
+		user.setUsername(username);
+		return inventoryService.getUserInventory(user);
 	}
 
 }

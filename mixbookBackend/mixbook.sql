@@ -265,6 +265,27 @@ ADD UNIQUE `ix_recipe_user_name` (`user_recipe_id`, `recipe_name`);
 
 
 -- -----------------------------------------------------
+-- Alter `mixbookdb`.`recipe_has_brand` to add unique index
+-- -----------------------------------------------------
+ALTER TABLE `recipe_has_brand`
+ADD UNIQUE `ix_recipe_has_brand_recipe_brand` (`recipe_recipe_id`, `brand_brand_id`);
+
+
+-- -----------------------------------------------------
+-- Alter `mixbookdb`.`users_recipe_has_review` to add unique index
+-- -----------------------------------------------------
+ALTER TABLE `users_recipe_has_review`
+ADD UNIQUE `ix_users_recipe_has_review_user_recipe` (`users_user_id`, `recipe_recipe_id`);
+
+
+-- -----------------------------------------------------
+-- Alter `mixbookdb`.`user_has_brand` to add unique index
+-- -----------------------------------------------------
+ALTER TABLE `user_has_brand`
+ADD UNIQUE `ix_user_user_brand_brand` (`user_user_id`, `brand_brand_id`);
+
+
+-- -----------------------------------------------------
 -- Populate `mixbookdb`.`AUTHORITY`
 -- -----------------------------------------------------
 INSERT INTO AUTHORITY(ID, NAME)

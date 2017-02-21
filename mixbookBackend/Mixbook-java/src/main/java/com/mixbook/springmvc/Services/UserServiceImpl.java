@@ -81,6 +81,7 @@ public class UserServiceImpl implements UserService {
 	public void changePassword(User user) {
 		Date currentTimestamp = new Date();
 		user.setLastPasswordResetDate(currentTimestamp);
+		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		dao.changePassword(user);
 	}
 
