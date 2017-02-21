@@ -1,9 +1,10 @@
 package com.mixbook.springmvc.DAO;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.SQLQuery;
 import org.springframework.stereotype.Repository;
-import org.hibernate.Query;
 
 import com.mixbook.springmvc.Models.Type;
 
@@ -11,8 +12,9 @@ import com.mixbook.springmvc.Models.Type;
 public class TypeDaoImpl extends AbstractDao<Integer, Type> implements TypeDao {
 
 	public List<Type> getTypes() {
-		Query query = getSession().createQuery("from Type");
-		return query.list();
+		SQLQuery query = getSession().createSQLQuery("SELECT * FROM type");
+		List result = query.list();
+		return result;
 	}
 
 }

@@ -1,8 +1,9 @@
 package com.mixbook.springmvc.DAO;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.Query;
+import org.hibernate.SQLQuery;
 import org.springframework.stereotype.Repository;
 
 import com.mixbook.springmvc.Models.Style;
@@ -11,8 +12,9 @@ import com.mixbook.springmvc.Models.Style;
 public class StyleDaoImpl extends AbstractDao<Integer, Style> implements StyleDao {
 
 	public List<Style> getStyles() {
-		Query query = getSession().createQuery("from Style");
-		return query.list();
+		SQLQuery query = getSession().createSQLQuery("SELECT * FROM style");
+		List result = query.list();
+		return result;
 	}
 
 }

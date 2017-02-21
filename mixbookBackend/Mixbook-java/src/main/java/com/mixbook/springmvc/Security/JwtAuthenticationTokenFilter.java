@@ -40,9 +40,9 @@ public class JwtAuthenticationTokenFilter extends UsernamePasswordAuthentication
 	static {
 		NO_AUTH_ROUTES.add("/mixbook/user/createUser");
 		NO_AUTH_ROUTES.add("/mixbook/auth");
-		NO_AUTH_ROUTES.add("/mixbook/type/**");
-		NO_AUTH_ROUTES.add("/mixbook/style/**");
-		NO_AUTH_ROUTES.add("/mixbook/brand/**");
+		NO_AUTH_ROUTES.add("/mixbook/type/getTypes");
+		NO_AUTH_ROUTES.add("/mixbook/style/getStyles");
+		NO_AUTH_ROUTES.add("/mixbook/brand/getBrands");
 	}
 
 	@Override
