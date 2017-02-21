@@ -80,8 +80,11 @@ public class JwtAuthenticationTokenFilter extends UsernamePasswordAuthentication
 					resp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
 				}
 			}
-			else {
+			else if (username == null) {
 				resp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
+			}
+			else {
+				chain.doFilter(request, response);
 			}
 		}
 		else {

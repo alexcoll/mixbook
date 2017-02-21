@@ -14,7 +14,6 @@ import com.mixbook.springmvc.Services.StyleService;
 
 @Controller
 @RequestMapping("/style")
-@SessionAttributes("roles")
 public class StyleController {
 
 	@Autowired

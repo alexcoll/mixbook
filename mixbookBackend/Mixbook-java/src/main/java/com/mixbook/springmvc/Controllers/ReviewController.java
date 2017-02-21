@@ -9,7 +9,6 @@ import com.mixbook.springmvc.Services.ReviewService;
 
 @Controller
 @RequestMapping("/review")
-@SessionAttributes("roles")
 public class ReviewController {
 
 	@Autowired

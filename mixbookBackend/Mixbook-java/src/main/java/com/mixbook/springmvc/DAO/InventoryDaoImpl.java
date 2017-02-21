@@ -1,5 +1,6 @@
 package com.mixbook.springmvc.DAO;
 
+import java.math.BigInteger;
 import java.util.List;
 
 import org.hibernate.SQLQuery;
@@ -20,10 +21,14 @@ public class InventoryDaoImpl extends AbstractDao<Integer, Brand> implements Inv
 	public void addIngredientToInventory(Brand brand, User user) throws MaxInventoryItemsException {
 		user = this.userService.findByEntityUsername(user.getUsername());
 		SQLQuery countQuery = getSession().createSQLQuery("SELECT COUNT(*) FROM user_has_brand WHERE user_user_id = ?").setParameter(0, user.getUserId());
-		Long count = (Long) countQuery.uniqueResult();
+		Integer count = ((BigInteger) countQuery.uniqueResult()).intValue();
 		if (count == 20) {
 			throw new MaxInventoryItemsException("Maximum number of ingredients in inventory exceeded!");
 		}
+		SQLQuery searchQuery = getSession().createSQLQuery("SELECT brand_id FROM brand WHERE brand_name = ?");
+		searchQuery.setParameter(0, brand.getBrandName());
+		Integer brand_id = ((BigInteger) searchQuery.uniqueResult()).intValue();
+		brand.setBrandId(brand_id);
 		SQLQuery insertQuery = getSession().createSQLQuery("" + "INSERT INTO user_has_brand(user_user_id,brand_brand_id)VALUES(?,?)");
 		insertQuery.setParameter(0, user.getUserId());
 		insertQuery.setParameter(1, brand.getBrandId());
@@ -32,6 +37,10 @@ public class InventoryDaoImpl extends AbstractDao<Integer, Brand> implements Inv
 
 	public void deleteIngredientFromInventory(Brand brand, User user) {
 		user = this.userService.findByEntityUsername(user.getUsername());
+		SQLQuery searchQuery = getSession().createSQLQuery("SELECT brand_id FROM brand WHERE brand_name = ?");
+		searchQuery.setParameter(0, brand.getBrandName());
+		Integer brand_id = ((BigInteger) searchQuery.uniqueResult()).intValue();
+		brand.setBrandId(brand_id);
 		SQLQuery deleteQuery = getSession().createSQLQuery("DELETE FROM user_has_brand WHERE user_user_id=:user_user_id AND brand_brand_id=:brand_brand_id").setParameter("user_user_id", user.getUserId()).setParameter("brand_brand_id", brand.getBrandId());
 		deleteQuery.executeUpdate();
 	}

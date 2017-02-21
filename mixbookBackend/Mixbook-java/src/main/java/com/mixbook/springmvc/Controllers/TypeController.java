@@ -16,7 +16,6 @@ import com.mixbook.springmvc.Services.TypeService;
 
 @Controller
 @RequestMapping("/type")
-@SessionAttributes("roles")
 public class TypeController {
 
 	@Autowired

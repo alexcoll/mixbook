@@ -35,7 +35,6 @@ import org.apache.logging.log4j.Logger;
 
 @Controller
 @RequestMapping("/user")
-@SessionAttributes("roles")
 public class UserController {
 
 	@Autowired

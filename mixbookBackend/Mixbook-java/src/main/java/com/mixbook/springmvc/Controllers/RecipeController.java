@@ -9,7 +9,6 @@ import com.mixbook.springmvc.Services.RecipeService;
 
 @Controller
 @RequestMapping("/recipe")
-@SessionAttributes("roles")
 public class RecipeController {
 
 	@Autowired
