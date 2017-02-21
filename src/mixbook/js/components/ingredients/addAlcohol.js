@@ -32,16 +32,16 @@ class AddAlcohol extends Component {
         items: []
       },
       inputBrand: '',
-      inputType: '',
+      inputType: 'Vodka',
       inputFlavor: '',
       inputProof: ''
     };
   }
 
 
-  onValueChange (value: string) {
+  onValueChange(value: string) {
     this.setState({
-      selected1 : value
+      inputType: value
     });
   }
 
@@ -52,14 +52,15 @@ class AddAlcohol extends Component {
 
 
   onSubmit() {
-    store.get('ingredients').then((data) => {
-      var list = data.alcoholList;
-      list.push(this.state.inputBrand);
-      store.update('ingredients', {
-        alcoholList: list
-      }).then(() => {
+    store.get('alcohol').then((data) => {
+      var list = data;
+      var item = {name: this.state.inputBrand, type: this.state.inputType, proof: this.state.inputProof};
+      list.push(item);
+      store.save('alcohol', list).then(() => {
         this.replaceAt('ingredients');
-      })
+      }).catch(error => {
+        console.error(error.message);
+      });
     });
   }
 
@@ -85,7 +86,7 @@ class AddAlcohol extends Component {
               <Picker
                 iosHeader="Select one"
                 mode="dropdown"
-                selectedValue={this.state.selected1}
+                selectedValue={this.state.inputType}
                 onValueChange={this.onValueChange.bind(this)} // eslint-disable-line
               >
                 <Item label="Vodka" value="vodka" />
@@ -116,6 +117,8 @@ class AddAlcohol extends Component {
                   inlineLabel label="Proof"
                   placeholder="80"
                   keyboardType="numeric"
+                  value={this.state.inputProof}
+                  onChangeText={inputProof => this.setState({ inputProof })}
                 />
               </InputGroup>
             </ListItem>

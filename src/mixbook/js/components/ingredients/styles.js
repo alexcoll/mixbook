@@ -6,7 +6,6 @@ const { StyleSheet } = React;
 module.exports = StyleSheet.create({
   container: {
     backgroundColor: '#FBFAFA',
-
   },
 
   mixerList: {
@@ -17,7 +16,7 @@ module.exports = StyleSheet.create({
   separator: {
     flex: 1,
     height: StyleSheet.hairlineWidth,
-    backgroundColor: '#8E8E8E',
+    backgroundColor: '#8E8E8E'
   },
 
   rowText: {
@@ -30,9 +29,13 @@ module.exports = StyleSheet.create({
     padding: 12,
     flexDirection: 'row',
     alignItems: 'center'
+  },
+
+  editButton: {
+    alignSelf: 'flex-end'
+  },
+
+  listText: {
+    alignSelf: 'flex-start'
   }
-
 });
-
-
-

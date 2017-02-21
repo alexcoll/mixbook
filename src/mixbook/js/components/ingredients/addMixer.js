@@ -32,16 +32,15 @@ class AddMixer extends Component {
         items: []
       },
       inputBrand: '',
-      inputType: '',
-      inputFlavor: '',
-      inputProof: ''
+      inputType: 'Soda',
+      inputName: ''
     };
   }
 
 
   onValueChange (value: string) {
     this.setState({
-      selected1 : value
+      inputType: value
     });
   }
 
@@ -52,14 +51,15 @@ class AddMixer extends Component {
 
 
   onSubmit() {
-    store.get('ingredients').then((data) => {
-      var list = data.mixerList;
-      list.push(this.state.inputBrand);
-      store.update('ingredients', {
-        mixerList: list
-      }).then(() => {
+    store.get('mixers').then((data) => {
+      var list = data;
+      var item = {brand: this.state.inputBrand, name: this.state.inputName, type: this.state.inputType};
+      list.push(item);
+      store.save('mixers', list).then(() => {
         this.replaceAt('ingredients');
-      })
+      }).catch(error => {
+        console.warn(error.message);
+      });
     });
   }
 
@@ -85,7 +85,7 @@ class AddMixer extends Component {
               <Picker
                 iosHeader="Select one"
                 mode="dropdown"
-                selectedValue={this.state.selected1}
+                selectedValue={this.state.inputType}
                 onValueChange={this.onValueChange.bind(this)} // eslint-disable-line
               >
                 <Item label="Soda" value="soda" />
@@ -104,7 +104,12 @@ class AddMixer extends Component {
             </ListItem>
             <ListItem>
               <InputGroup>
-                <Input inlineLabel label="Name" placeholder="Orange Juice" />
+                <Input
+                  inlineLabel label="Name"
+                  placeholder="Orange Juice"
+                  value={this.state.inputName}
+                  onChangeText={inputName => this.setState({ inputName })}
+                />
               </InputGroup>
             </ListItem>
           </List>

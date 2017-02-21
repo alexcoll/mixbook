@@ -42,6 +42,7 @@ class AppNavigator extends Component {
     }),
   }
 
+
   componentDidMount() {
     BackAndroid.addEventListener('hardwareBackPress', () => {
       const routes = this.props.navigation.routes;
@@ -55,6 +56,7 @@ class AppNavigator extends Component {
     });
   }
 
+
   componentDidUpdate() {
     if (this.props.drawerState === 'opened') {
       this.openDrawer();
@@ -65,13 +67,16 @@ class AppNavigator extends Component {
     }
   }
 
+
   popRoute() {
     this.props.popRoute();
   }
 
+
   openDrawer() {
     this._drawer.open();
   }
+
 
   closeDrawer() {
     if (this.props.drawerState === 'opened') {
@@ -79,14 +84,13 @@ class AppNavigator extends Component {
     }
   }
 
+
   _renderScene(props) { // eslint-disable-line class-methods-use-this
     switch (props.scene.route.key) {
       case 'splashscreen':
         return <SplashPage />;
       case 'login':
         return <Login />;
-      case 'home':
-        return <Home />;
       case 'mydrinks':
         return <MyDrinks />;
       case 'ingredients':
@@ -105,10 +109,11 @@ class AppNavigator extends Component {
         return <AddRecipe />;
       case 'newAccount':
         return <NewAccount />;
-      default :
-        return <Home />;
+      default:
+        return <MyDrinks />;
     }
   }
+
 
   render() {
     return (

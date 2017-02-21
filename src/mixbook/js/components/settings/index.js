@@ -6,6 +6,8 @@ import { Container, Header, Title, Content, Button, Icon, List, ListItem, CheckB
 import { openDrawer } from '../../actions/drawer';
 import styles from './styles';
 
+import store from 'react-native-simple-store';
+
 class Settings extends Component {
 
   static propTypes = {
@@ -15,15 +17,31 @@ class Settings extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      checkbox1: true,
+      inputKeepLoggedIn: true,
     };
   }
 
-  toggleSwitch1() {
-    this.setState({
-      checkbox1: !this.state.checkbox1,
-    });
+
+  componentDidMount() {
+    /*store.get('settings').then((data) => {
+      this.setState({inputKeepLoggedIn: data.keepLoggedIn});
+    }).catch((error) => {
+      console.warn("error getting settings from local store");
+    });*/
   }
+
+
+  toggleKeepLoggedIn() {
+    this.setState({
+      inputKeepLoggedIn: !this.state.inputKeepLoggedIn,
+    });
+    /*store.save("setings", {
+      keepLoggedIn: this.state.inputKeepLoggedIn
+    }).catch((error) => {
+      console.warn("error storing settings into local store");
+    });*/
+  }
+
 
   render() {
     return (
@@ -38,8 +56,14 @@ class Settings extends Component {
 
         <Content>
           <List>
-            <ListItem button onPress={() => this.toggleSwitch1()}>
-              <CheckBox checked={this.state.checkbox1} onPress={() => this.toggleSwitch1()} />
+            <ListItem
+              button
+              onPress={() => this.toggleKeepLoggedIn()}
+            >
+              <CheckBox
+                checked={this.state.inputKeepLoggedIn}
+                onPress={() => this.toggleKeepLoggedIn()}
+              />
               <Text>Stay logged in</Text>
             </ListItem>
           </List>

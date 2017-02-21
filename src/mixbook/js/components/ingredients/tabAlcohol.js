@@ -1,12 +1,14 @@
 
 import React, { Component } from 'react';
-import { Alert } from 'react-native';
+import { Alert, View } from 'react-native';
 
-import { Container, Content, Text, View, InputGroup, Input, Button, List, ListItem, Fab, Icon, Footer } from 'native-base';
+import { Container, Content, Grid, Col, Text, Button, List, ListItem, Icon } from 'native-base';
 
 import styles from './styles';
+
 import store from 'react-native-simple-store';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import ActionButton from 'react-native-action-button';
 
 export default class TabAlcohol extends Component { // eslint-disable-line
 
@@ -15,54 +17,60 @@ export default class TabAlcohol extends Component { // eslint-disable-line
     this.state = {
       displayType: 'all',
       active: 'true',
-      theList: ['error']
+      theList: [{name: 'error', type: "Error", proof: 0}]
     };
   }
 
+
   componentDidMount() {
-    store.get('ingredients').then((data) => {
-      this.setState({theList: data.alcoholList});
+    store.get('alcohol').then((data) => {
+      this.setState({theList: data});
     });
   }
 
+
+  checkListName(data) {
+    return data.name == this;
+  }
+
+
   onListItemRemove(item) {
     var list = this.state.theList;
-    var index = list.indexOf(item);
+    var index = list.findIndex(this.checkListName, item.name);
     if (index > -1) {
       list.splice(index, 1);
       this.setState({theList: list});
-      store.update('ingredients', {
-        alcoholList: list
-      });
-
+      store.save('alcohol', this.state.theList);
     }
   }
 
+
   onListItemEdit(item) {
     Alert.alert(
-      item,
+      "Edit " + item.name + " " + item.type,
       'Not implemented yet',
       [
         {text: 'Cool'},
         {text: 'Work harder', style: 'cancel'},
       ],
-      { cancelable: false }
+      { cancelable: true }
     )
   }
 
+
   onListItemTap(item) {
     Alert.alert(
-      "Edit " + item,
+      "Edit " + item.name + " " + item.type,
       'What do you want to do?',
       [
         {text: 'Delete', onPress: () => this.onListItemRemove(item)},
         {text: 'Cancel', style: 'cancel'},
         {text: 'Edit', onPress: () => this.onListItemEdit(item)},
       ],
-      { cancelable: false }
+      { cancelable: true }
     )
-
   }
+
 
   render() { // eslint-disable-line
     return (
@@ -70,15 +78,23 @@ export default class TabAlcohol extends Component { // eslint-disable-line
         <Content>
           <View>
             <List dataArray={this.state.theList}
-              renderRow={(item) =>
+              renderRow={(data) =>
                 <ListItem>
-                  <Text>{item}</Text>
-                  <Button
-                    style={{ alignSelf: 'center', marginTop: 20, marginBottom: 20 }}
-                    onPress={() => this.onListItemTap(item)}
-                  >
-                    <MaterialIcons name="local-drink" size={25} color="white" style={styles.actionButtonIcon}/>
-                  </Button>
+                  <Grid>
+                    <Col>
+                      <Text style={styles.listTest}>{data.name}</Text>
+                      <Text style={styles.listTest}>{data.type} {data.proof} proof</Text>
+                    </Col>
+                    <Col>
+                      <Button
+                        transparent
+                        style={styles.editButton}
+                        onPress={() => this.onListItemTap(data)}
+                      >
+                        <MaterialIcons name="mode-edit" size={25} color="gray" style={styles.actionButtonIcon}/>
+                      </Button>
+                    </Col>
+                  </Grid>
                 </ListItem>
               }>
             </List>
