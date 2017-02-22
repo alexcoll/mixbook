@@ -1,10 +1,13 @@
 package com.mixbook.springmvc.Services;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import javax.persistence.PersistenceException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -52,7 +55,7 @@ public class UserServiceImpl implements UserService {
 		return dao.findAllUsers();
 	}
 
-	public void createUser(User user) {
+	public void createUser(User user) throws PersistenceException {
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		user.setEnabled(true);
 		Date currentTimestamp = new Date();
@@ -63,7 +66,12 @@ public class UserServiceImpl implements UserService {
 		authority.setName(AuthorityName.ROLE_USER);
 		authorities.add(authority);
 		user.setAuthorities(authorities);
-		dao.createUser(user);
+		try {
+			dao.createUser(user);
+		}
+		catch (PersistenceException e) {
+			throw new PersistenceException();
+		}
 	}
 
 	public void deleteUser(User user) {
@@ -74,8 +82,13 @@ public class UserServiceImpl implements UserService {
 		dao.editUser(user);
 	}
 
-	public void changeEmail(User user) {
-		dao.changeEmail(user);
+	public void changeEmail(User user) throws PersistenceException {
+		try {
+			dao.changeEmail(user);
+		}
+		catch (PersistenceException e) {
+			throw new PersistenceException();
+		}
 	}
 
 	public void changePassword(User user) {
