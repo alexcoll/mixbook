@@ -1,8 +1,10 @@
 package com.mixbook.springmvc.Controllers;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Locale;
 
+import javax.persistence.PersistenceException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -58,14 +60,14 @@ public class UserController {
 		if (userService.isUserInfoValid(user) == false) {
 			return new JsonResponse("FAILED","User info is invalid");
 		}
-		if (userService.isUserEmailUnique(user.getEmail()) == false) {
-			return new JsonResponse("FAILED","Email is already taken");
+		try {
+			userService.createUser(user);
 		}
-		if (userService.isUsernameUnique(user.getUsername()) == false) {
-			return new JsonResponse("FAILED","Username is already taken");
+		catch (PersistenceException e) {
+			return new JsonResponse("FAILED","Email or Username is already taken");
 		}
-		userService.createUser(user);
 		return new JsonResponse("OK","");
+
 	}
 
 	@RequestMapping(value = "/deleteUser", 
@@ -119,7 +121,12 @@ public class UserController {
 		String token = request.getHeader(tokenHeader);
 		String username = jwtTokenUtil.getUsernameFromToken(token);
 		user.setUsername(username);
-		userService.changeEmail(user);
+		try {
+			userService.changeEmail(user);
+		}
+		catch (PersistenceException e) {
+			return new JsonResponse("FAILED","Email is already taken");
+		}
 		return new JsonResponse("OK","");
 	}
 

@@ -1,8 +1,11 @@
 package com.mixbook.springmvc.DAO;
 
+import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import javax.persistence.PersistenceException;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -45,7 +48,7 @@ public class UserDaoImpl extends AbstractDao<Integer, User> implements UserDao {
 		return null;
 	}
 
-	public void createUser(User user) {
+	public void createUser(User user) throws PersistenceException {
 		persist(user);
 	}
 
@@ -85,7 +88,7 @@ public class UserDaoImpl extends AbstractDao<Integer, User> implements UserDao {
 
 	}
 
-	public void changeEmail(User user) {
+	public void changeEmail(User user) throws PersistenceException {
 		Query q = getSession().createQuery("update User set email = :email where username = :username");
 		q.setParameter("email", user.getEmail());
 		q.setParameter("username", user.getUsername());

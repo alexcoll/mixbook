@@ -1,6 +1,9 @@
 package com.mixbook.springmvc.Services;
 
+import java.sql.SQLException;
 import java.util.List;
+
+import javax.persistence.PersistenceException;
 
 import com.mixbook.springmvc.Models.User;
 
@@ -14,13 +17,13 @@ public interface UserService {
 
 	List<User> findAllUsers();
 
-	void createUser(User user);
+	void createUser(User user) throws PersistenceException;
 
 	void deleteUser(User user);
 
 	void editUser(User user);
 	
-	void changeEmail(User user);
+	void changeEmail(User user) throws PersistenceException;
 	
 	void changePassword(User user);
 
