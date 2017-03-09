@@ -37,5 +37,18 @@ module.exports = StyleSheet.create({
 
   listText: {
     alignSelf: 'flex-start'
+  },
+
+  // tabBrands.js
+  listContainer: {
+    flex: 1,
+    padding: 12,
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+
+  text: {
+    marginLeft: 12,
+    fontSize: 16
   }
 });

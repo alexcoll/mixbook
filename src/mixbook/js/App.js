@@ -92,6 +92,28 @@ class App extends Component {
       console.warn("error getting mixers key from store");
     });
 
+    store.get('inventory').then((data) => {
+      if (data == null) {
+        store.save('inventory', [ ])
+        .catch(error => {
+          console.warn("error getting inventory key from store");
+        });
+      }
+    }).catch(error => {
+      console.warn("error getting inventory key from store");
+    });
+
+    store.get('brands').then((data) => {
+      if (data == null) {
+        store.save('brands', [ ])
+        .catch(error => {
+          console.warn("error getting brands key from store");
+        });
+      }
+    }).catch(error => {
+      console.warn("error getting brands key from store");
+    });
+
   }
 
 

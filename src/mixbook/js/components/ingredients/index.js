@@ -15,6 +15,7 @@ import ScrollableTabView from 'react-native-scrollable-tab-view'
 
 import TabAlcohol from './tabAlcohol';
 import TabMixers from './tabMixer';
+import TabBrands from './tabBrands';
 
 
 const abstyles = StyleSheet.create({
@@ -63,6 +64,7 @@ class Ingredients extends Component {
           <ScrollableTabView>
             <TabAlcohol tabLabel="Alcohol" />
             <TabMixers tabLabel="Mixers" />
+            <TabBrands tabLabel="Brands" />
           </ScrollableTabView>
 
           <ActionButton buttonColor="rgba(231,76,60,1)">

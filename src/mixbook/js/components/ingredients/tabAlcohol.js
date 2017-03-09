@@ -1,8 +1,8 @@
 
 import React, { Component } from 'react';
-import { Alert, View } from 'react-native';
+import { Alert, View, StyleSheet, ListView, Text, TouchableHighlight } from 'react-native';
 
-import { Container, Content, Grid, Col, Text, Button, List, ListItem, Icon } from 'native-base';
+import { Button, Icon } from 'native-base';
 
 import styles from './styles';
 
@@ -10,14 +10,18 @@ import store from 'react-native-simple-store';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import ActionButton from 'react-native-action-button';
 
+var GiftedListView = require('react-native-gifted-listview');
+
 export default class TabAlcohol extends Component { // eslint-disable-line
 
   constructor(props) {
     super(props);
+    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
       displayType: 'all',
       active: 'true',
-      theList: [{name: 'error', type: "Error", proof: 0}]
+      theList: [{name: 'error', type: "Error", proof: 0}],
+      dataSource: ds.cloneWithRows(['row 1', 'row 2']),
     };
   }
 
@@ -74,33 +78,23 @@ export default class TabAlcohol extends Component { // eslint-disable-line
 
   render() { // eslint-disable-line
     return (
-      <Container style={styles.container}>
-        <Content>
-          <View>
-            <List dataArray={this.state.theList}
-              renderRow={(data) =>
-                <ListItem>
-                  <Grid>
-                    <Col>
-                      <Text style={styles.listTest}>{data.name}</Text>
-                      <Text style={styles.listTest}>{data.type} {data.proof} proof</Text>
-                    </Col>
-                    <Col>
-                      <Button
-                        transparent
-                        style={styles.editButton}
-                        onPress={() => this.onListItemTap(data)}
-                      >
-                        <MaterialIcons name="mode-edit" size={25} color="gray" style={styles.actionButtonIcon}/>
-                      </Button>
-                    </Col>
-                  </Grid>
-                </ListItem>
-              }>
-            </List>
-          </View>
-        </Content>
-      </Container>
+      <View>
+        {/*<ListView
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.refreshing}
+              onRefresh={this._onRefresh.bind(this)}
+            />
+          }
+          dataSource={this.state.dataSource}
+          renderRow={(rowData) =>
+            <View style={styles.listContainer}>
+              <Text style={styles.test}>{rowData}</Text>
+            </View>
+          }
+          renderSeperator={(sectionId, rowId, adjacentRowHighlighted) => <View key={rowId} style={styles.separator} />}
+        />*/}
+      </View>
     );
   }
 }
