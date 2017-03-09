@@ -2,6 +2,7 @@ package com.mixbook.springmvc.Controllers;
 
 import java.util.List;
 
+import javax.persistence.PersistenceException;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +50,8 @@ public class InventoryController {
 			return new JsonResponse("FAILED","Exceeded maximum of 20 items in inventory");
 		} catch (InvalidIngredientException e) {
 			return new JsonResponse("FAILED","Invalid ingredient added");
+		} catch (PersistenceException e) {
+			return new JsonResponse("FAILED","Ingredient of that name already in user inventory");
 		}
 		return new JsonResponse("OK","");
 	}

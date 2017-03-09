@@ -3,11 +3,12 @@ package com.mixbook.springmvc.DAO;
 import java.math.BigInteger;
 import java.util.List;
 
+import javax.persistence.PersistenceException;
+
 import org.hibernate.SQLQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.mixbook.springmvc.Exceptions.InvalidIngredientException;
 import com.mixbook.springmvc.Exceptions.MaxInventoryItemsException;
 import com.mixbook.springmvc.Models.Brand;
 import com.mixbook.springmvc.Models.User;
@@ -19,7 +20,7 @@ public class InventoryDaoImpl extends AbstractDao<Integer, Brand> implements Inv
 	@Autowired
 	UserService userService;
 
-	public void addIngredientToInventory(Brand brand, User user) throws MaxInventoryItemsException, InvalidIngredientException {
+	public void addIngredientToInventory(Brand brand, User user) throws MaxInventoryItemsException, NullPointerException, PersistenceException {
 		user = this.userService.findByEntityUsername(user.getUsername());
 		SQLQuery countQuery = getSession().createSQLQuery("SELECT COUNT(*) FROM user_has_brand WHERE user_user_id = ?").setParameter(0, user.getUserId());
 		Integer count = ((BigInteger) countQuery.uniqueResult()).intValue();
@@ -28,12 +29,8 @@ public class InventoryDaoImpl extends AbstractDao<Integer, Brand> implements Inv
 		}
 		SQLQuery searchQuery = getSession().createSQLQuery("SELECT brand_id FROM brand WHERE brand_name = ?");
 		searchQuery.setParameter(0, brand.getBrandName());
-		try {
-			Integer brand_id = ((BigInteger) searchQuery.uniqueResult()).intValue();
-			brand.setBrandId(brand_id);
-		} catch (NullPointerException e) {
-			throw new InvalidIngredientException("Invalid ingredient added!");
-		}
+		Integer brand_id = ((BigInteger) searchQuery.uniqueResult()).intValue();
+		brand.setBrandId(brand_id);
 		SQLQuery insertQuery = getSession().createSQLQuery("" + "INSERT INTO user_has_brand(user_user_id,brand_brand_id)VALUES(?,?)");
 		insertQuery.setParameter(0, user.getUserId());
 		insertQuery.setParameter(1, brand.getBrandId());
@@ -41,16 +38,12 @@ public class InventoryDaoImpl extends AbstractDao<Integer, Brand> implements Inv
 
 	}
 
-	public void deleteIngredientFromInventory(Brand brand, User user) throws InvalidIngredientException {
+	public void deleteIngredientFromInventory(Brand brand, User user) throws NullPointerException {
 		user = this.userService.findByEntityUsername(user.getUsername());
 		SQLQuery searchQuery = getSession().createSQLQuery("SELECT brand_id FROM brand WHERE brand_name = ?");
 		searchQuery.setParameter(0, brand.getBrandName());
-		try {
-			Integer brand_id = ((BigInteger) searchQuery.uniqueResult()).intValue();
-			brand.setBrandId(brand_id);
-		} catch (NullPointerException e) {
-			throw new InvalidIngredientException("Invalid ingredient deleted!");
-		}
+		Integer brand_id = ((BigInteger) searchQuery.uniqueResult()).intValue();
+		brand.setBrandId(brand_id);
 		SQLQuery deleteQuery = getSession().createSQLQuery("DELETE FROM user_has_brand WHERE user_user_id=:user_user_id AND brand_brand_id=:brand_brand_id").setParameter("user_user_id", user.getUserId()).setParameter("brand_brand_id", brand.getBrandId());
 		deleteQuery.executeUpdate();
 	}
