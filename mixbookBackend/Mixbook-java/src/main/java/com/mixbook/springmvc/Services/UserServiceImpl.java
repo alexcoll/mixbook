@@ -68,8 +68,7 @@ public class UserServiceImpl implements UserService {
 		user.setAuthorities(authorities);
 		try {
 			dao.createUser(user);
-		}
-		catch (PersistenceException e) {
+		} catch (PersistenceException e) {
 			throw new PersistenceException();
 		}
 	}
@@ -85,8 +84,7 @@ public class UserServiceImpl implements UserService {
 	public void changeEmail(User user) throws PersistenceException {
 		try {
 			dao.changeEmail(user);
-		}
-		catch (PersistenceException e) {
+		} catch (PersistenceException e) {
 			throw new PersistenceException();
 		}
 	}

@@ -3,6 +3,8 @@ package com.mixbook.springmvc.DAO;
 import java.math.BigInteger;
 import java.util.List;
 
+import javax.persistence.PersistenceException;
+
 import org.hibernate.SQLQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -18,7 +20,7 @@ public class InventoryDaoImpl extends AbstractDao<Integer, Brand> implements Inv
 	@Autowired
 	UserService userService;
 
-	public void addIngredientToInventory(Brand brand, User user) throws MaxInventoryItemsException {
+	public void addIngredientToInventory(Brand brand, User user) throws MaxInventoryItemsException, NullPointerException, PersistenceException {
 		user = this.userService.findByEntityUsername(user.getUsername());
 		SQLQuery countQuery = getSession().createSQLQuery("SELECT COUNT(*) FROM user_has_brand WHERE user_user_id = ?").setParameter(0, user.getUserId());
 		Integer count = ((BigInteger) countQuery.uniqueResult()).intValue();
@@ -33,9 +35,10 @@ public class InventoryDaoImpl extends AbstractDao<Integer, Brand> implements Inv
 		insertQuery.setParameter(0, user.getUserId());
 		insertQuery.setParameter(1, brand.getBrandId());
 		insertQuery.executeUpdate();
+
 	}
 
-	public void deleteIngredientFromInventory(Brand brand, User user) {
+	public void deleteIngredientFromInventory(Brand brand, User user) throws NullPointerException {
 		user = this.userService.findByEntityUsername(user.getUsername());
 		SQLQuery searchQuery = getSession().createSQLQuery("SELECT brand_id FROM brand WHERE brand_name = ?");
 		searchQuery.setParameter(0, brand.getBrandName());

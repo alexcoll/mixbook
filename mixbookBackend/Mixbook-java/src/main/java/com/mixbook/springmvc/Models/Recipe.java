@@ -45,20 +45,11 @@ public class Recipe implements Serializable {
 	@Column(name = "difficulty", nullable = false)
 	private int difficulty;
 
-	@Column(name = "number_of_five_star_ratings", nullable = false)
-	private int number_of_five_star_ratings;
+	@Column(name = "number_of_ratings", nullable = false)
+	private int number_of_ratings;
 
-	@Column(name = "number_of_four_star_ratings", nullable = false)
-	private int number_of_four_star_ratings;
-
-	@Column(name = "number_of_three_star_ratings", nullable = false)
-	private int number_of_three_star_ratings;
-
-	@Column(name = "number_of_two_star_ratings", nullable = false)
-	private int number_of_two_star_ratings;
-
-	@Column(name = "number_of_one_star_ratings", nullable = false)
-	private int number_of_one_star_ratings;
+	@Column(name = "total_rating", nullable = false)
+	private int total_rating;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id", nullable = false)
@@ -76,20 +67,16 @@ public class Recipe implements Serializable {
 	}
 
 	public Recipe(Integer recipe_id, Integer user_recipe_id, String brand_name, String directions,
-			int number_of_ingredients, int difficulty, int number_of_five_star_ratings,
-			int number_of_four_star_ratings, int number_of_three_star_ratings,
-			int number_of_two_star_ratings, int number_of_one_star_ratings, User user, Set<Brand> brands) {
+			int number_of_ingredients, int difficulty, int number_of_ratings,
+			int	total_rating, User user, Set<Brand> brands) {
 		this.recipe_id = recipe_id;
 		this.user_recipe_id = user_recipe_id;
 		this.brand_name = brand_name;
 		this.directions = directions;
 		this.number_of_ingredients = number_of_ingredients;
 		this.difficulty = difficulty;
-		this.number_of_five_star_ratings = number_of_five_star_ratings;
-		this.number_of_four_star_ratings = number_of_four_star_ratings;
-		this.number_of_three_star_ratings = number_of_three_star_ratings;
-		this.number_of_two_star_ratings = number_of_two_star_ratings;
-		this.number_of_one_star_ratings = number_of_one_star_ratings;
+		this.number_of_ratings = number_of_ratings;
+		this.total_rating = total_rating;
 		this.user = user;
 		this.brands = brands;
 	}
@@ -142,44 +129,20 @@ public class Recipe implements Serializable {
 		this.difficulty = difficulty;
 	}
 
-	public int getNumberOfFiveStarRatings() {
-		return number_of_five_star_ratings;
+	public int getNumberOfRatings() {
+		return number_of_ratings;
 	}
 
-	public void setNumberOfFiveStarRatings(int number_of_five_star_ratings) {
-		this.number_of_five_star_ratings = number_of_five_star_ratings;
+	public void setNumberOfRatings(int number_of_ratings) {
+		this.number_of_ratings = number_of_ratings;
 	}
 
-	public int getNumberOfFourStarRatings() {
-		return number_of_four_star_ratings;
+	public int getTotalRating() {
+		return total_rating;
 	}
 
-	public void setNumberOfFourStarRatings(int number_of_four_star_ratings) {
-		this.number_of_four_star_ratings = number_of_four_star_ratings;
-	}
-
-	public int getNumberOfThreeStarRatings() {
-		return number_of_three_star_ratings;
-	}
-
-	public void setNumberOfThreeStarRatings(int number_of_three_star_ratings) {
-		this.number_of_three_star_ratings = number_of_three_star_ratings;
-	}
-
-	public int getNumberOfTwoStarRatings() {
-		return number_of_two_star_ratings;
-	}
-
-	public void setNumberOfTwoStarRatings(int number_of_two_star_ratings) {
-		this.number_of_two_star_ratings = number_of_two_star_ratings;
-	}
-
-	public int getNumberOfOneStarRatings() {
-		return number_of_one_star_ratings;
-	}
-
-	public void setNumberOfOneStarRatings(int number_of_one_star_ratings) {
-		this.number_of_one_star_ratings = number_of_one_star_ratings;
+	public void setTotalRating(int total_rating) {
+		this.total_rating = total_rating;
 	}
 
 	public User getUser() {

@@ -2,10 +2,13 @@ package com.mixbook.springmvc.Controllers;
 
 import java.util.List;
 
+import javax.persistence.PersistenceException;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
+import com.mixbook.springmvc.Exceptions.InvalidIngredientException;
 import com.mixbook.springmvc.Exceptions.MaxInventoryItemsException;
 import com.mixbook.springmvc.Models.Brand;
 import com.mixbook.springmvc.Models.JsonResponse;
@@ -37,7 +41,7 @@ public class InventoryController {
 	@RequestMapping(value = "/addIngredientToInventory",
 			method = RequestMethod.POST)
 	@ResponseBody
-	public JsonResponse addIngredientToInventory(HttpServletRequest request, @RequestBody Brand brand) {
+	public ResponseEntity<JsonResponse> addIngredientToInventory(HttpServletRequest request, @RequestBody Brand brand) {
 		String token = request.getHeader(tokenHeader);
 		String username = jwtTokenUtil.getUsernameFromToken(token);
 		User user = new User();
@@ -45,21 +49,29 @@ public class InventoryController {
 		try {
 			inventoryService.addIngredientToInventory(brand, user);
 		} catch (MaxInventoryItemsException e) {
-			return new JsonResponse("FAILED","Exceeded maximum of 20 items in inventory");
+			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","Exceeded maximum of 20 items in inventory"), HttpStatus.BAD_REQUEST);
+		} catch (InvalidIngredientException e) {
+			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","Invalid ingredient added"), HttpStatus.BAD_REQUEST);
+		} catch (PersistenceException e) {
+			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","Ingredient of that name already in user inventory"), HttpStatus.BAD_REQUEST);
 		}
-		return new JsonResponse("OK","");
+		return new ResponseEntity<JsonResponse>(new JsonResponse("OK",""), HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/deleteIngredientFromInventory",
 			method = RequestMethod.POST)
 	@ResponseBody
-	public JsonResponse deleteIngredientFromInventory(HttpServletRequest request, @RequestBody Brand brand) {
+	public ResponseEntity<JsonResponse> deleteIngredientFromInventory(HttpServletRequest request, @RequestBody Brand brand) {
 		String token = request.getHeader(tokenHeader);
 		String username = jwtTokenUtil.getUsernameFromToken(token);
 		User user = new User();
 		user.setUsername(username);
-		inventoryService.deleteIngredientFromInventory(brand, user);
-		return new JsonResponse("OK","");
+		try {
+			inventoryService.deleteIngredientFromInventory(brand, user);
+		} catch (InvalidIngredientException e) {
+			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","Invalid ingredient deleted"), HttpStatus.BAD_REQUEST);
+		}
+		return new ResponseEntity<JsonResponse>(new JsonResponse("OK",""), HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/getUserInventory", method = RequestMethod.GET)
