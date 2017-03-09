@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationTrustResolver;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -56,67 +58,67 @@ public class UserController {
 			method = RequestMethod.POST,
 			headers = {"Content-type=application/json"})
 	@ResponseBody
-	public JsonResponse createUser(@RequestBody User user) {
+	public ResponseEntity<JsonResponse> createUser(@RequestBody User user) {
 		if (userService.isUserInfoValid(user) == false) {
-			return new JsonResponse("FAILED","User info is invalid");
+			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","User info is invalid"), HttpStatus.BAD_REQUEST);
 		}
 		try {
 			userService.createUser(user);
 		}
 		catch (PersistenceException e) {
-			return new JsonResponse("FAILED","Email or Username is already taken");
+			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","Email or Username is already taken"), HttpStatus.BAD_REQUEST);
 		}
-		return new JsonResponse("OK","");
+		return new ResponseEntity<JsonResponse>(new JsonResponse("OK",""), HttpStatus.OK);
 
 	}
 
 	@RequestMapping(value = "/deleteUser", 
 			method = RequestMethod.POST)
 	@ResponseBody
-	public JsonResponse deleteUser(HttpServletRequest request, HttpServletResponse response) {
+	public ResponseEntity<JsonResponse> deleteUser(HttpServletRequest request, HttpServletResponse response) {
 		User user = new User();
 		String token = request.getHeader(tokenHeader);
 		String username = jwtTokenUtil.getUsernameFromToken(token);
 		user.setUsername(username);
 		userService.deleteUser(user);
-		return new JsonResponse("OK","");
+		return new ResponseEntity<JsonResponse>(new JsonResponse("OK",""), HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/editUser",
 			method = RequestMethod.POST)
 	@ResponseBody
-	public JsonResponse editUser(HttpServletRequest request, @RequestBody User user) {
+	public ResponseEntity<JsonResponse> editUser(HttpServletRequest request, @RequestBody User user) {
 		if (user.getFirstName() == null && user.getLastName() == null) {
-			return new JsonResponse("FAILED","Invalid first and last name format");
+			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","Invalid first and last name format"), HttpStatus.BAD_REQUEST);
 		}
 		if (user.getFirstName() != null) {
 			if (userService.isUserFirstNameValid(user.getFirstName()) == false) {
-				return new JsonResponse("FAILED","Invalid first name format");
+				return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","Invalid first name format"), HttpStatus.BAD_REQUEST);
 			}
 		}
 		if (user.getLastName() != null) {
 			if (userService.isUserLastNameValid(user.getLastName()) == false) {
-				return new JsonResponse("FAILED","Invalid last name format");
+				return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","Invalid last name format"), HttpStatus.BAD_REQUEST);
 			}
 		}
 		String token = request.getHeader(tokenHeader);
 		String username = jwtTokenUtil.getUsernameFromToken(token);
 		user.setUsername(username);
 		userService.editUser(user);
-		return new JsonResponse("OK","");
+		return new ResponseEntity<JsonResponse>(new JsonResponse("OK",""), HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/changeEmail",
 			method = RequestMethod.POST)
 	@ResponseBody
-	public JsonResponse changeEmail(HttpServletRequest request, @RequestBody User user) {
+	public ResponseEntity<JsonResponse> changeEmail(HttpServletRequest request, @RequestBody User user) {
 		if (user.getEmail() != null) {
 			if (userService.isUserEmailValid(user.getEmail()) == false) {
-				return new JsonResponse("FAILED","Invalid email format");
+				return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","Invalid email format"), HttpStatus.BAD_REQUEST);
 			}
 		}
 		else {
-			return new JsonResponse("FAILED","Invalid email format");
+			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","Invalid email format"), HttpStatus.BAD_REQUEST);
 		}
 		String token = request.getHeader(tokenHeader);
 		String username = jwtTokenUtil.getUsernameFromToken(token);
@@ -125,28 +127,28 @@ public class UserController {
 			userService.changeEmail(user);
 		}
 		catch (PersistenceException e) {
-			return new JsonResponse("FAILED","Email is already taken");
+			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","Email is already taken"), HttpStatus.BAD_REQUEST);
 		}
-		return new JsonResponse("OK","");
+		return new ResponseEntity<JsonResponse>(new JsonResponse("OK",""), HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/changePassword",
 			method = RequestMethod.POST)
 	@ResponseBody
-	public JsonResponse changePassword(HttpServletRequest request, @RequestBody User user) {
+	public ResponseEntity<JsonResponse> changePassword(HttpServletRequest request, @RequestBody User user) {
 		if (user.getPassword() != null) {
 			if (userService.isUserPasswordValid(user.getPassword()) == false) {
-				return new JsonResponse("FAILED","Invalid password format");
+				return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","Invalid password format"), HttpStatus.BAD_REQUEST);
 			}
 		}
 		else {
-			return new JsonResponse("FAILED","Invalid password format");
+			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","Invalid password format"), HttpStatus.BAD_REQUEST);
 		}
 		String token = request.getHeader(tokenHeader);
 		String username = jwtTokenUtil.getUsernameFromToken(token);
 		user.setUsername(username);
 		userService.changePassword(user);
-		return new JsonResponse("OK","");
+		return new ResponseEntity<JsonResponse>(new JsonResponse("OK",""), HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/getUserInfo", method = RequestMethod.GET)
