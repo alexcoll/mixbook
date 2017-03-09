@@ -152,11 +152,8 @@ CREATE TABLE IF NOT EXISTS `mixbookdb`.`recipe` (
   `directions` TEXT NOT NULL,
   `number_of_ingredients` TINYINT(1) NOT NULL,
   `difficulty` TINYINT(1) NOT NULL,
-  `number_of_five_star_ratings` INT(11) NOT NULL,
-  `number_of_four_star_ratings` INT(11) NOT NULL,
-  `number_of_three_star_ratings` INT(11) NOT NULL,
-  `number_of_two_star_ratings` INT(11) NOT NULL,
-  `number_of_one_star_ratings` INT(11) NOT NULL,
+  `number_of_ratings` INT(11) NOT NULL,
+  `total_rating` INT(11) NOT NULL,
   PRIMARY KEY (`recipe_id`),
   INDEX `fk_user_recipe1_idx` (`user_recipe_id` ASC),
   CONSTRAINT `fk_user_recipe1`
