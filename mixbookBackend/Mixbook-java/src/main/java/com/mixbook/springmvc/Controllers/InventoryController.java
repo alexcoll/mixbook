@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
+import com.mixbook.springmvc.Exceptions.InvalidIngredientException;
 import com.mixbook.springmvc.Exceptions.MaxInventoryItemsException;
 import com.mixbook.springmvc.Models.Brand;
 import com.mixbook.springmvc.Models.JsonResponse;
@@ -46,6 +47,8 @@ public class InventoryController {
 			inventoryService.addIngredientToInventory(brand, user);
 		} catch (MaxInventoryItemsException e) {
 			return new JsonResponse("FAILED","Exceeded maximum of 20 items in inventory");
+		} catch (InvalidIngredientException e) {
+			return new JsonResponse("FAILED","Invalid ingredient added");
 		}
 		return new JsonResponse("OK","");
 	}
@@ -58,7 +61,11 @@ public class InventoryController {
 		String username = jwtTokenUtil.getUsernameFromToken(token);
 		User user = new User();
 		user.setUsername(username);
-		inventoryService.deleteIngredientFromInventory(brand, user);
+		try {
+			inventoryService.deleteIngredientFromInventory(brand, user);
+		} catch (InvalidIngredientException e) {
+			return new JsonResponse("FAILED","Invalid ingredient deleted");
+		}
 		return new JsonResponse("OK","");
 	}
 
