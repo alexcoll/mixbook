@@ -1,5 +1,6 @@
 package com.mixbook.springmvc.Services;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.PersistenceException;
@@ -11,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.mixbook.springmvc.DAO.InventoryDao;
 import com.mixbook.springmvc.Exceptions.InvalidIngredientException;
 import com.mixbook.springmvc.Exceptions.MaxInventoryItemsException;
+import com.mixbook.springmvc.Exceptions.UnknownServerErrorException;
 import com.mixbook.springmvc.Models.Brand;
 import com.mixbook.springmvc.Models.User;
 
@@ -21,7 +23,7 @@ public class InventoryServiceImpl implements InventoryService {
 	@Autowired
 	private InventoryDao dao;
 
-	public void addIngredientToInventory(Brand brand, User user) throws MaxInventoryItemsException, InvalidIngredientException, PersistenceException {
+	public void addIngredientToInventory(Brand brand, User user) throws MaxInventoryItemsException, InvalidIngredientException, PersistenceException, UnknownServerErrorException {
 		try {
 			dao.addIngredientToInventory(brand, user);
 		} catch (MaxInventoryItemsException e) {
@@ -30,19 +32,29 @@ public class InventoryServiceImpl implements InventoryService {
 			throw new InvalidIngredientException("Invalid ingredient added!");
 		} catch (PersistenceException e) {
 			throw new PersistenceException();
+		} catch (Exception e) {
+			throw new UnknownServerErrorException("Unknown server error!");
 		}
 	}
 
-	public void deleteIngredientFromInventory(Brand brand, User user) throws InvalidIngredientException {
+	public void deleteIngredientFromInventory(Brand brand, User user) throws InvalidIngredientException, UnknownServerErrorException {
 		try {
 			dao.deleteIngredientFromInventory(brand, user);
 		} catch (NullPointerException e) {
 			throw new InvalidIngredientException("Invalid ingredient deleted!");
+		} catch (Exception e) {
+			throw new UnknownServerErrorException("Unknown server error!");
 		}
 	}
 
-	public List<Brand> getUserInventory(User user) {
-		return dao.getUserInventory(user);
+	public List<Brand> getUserInventory(User user) throws UnknownServerErrorException {
+		List<Brand> tempList = new ArrayList<Brand>();
+		try {
+			tempList = dao.getUserInventory(user);
+		} catch (Exception e) {
+			throw new UnknownServerErrorException("Unknown server error!");
+		}
+		return tempList;
 	}
 
 }

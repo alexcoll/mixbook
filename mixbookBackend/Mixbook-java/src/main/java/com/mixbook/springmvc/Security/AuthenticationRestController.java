@@ -1,7 +1,6 @@
 package com.mixbook.springmvc.Security;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mobile.device.Device;
@@ -12,11 +11,11 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
 import com.mixbook.springmvc.Security.JwtAuthenticationRequest;
 import com.mixbook.springmvc.Security.JwtTokenUtil;
 import com.mixbook.springmvc.Security.JwtUser;
@@ -50,13 +49,16 @@ public class AuthenticationRestController {
 					);
 			SecurityContextHolder.getContext().setAuthentication(authentication);
 			final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
+			if (userDetails.equals(null)) {
+				return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+			}
 			final String token = jwtTokenUtil.generateToken(userDetails, device);
 
 			return ResponseEntity.ok(new JwtAuthenticationResponse(token));
 		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 		}
-		
+
 	}
 
 	@RequestMapping(value = "/refresh", method = RequestMethod.GET)
@@ -64,6 +66,9 @@ public class AuthenticationRestController {
 		String token = request.getHeader(tokenHeader);
 		String username = jwtTokenUtil.getUsernameFromToken(token);
 		JwtUser user = (JwtUser) userDetailsService.loadUserByUsername(username);
+		if (user.equals(null)) {
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 
 		if (jwtTokenUtil.canTokenBeRefreshed(token, user.getLastPasswordResetDate())) {
 			String refreshedToken = jwtTokenUtil.refreshToken(token);

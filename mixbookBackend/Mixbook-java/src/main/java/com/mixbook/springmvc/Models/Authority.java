@@ -2,8 +2,8 @@ package com.mixbook.springmvc.Models;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.List;
 
+import java.util.List;
 
 @Entity
 @Table(name = "AUTHORITY")

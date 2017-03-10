@@ -1,46 +1,34 @@
 package com.mixbook.springmvc.Services;
 
-import java.sql.SQLException;
-import java.util.List;
-
 import javax.persistence.PersistenceException;
 
+import com.mixbook.springmvc.Exceptions.UnknownServerErrorException;
 import com.mixbook.springmvc.Models.User;
 
 public interface UserService {
 
-	User findById(int id);
+	User findByEntityUsername(String username) throws UnknownServerErrorException;
 
-	User findByEmail(String email);
+	void createUser(User user) throws PersistenceException, UnknownServerErrorException;
 
-	User findByEntityUsername(String username);
+	void deleteUser(User user) throws UnknownServerErrorException;
 
-	List<User> findAllUsers();
-
-	void createUser(User user) throws PersistenceException;
-
-	void deleteUser(User user);
-
-	void editUser(User user);
+	void editUser(User user) throws UnknownServerErrorException;
 	
-	void changeEmail(User user) throws PersistenceException;
+	void changeEmail(User user) throws PersistenceException, UnknownServerErrorException;
 	
-	void changePassword(User user);
-
-	boolean isUserEmailUnique(String email);
-
-	boolean isUsernameUnique(String username);
+	void changePassword(User user) throws UnknownServerErrorException;
 	
-	boolean isUserInfoValid(User user);
+	boolean isUserInfoValid(User user) throws UnknownServerErrorException;
 	
-	boolean isUserEmailValid(String email);
+	boolean isUserEmailValid(String email) throws UnknownServerErrorException;
 	
-	boolean isUserPasswordValid(String password);
+	boolean isUserPasswordValid(String password) throws UnknownServerErrorException;
 	
-	boolean isUserUsernameValid(String username);
+	boolean isUserUsernameValid(String username) throws UnknownServerErrorException;
 	
-	boolean isUserFirstNameValid(String first_name);
+	boolean isUserFirstNameValid(String first_name) throws UnknownServerErrorException;
 	
-	boolean isUserLastNameValid(String last_name);
+	boolean isUserLastNameValid(String last_name) throws UnknownServerErrorException;
 	
 }

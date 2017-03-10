@@ -1,11 +1,11 @@
 package com.mixbook.springmvc.Services;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 import javax.persistence.PersistenceException;
 
@@ -15,9 +15,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mixbook.springmvc.DAO.UserDao;
+import com.mixbook.springmvc.Exceptions.UnknownServerErrorException;
 import com.mixbook.springmvc.Models.Authority;
 import com.mixbook.springmvc.Models.AuthorityName;
-import com.mixbook.springmvc.Models.JsonResponse;
 import com.mixbook.springmvc.Models.User;
 
 @Service("userService")
@@ -38,24 +38,16 @@ public class UserServiceImpl implements UserService {
 			"^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
 					+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
-	public User findById(int id) {
-		return dao.findById(id);
+	public User findByEntityUsername(String username) throws UnknownServerErrorException {
+		try {
+			User user = dao.findByEntityUsername(username);
+			return user;
+		} catch (Exception e) {
+			throw new UnknownServerErrorException("Unknown server error!");
+		}
 	}
 
-	public User findByEmail(String email) {
-		return dao.findByEmail(email);	
-	}
-
-	public User findByEntityUsername(String username) {
-		return dao.findByEntityUsername(username);
-	}
-
-	@SuppressWarnings("unchecked")
-	public List<User> findAllUsers() {
-		return dao.findAllUsers();
-	}
-
-	public void createUser(User user) throws PersistenceException {
+	public void createUser(User user) throws PersistenceException, UnknownServerErrorException {
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		user.setEnabled(true);
 		Date currentTimestamp = new Date();
@@ -70,112 +62,132 @@ public class UserServiceImpl implements UserService {
 			dao.createUser(user);
 		} catch (PersistenceException e) {
 			throw new PersistenceException();
+		} catch (Exception e) {
+			throw new UnknownServerErrorException("Unknown server error!");
 		}
 	}
 
-	public void deleteUser(User user) {
-		dao.deleteUser(user);
+	public void deleteUser(User user) throws UnknownServerErrorException {
+		try {
+			dao.deleteUser(user);
+		} catch (Exception e) {
+			throw new UnknownServerErrorException("Unknown server error!");
+		}
 	}
 
-	public void editUser(User user) {
-		dao.editUser(user);
+	public void editUser(User user) throws UnknownServerErrorException {
+		try {
+			dao.editUser(user);
+		} catch (Exception e) {
+			throw new UnknownServerErrorException("Unknown server error!");
+		}
 	}
 
-	public void changeEmail(User user) throws PersistenceException {
+	public void changeEmail(User user) throws PersistenceException, UnknownServerErrorException {
 		try {
 			dao.changeEmail(user);
 		} catch (PersistenceException e) {
 			throw new PersistenceException();
+		} catch (Exception e) {
+			throw new UnknownServerErrorException("Unknown server error!");
 		}
 	}
 
-	public void changePassword(User user) {
+	public void changePassword(User user) throws UnknownServerErrorException {
 		Date currentTimestamp = new Date();
 		user.setLastPasswordResetDate(currentTimestamp);
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
-		dao.changePassword(user);
-	}
-
-	public boolean isUserEmailUnique(String email) {
-		User user = findByEmail(email);
-		if (user == null) {
-			return true;
-		}
-		else {
-			return false;
+		try {
+			dao.changePassword(user);
+		} catch (Exception e) {
+			throw new UnknownServerErrorException("Unknown server error!");
 		}
 	}
 
-	public boolean isUsernameUnique(String username) {
-		User user = findByEntityUsername(username);
-		if (user == null) {
-			return true;
-		}
-		else {
-			return false;
-		}
-	}
-
-	public boolean isUserInfoValid(User user) {
-		if (user.getEmail() == null || !isUserEmailValid(user.getEmail())) {
-			return false;
-		}
-		if (user.getPassword() == null || !isUserPasswordValid(user.getPassword())) {
-			return false;
-		}
-		if (user.getUsername() == null || !isUserUsernameValid(user.getUsername())) {
-			return false;
-		}
-		if (user.getFirstName() == null || !isUserFirstNameValid(user.getFirstName())) {
-			return false;
-		}
-		if (user.getLastName() == null || !isUserLastNameValid(user.getLastName())) {
-			return false;
+	public boolean isUserInfoValid(User user) throws UnknownServerErrorException {
+		try {
+			if (user.getEmail() == null || !isUserEmailValid(user.getEmail())) {
+				return false;
+			}
+			if (user.getPassword() == null || !isUserPasswordValid(user.getPassword())) {
+				return false;
+			}
+			if (user.getUsername() == null || !isUserUsernameValid(user.getUsername())) {
+				return false;
+			}
+			if (user.getFirstName() == null || !isUserFirstNameValid(user.getFirstName())) {
+				return false;
+			}
+			if (user.getLastName() == null || !isUserLastNameValid(user.getLastName())) {
+				return false;
+			}
+		} catch (UnknownServerErrorException e) {
+			throw new UnknownServerErrorException("Unknown server error!");
 		}
 		return true;
 	}
 
-	public boolean isUserEmailValid(String email) {
-		Pattern pattern = Pattern.compile(EMAIL_PATTERN);
-		Matcher matcher = pattern.matcher(email);
-		if (!matcher.matches() || email.length() > 100) {
-			return false;
+	public boolean isUserEmailValid(String email) throws UnknownServerErrorException {
+		try {
+			Pattern pattern = Pattern.compile(EMAIL_PATTERN);
+			Matcher matcher = pattern.matcher(email);
+			if (!matcher.matches() || email.length() > 100) {
+				return false;
+			}
+		} catch (PatternSyntaxException e) {
+			throw new UnknownServerErrorException("Unknown server error!");
 		}
 		return true;
 	}
 
-	public boolean isUserPasswordValid(String password) {
-		Pattern pattern = Pattern.compile(PASSWORD_PATTERN);
-		Matcher matcher = pattern.matcher(password);
-		if (!matcher.matches() || password.length() > 63) {
-			return false;
+	public boolean isUserPasswordValid(String password) throws UnknownServerErrorException {
+		try {
+			Pattern pattern = Pattern.compile(PASSWORD_PATTERN);
+			Matcher matcher = pattern.matcher(password);
+			if (!matcher.matches() || password.length() > 63) {
+				return false;
+			}
+		} catch (PatternSyntaxException e) {
+			throw new UnknownServerErrorException("Unknown server error!");
 		}
 		return true;
 	}
 
-	public boolean isUserUsernameValid(String username) {
-		Pattern pattern = Pattern.compile(FIRSTLASTNAME_PATTERN, Pattern.UNICODE_CHARACTER_CLASS);
-		Matcher matcher = pattern.matcher(username);
-		if (!matcher.matches() || username.length() > 63 || username.length() < 6) {
-			return false;
+	public boolean isUserUsernameValid(String username) throws UnknownServerErrorException {
+		try {
+			Pattern pattern = Pattern.compile(FIRSTLASTNAME_PATTERN, Pattern.UNICODE_CHARACTER_CLASS);
+			Matcher matcher = pattern.matcher(username);
+			if (!matcher.matches() || username.length() > 63 || username.length() < 6) {
+				return false;
+			}
+		} catch (PatternSyntaxException e) {
+			throw new UnknownServerErrorException("Unknown server error!");
 		}
 		return true;
 	}
 
-	public boolean isUserFirstNameValid(String first_name) {
-		Pattern pattern = Pattern.compile(FIRSTLASTNAME_PATTERN, Pattern.UNICODE_CHARACTER_CLASS);
-		Matcher matcher = pattern.matcher(first_name);
-		if (!matcher.matches() || first_name.length() > 63 || first_name.isEmpty()) {
-			return false;
+	public boolean isUserFirstNameValid(String first_name) throws UnknownServerErrorException {
+		try {
+			Pattern pattern = Pattern.compile(FIRSTLASTNAME_PATTERN, Pattern.UNICODE_CHARACTER_CLASS);
+			Matcher matcher = pattern.matcher(first_name);
+			if (!matcher.matches() || first_name.length() > 63 || first_name.isEmpty()) {
+				return false;
+			}
+		} catch (PatternSyntaxException e) {
+			throw new UnknownServerErrorException("Unknown server error!");
 		}
 		return true;
 	}
 
-	public boolean isUserLastNameValid(String last_name) {
-		Pattern pattern = Pattern.compile(FIRSTLASTNAME_PATTERN, Pattern.UNICODE_CHARACTER_CLASS);
-		Matcher matcher = pattern.matcher(last_name);
-		if (!matcher.matches() || last_name.length() > 63 || last_name.isEmpty()) {
-			return false;
+	public boolean isUserLastNameValid(String last_name) throws UnknownServerErrorException {
+		try {
+			Pattern pattern = Pattern.compile(FIRSTLASTNAME_PATTERN, Pattern.UNICODE_CHARACTER_CLASS);
+			Matcher matcher = pattern.matcher(last_name);
+			if (!matcher.matches() || last_name.length() > 63 || last_name.isEmpty()) {
+				return false;
+			}
+		} catch (PatternSyntaxException e) {
+			throw new UnknownServerErrorException("Unknown server error!");
 		}
 		return true;
 	}

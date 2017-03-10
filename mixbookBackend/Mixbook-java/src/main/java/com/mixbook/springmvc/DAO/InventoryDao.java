@@ -10,10 +10,10 @@ import com.mixbook.springmvc.Models.User;
 
 public interface InventoryDao {
 
-	void addIngredientToInventory(Brand brand, User user) throws MaxInventoryItemsException, NullPointerException, PersistenceException;
+	void addIngredientToInventory(Brand brand, User user) throws MaxInventoryItemsException, NullPointerException, PersistenceException, Exception;
 
-	void deleteIngredientFromInventory(Brand brand, User user) throws NullPointerException;
+	void deleteIngredientFromInventory(Brand brand, User user) throws NullPointerException, Exception;
 
-	List<Brand> getUserInventory(User user);
+	List<Brand> getUserInventory(User user) throws Exception;
 
 }

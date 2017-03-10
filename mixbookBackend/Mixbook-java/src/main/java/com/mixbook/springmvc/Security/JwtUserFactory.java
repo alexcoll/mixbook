@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
 import com.mixbook.springmvc.Models.Authority;
 import com.mixbook.springmvc.Models.User;
 

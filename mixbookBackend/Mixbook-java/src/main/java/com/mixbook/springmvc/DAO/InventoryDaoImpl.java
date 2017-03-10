@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.PersistenceException;
 
 import org.hibernate.SQLQuery;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -20,7 +21,7 @@ public class InventoryDaoImpl extends AbstractDao<Integer, Brand> implements Inv
 	@Autowired
 	UserService userService;
 
-	public void addIngredientToInventory(Brand brand, User user) throws MaxInventoryItemsException, NullPointerException, PersistenceException {
+	public void addIngredientToInventory(Brand brand, User user) throws MaxInventoryItemsException, NullPointerException, PersistenceException, Exception {
 		user = this.userService.findByEntityUsername(user.getUsername());
 		SQLQuery countQuery = getSession().createSQLQuery("SELECT COUNT(*) FROM user_has_brand WHERE user_user_id = ?").setParameter(0, user.getUserId());
 		Integer count = ((BigInteger) countQuery.uniqueResult()).intValue();
@@ -38,7 +39,7 @@ public class InventoryDaoImpl extends AbstractDao<Integer, Brand> implements Inv
 
 	}
 
-	public void deleteIngredientFromInventory(Brand brand, User user) throws NullPointerException {
+	public void deleteIngredientFromInventory(Brand brand, User user) throws NullPointerException, Exception {
 		user = this.userService.findByEntityUsername(user.getUsername());
 		SQLQuery searchQuery = getSession().createSQLQuery("SELECT brand_id FROM brand WHERE brand_name = ?");
 		searchQuery.setParameter(0, brand.getBrandName());
@@ -48,7 +49,7 @@ public class InventoryDaoImpl extends AbstractDao<Integer, Brand> implements Inv
 		deleteQuery.executeUpdate();
 	}
 
-	public List<Brand> getUserInventory(User user) {
+	public List<Brand> getUserInventory(User user) throws Exception {
 		user = this.userService.findByEntityUsername(user.getUsername());
 		SQLQuery query = getSession().createSQLQuery("SELECT brand_name FROM brand INNER JOIN user_has_brand ON brand.brand_id = user_has_brand.brand_brand_id WHERE user_has_brand.user_user_id = ?").setParameter(0, user.getUserId());
 		List result = query.list();
