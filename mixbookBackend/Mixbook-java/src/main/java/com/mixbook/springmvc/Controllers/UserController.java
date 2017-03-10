@@ -60,7 +60,6 @@ public class UserController {
 			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","Unknown server error"), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		return new ResponseEntity<JsonResponse>(new JsonResponse("OK",""), HttpStatus.OK);
-
 	}
 
 	@RequestMapping(value = "/deleteUser", 
