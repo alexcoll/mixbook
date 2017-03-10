@@ -14,7 +14,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mixbook.springmvc.DAO.RecipeDao;
+import com.mixbook.springmvc.Exceptions.NotEnoughRecipeIngredientsException;
 import com.mixbook.springmvc.Exceptions.InvalidIngredientException;
+import com.mixbook.springmvc.Exceptions.InvalidPermissionsException;
 import com.mixbook.springmvc.Exceptions.MaxRecipeIngredientsException;
 import com.mixbook.springmvc.Exceptions.UnknownServerErrorException;
 import com.mixbook.springmvc.Models.Brand;
@@ -30,11 +32,12 @@ public class RecipeServiceImpl implements RecipeService {
 
 	private static final String RECIPE_PATTERN = "^\\w+(\\w+)*$";
 
-	public void createRecipe(Recipe recipe, User user) throws MaxRecipeIngredientsException, InvalidIngredientException, PersistenceException, UnknownServerErrorException {
+	public void createRecipe(Recipe recipe, User user) throws InvalidIngredientException, PersistenceException, UnknownServerErrorException {
 		try {
+			recipe.setNumberOfIngredients(recipe.getBrands().size());
+			recipe.setNumberOfRatings(0);
+			recipe.setTotalRating(0);
 			dao.createRecipe(recipe, user);
-		} catch (MaxRecipeIngredientsException e) {
-			throw new MaxRecipeIngredientsException("Maximum number of ingredients in recipe exceeded!");
 		} catch (NullPointerException e) {
 			throw new InvalidIngredientException("Invalid ingredient added!");
 		} catch (PersistenceException e) {
@@ -60,9 +63,11 @@ public class RecipeServiceImpl implements RecipeService {
 		}
 	}
 
-	public void addIngredientToRecipe(Recipe recipe, User user) throws MaxRecipeIngredientsException, InvalidIngredientException, PersistenceException, UnknownServerErrorException {
+	public void addIngredientToRecipe(Recipe recipe, User user) throws InvalidPermissionsException, MaxRecipeIngredientsException, InvalidIngredientException, PersistenceException, UnknownServerErrorException {
 		try {
 			dao.addIngredientToRecipe(recipe, user);
+		} catch (InvalidPermissionsException e) {
+			throw new InvalidPermissionsException("Invalid permissions!");
 		} catch (MaxRecipeIngredientsException e) {
 			throw new MaxRecipeIngredientsException("Maximum number of ingredients in recipe exceeded!");
 		} catch (NullPointerException e) {
@@ -74,9 +79,13 @@ public class RecipeServiceImpl implements RecipeService {
 		}
 	}
 
-	public void removeIngredientFromRecipe(Recipe recipe, User user) throws InvalidIngredientException, UnknownServerErrorException {
+	public void removeIngredientFromRecipe(Recipe recipe, User user) throws InvalidPermissionsException, NotEnoughRecipeIngredientsException, InvalidIngredientException, UnknownServerErrorException {
 		try {
 			dao.removeIngredientFromRecipe(recipe, user);
+		} catch (InvalidPermissionsException e) {
+			throw new InvalidPermissionsException("Invalid permissions!");
+		} catch (NotEnoughRecipeIngredientsException e) {
+			throw new NotEnoughRecipeIngredientsException("Not enough ingredients in recipe!");
 		} catch (NullPointerException e) {
 			throw new InvalidIngredientException("Invalid ingredient deleted!");
 		} catch (Exception e) {
@@ -84,10 +93,10 @@ public class RecipeServiceImpl implements RecipeService {
 		}
 	}
 
-	public Recipe searchForRecipeByName(Recipe recipe) throws UnknownServerErrorException {
+	public List<Recipe> searchForRecipeByName(Recipe recipe) throws UnknownServerErrorException {
 		try {
-			Recipe tempRecipe = dao.searchForRecipeByName(recipe);
-			return tempRecipe;
+			List<Recipe> tempList = dao.searchForRecipeByName(recipe);
+			return tempList;
 		} catch (Exception e) {
 			throw new UnknownServerErrorException("Unknown server error!");
 		}
@@ -117,6 +126,16 @@ public class RecipeServiceImpl implements RecipeService {
 		List<Recipe> tempList = new ArrayList<Recipe>();
 		try {
 			tempList = dao.getAllRecipesAnonymousUserCanMake(brands);
+			return tempList;
+		} catch (Exception e) {
+			throw new UnknownServerErrorException("Unknown server error!");
+		}
+	}
+
+	public List<Brand> getBrandsForRecipe(Recipe recipe) throws UnknownServerErrorException {
+		List<Brand> tempList = new ArrayList<Brand>();
+		try {
+			tempList = dao.getBrandsForRecipe(recipe);
 			return tempList;
 		} catch (Exception e) {
 			throw new UnknownServerErrorException("Unknown server error!");

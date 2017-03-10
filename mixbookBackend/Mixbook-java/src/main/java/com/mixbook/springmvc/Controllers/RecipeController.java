@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mixbook.springmvc.Exceptions.InvalidIngredientException;
+import com.mixbook.springmvc.Exceptions.InvalidPermissionsException;
 import com.mixbook.springmvc.Exceptions.MaxRecipeIngredientsException;
+import com.mixbook.springmvc.Exceptions.NotEnoughRecipeIngredientsException;
 import com.mixbook.springmvc.Exceptions.UnknownServerErrorException;
 import com.mixbook.springmvc.Models.Brand;
 import com.mixbook.springmvc.Models.JsonResponse;
@@ -54,8 +56,6 @@ public class RecipeController {
 		user.setUsername(username);
 		try {
 			recipeService.createRecipe(recipe, user);
-		} catch (MaxRecipeIngredientsException e) {
-			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","Too many ingredients added"), HttpStatus.BAD_REQUEST);
 		} catch (InvalidIngredientException e) {
 			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","Invalid ingredient added"), HttpStatus.BAD_REQUEST);
 		} catch (PersistenceException e) {
@@ -123,8 +123,13 @@ public class RecipeController {
 		String username = jwtTokenUtil.getUsernameFromToken(token);
 		User user = new User();
 		user.setUsername(username);
+		if (recipe.getBrands().size() != 1) {
+			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED", "Invalid number of ingredients"), HttpStatus.BAD_REQUEST);
+		}
 		try {
 			recipeService.addIngredientToRecipe(recipe, user);
+		} catch (InvalidPermissionsException e) {
+			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED", "Invalid permissions"), HttpStatus.BAD_REQUEST);
 		} catch (MaxRecipeIngredientsException e) {
 			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","Too many ingredients added"), HttpStatus.BAD_REQUEST);
 		} catch (InvalidIngredientException e) {
@@ -145,8 +150,15 @@ public class RecipeController {
 		String username = jwtTokenUtil.getUsernameFromToken(token);
 		User user = new User();
 		user.setUsername(username);
+		if (recipe.getBrands().size() != 1) {
+			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED", "Invalid number of ingredients"), HttpStatus.BAD_REQUEST);
+		}
 		try {
 			recipeService.removeIngredientFromRecipe(recipe, user);
+		} catch (InvalidPermissionsException e) {
+			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED", "Invalid permissions"), HttpStatus.BAD_REQUEST);
+		} catch (NotEnoughRecipeIngredientsException e) {
+			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED", "Not enough ingredients in recipe!"), HttpStatus.BAD_REQUEST);
 		} catch (InvalidIngredientException e) {
 			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","Invalid ingredient added"), HttpStatus.BAD_REQUEST);
 		} catch (UnknownServerErrorException e) {
@@ -157,14 +169,15 @@ public class RecipeController {
 
 	@RequestMapping(value = "/searchForRecipeByName", method = RequestMethod.GET)
 	@ResponseBody
-	public ResponseEntity<Recipe> searchForRecipeByName(@RequestBody Recipe recipe) {
-		Recipe tempRecipe;
+	public ResponseEntity<List<Recipe>> searchForRecipeByName(@RequestBody Recipe recipe) {
+		List<Recipe> tempList = new ArrayList<Recipe>();
 		try {
-			tempRecipe = recipeService.searchForRecipeByName(recipe);
+			tempList = recipeService.searchForRecipeByName(recipe);
 		} catch (UnknownServerErrorException e) {
-			return new ResponseEntity<Recipe>(new Recipe(), HttpStatus.INTERNAL_SERVER_ERROR);
+			List<Recipe> emptyList = new ArrayList<Recipe>();
+			return new ResponseEntity<List<Recipe>>(emptyList, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		return new ResponseEntity<Recipe>(tempRecipe, HttpStatus.OK); 
+		return new ResponseEntity<List<Recipe>>(tempList, HttpStatus.OK); 
 	}
 
 	@RequestMapping(value = "/getAllRecipesCreatedByUser", method = RequestMethod.GET)
@@ -215,6 +228,22 @@ public class RecipeController {
 			return new ResponseEntity<List<Recipe>>(emptyList, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		return new ResponseEntity<List<Recipe>>(tempList, HttpStatus.OK);
+	}
+
+	@RequestMapping(value = "/getBrandsForRecipe", method = RequestMethod.GET)
+	@ResponseBody
+	public ResponseEntity<List<Brand>> getBrandsForRecipe(@RequestBody Recipe recipe) {
+		List<Brand> tempList = new ArrayList<Brand>();
+		List<Brand> emptyList = new ArrayList<Brand>();
+		if (recipe.getRecipeId() < 1) {
+			return new ResponseEntity<List<Brand>>(emptyList, HttpStatus.BAD_REQUEST);
+		}
+		try {
+			tempList = recipeService.getBrandsForRecipe(recipe);
+		} catch (UnknownServerErrorException e) {
+			return new ResponseEntity<List<Brand>>(emptyList, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return new ResponseEntity<List<Brand>>(tempList, HttpStatus.OK);
 	}
 
 }
