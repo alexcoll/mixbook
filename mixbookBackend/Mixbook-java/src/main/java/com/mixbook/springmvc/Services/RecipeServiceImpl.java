@@ -30,9 +30,9 @@ public class RecipeServiceImpl implements RecipeService {
 
 	private static final String RECIPE_PATTERN = "^\\w+(\\w+)*$";
 
-	public void createRecipe(Recipe recipe) throws MaxRecipeIngredientsException, InvalidIngredientException, PersistenceException, UnknownServerErrorException {
+	public void createRecipe(Recipe recipe, User user) throws MaxRecipeIngredientsException, InvalidIngredientException, PersistenceException, UnknownServerErrorException {
 		try {
-			dao.createRecipe(recipe);
+			dao.createRecipe(recipe, user);
 		} catch (MaxRecipeIngredientsException e) {
 			throw new MaxRecipeIngredientsException("Maximum number of ingredients in recipe exceeded!");
 		} catch (NullPointerException e) {
@@ -44,25 +44,25 @@ public class RecipeServiceImpl implements RecipeService {
 		}
 	}
 
-	public void editRecipe(Recipe recipe) throws UnknownServerErrorException {
+	public void editRecipe(Recipe recipe, User user) throws UnknownServerErrorException {
 		try {
-			dao.editRecipe(recipe);
+			dao.editRecipe(recipe, user);
 		} catch (Exception e) {
 			throw new UnknownServerErrorException("Unknown server error!");
 		}
 	}
 
-	public void deleteRecipe(Recipe recipe) throws UnknownServerErrorException {
+	public void deleteRecipe(Recipe recipe, User user) throws UnknownServerErrorException {
 		try {	
-			dao.deleteRecipe(recipe);
+			dao.deleteRecipe(recipe, user);
 		} catch (Exception e) {
 			throw new UnknownServerErrorException("Unknown server error!");
 		}
 	}
 
-	public void addIngredientToRecipe(Recipe recipe) throws MaxRecipeIngredientsException, InvalidIngredientException, PersistenceException, UnknownServerErrorException {
+	public void addIngredientToRecipe(Recipe recipe, User user) throws MaxRecipeIngredientsException, InvalidIngredientException, PersistenceException, UnknownServerErrorException {
 		try {
-			dao.addIngredientToRecipe(recipe);
+			dao.addIngredientToRecipe(recipe, user);
 		} catch (MaxRecipeIngredientsException e) {
 			throw new MaxRecipeIngredientsException("Maximum number of ingredients in recipe exceeded!");
 		} catch (NullPointerException e) {
@@ -74,9 +74,9 @@ public class RecipeServiceImpl implements RecipeService {
 		}
 	}
 
-	public void removeIngredientFromRecipe(Recipe recipe) throws InvalidIngredientException, UnknownServerErrorException {
+	public void removeIngredientFromRecipe(Recipe recipe, User user) throws InvalidIngredientException, UnknownServerErrorException {
 		try {
-			dao.removeIngredientFromRecipe(recipe);
+			dao.removeIngredientFromRecipe(recipe, user);
 		} catch (NullPointerException e) {
 			throw new InvalidIngredientException("Invalid ingredient deleted!");
 		} catch (Exception e) {

@@ -53,7 +53,7 @@ public class RecipeController {
 		User user = new User();
 		user.setUsername(username);
 		try {
-			recipeService.createRecipe(recipe);
+			recipeService.createRecipe(recipe, user);
 		} catch (MaxRecipeIngredientsException e) {
 			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","Too many ingredients added"), HttpStatus.BAD_REQUEST);
 		} catch (InvalidIngredientException e) {
@@ -92,7 +92,7 @@ public class RecipeController {
 		User user = new User();
 		user.setUsername(username);
 		try {
-			recipeService.editRecipe(recipe);
+			recipeService.editRecipe(recipe, user);
 		} catch (UnknownServerErrorException e) {
 			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","Unknown server error"), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
@@ -108,7 +108,7 @@ public class RecipeController {
 		User user = new User();
 		user.setUsername(username);
 		try {
-			recipeService.deleteRecipe(recipe);
+			recipeService.deleteRecipe(recipe, user);
 		} catch (UnknownServerErrorException e) {
 			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","Unknown server error"), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
@@ -124,7 +124,7 @@ public class RecipeController {
 		User user = new User();
 		user.setUsername(username);
 		try {
-			recipeService.addIngredientToRecipe(recipe);
+			recipeService.addIngredientToRecipe(recipe, user);
 		} catch (MaxRecipeIngredientsException e) {
 			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","Too many ingredients added"), HttpStatus.BAD_REQUEST);
 		} catch (InvalidIngredientException e) {
@@ -146,7 +146,7 @@ public class RecipeController {
 		User user = new User();
 		user.setUsername(username);
 		try {
-			recipeService.removeIngredientFromRecipe(recipe);
+			recipeService.removeIngredientFromRecipe(recipe, user);
 		} catch (InvalidIngredientException e) {
 			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","Invalid ingredient added"), HttpStatus.BAD_REQUEST);
 		} catch (UnknownServerErrorException e) {

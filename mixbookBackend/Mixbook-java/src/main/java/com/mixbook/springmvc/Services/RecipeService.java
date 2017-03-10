@@ -14,15 +14,15 @@ import com.mixbook.springmvc.Models.Brand;
 
 public interface RecipeService {
 
-	void createRecipe(Recipe recipe) throws MaxRecipeIngredientsException, InvalidIngredientException, PersistenceException, UnknownServerErrorException;
+	void createRecipe(Recipe recipe, User user) throws MaxRecipeIngredientsException, InvalidIngredientException, PersistenceException, UnknownServerErrorException;
 
-	void editRecipe(Recipe recipe) throws UnknownServerErrorException;
+	void editRecipe(Recipe recipe, User user) throws UnknownServerErrorException;
 
-	void deleteRecipe(Recipe recipe) throws UnknownServerErrorException;
+	void deleteRecipe(Recipe recipe, User user) throws UnknownServerErrorException;
 
-	void addIngredientToRecipe(Recipe recipe) throws MaxRecipeIngredientsException, InvalidIngredientException, PersistenceException, UnknownServerErrorException;
+	void addIngredientToRecipe(Recipe recipe, User user) throws MaxRecipeIngredientsException, InvalidIngredientException, PersistenceException, UnknownServerErrorException;
 
-	void removeIngredientFromRecipe(Recipe recipe) throws InvalidIngredientException, UnknownServerErrorException;
+	void removeIngredientFromRecipe(Recipe recipe, User user) throws InvalidIngredientException, UnknownServerErrorException;
 
 	Recipe searchForRecipeByName(Recipe recipe) throws UnknownServerErrorException;
 

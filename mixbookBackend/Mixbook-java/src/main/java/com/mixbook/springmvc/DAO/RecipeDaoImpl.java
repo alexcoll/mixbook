@@ -14,23 +14,23 @@ import com.mixbook.springmvc.Models.User;
 @Repository("recipeDao")
 public class RecipeDaoImpl extends AbstractDao<Integer, Recipe> implements RecipeDao {
 
-	public void createRecipe(Recipe recipe) throws MaxRecipeIngredientsException, NullPointerException, PersistenceException, Exception {
+	public void createRecipe(Recipe recipe, User user) throws MaxRecipeIngredientsException, NullPointerException, PersistenceException, Exception {
+		
+	}
+
+	public void editRecipe(Recipe recipe, User user) throws Exception {
 
 	}
 
-	public void editRecipe(Recipe recipe) throws Exception {
+	public void deleteRecipe(Recipe recipe, User user) throws Exception {
 
 	}
 
-	public void deleteRecipe(Recipe recipe) throws Exception {
+	public void addIngredientToRecipe(Recipe recipe, User user) throws MaxRecipeIngredientsException, NullPointerException, PersistenceException, Exception {
 
 	}
 
-	public void addIngredientToRecipe(Recipe recipe) throws MaxRecipeIngredientsException, NullPointerException, PersistenceException, Exception {
-
-	}
-
-	public void removeIngredientFromRecipe(Recipe recipe) throws NullPointerException, Exception {
+	public void removeIngredientFromRecipe(Recipe recipe, User user) throws NullPointerException, Exception {
 
 	}
 
