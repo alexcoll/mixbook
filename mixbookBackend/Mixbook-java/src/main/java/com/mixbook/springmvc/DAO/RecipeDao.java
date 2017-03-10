@@ -2,28 +2,31 @@ package com.mixbook.springmvc.DAO;
 
 import java.util.List;
 
+import javax.persistence.PersistenceException;
+
+import com.mixbook.springmvc.Exceptions.MaxRecipeIngredientsException;
 import com.mixbook.springmvc.Models.Brand;
 import com.mixbook.springmvc.Models.Recipe;
 import com.mixbook.springmvc.Models.User;
 
 public interface RecipeDao {
 
-	void createRecipe(Recipe recipe);
+	void createRecipe(Recipe recipe) throws MaxRecipeIngredientsException, NullPointerException, PersistenceException, Exception;
 
-	void editRecipe(Recipe recipe);
+	void editRecipe(Recipe recipe) throws Exception;
 
-	void deleteRecipe(Recipe recipe);
+	void deleteRecipe(Recipe recipe) throws Exception;
 
-	void addIngredientToRecipe(Recipe recipe);
+	void addIngredientToRecipe(Recipe recipe) throws MaxRecipeIngredientsException, NullPointerException, PersistenceException, Exception;
 
-	void removeIngredientFromRecipe(Recipe recipe);
+	void removeIngredientFromRecipe(Recipe recipe) throws NullPointerException, Exception;
 
-	Recipe searchForRecipeByName(Recipe recipe);
+	Recipe searchForRecipeByName(Recipe recipe) throws Exception;
 
-	List<Recipe> getAllRecipesCreatedByUser(User user);
+	List<Recipe> getAllRecipesCreatedByUser(User user) throws Exception;
 
-	List<Recipe> getAllRecipesUserCanMake(User user);
+	List<Recipe> getAllRecipesUserCanMake(User user) throws Exception;
 
-	List<Recipe> getAllRecipesAnonymousUserCanMake(List<Brand> brands);
+	List<Recipe> getAllRecipesAnonymousUserCanMake(List<Brand> brands) throws Exception;
 
 }

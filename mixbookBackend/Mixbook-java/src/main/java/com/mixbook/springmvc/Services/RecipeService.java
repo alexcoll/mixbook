@@ -1,29 +1,45 @@
 package com.mixbook.springmvc.Services;
 
 import java.util.List;
+import java.util.Set;
+
+import javax.persistence.PersistenceException;
 
 import com.mixbook.springmvc.Models.Recipe;
 import com.mixbook.springmvc.Models.User;
+import com.mixbook.springmvc.Exceptions.InvalidIngredientException;
+import com.mixbook.springmvc.Exceptions.MaxRecipeIngredientsException;
+import com.mixbook.springmvc.Exceptions.UnknownServerErrorException;
 import com.mixbook.springmvc.Models.Brand;
 
 public interface RecipeService {
 
-	void createRecipe(Recipe recipe);
+	void createRecipe(Recipe recipe) throws MaxRecipeIngredientsException, InvalidIngredientException, PersistenceException, UnknownServerErrorException;
 
-	void editRecipe(Recipe recipe);
+	void editRecipe(Recipe recipe) throws UnknownServerErrorException;
 
-	void deleteRecipe(Recipe recipe);
+	void deleteRecipe(Recipe recipe) throws UnknownServerErrorException;
 
-	void addIngredientToRecipe(Recipe recipe);
+	void addIngredientToRecipe(Recipe recipe) throws MaxRecipeIngredientsException, InvalidIngredientException, PersistenceException, UnknownServerErrorException;
 
-	void removeIngredientFromRecipe(Recipe recipe);
+	void removeIngredientFromRecipe(Recipe recipe) throws InvalidIngredientException, UnknownServerErrorException;
 
-	Recipe searchForRecipeByName(Recipe recipe);
+	Recipe searchForRecipeByName(Recipe recipe) throws UnknownServerErrorException;
 
-	List<Recipe> getAllRecipesCreatedByUser(User user);
+	List<Recipe> getAllRecipesCreatedByUser(User user) throws UnknownServerErrorException;
 
-	List<Recipe> getAllRecipesUserCanMake(User user);
+	List<Recipe> getAllRecipesUserCanMake(User user) throws UnknownServerErrorException;
 
-	List<Recipe> getAllRecipesAnonymousUserCanMake(List<Brand> brands);
+	List<Recipe> getAllRecipesAnonymousUserCanMake(List<Brand> brands) throws UnknownServerErrorException;
+
+	boolean isRecipeInfoValid(Recipe recipe) throws UnknownServerErrorException;
+
+	boolean isRecipeNameValid(String recipe_name) throws UnknownServerErrorException;
+
+	boolean areRecipeDirectionsValid(String directions) throws UnknownServerErrorException;
+
+	boolean isRecipeNumberOfIngredientsValid(Set<Brand> brands);
+
+	boolean isRecipeDifficultyValid(int difficulty);
 
 }

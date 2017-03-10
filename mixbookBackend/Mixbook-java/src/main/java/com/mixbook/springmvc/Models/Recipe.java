@@ -34,7 +34,7 @@ public class Recipe implements Serializable {
 	@NotNull
 	@Size(max=255)   
 	@Column(name = "recipe_name", nullable = false)
-	private String brand_name;
+	private String recipe_name;
 
 	@Column(name = "directions", nullable = false)
 	private String directions;
@@ -66,12 +66,12 @@ public class Recipe implements Serializable {
 
 	}
 
-	public Recipe(Integer recipe_id, Integer user_recipe_id, String brand_name, String directions,
+	public Recipe(Integer recipe_id, Integer user_recipe_id, String recipe_name, String directions,
 			int number_of_ingredients, int difficulty, int number_of_ratings,
 			int	total_rating, User user, Set<Brand> brands) {
 		this.recipe_id = recipe_id;
 		this.user_recipe_id = user_recipe_id;
-		this.brand_name = brand_name;
+		this.recipe_name = recipe_name;
 		this.directions = directions;
 		this.number_of_ingredients = number_of_ingredients;
 		this.difficulty = difficulty;
@@ -97,12 +97,12 @@ public class Recipe implements Serializable {
 		this.user_recipe_id = user_recipe_id;
 	}
 
-	public String getBrandName() {
-		return brand_name;
+	public String getRecipeName() {
+		return recipe_name;
 	}
 
-	public void setBrandName(String brand_name) {
-		this.brand_name = brand_name;
+	public void setRecipeName(String recipe_name) {
+		this.recipe_name = recipe_name;
 	}
 
 	public String getDirections() {
