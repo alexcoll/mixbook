@@ -39,26 +39,20 @@ public class AuthenticationRestController {
 
 	@RequestMapping(value = "/auth", method = RequestMethod.POST)
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest, Device device) throws AuthenticationException {
-
-		try {
-			final Authentication authentication = authenticationManager.authenticate(
-					new UsernamePasswordAuthenticationToken(
-							authenticationRequest.getUsername(),
-							authenticationRequest.getPassword()
-							)
-					);
-			SecurityContextHolder.getContext().setAuthentication(authentication);
-			final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
-			if (userDetails.equals(null)) {
-				return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-			}
-			final String token = jwtTokenUtil.generateToken(userDetails, device);
-
-			return ResponseEntity.ok(new JwtAuthenticationResponse(token));
-		} catch (Exception e) {
-			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+		final Authentication authentication = authenticationManager.authenticate(
+				new UsernamePasswordAuthenticationToken(
+						authenticationRequest.getUsername(),
+						authenticationRequest.getPassword()
+						)
+				);
+		SecurityContextHolder.getContext().setAuthentication(authentication);
+		final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
+		if (userDetails.equals(null)) {
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
+		final String token = jwtTokenUtil.generateToken(userDetails, device);
 
+		return ResponseEntity.ok(new JwtAuthenticationResponse(token));
 	}
 
 	@RequestMapping(value = "/refresh", method = RequestMethod.GET)

@@ -29,7 +29,7 @@ public class AppInitializer extends AbstractAnnotationConfigDispatcherServletIni
 		CharacterEncodingFilter f = new CharacterEncodingFilter();
 		f.setEncoding("UTF-8");
 		f.setForceEncoding(true);
-		Filter[] filters = {f, new JwtAuthenticationTokenFilter()};
+		Filter[] filters = {f};
 		return filters;
 	}
  
