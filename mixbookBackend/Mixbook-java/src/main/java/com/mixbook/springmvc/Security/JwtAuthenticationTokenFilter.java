@@ -11,19 +11,12 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
-
-import com.mixbook.springmvc.Controllers.UserController;
-import com.mixbook.springmvc.DAO.UserDaoImpl;
-
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
@@ -34,9 +27,9 @@ public class JwtAuthenticationTokenFilter extends UsernamePasswordAuthentication
 
 	@Autowired
 	private JwtTokenUtil jwtTokenUtil;
-	
+
 	private static final List<String> NO_AUTH_ROUTES = new ArrayList<>();
-	
+
 	static {
 		NO_AUTH_ROUTES.add("/mixbook/user/createUser");
 		NO_AUTH_ROUTES.add("/mixbook/auth");
@@ -70,6 +63,9 @@ public class JwtAuthenticationTokenFilter extends UsernamePasswordAuthentication
 
 			if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 				UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
+				if (userDetails.equals(null)) {
+					resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Unknown server error");
+				}
 				if (jwtTokenUtil.validateToken(authToken, userDetails)) {
 					UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
 					authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpRequest));
@@ -90,7 +86,7 @@ public class JwtAuthenticationTokenFilter extends UsernamePasswordAuthentication
 		else {
 			chain.doFilter(request, response);
 		}
-		
+
 	}
 
 }
