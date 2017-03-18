@@ -1,6 +1,7 @@
 package com.mixbook.springmvc.DAO;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -156,11 +157,26 @@ public class RecipeDaoImpl extends AbstractDao<Integer, Recipe> implements Recip
 
 	public List<Recipe> getAllRecipesUserCanMake(User user) throws Exception {
 		user = this.userService.findByEntityUsername(user.getUsername());
-		return null;
+		SQLQuery query = getSession().createSQLQuery("SELECT brand_brand_id FROM user_has_brand WHERE user_user_id = ?").setParameter(0, user.getUserId());
+		List result = query.list();
+		query = getSession().createSQLQuery("SELECT * FROM recipe WHERE recipe_id NOT IN (SELECT recipe_recipe_id FROM recipe_has_brand WHERE brand_brand_id NOT IN (:brandIds))");
+		query.setParameterList("brandIds", result);
+		List<Recipe> recipeList = query.getResultList();
+		return recipeList;
 	}
 
 	public List<Recipe> getAllRecipesAnonymousUserCanMake(List<Brand> brands) throws Exception {
-		return null;
+		List<String> brandNames = new ArrayList<String>(brands.size());
+		for (Brand brand : brands) {
+			brandNames.add(brand.getBrandName());
+		}
+		Query searchQuery = getSession().createQuery("FROM Brand brand WHERE brand.brand_name IN (:brandNames)");
+		searchQuery.setParameterList("brandNames", brandNames);
+		List<Brand> brandList = searchQuery.getResultList();
+		SQLQuery query = getSession().createSQLQuery("SELECT * FROM recipe WHERE recipe_id NOT IN (SELECT recipe_recipe_id FROM recipe_has_brand WHERE brand_brand_id NOT IN (:brandIds))");
+		query.setParameterList("brandIds", brandList);
+		List<Recipe> recipeList = query.getResultList();
+		return recipeList;
 	}
 
 	public List<Brand> getBrandsForRecipe(Recipe recipe) throws Exception {
