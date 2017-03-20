@@ -44,7 +44,7 @@ public class RecipeController {
 	@ResponseBody
 	public ResponseEntity<JsonResponse> createRecipe(HttpServletRequest request, @RequestBody Recipe recipe) {
 		try {
-			if (recipeService.isRecipeInfoValid(recipe) == false) {
+			if (!recipeService.isRecipeInfoValid(recipe)) {
 				return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","Recipe info is invalid"), HttpStatus.BAD_REQUEST);
 			}
 		} catch (UnknownServerErrorException e) {
@@ -70,19 +70,25 @@ public class RecipeController {
 			method = RequestMethod.POST)
 	@ResponseBody
 	public ResponseEntity<JsonResponse> editRecipe(HttpServletRequest request, @RequestBody Recipe recipe) {
-		if (recipe.getDirections() == null && recipe.getDifficulty() == 0) {
-			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","Invalid recipe info format"), HttpStatus.BAD_REQUEST);
-		}
 		try {
 			if (recipe.getDirections() != null) {
-				if (recipeService.areRecipeDirectionsValid(recipe.getDirections()) == false) {
-					return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","Invalid recipe directions format"), HttpStatus.BAD_REQUEST);
+				if (recipe.getDirections().isEmpty()) {
+					recipe.setDirections(null);
 				}
 			}
-			if (recipe.getDifficulty() != 0) {
-				if (recipeService.isRecipeDifficultyValid(recipe.getDifficulty()) == false) {
-					return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","Invalid recipe difficulty format"), HttpStatus.BAD_REQUEST);
+			if (recipe.getDirections() == null && recipe.getDifficulty() == 0) {
+				return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","Invalid recipe info format"), HttpStatus.BAD_REQUEST);
+			}
+			else if (recipe.getDirections() != null && recipe.getDifficulty() != 0) {
+				if (!recipeService.areRecipeDirectionsValid(recipe.getDirections()) || !recipeService.isRecipeDifficultyValid(recipe.getDifficulty())) {
+					return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","Invalid recipe info format"), HttpStatus.BAD_REQUEST);
 				}
+			}
+			if (recipe.getDifficulty() == 0 && !recipeService.areRecipeDirectionsValid(recipe.getDirections())) {
+				return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","Invalid recipe directions format"), HttpStatus.BAD_REQUEST);
+			}
+			if (recipe.getDirections() == null && !recipeService.isRecipeDifficultyValid(recipe.getDifficulty())) {
+				return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","Invalid recipe difficulty format"), HttpStatus.BAD_REQUEST);
 			}
 		} catch (UnknownServerErrorException e) {
 			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","Unknown server error"), HttpStatus.INTERNAL_SERVER_ERROR);
