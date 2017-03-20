@@ -144,13 +144,13 @@ public class RecipeServiceImpl implements RecipeService {
 
 	public boolean isRecipeInfoValid(Recipe recipe) throws UnknownServerErrorException {
 		try {
-			if (recipe.getRecipeName() == null || !isRecipeNameValid(recipe.getRecipeName())) {
+			if (!isRecipeNameValid(recipe.getRecipeName())) {
 				return false;
 			}
-			if (recipe.getDirections() == null || !areRecipeDirectionsValid(recipe.getDirections())) {
+			if (!areRecipeDirectionsValid(recipe.getDirections())) {
 				return false;
 			}
-			if (recipe.getBrands() == null || !isRecipeNumberOfIngredientsValid(recipe.getBrands())) {
+			if (!isRecipeNumberOfIngredientsValid(recipe.getBrands())) {
 				return false;
 			}
 			if (!isRecipeDifficultyValid(recipe.getDifficulty())) {
@@ -163,10 +163,16 @@ public class RecipeServiceImpl implements RecipeService {
 	}
 
 	public boolean isRecipeNameValid(String recipe_name) throws UnknownServerErrorException {
+		if (recipe_name == null) {
+			return false;
+		}
+		if (recipe_name.isEmpty()) {
+			return false;
+		}
 		try {
 			Pattern pattern = Pattern.compile(RECIPE_PATTERN, Pattern.UNICODE_CHARACTER_CLASS);
 			Matcher matcher = pattern.matcher(recipe_name);
-			if (!matcher.matches() || recipe_name.length() > 63 || recipe_name.length() < 2) {
+			if (recipe_name.length() > 63 || recipe_name.length() < 2 || !matcher.matches()) {
 				return false;
 			}
 		} catch (PatternSyntaxException e) {
@@ -176,6 +182,12 @@ public class RecipeServiceImpl implements RecipeService {
 	}
 
 	public boolean areRecipeDirectionsValid(String directions) throws UnknownServerErrorException {
+		if (directions == null) {
+			return false;
+		}
+		if (directions.isEmpty()) {
+			return false;
+		}
 		if (directions.length() > 16383 || directions.length() < 2) {
 			return false;
 		}

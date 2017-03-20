@@ -26,7 +26,7 @@ public class ReviewServiceImpl implements ReviewService {
 		try {
 			dao.createReview(review);
 		} catch (ReviewOwnRecipeException e) {
-			throw new ReviewOwnRecipeException("Tried to review own recipe!");
+			throw new ReviewOwnRecipeException("Attempted to review own recipe or recipe does not exist!");
 		} catch (PersistenceException e) {
 			throw new PersistenceException();
 		} catch (Exception e) {
@@ -68,7 +68,7 @@ public class ReviewServiceImpl implements ReviewService {
 
 	public boolean isReviewInfoValid(UserRecipeHasReview review) throws UnknownServerErrorException {
 		try {
-			if (review.getReviewCommentary() == null || !isReviewCommentaryValid(review.getReviewCommentary())) {
+			if (!isReviewCommentaryValid(review.getReviewCommentary())) {
 				return false;
 			}
 			if (!isReviewRatingValid(review.getRating())) {
@@ -81,6 +81,12 @@ public class ReviewServiceImpl implements ReviewService {
 	}
 
 	public boolean isReviewCommentaryValid(String review_commentary) throws UnknownServerErrorException {
+		if (review_commentary == null) {
+			return false;
+		}
+		if (review_commentary.isEmpty()) {
+			return false;
+		}
 		if (review_commentary.length() > 16383 || review_commentary.length() < 2) {
 			return false;
 		}

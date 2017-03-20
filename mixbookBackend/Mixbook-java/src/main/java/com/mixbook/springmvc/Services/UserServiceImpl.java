@@ -106,19 +106,19 @@ public class UserServiceImpl implements UserService {
 
 	public boolean isUserInfoValid(User user) throws UnknownServerErrorException {
 		try {
-			if (user.getEmail() == null || !isUserEmailValid(user.getEmail())) {
+			if (!isUserEmailValid(user.getEmail())) {
 				return false;
 			}
-			if (user.getPassword() == null || !isUserPasswordValid(user.getPassword())) {
+			if (!isUserPasswordValid(user.getPassword())) {
 				return false;
 			}
-			if (user.getUsername() == null || !isUserUsernameValid(user.getUsername())) {
+			if (!isUserUsernameValid(user.getUsername())) {
 				return false;
 			}
-			if (user.getFirstName() == null || !isUserFirstNameValid(user.getFirstName())) {
+			if (!isUserFirstNameValid(user.getFirstName())) {
 				return false;
 			}
-			if (user.getLastName() == null || !isUserLastNameValid(user.getLastName())) {
+			if (!isUserLastNameValid(user.getLastName())) {
 				return false;
 			}
 		} catch (UnknownServerErrorException e) {
@@ -128,10 +128,16 @@ public class UserServiceImpl implements UserService {
 	}
 
 	public boolean isUserEmailValid(String email) throws UnknownServerErrorException {
+		if (email == null) {
+			return false;
+		}
+		if (email.isEmpty()) {
+			return false;
+		}
 		try {
 			Pattern pattern = Pattern.compile(EMAIL_PATTERN);
 			Matcher matcher = pattern.matcher(email);
-			if (!matcher.matches() || email.length() > 100) {
+			if (email.length() > 100 || !matcher.matches()) {
 				return false;
 			}
 		} catch (PatternSyntaxException e) {
@@ -141,10 +147,16 @@ public class UserServiceImpl implements UserService {
 	}
 
 	public boolean isUserPasswordValid(String password) throws UnknownServerErrorException {
+		if (password == null) {
+			return false;
+		}
+		if (password.isEmpty()) {
+			return false;
+		}
 		try {
 			Pattern pattern = Pattern.compile(PASSWORD_PATTERN);
 			Matcher matcher = pattern.matcher(password);
-			if (!matcher.matches() || password.length() > 63) {
+			if (password.length() > 63 || !matcher.matches()) {
 				return false;
 			}
 		} catch (PatternSyntaxException e) {
@@ -154,10 +166,16 @@ public class UserServiceImpl implements UserService {
 	}
 
 	public boolean isUserUsernameValid(String username) throws UnknownServerErrorException {
+		if (username == null) {
+			return false;
+		}
+		if (username.isEmpty()) {
+			return false;
+		}
 		try {
 			Pattern pattern = Pattern.compile(FIRSTLASTNAME_PATTERN, Pattern.UNICODE_CHARACTER_CLASS);
 			Matcher matcher = pattern.matcher(username);
-			if (!matcher.matches() || username.length() > 63 || username.length() < 6) {
+			if (username.length() > 63 || username.length() < 6 || !matcher.matches()) {
 				return false;
 			}
 		} catch (PatternSyntaxException e) {
@@ -167,10 +185,16 @@ public class UserServiceImpl implements UserService {
 	}
 
 	public boolean isUserFirstNameValid(String first_name) throws UnknownServerErrorException {
+		if (first_name == null) {
+			return false;
+		}
+		if (first_name.isEmpty()) {
+			return false;
+		}
 		try {
 			Pattern pattern = Pattern.compile(FIRSTLASTNAME_PATTERN, Pattern.UNICODE_CHARACTER_CLASS);
 			Matcher matcher = pattern.matcher(first_name);
-			if (!matcher.matches() || first_name.length() > 63 || first_name.isEmpty()) {
+			if (first_name.length() > 63 || !matcher.matches()) {
 				return false;
 			}
 		} catch (PatternSyntaxException e) {
@@ -180,10 +204,16 @@ public class UserServiceImpl implements UserService {
 	}
 
 	public boolean isUserLastNameValid(String last_name) throws UnknownServerErrorException {
+		if (last_name == null) {
+			return false;
+		}
+		if (last_name.isEmpty()) {
+			return false;
+		}
 		try {
 			Pattern pattern = Pattern.compile(FIRSTLASTNAME_PATTERN, Pattern.UNICODE_CHARACTER_CLASS);
 			Matcher matcher = pattern.matcher(last_name);
-			if (!matcher.matches() || last_name.length() > 63 || last_name.isEmpty()) {
+			if (last_name.length() > 63 || !matcher.matches()) {
 				return false;
 			}
 		} catch (PatternSyntaxException e) {

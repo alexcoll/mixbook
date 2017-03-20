@@ -46,7 +46,7 @@ public class UserController {
 	@ResponseBody
 	public ResponseEntity<JsonResponse> createUser(@RequestBody User user) {
 		try {
-			if (userService.isUserInfoValid(user) == false) {
+			if (!userService.isUserInfoValid(user)) {
 				return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","User info is invalid"), HttpStatus.BAD_REQUEST);
 			}
 		} catch (UnknownServerErrorException e) {
@@ -82,19 +82,30 @@ public class UserController {
 			method = RequestMethod.POST)
 	@ResponseBody
 	public ResponseEntity<JsonResponse> editUser(HttpServletRequest request, @RequestBody User user) {
-		if (user.getFirstName() == null && user.getLastName() == null) {
-			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","Invalid first and last name format"), HttpStatus.BAD_REQUEST);
-		}
 		try {
 			if (user.getFirstName() != null) {
-				if (userService.isUserFirstNameValid(user.getFirstName()) == false) {
-					return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","Invalid first name format"), HttpStatus.BAD_REQUEST);
+				if (user.getFirstName().isEmpty()) {
+					user.setFirstName(null);
 				}
 			}
 			if (user.getLastName() != null) {
-				if (userService.isUserLastNameValid(user.getLastName()) == false) {
-					return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","Invalid last name format"), HttpStatus.BAD_REQUEST);
+				if (user.getLastName().isEmpty()) {
+					user.setLastName(null);
 				}
+			}
+			if (user.getFirstName() == null && user.getLastName() == null) {
+				return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","Invalid first and last name format"), HttpStatus.BAD_REQUEST);
+			}
+			else if (user.getFirstName() != null && user.getLastName() != null) {
+				if (!userService.isUserFirstNameValid(user.getFirstName()) || !userService.isUserLastNameValid(user.getLastName())) {
+					return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","Invalid first and last name format"), HttpStatus.BAD_REQUEST);
+				}
+			}
+			if (user.getLastName() == null && !userService.isUserFirstNameValid(user.getFirstName())) {
+				return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","Invalid first name format"), HttpStatus.BAD_REQUEST);
+			}
+			if (user.getFirstName() == null && !userService.isUserLastNameValid(user.getLastName())) {
+				return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","Invalid last name format"), HttpStatus.BAD_REQUEST);
 			}
 		} catch (UnknownServerErrorException e) {
 			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","Unknown server error"), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -115,12 +126,7 @@ public class UserController {
 	@ResponseBody
 	public ResponseEntity<JsonResponse> changeEmail(HttpServletRequest request, @RequestBody User user) {
 		try {
-			if (user.getEmail() != null) {
-				if (userService.isUserEmailValid(user.getEmail()) == false) {
-					return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","Invalid email format"), HttpStatus.BAD_REQUEST);
-				}
-			}
-			else {
+			if (!userService.isUserEmailValid(user.getEmail())) {
 				return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","Invalid email format"), HttpStatus.BAD_REQUEST);
 			}
 		} catch (UnknownServerErrorException e) {
@@ -144,12 +150,7 @@ public class UserController {
 	@ResponseBody
 	public ResponseEntity<JsonResponse> changePassword(HttpServletRequest request, @RequestBody User user) {
 		try {
-			if (user.getPassword() != null) {
-				if (userService.isUserPasswordValid(user.getPassword()) == false) {
-					return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","Invalid password format"), HttpStatus.BAD_REQUEST);
-				}
-			}
-			else {
+			if (!userService.isUserPasswordValid(user.getPassword())) {
 				return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","Invalid password format"), HttpStatus.BAD_REQUEST);
 			}
 		} catch (UnknownServerErrorException e) {
