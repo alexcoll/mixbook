@@ -493,7 +493,7 @@ VALUES (49, 7, 'Crown Royal Black');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
 VALUES (50, 7, 'Jack Daniels');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (51, 7, 'Jim Bim');
+VALUES (51, 7, 'Jim Beam');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
 VALUES (52, 7, "Maker's Mark Bourbon");
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
