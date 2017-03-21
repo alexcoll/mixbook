@@ -26,16 +26,12 @@ public class Brand implements Serializable {
 	private Integer brand_id;
 
 	@NotNull
-	@Column(name = "style_brand_id", nullable = false)
-	private Integer style_brand_id;
-
-	@NotNull
 	@Size(max=255)   
 	@Column(name = "brand_name", nullable = false)
 	private String brand_name;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "style_id", nullable = false)
+	@JoinColumn(name = "style_brand_id", nullable = false)
 	private Style style;
 
 	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "brands")
@@ -48,10 +44,9 @@ public class Brand implements Serializable {
 
 	}
 
-	public Brand(Integer brand_id, Integer style_brand_id, String brand_name, Style style, 
+	public Brand(Integer brand_id, String brand_name, Style style, 
 			Set<User> users, Set<Recipe> recipes) {
 		this.brand_id = brand_id;
-		this.style_brand_id = style_brand_id;
 		this.brand_name = brand_name;
 		this.style = style;
 		this.users = users;
@@ -64,14 +59,6 @@ public class Brand implements Serializable {
 
 	public void setBrandId(Integer brand_id) {
 		this.brand_id = brand_id;
-	}
-
-	public Integer getStyleBrandId() {
-		return style_brand_id;
-	}
-
-	public void setStyleBrandId(Integer style_brand_id) {
-		this.style_brand_id = style_brand_id;
 	}
 
 	public String getBrandName() {
@@ -111,7 +98,7 @@ public class Brand implements Serializable {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((brand_id == null) ? 0 : brand_id.hashCode());
-		result = prime * result + ((style_brand_id == null) ? 0 : style_brand_id.hashCode());
+		result = prime * result + ((brand_name == null) ? 0 : brand_name.hashCode());
 		return result;
 	}
 
@@ -129,10 +116,10 @@ public class Brand implements Serializable {
 				return false;
 		} else if (!brand_id.equals(other.brand_id))
 			return false;
-		if (style_brand_id == null) {
-			if (other.style_brand_id != null)
+		if (brand_name == null) {
+			if (other.brand_name != null)
 				return false;
-		} else if (!style_brand_id.equals(other.style_brand_id))
+		} else if (!brand_name.equals(other.brand_name))
 			return false;
 		return true;
 	}

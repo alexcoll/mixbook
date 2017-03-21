@@ -30,13 +30,15 @@ public class RecipeServiceImpl implements RecipeService {
 	@Autowired
 	private RecipeDao dao;
 
-	private static final String RECIPE_PATTERN = "^\\w+(\\w+)*$";
+	private static final String RECIPE_PATTERN = "^[\\p{L} .'-@&!#$%*_()]+$";
 
 	public void createRecipe(Recipe recipe, User user) throws InvalidIngredientException, PersistenceException, UnknownServerErrorException {
 		try {
 			recipe.setNumberOfIngredients(recipe.getBrands().size());
 			recipe.setNumberOfRatings(0);
 			recipe.setTotalRating(0);
+			String after = recipe.getRecipeName().trim().replaceAll(" +", " ");
+			recipe.setRecipeName(after);
 			dao.createRecipe(recipe, user);
 		} catch (NullPointerException e) {
 			throw new InvalidIngredientException("Invalid ingredient added!");

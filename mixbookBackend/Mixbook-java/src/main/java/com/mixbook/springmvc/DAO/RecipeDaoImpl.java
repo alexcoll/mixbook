@@ -16,6 +16,7 @@ import org.apache.logging.log4j.Logger;
 
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
+import org.hibernate.type.IntegerType;
 
 import com.mixbook.springmvc.Exceptions.InvalidPermissionsException;
 import com.mixbook.springmvc.Exceptions.MaxRecipeIngredientsException;
@@ -46,7 +47,9 @@ public class RecipeDaoImpl extends AbstractDao<Integer, Recipe> implements Recip
 		if (brandList.size() != recipe.getBrands().size()) {
 			throw new NullPointerException("Invalid ingredient added!");
 		}
-		recipe.setUserRecipeId(user.getUserId());
+		recipe.setUser(user);
+		Set<Brand> brandIds = new HashSet<Brand>(brandList);
+		recipe.setBrands(brandIds);
 		persist(recipe);
 	}
 
@@ -93,8 +96,10 @@ public class RecipeDaoImpl extends AbstractDao<Integer, Recipe> implements Recip
 
 	public void addIngredientToRecipe(Recipe recipe, User user) throws InvalidPermissionsException, MaxRecipeIngredientsException, NullPointerException, PersistenceException, Exception {
 		user = this.userService.findByEntityUsername(user.getUsername());
-		SQLQuery countQuery = getSession().createSQLQuery("SELECT number_of_ingredients FROM recipe WHERE recipe_name = :recipe_name AND user_recipe_id = :user_recipe_id").setParameter("recipe_name", recipe.getRecipeName()).setParameter("user_recipe_id", user.getUserId());
-		int number_of_ingredients = (int) countQuery.uniqueResult();
+		SQLQuery countQuery = getSession().createSQLQuery("SELECT number_of_ingredients as result FROM recipe WHERE recipe_name = :recipe_name AND user_recipe_id = :user_recipe_id").setParameter("recipe_name", recipe.getRecipeName()).setParameter("user_recipe_id", user.getUserId());
+		countQuery.addScalar("result", new IntegerType());
+		Integer tempNum = (Integer) countQuery.uniqueResult();
+		int number_of_ingredients = tempNum.intValue();
 		if (number_of_ingredients == 0) {
 			throw new InvalidPermissionsException("Invalid permissions!");
 		}
@@ -114,13 +119,20 @@ public class RecipeDaoImpl extends AbstractDao<Integer, Recipe> implements Recip
 		SQLQuery insertQuery = getSession().createSQLQuery("" + "INSERT INTO recipe_has_brand(recipe_recipe_id,brand_brand_id)VALUES(?,?)");
 		insertQuery.setParameter(0, recipe.getRecipeId());
 		insertQuery.setParameter(1, tempBrand.getBrandId());
-		insertQuery.executeUpdate();
+		int numRowsAffected = insertQuery.executeUpdate();
+		if (numRowsAffected > 0) {
+			SQLQuery updateQuery = getSession().createSQLQuery("UPDATE recipe SET number_of_ingredients = number_of_ingredients + 1 WHERE recipe_id = ?");
+			updateQuery.setParameter(0, recipe.getRecipeId());
+			updateQuery.executeUpdate();
+		}
 	}
 
 	public void removeIngredientFromRecipe(Recipe recipe, User user) throws InvalidPermissionsException, NotEnoughRecipeIngredientsException, NullPointerException, Exception {
 		user = this.userService.findByEntityUsername(user.getUsername());
-		SQLQuery countQuery = getSession().createSQLQuery("SELECT number_of_ingredients FROM recipe WHERE recipe_name = :recipe_name AND user_recipe_id = :user_recipe_id").setParameter("recipe_name", recipe.getRecipeName()).setParameter("user_recipe_id", user.getUserId());
-		int number_of_ingredients = (int) countQuery.uniqueResult();
+		SQLQuery countQuery = getSession().createSQLQuery("SELECT number_of_ingredients as result FROM recipe WHERE recipe_name = :recipe_name AND user_recipe_id = :user_recipe_id").setParameter("recipe_name", recipe.getRecipeName()).setParameter("user_recipe_id", user.getUserId());
+		countQuery.addScalar("result", new IntegerType());
+		Integer tempNum = (Integer) countQuery.uniqueResult();
+		int number_of_ingredients = tempNum.intValue();
 		if (number_of_ingredients == 0) {
 			throw new InvalidPermissionsException("Invalid permissions!");
 		}
@@ -138,8 +150,12 @@ public class RecipeDaoImpl extends AbstractDao<Integer, Recipe> implements Recip
 		Integer brand_id = ((BigInteger) searchQuery.uniqueResult()).intValue();
 		tempBrand.setBrandId(brand_id);
 		SQLQuery deleteQuery = getSession().createSQLQuery("DELETE FROM recipe_has_brand WHERE recipe_recipe_id=:recipe_recipe_id AND brand_brand_id=:brand_brand_id").setParameter("recipe_recipe_id", recipe.getRecipeId()).setParameter("brand_brand_id", tempBrand.getBrandId());
-		deleteQuery.executeUpdate();
-
+		int numRowsAffected = deleteQuery.executeUpdate();
+		if (numRowsAffected > 0) {
+			SQLQuery updateQuery = getSession().createSQLQuery("UPDATE recipe SET number_of_ingredients = number_of_ingredients - 1 WHERE recipe_id = ?");
+			updateQuery.setParameter(0, recipe.getRecipeId());
+			updateQuery.executeUpdate();
+		}
 	}
 
 	public List<Recipe> searchForRecipeByName(Recipe recipe) throws Exception {
