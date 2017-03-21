@@ -8,6 +8,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.SQLQuery;
 import org.hibernate.query.Query;
+import org.hibernate.type.IntegerType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -40,35 +41,39 @@ public class ReviewDaoImpl extends AbstractDao<Integer, UserRecipeHasReview> imp
 		insertQuery.setParameter(1, review.getPk().getRecipe().getRecipeId());
 		insertQuery.setParameter(2, review.getReviewCommentary());
 		insertQuery.setParameter(3, review.getRating());
-		insertQuery.executeUpdate();
-		SQLQuery updateQuery = getSession().createSQLQuery("UPDATE recipe SET number_of_ratings = number_of_ratings + 1, total_rating = total_rating + ? WHERE recipe_id = ?");
-		updateQuery.setParameter(0, review.getRating());
-		updateQuery.setParameter(1, review.getPk().getRecipe().getRecipeId());
-		updateQuery.executeUpdate();
+		int numRowsAffected = insertQuery.executeUpdate();
+		if (numRowsAffected > 0) {
+			SQLQuery updateQuery = getSession().createSQLQuery("UPDATE recipe SET number_of_ratings = number_of_ratings + 1, total_rating = total_rating + ? WHERE recipe_id = ?");
+			updateQuery.setParameter(0, review.getRating());
+			updateQuery.setParameter(1, review.getPk().getRecipe().getRecipeId());
+			updateQuery.executeUpdate();
+		}
 	}
 
 	public void editReview(UserRecipeHasReview review) throws Exception {
 		User user = this.userService.findByEntityUsername(review.getPk().getUser().getUsername());
 		//Updating both review commentary and review rating
 		if (review.getReviewCommentary() != null && review.getRating() != 0) {
-			SQLQuery lookupQuery = getSession().createSQLQuery("SELECT rating FROM users_recipe_has_review WHERE users_user_id = ? AND recipe_recipe_id = ?");
+			SQLQuery lookupQuery = getSession().createSQLQuery("SELECT rating as result FROM users_recipe_has_review WHERE users_user_id = ? AND recipe_recipe_id = ?");
 			lookupQuery.setParameter(0, user.getUserId());
 			lookupQuery.setParameter(1, review.getPk().getRecipe().getRecipeId());
-			int previous_rating = (int) lookupQuery.uniqueResult();
+			lookupQuery.addScalar("result", new IntegerType());
+			Integer tempNum = (Integer) lookupQuery.uniqueResult();
+			int previous_rating = tempNum.intValue();
 			SQLQuery updateQuery = getSession().createSQLQuery("UPDATE users_recipe_has_review SET review_commentary = ?, rating = ? WHERE users_user_id = ? AND recipe_recipe_id = ?");
 			updateQuery.setParameter(0, review.getReviewCommentary());
 			updateQuery.setParameter(1, review.getRating());
 			updateQuery.setParameter(2, review.getPk().getUser().getUserId());
 			updateQuery.setParameter(3, review.getPk().getRecipe().getRecipeId());
-			updateQuery.executeUpdate();
-			if (previous_rating > review.getRating()) {
+			int numRowsAffected = updateQuery.executeUpdate();
+			if (previous_rating > review.getRating() && numRowsAffected > 0) {
 				updateQuery = getSession().createSQLQuery("UPDATE recipe SET total_rating = total_rating - ? WHERE recipe_id = ?");
 				int resultantRating = previous_rating - review.getRating();
 				updateQuery.setParameter(0, resultantRating);
 				updateQuery.setParameter(1, review.getPk().getRecipe().getRecipeId());
 				updateQuery.executeUpdate();
 			}
-			else if (previous_rating < review.getRating()) {
+			else if (previous_rating < review.getRating() && numRowsAffected > 0) {
 				updateQuery = getSession().createSQLQuery("UPDATE recipe SET total_rating = total_rating + ? WHERE recipe_id = ?");
 				int resultantRating = review.getRating() - previous_rating;
 				updateQuery.setParameter(0, resultantRating);
@@ -86,23 +91,25 @@ public class ReviewDaoImpl extends AbstractDao<Integer, UserRecipeHasReview> imp
 		}
 		//Updating review rating
 		else if (review.getRating() != 0) {
-			SQLQuery lookupQuery = getSession().createSQLQuery("SELECT rating FROM users_recipe_has_review WHERE users_user_id = ? AND recipe_recipe_id = ?");
+			SQLQuery lookupQuery = getSession().createSQLQuery("SELECT rating as result FROM users_recipe_has_review WHERE users_user_id = ? AND recipe_recipe_id = ?");
 			lookupQuery.setParameter(0, user.getUserId());
 			lookupQuery.setParameter(1, review.getPk().getRecipe().getRecipeId());
-			int previous_rating = (int) lookupQuery.uniqueResult();
+			lookupQuery.addScalar("result", new IntegerType());
+			Integer tempNum = (Integer) lookupQuery.uniqueResult();
+			int previous_rating = tempNum.intValue();
 			SQLQuery updateQuery = getSession().createSQLQuery("UPDATE users_recipe_has_review SET rating = ? WHERE users_user_id = ? AND recipe_recipe_id = ?");
 			updateQuery.setParameter(0, review.getRating());
 			updateQuery.setParameter(1, review.getPk().getUser().getUserId());
 			updateQuery.setParameter(2, review.getPk().getRecipe().getRecipeId());
-			updateQuery.executeUpdate();
-			if (previous_rating > review.getRating()) {
+			int numRowsAffected = updateQuery.executeUpdate();
+			if (previous_rating > review.getRating() && numRowsAffected > 0) {
 				updateQuery = getSession().createSQLQuery("UPDATE recipe SET total_rating = total_rating - ? WHERE recipe_id = ?");
 				int resultantRating = previous_rating - review.getRating();
 				updateQuery.setParameter(0, resultantRating);
 				updateQuery.setParameter(1, review.getPk().getRecipe().getRecipeId());
 				updateQuery.executeUpdate();
 			}
-			else if (previous_rating < review.getRating()) {
+			else if (previous_rating < review.getRating() && numRowsAffected > 0) {
 				updateQuery = getSession().createSQLQuery("UPDATE recipe SET total_rating = total_rating + ? WHERE recipe_id = ?");
 				int resultantRating = review.getRating() - previous_rating;
 				updateQuery.setParameter(0, resultantRating);
@@ -119,18 +126,22 @@ public class ReviewDaoImpl extends AbstractDao<Integer, UserRecipeHasReview> imp
 
 	public void deleteReview(UserRecipeHasReview review) throws Exception {
 		User user = this.userService.findByEntityUsername(review.getPk().getUser().getUsername());
-		SQLQuery lookupQuery = getSession().createSQLQuery("SELECT rating FROM users_recipe_has_review WHERE users_user_id = ? AND recipe_recipe_id = ?");
+		SQLQuery lookupQuery = getSession().createSQLQuery("SELECT rating as result FROM users_recipe_has_review WHERE users_user_id = ? AND recipe_recipe_id = ?");
 		lookupQuery.setParameter(0, user.getUserId());
 		lookupQuery.setParameter(1, review.getPk().getRecipe().getRecipeId());
-		int previous_rating = (int) lookupQuery.uniqueResult();
+		lookupQuery.addScalar("result", new IntegerType());
+		Integer tempNum = (Integer) lookupQuery.uniqueResult();
+		int previous_rating = tempNum.intValue();
 		Query q = getSession().createSQLQuery("DELETE FROM users_recipe_has_review WHERE users_user_id = ? AND recipe_recipe_id = ?");
 		q.setParameter(0, review.getPk().getUser().getUserId());
 		q.setParameter(1, review.getPk().getRecipe().getRecipeId());
-		q.executeUpdate();
-		SQLQuery updateQuery = getSession().createSQLQuery("UPDATE recipe SET number_of_ratings = number_of_ratings - 1, total_rating = total_rating - ? WHERE recipe_id = ?");
-		updateQuery.setParameter(0, previous_rating);
-		updateQuery.setParameter(1, review.getPk().getRecipe().getRecipeId());
-		updateQuery.executeUpdate();
+		int numRowsAffected = q.executeUpdate();
+		if (numRowsAffected > 0) {
+			SQLQuery updateQuery = getSession().createSQLQuery("UPDATE recipe SET number_of_ratings = number_of_ratings - 1, total_rating = total_rating - ? WHERE recipe_id = ?");
+			updateQuery.setParameter(0, previous_rating);
+			updateQuery.setParameter(1, review.getPk().getRecipe().getRecipeId());
+			updateQuery.executeUpdate();
+		}
 	}
 
 	public List<UserRecipeHasReview> viewAllReviewsByUser(User user) throws Exception {

@@ -28,10 +28,6 @@ public class Recipe implements Serializable {
 	private Integer recipe_id;
 
 	@NotNull
-	@Column(name = "user_recipe_id", nullable = false)
-	private Integer user_recipe_id;
-
-	@NotNull
 	@Size(max=255)   
 	@Column(name = "recipe_name", nullable = false)
 	private String recipe_name;
@@ -52,7 +48,7 @@ public class Recipe implements Serializable {
 	private int total_rating;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_id", nullable = false)
+	@JoinColumn(name = "user_recipe_id", nullable = false)
 	private User user;
 
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -66,11 +62,10 @@ public class Recipe implements Serializable {
 
 	}
 
-	public Recipe(Integer recipe_id, Integer user_recipe_id, String recipe_name, String directions,
+	public Recipe(Integer recipe_id, String recipe_name, String directions,
 			int number_of_ingredients, int difficulty, int number_of_ratings,
 			int	total_rating, User user, Set<Brand> brands) {
 		this.recipe_id = recipe_id;
-		this.user_recipe_id = user_recipe_id;
 		this.recipe_name = recipe_name;
 		this.directions = directions;
 		this.number_of_ingredients = number_of_ingredients;
@@ -87,14 +82,6 @@ public class Recipe implements Serializable {
 
 	public void setRecipeId(Integer recipe_id) {
 		this.recipe_id = recipe_id;
-	}
-
-	public Integer getUserRecipeId() {
-		return user_recipe_id;
-	}
-
-	public void setUserRecipeId(Integer user_recipe_id) {
-		this.user_recipe_id = user_recipe_id;
 	}
 
 	public String getRecipeName() {
@@ -166,7 +153,7 @@ public class Recipe implements Serializable {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((recipe_id == null) ? 0 : recipe_id.hashCode());
-		result = prime * result + ((user_recipe_id == null) ? 0 : user_recipe_id.hashCode());
+		result = prime * result + ((recipe_name == null) ? 0 : recipe_name.hashCode());
 		return result;
 	}
 
@@ -184,10 +171,10 @@ public class Recipe implements Serializable {
 				return false;
 		} else if (!recipe_id.equals(other.recipe_id))
 			return false;
-		if (user_recipe_id == null) {
-			if (other.user_recipe_id != null)
+		if (recipe_name == null) {
+			if (other.recipe_name != null)
 				return false;
-		} else if (!user_recipe_id.equals(other.user_recipe_id))
+		} else if (!recipe_name.equals(other.recipe_name))
 			return false;
 		return true;
 	}

@@ -26,16 +26,12 @@ public class Style implements Serializable {
 	private Integer style_id;
 
 	@NotNull
-	@Column(name = "type_style_id", nullable = false)
-	private Integer type_style_id;
-
-	@NotNull
 	@Size(max=255)   
 	@Column(name = "style_name", nullable = false)
 	private String style_name;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "type_id", nullable = false)
+	@JoinColumn(name = "type_style_id", nullable = false)
 	private Type type;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "style")
@@ -45,9 +41,8 @@ public class Style implements Serializable {
 
 	}
 
-	public Style(Integer style_id, Integer type_style_id, String style_name, Type type, Set<Brand> brands) {
+	public Style(Integer style_id, String style_name, Type type, Set<Brand> brands) {
 		this.style_id = style_id;
-		this.type_style_id = type_style_id;
 		this.style_name = style_name;
 		this.type = type;
 		this.brands = brands;
@@ -59,14 +54,6 @@ public class Style implements Serializable {
 
 	public void setStyleId(Integer style_id) {
 		this.style_id = style_id;
-	}
-
-	public Integer getTypeStyleId() {
-		return type_style_id;
-	}
-
-	public void setTypeStyleId(Integer type_style_id) {
-		this.type_style_id = type_style_id;
 	}
 
 	public String getStyleName() {
