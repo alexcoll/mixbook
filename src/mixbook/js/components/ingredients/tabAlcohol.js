@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { Alert, View, StyleSheet, ListView, Text, TouchableHighlight, RefreshControl} from 'react-native';
+import { ToolbarAndroid, TextInput, Alert, View, StyleSheet, ListView, Text, TouchableHighlight, RefreshControl} from 'react-native';
 
 import styles from './styles';
 
@@ -8,7 +8,10 @@ import store from 'react-native-simple-store';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import ActionButton from 'react-native-action-button';
 
-var GiftedListView = require('react-native-gifted-listview');
+import SearchBar from 'react-native-searchbar'
+
+var lodash = require('lodash');
+
 
 export default class TabAlcohol extends Component { // eslint-disable-line
 
@@ -20,6 +23,11 @@ export default class TabAlcohol extends Component { // eslint-disable-line
       displayType: 'all',
       active: 'true',
       dataSource: ds.cloneWithRows(['row 1', 'row 2']),
+      searchText: "",
+      isLoading: false,
+      empty: false,
+      rawData: ['row 1', 'row 2'],
+      results: [],
     };
   }
 
@@ -27,10 +35,17 @@ export default class TabAlcohol extends Component { // eslint-disable-line
   componentDidMount() {
     store.get('inventory').then((data) => {
       this.setState({
-        dataSource: this.state.dataSource.cloneWithRows(data)
+        dataSource: this.state.dataSource.cloneWithRows(data),
+        isLoading: false,
+        empty: false,
+        rawData: data,
       });
     }).catch(error => {
       console.warn("error getting the inventory list from the local store");
+      this.setState({
+        empty: true,
+        isLoading: false,
+      });
     });
   }
 
@@ -47,7 +62,7 @@ export default class TabAlcohol extends Component { // eslint-disable-line
   }
 
 
-  fetchInventory() {
+  fetchData() {
     store.get('account').then((data) => {
       fetch('https://activitize.net/mixbook/inventory/getUserInventory', {
         method: 'GET',
@@ -63,7 +78,10 @@ export default class TabAlcohol extends Component { // eslint-disable-line
           console.warn("error storing the inventory list into the local store");
         });
         this.setState({
-          dataSource: this.state.dataSource.cloneWithRows(json)
+          dataSource: this.state.dataSource.cloneWithRows(json),
+          isLoading: false,
+          empty: false,
+          rawData: json,
         });
         return json;
         } else {
@@ -72,9 +90,32 @@ export default class TabAlcohol extends Component { // eslint-disable-line
         }
       }).catch((error) => {
         console.error(error);
+        this.setState({
+          empty: true,
+          isLoading: false,
+        });
       });
     }).catch((error) => {
       console.warn("error getting user token from local store");
+    });
+  }
+
+
+  setSearchText(event) {
+    let searchText = event.nativeEvent.text;
+    this.setState({searchText});
+
+    let filteredData = this.filterItems(searchText, this.state.rawData);
+    this.setState({
+      dataSource: this.state.dataSource.cloneWithRows(filteredData),
+    });
+  }
+
+  filterItems(searchText, items) {
+    let text = searchText.toLowerCase();
+    return lodash.filter(items, (n) => {
+      let item = n.toLowerCase();
+      return item.search(text) !== -1;
     });
   }
 
@@ -118,30 +159,67 @@ export default class TabAlcohol extends Component { // eslint-disable-line
 
   _onRefresh() {
     this.setState({refreshing: true});
-    this.fetchInventory();
+    this.fetchData();
     this.setState({refreshing: false});
+  }
+
+  _renderRow(rowData, sectionID, rowID, highlightRow) {
+    return (
+      <TouchableHighlight
+        onPress={() => {
+          this._pressRow(rowID);
+          highlightRow(sectionID, rowID);
+        }}
+      >
+        <View style={styles.listContainer}>
+          <Text style={styles.test}>{rowData}</Text>
+        </View>
+      </TouchableHighlight>
+    );
+  }
+
+  _pressRow(rowID) {
+    console.warn(rowID + " pressed!");
+  }
+
+  _renderSeparator(sectionId, rowId, adjacentRowHighlighted) {
+    return (
+      <View key={rowId} style={styles.separator} />
+    );
+  }
+
+  _handleResults(results) {
+    this.setState({ results });
   }
 
 
   render() { // eslint-disable-line
     return (
       <View>
-      <ListView
-      refreshControl={
-        <RefreshControl
-        refreshing={this.state.refreshing}
-        onRefresh={this._onRefresh.bind(this)}
+        <TextInput
+          style={styles.searchBar}
+          placeholder="Search inventory"
+          value={this.state.searchText}
+          onChange={this.setSearchText.bind(this)}
         />
-      }
-      dataSource={this.state.dataSource}
-      renderRow={(rowData) =>
-        <View style={styles.listContainer}>
-        <Text style={styles.test}>{rowData}</Text>
-        </View>
-      }
-      renderSeperator={(sectionId, rowId, adjacentRowHighlighted) => <View key={rowId} style={styles.separator} />}
-      />
+        <SearchBar
+          ref={(ref) => this.searchBar = ref}
+          data={this.state.rawData}
+          handleResults={this._handleResults}
+          showOnLoad
+        />
+        <ListView
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.refreshing}
+              onRefresh={this._onRefresh.bind(this)}
+            />
+          }
+          dataSource={this.state.dataSource}
+          renderRow={this._renderRow}
+          renderSeperator={this._renderSeparator}
+        />
       </View>
-      );
-    }
+    );
   }
+}

@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "color": "~0.11.1",
-    "lodash": "^4.13.1",
+    "lodash": "^4.17.4",
     "moment": "^2.13.0",
     "native-base": "0.5.18",
     "react": "15.4.1",
@@ -23,6 +23,7 @@
     "react-native-navigation-redux-helpers": "^0.4.1",
     "react-native-refreshable-listview": "^2.0.0-beta4",
     "react-native-scrollable-tab-view": "^0.7.2",
+    "react-native-searchbar": "^1.8.0",
     "react-native-simple-store": "^1.1.0",
     "react-native-sortable-listview": "^0.1.1",
     "react-native-swipe-list-view": "^0.3.3",

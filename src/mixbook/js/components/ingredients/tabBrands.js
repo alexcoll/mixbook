@@ -93,10 +93,6 @@ export default class TabBrands extends Component { // eslint-disable-line
   }
 
 
-  parseBrandList(json) {
-    return json;
-  }
-
 
   _onRefresh() {
     this.setState({refreshing: true});
