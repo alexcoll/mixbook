@@ -94,7 +94,7 @@ class App extends Component {
 
     store.get('inventory').then((data) => {
       if (data == null) {
-        store.save('inventory', [ ])
+        store.save('inventory', ["Refresh to get inventory"])
         .catch(error => {
           console.warn("error getting inventory key from store");
         });
@@ -105,7 +105,7 @@ class App extends Component {
 
     store.get('brands').then((data) => {
       if (data == null) {
-        store.save('brands', [ ])
+        store.save('brands', ["Refresh to get brands"])
         .catch(error => {
           console.warn("error getting brands key from store");
         });

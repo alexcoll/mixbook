@@ -14,7 +14,6 @@ import ActionButton from 'react-native-action-button';
 import ScrollableTabView from 'react-native-scrollable-tab-view'
 
 import TabAlcohol from './tabAlcohol';
-import TabMixers from './tabMixer';
 import TabBrands from './tabBrands';
 
 
@@ -62,8 +61,7 @@ class Ingredients extends Component {
           <Title>Ingredients</Title>
         </Header>
           <ScrollableTabView>
-            <TabAlcohol tabLabel="Alcohol" />
-            <TabMixers tabLabel="Mixers" />
+            <TabAlcohol tabLabel="Inventory" />
             <TabBrands tabLabel="Brands" />
           </ScrollableTabView>
 
@@ -95,17 +93,7 @@ const tstyles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
+  }
 });
 
 

@@ -2,8 +2,6 @@
 import React, { Component } from 'react';
 import { Alert, View, ListView, Text, RefreshControl, TouchableHighlight } from 'react-native';
 
-import { Container, Content, Grid, Col, Button, Icon } from 'native-base';
-
 import styles from './styles';
 
 import store from 'react-native-simple-store';
@@ -31,7 +29,7 @@ export default class TabBrands extends Component { // eslint-disable-line
         dataSource: this.state.dataSource.cloneWithRows(data)
       });
     }).catch(error => {
-      console.warn("error storing the brand list into the local store");
+      console.warn("error getting the brand list from the local store");
     });
   }
 
@@ -102,7 +100,16 @@ export default class TabBrands extends Component { // eslint-disable-line
 
   _onRefresh() {
     this.setState({refreshing: true});
-    this.fetchBrands();
+    Alert.alert(
+      "Refresh Brand List",
+      'Are you sure you want to refresh? This may take a long time to load',
+      [
+        {text: 'Refresh', onPress: () => this.fetchBrands()},
+        {text: 'Cancel', style: 'cancel'},
+      ],
+      { cancelable: true }
+    )
+
     this.setState({refreshing: false});
   }
 

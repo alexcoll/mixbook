@@ -1,8 +1,6 @@
 
 import React, { Component } from 'react';
-import { Alert, View, StyleSheet, ListView, Text, TouchableHighlight } from 'react-native';
-
-import { Button, Icon } from 'native-base';
+import { Alert, View, StyleSheet, ListView, Text, TouchableHighlight, RefreshControl} from 'react-native';
 
 import styles from './styles';
 
@@ -18,23 +16,66 @@ export default class TabAlcohol extends Component { // eslint-disable-line
     super(props);
     const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
+      refreshing: false,
       displayType: 'all',
       active: 'true',
-      theList: [{name: 'error', type: "Error", proof: 0}],
       dataSource: ds.cloneWithRows(['row 1', 'row 2']),
     };
   }
 
 
   componentDidMount() {
-    store.get('alcohol').then((data) => {
-      this.setState({theList: data});
+    store.get('inventory').then((data) => {
+      this.setState({
+        dataSource: this.state.dataSource.cloneWithRows(data)
+      });
+    }).catch(error => {
+      console.warn("error getting the inventory list from the local store");
     });
   }
 
 
-  checkListName(data) {
-    return data.name == this;
+  showServerErrorAlert(response) {
+    Alert.alert(
+      "Server Error",
+      "Got response: " + response.status + " " + response.statusText,
+      [
+      {text: 'Dismiss', style: 'cancel'}
+      ],
+      { cancelable: true }
+      );
+  }
+
+
+  fetchInventory() {
+    store.get('account').then((data) => {
+      fetch('https://activitize.net/mixbook/inventory/getUserInventory', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': data.userInfo.token,
+        }
+      }).then(async (response) => {
+        if (response.status == 200) {
+          var json = await response.json();
+        // console.warn(json[0]);
+        store.save("inventory", json).catch(error => {
+          console.warn("error storing the inventory list into the local store");
+        });
+        this.setState({
+          dataSource: this.state.dataSource.cloneWithRows(json)
+        });
+        return json;
+        } else {
+          this.showServerErrorAlert(response);
+          return;
+        }
+      }).catch((error) => {
+        console.error(error);
+      });
+    }).catch((error) => {
+      console.warn("error getting user token from local store");
+    });
   }
 
 
@@ -44,7 +85,7 @@ export default class TabAlcohol extends Component { // eslint-disable-line
     if (index > -1) {
       list.splice(index, 1);
       this.setState({theList: list});
-      store.save('alcohol', this.state.theList);
+      store.save('inventory', this.state.theList);
     }
   }
 
@@ -54,11 +95,11 @@ export default class TabAlcohol extends Component { // eslint-disable-line
       "Edit " + item.name + " " + item.type,
       'Not implemented yet',
       [
-        {text: 'Cool'},
-        {text: 'Work harder', style: 'cancel'},
+      {text: 'Cool'},
+      {text: 'Work harder', style: 'cancel'},
       ],
       { cancelable: true }
-    )
+      )
   }
 
 
@@ -67,34 +108,40 @@ export default class TabAlcohol extends Component { // eslint-disable-line
       "Edit " + item.name + " " + item.type,
       'What do you want to do?',
       [
-        {text: 'Delete', onPress: () => this.onListItemRemove(item)},
-        {text: 'Cancel', style: 'cancel'},
-        {text: 'Edit', onPress: () => this.onListItemEdit(item)},
+      {text: 'Delete', onPress: () => this.onListItemRemove(item)},
+      {text: 'Cancel', style: 'cancel'},
+      {text: 'Edit', onPress: () => this.onListItemEdit(item)},
       ],
       { cancelable: true }
-    )
+      )
+  }
+
+  _onRefresh() {
+    this.setState({refreshing: true});
+    this.fetchInventory();
+    this.setState({refreshing: false});
   }
 
 
   render() { // eslint-disable-line
     return (
       <View>
-        {/*<ListView
-          refreshControl={
-            <RefreshControl
-              refreshing={this.state.refreshing}
-              onRefresh={this._onRefresh.bind(this)}
-            />
-          }
-          dataSource={this.state.dataSource}
-          renderRow={(rowData) =>
-            <View style={styles.listContainer}>
-              <Text style={styles.test}>{rowData}</Text>
-            </View>
-          }
-          renderSeperator={(sectionId, rowId, adjacentRowHighlighted) => <View key={rowId} style={styles.separator} />}
-        />*/}
+      <ListView
+      refreshControl={
+        <RefreshControl
+        refreshing={this.state.refreshing}
+        onRefresh={this._onRefresh.bind(this)}
+        />
+      }
+      dataSource={this.state.dataSource}
+      renderRow={(rowData) =>
+        <View style={styles.listContainer}>
+        <Text style={styles.test}>{rowData}</Text>
+        </View>
+      }
+      renderSeperator={(sectionId, rowId, adjacentRowHighlighted) => <View key={rowId} style={styles.separator} />}
+      />
       </View>
-    );
+      );
+    }
   }
-}
