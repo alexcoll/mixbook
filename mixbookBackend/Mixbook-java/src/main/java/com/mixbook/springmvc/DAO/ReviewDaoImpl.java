@@ -37,7 +37,7 @@ public class ReviewDaoImpl extends AbstractDao<Integer, UserRecipeHasReview> imp
 			throw new ReviewOwnRecipeException("Attempted to review own recipe or recipe does not exist!");
 		}
 		SQLQuery insertQuery = getSession().createSQLQuery("" + "INSERT INTO users_recipe_has_review(users_user_id,recipe_recipe_id,review_commentary,rating)VALUES(?,?,?,?)");
-		insertQuery.setParameter(0, review.getPk().getUser().getUserId());
+		insertQuery.setParameter(0, user.getUserId());
 		insertQuery.setParameter(1, review.getPk().getRecipe().getRecipeId());
 		insertQuery.setParameter(2, review.getReviewCommentary());
 		insertQuery.setParameter(3, review.getRating());
@@ -63,7 +63,7 @@ public class ReviewDaoImpl extends AbstractDao<Integer, UserRecipeHasReview> imp
 			SQLQuery updateQuery = getSession().createSQLQuery("UPDATE users_recipe_has_review SET review_commentary = ?, rating = ? WHERE users_user_id = ? AND recipe_recipe_id = ?");
 			updateQuery.setParameter(0, review.getReviewCommentary());
 			updateQuery.setParameter(1, review.getRating());
-			updateQuery.setParameter(2, review.getPk().getUser().getUserId());
+			updateQuery.setParameter(2, user.getUserId());
 			updateQuery.setParameter(3, review.getPk().getRecipe().getRecipeId());
 			int numRowsAffected = updateQuery.executeUpdate();
 			if (previous_rating > review.getRating() && numRowsAffected > 0) {
@@ -85,7 +85,7 @@ public class ReviewDaoImpl extends AbstractDao<Integer, UserRecipeHasReview> imp
 		else if (review.getReviewCommentary() != null) {
 			SQLQuery updateQuery = getSession().createSQLQuery("UPDATE users_recipe_has_review SET review_commentary = ? WHERE users_user_id = ? AND recipe_recipe_id = ?");
 			updateQuery.setParameter(0, review.getReviewCommentary());
-			updateQuery.setParameter(1, review.getPk().getUser().getUserId());
+			updateQuery.setParameter(1, user.getUserId());
 			updateQuery.setParameter(2, review.getPk().getRecipe().getRecipeId());
 			updateQuery.executeUpdate();
 		}
@@ -99,7 +99,7 @@ public class ReviewDaoImpl extends AbstractDao<Integer, UserRecipeHasReview> imp
 			int previous_rating = tempNum.intValue();
 			SQLQuery updateQuery = getSession().createSQLQuery("UPDATE users_recipe_has_review SET rating = ? WHERE users_user_id = ? AND recipe_recipe_id = ?");
 			updateQuery.setParameter(0, review.getRating());
-			updateQuery.setParameter(1, review.getPk().getUser().getUserId());
+			updateQuery.setParameter(1, user.getUserId());
 			updateQuery.setParameter(2, review.getPk().getRecipe().getRecipeId());
 			int numRowsAffected = updateQuery.executeUpdate();
 			if (previous_rating > review.getRating() && numRowsAffected > 0) {
@@ -133,7 +133,7 @@ public class ReviewDaoImpl extends AbstractDao<Integer, UserRecipeHasReview> imp
 		Integer tempNum = (Integer) lookupQuery.uniqueResult();
 		int previous_rating = tempNum.intValue();
 		Query q = getSession().createSQLQuery("DELETE FROM users_recipe_has_review WHERE users_user_id = ? AND recipe_recipe_id = ?");
-		q.setParameter(0, review.getPk().getUser().getUserId());
+		q.setParameter(0, user.getUserId());
 		q.setParameter(1, review.getPk().getRecipe().getRecipeId());
 		int numRowsAffected = q.executeUpdate();
 		if (numRowsAffected > 0) {
