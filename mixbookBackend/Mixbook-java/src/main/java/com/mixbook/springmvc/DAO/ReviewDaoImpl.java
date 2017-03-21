@@ -6,9 +6,11 @@ import javax.persistence.PersistenceException;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
 import org.hibernate.SQLQuery;
 import org.hibernate.query.Query;
 import org.hibernate.type.IntegerType;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 

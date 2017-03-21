@@ -7,7 +7,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,9 +19,6 @@ import com.mixbook.springmvc.Models.User;
 import com.mixbook.springmvc.Security.JwtTokenUtil;
 import com.mixbook.springmvc.Services.UserService;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 @Controller
 @RequestMapping("/user")
 public class UserController {
@@ -34,11 +30,6 @@ public class UserController {
 
 	@Autowired
 	private JwtTokenUtil jwtTokenUtil;
-
-	@Autowired
-	private UserDetailsService userDetailsService;
-
-	private static final Logger logger = LogManager.getLogger(UserController.class);
 
 	@RequestMapping(value = "/createUser", 
 			method = RequestMethod.POST,

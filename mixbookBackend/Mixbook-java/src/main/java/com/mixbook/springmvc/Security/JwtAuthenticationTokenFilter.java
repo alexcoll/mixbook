@@ -1,8 +1,6 @@
 package com.mixbook.springmvc.Security;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -16,9 +14,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.context.support.WebApplicationContextUtils;
 
 public class JwtAuthenticationTokenFilter extends UsernamePasswordAuthenticationFilter {
 
@@ -40,14 +38,20 @@ public class JwtAuthenticationTokenFilter extends UsernamePasswordAuthentication
 		String username = this.jwtTokenUtil.getUsernameFromToken(authToken);
 
 		if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-			UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
-			if (userDetails.equals(null)) {
-				resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Unknown server error");
-			}
-			if (this.jwtTokenUtil.validateToken(authToken, userDetails)) {
-				UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-				authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpRequest));
-				SecurityContextHolder.getContext().setAuthentication(authentication);
+			try {
+				UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
+				if (userDetails.equals(null)) {
+					resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Unknown server error");
+					return;
+				}
+				if (this.jwtTokenUtil.validateToken(authToken, userDetails)) {
+					UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+					authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpRequest));
+					SecurityContextHolder.getContext().setAuthentication(authentication);
+				}
+			} catch (UsernameNotFoundException e) {
+				resp.sendError(HttpServletResponse.SC_UNAUTHORIZED, String.format("No user found with username '%s'.", username));
+				return;
 			}
 		}
 		chain.doFilter(request, response);
