@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.mixbook.springmvc.DAO.InventoryDao;
 import com.mixbook.springmvc.Exceptions.InvalidIngredientException;
 import com.mixbook.springmvc.Exceptions.MaxInventoryItemsException;
+import com.mixbook.springmvc.Exceptions.NoDataWasChangedException;
 import com.mixbook.springmvc.Exceptions.UnknownServerErrorException;
 import com.mixbook.springmvc.Models.Brand;
 import com.mixbook.springmvc.Models.User;
@@ -23,7 +24,7 @@ public class InventoryServiceImpl implements InventoryService {
 	@Autowired
 	private InventoryDao dao;
 
-	public void addIngredientToInventory(Brand brand, User user) throws MaxInventoryItemsException, InvalidIngredientException, PersistenceException, UnknownServerErrorException {
+	public void addIngredientToInventory(Brand brand, User user) throws MaxInventoryItemsException, InvalidIngredientException, PersistenceException, NoDataWasChangedException, UnknownServerErrorException {
 		try {
 			dao.addIngredientToInventory(brand, user);
 		} catch (MaxInventoryItemsException e) {
@@ -32,16 +33,20 @@ public class InventoryServiceImpl implements InventoryService {
 			throw new InvalidIngredientException("Invalid ingredient added!");
 		} catch (PersistenceException e) {
 			throw new PersistenceException();
+		} catch (NoDataWasChangedException e) {
+			throw new NoDataWasChangedException("No data was changed! Info may have been invalid!");
 		} catch (Exception e) {
 			throw new UnknownServerErrorException("Unknown server error!");
 		}
 	}
 
-	public void deleteIngredientFromInventory(Brand brand, User user) throws InvalidIngredientException, UnknownServerErrorException {
+	public void deleteIngredientFromInventory(Brand brand, User user) throws InvalidIngredientException, NoDataWasChangedException, UnknownServerErrorException {
 		try {
 			dao.deleteIngredientFromInventory(brand, user);
 		} catch (NullPointerException e) {
 			throw new InvalidIngredientException("Invalid ingredient deleted!");
+		} catch (NoDataWasChangedException e) {
+			throw new NoDataWasChangedException("No data was changed! Info may have been invalid!");
 		} catch (Exception e) {
 			throw new UnknownServerErrorException("Unknown server error!");
 		}

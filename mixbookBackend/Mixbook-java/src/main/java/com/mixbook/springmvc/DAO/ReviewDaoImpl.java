@@ -14,6 +14,7 @@ import org.hibernate.type.IntegerType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.mixbook.springmvc.Exceptions.NoDataWasChangedException;
 import com.mixbook.springmvc.Exceptions.ReviewOwnRecipeException;
 import com.mixbook.springmvc.Models.Recipe;
 import com.mixbook.springmvc.Models.User;
@@ -28,7 +29,7 @@ public class ReviewDaoImpl extends AbstractDao<Integer, UserRecipeHasReview> imp
 
 	private static final Logger logger = LogManager.getLogger(ReviewDaoImpl.class);
 
-	public void createReview(UserRecipeHasReview review) throws ReviewOwnRecipeException, PersistenceException, Exception {
+	public void createReview(UserRecipeHasReview review) throws ReviewOwnRecipeException, PersistenceException, NoDataWasChangedException, Exception {
 		User user = this.userService.findByEntityUsername(review.getPk().getUser().getUsername());
 		SQLQuery query = getSession().createSQLQuery("SELECT COUNT(*) FROM recipe WHERE recipe_id = ? AND user_recipe_id != ?");
 		query.setParameter(0, review.getPk().getRecipe().getRecipeId());
@@ -50,9 +51,12 @@ public class ReviewDaoImpl extends AbstractDao<Integer, UserRecipeHasReview> imp
 			updateQuery.setParameter(1, review.getPk().getRecipe().getRecipeId());
 			updateQuery.executeUpdate();
 		}
+		else {
+			throw new NoDataWasChangedException("No data was changed! Info may have been invalid!");
+		}
 	}
 
-	public void editReview(UserRecipeHasReview review) throws Exception {
+	public void editReview(UserRecipeHasReview review) throws NoDataWasChangedException, Exception {
 		User user = this.userService.findByEntityUsername(review.getPk().getUser().getUsername());
 		//Updating both review commentary and review rating
 		if (review.getReviewCommentary() != null && review.getRating() != 0) {
@@ -82,6 +86,9 @@ public class ReviewDaoImpl extends AbstractDao<Integer, UserRecipeHasReview> imp
 				updateQuery.setParameter(1, review.getPk().getRecipe().getRecipeId());
 				updateQuery.executeUpdate();
 			}
+			else if (numRowsAffected < 0) {
+				throw new NoDataWasChangedException("No data was changed! Info may have been invalid!");
+			}
 		}
 		//Updating review commentary
 		else if (review.getReviewCommentary() != null) {
@@ -89,7 +96,10 @@ public class ReviewDaoImpl extends AbstractDao<Integer, UserRecipeHasReview> imp
 			updateQuery.setParameter(0, review.getReviewCommentary());
 			updateQuery.setParameter(1, user.getUserId());
 			updateQuery.setParameter(2, review.getPk().getRecipe().getRecipeId());
-			updateQuery.executeUpdate();
+			int numRowsAffected = updateQuery.executeUpdate();
+			if (numRowsAffected < 0) {
+				throw new NoDataWasChangedException("No data was changed! Info may have been invalid!");
+			}
 		}
 		//Updating review rating
 		else if (review.getRating() != 0) {
@@ -118,6 +128,9 @@ public class ReviewDaoImpl extends AbstractDao<Integer, UserRecipeHasReview> imp
 				updateQuery.setParameter(1, review.getPk().getRecipe().getRecipeId());
 				updateQuery.executeUpdate();
 			}
+			else if (numRowsAffected < 0) {
+				throw new NoDataWasChangedException("No data was changed! Info may have been invalid!");
+			}
 		}
 		//All fields were null/invalid
 		else {
@@ -126,7 +139,7 @@ public class ReviewDaoImpl extends AbstractDao<Integer, UserRecipeHasReview> imp
 
 	}
 
-	public void deleteReview(UserRecipeHasReview review) throws Exception {
+	public void deleteReview(UserRecipeHasReview review) throws NoDataWasChangedException, Exception {
 		User user = this.userService.findByEntityUsername(review.getPk().getUser().getUsername());
 		SQLQuery lookupQuery = getSession().createSQLQuery("SELECT rating as result FROM users_recipe_has_review WHERE users_user_id = ? AND recipe_recipe_id = ?");
 		lookupQuery.setParameter(0, user.getUserId());
@@ -143,6 +156,9 @@ public class ReviewDaoImpl extends AbstractDao<Integer, UserRecipeHasReview> imp
 			updateQuery.setParameter(0, previous_rating);
 			updateQuery.setParameter(1, review.getPk().getRecipe().getRecipeId());
 			updateQuery.executeUpdate();
+		}
+		else {
+			throw new NoDataWasChangedException("No data was changed! Info may have been invalid!");
 		}
 	}
 

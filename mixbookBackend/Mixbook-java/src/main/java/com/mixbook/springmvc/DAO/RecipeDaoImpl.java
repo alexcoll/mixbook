@@ -20,6 +20,7 @@ import org.hibernate.type.IntegerType;
 
 import com.mixbook.springmvc.Exceptions.InvalidPermissionsException;
 import com.mixbook.springmvc.Exceptions.MaxRecipeIngredientsException;
+import com.mixbook.springmvc.Exceptions.NoDataWasChangedException;
 import com.mixbook.springmvc.Exceptions.NotEnoughRecipeIngredientsException;
 import com.mixbook.springmvc.Models.Brand;
 import com.mixbook.springmvc.Models.Recipe;
@@ -53,7 +54,7 @@ public class RecipeDaoImpl extends AbstractDao<Integer, Recipe> implements Recip
 		persist(recipe);
 	}
 
-	public void editRecipe(Recipe recipe, User user) throws Exception {
+	public void editRecipe(Recipe recipe, User user) throws NoDataWasChangedException, Exception {
 		user = this.userService.findByEntityUsername(user.getUsername());
 		//Updating both recipe directions and recipe difficulty
 		if (recipe.getDirections() != null && recipe.getDifficulty() != 0) {
@@ -62,7 +63,10 @@ public class RecipeDaoImpl extends AbstractDao<Integer, Recipe> implements Recip
 			q.setParameter("difficulty", recipe.getDifficulty());
 			q.setParameter("recipe_name", recipe.getRecipeName());
 			q.setParameter("user_recipe_id", user.getUserId());
-			q.executeUpdate();
+			int numRowsAffected = q.executeUpdate();
+			if (numRowsAffected < 1) {
+				throw new NoDataWasChangedException("No data was changed! Info may have been invalid!");
+			}
 		}
 		//Updating recipe directions
 		else if (recipe.getDirections() != null) {
@@ -70,7 +74,10 @@ public class RecipeDaoImpl extends AbstractDao<Integer, Recipe> implements Recip
 			q.setParameter("directions", recipe.getDirections());
 			q.setParameter("recipe_name", recipe.getRecipeName());
 			q.setParameter("user_recipe_id", user.getUserId());
-			q.executeUpdate();
+			int numRowsAffected = q.executeUpdate();
+			if (numRowsAffected < 1) {
+				throw new NoDataWasChangedException("No data was changed! Info may have been invalid!");
+			}
 		}
 		//Updating recipe difficulty
 		else if (recipe.getDifficulty() != 0) {
@@ -78,7 +85,10 @@ public class RecipeDaoImpl extends AbstractDao<Integer, Recipe> implements Recip
 			q.setParameter("difficulty", recipe.getDifficulty());
 			q.setParameter("recipe_name", recipe.getRecipeName());
 			q.setParameter("user_recipe_id", user.getUserId());
-			q.executeUpdate();
+			int numRowsAffected = q.executeUpdate();
+			if (numRowsAffected < 1) {
+				throw new NoDataWasChangedException("No data was changed! Info may have been invalid!");
+			}
 		}
 		//All fields were null/invalid
 		else {
@@ -86,15 +96,18 @@ public class RecipeDaoImpl extends AbstractDao<Integer, Recipe> implements Recip
 		}
 	}
 
-	public void deleteRecipe(Recipe recipe, User user) throws Exception {
+	public void deleteRecipe(Recipe recipe, User user) throws NoDataWasChangedException, Exception {
 		user = this.userService.findByEntityUsername(user.getUsername());
 		Query query = getSession().createQuery("delete Recipe where recipe_name = :recipe_name AND user_recipe_id = :user_recipe_id");
 		query.setParameter("recipe_name", recipe.getRecipeName());
 		query.setParameter("user_recipe_id", user.getUserId());
-		query.executeUpdate();
+		int numRowsAffected = query.executeUpdate();
+		if (numRowsAffected < 1) {
+			throw new NoDataWasChangedException("No data was changed! Info may have been invalid!");
+		}
 	}
 
-	public void addIngredientToRecipe(Recipe recipe, User user) throws InvalidPermissionsException, MaxRecipeIngredientsException, NullPointerException, PersistenceException, Exception {
+	public void addIngredientToRecipe(Recipe recipe, User user) throws InvalidPermissionsException, MaxRecipeIngredientsException, NullPointerException, PersistenceException, NoDataWasChangedException, Exception {
 		user = this.userService.findByEntityUsername(user.getUsername());
 		SQLQuery countQuery = getSession().createSQLQuery("SELECT number_of_ingredients as result FROM recipe WHERE recipe_name = :recipe_name AND user_recipe_id = :user_recipe_id").setParameter("recipe_name", recipe.getRecipeName()).setParameter("user_recipe_id", user.getUserId());
 		countQuery.addScalar("result", new IntegerType());
@@ -125,9 +138,12 @@ public class RecipeDaoImpl extends AbstractDao<Integer, Recipe> implements Recip
 			updateQuery.setParameter(0, recipe.getRecipeId());
 			updateQuery.executeUpdate();
 		}
+		else {
+			throw new NoDataWasChangedException("No data was changed! Info may have been invalid!");
+		}
 	}
 
-	public void removeIngredientFromRecipe(Recipe recipe, User user) throws InvalidPermissionsException, NotEnoughRecipeIngredientsException, NullPointerException, Exception {
+	public void removeIngredientFromRecipe(Recipe recipe, User user) throws InvalidPermissionsException, NotEnoughRecipeIngredientsException, NullPointerException, NoDataWasChangedException, Exception {
 		user = this.userService.findByEntityUsername(user.getUsername());
 		SQLQuery countQuery = getSession().createSQLQuery("SELECT number_of_ingredients as result FROM recipe WHERE recipe_name = :recipe_name AND user_recipe_id = :user_recipe_id").setParameter("recipe_name", recipe.getRecipeName()).setParameter("user_recipe_id", user.getUserId());
 		countQuery.addScalar("result", new IntegerType());
@@ -155,6 +171,9 @@ public class RecipeDaoImpl extends AbstractDao<Integer, Recipe> implements Recip
 			SQLQuery updateQuery = getSession().createSQLQuery("UPDATE recipe SET number_of_ingredients = number_of_ingredients - 1 WHERE recipe_id = ?");
 			updateQuery.setParameter(0, recipe.getRecipeId());
 			updateQuery.executeUpdate();
+		}
+		else {
+			throw new NoDataWasChangedException("No data was changed! Info may have been invalid!");
 		}
 	}
 

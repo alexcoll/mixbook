@@ -18,6 +18,7 @@ import com.mixbook.springmvc.Exceptions.NotEnoughRecipeIngredientsException;
 import com.mixbook.springmvc.Exceptions.InvalidIngredientException;
 import com.mixbook.springmvc.Exceptions.InvalidPermissionsException;
 import com.mixbook.springmvc.Exceptions.MaxRecipeIngredientsException;
+import com.mixbook.springmvc.Exceptions.NoDataWasChangedException;
 import com.mixbook.springmvc.Exceptions.UnknownServerErrorException;
 import com.mixbook.springmvc.Models.Brand;
 import com.mixbook.springmvc.Models.Recipe;
@@ -49,23 +50,27 @@ public class RecipeServiceImpl implements RecipeService {
 		}
 	}
 
-	public void editRecipe(Recipe recipe, User user) throws UnknownServerErrorException {
+	public void editRecipe(Recipe recipe, User user) throws NoDataWasChangedException, UnknownServerErrorException {
 		try {
 			dao.editRecipe(recipe, user);
+		} catch (NoDataWasChangedException e) {
+			throw new NoDataWasChangedException("No data was changed! Info may have been invalid!");
 		} catch (Exception e) {
 			throw new UnknownServerErrorException("Unknown server error!");
 		}
 	}
 
-	public void deleteRecipe(Recipe recipe, User user) throws UnknownServerErrorException {
+	public void deleteRecipe(Recipe recipe, User user) throws NoDataWasChangedException, UnknownServerErrorException {
 		try {	
 			dao.deleteRecipe(recipe, user);
+		} catch (NoDataWasChangedException e) {
+			throw new NoDataWasChangedException("No data was changed! Info may have been invalid!");
 		} catch (Exception e) {
 			throw new UnknownServerErrorException("Unknown server error!");
 		}
 	}
 
-	public void addIngredientToRecipe(Recipe recipe, User user) throws InvalidPermissionsException, MaxRecipeIngredientsException, InvalidIngredientException, PersistenceException, UnknownServerErrorException {
+	public void addIngredientToRecipe(Recipe recipe, User user) throws InvalidPermissionsException, MaxRecipeIngredientsException, InvalidIngredientException, PersistenceException, NoDataWasChangedException, UnknownServerErrorException {
 		try {
 			dao.addIngredientToRecipe(recipe, user);
 		} catch (InvalidPermissionsException e) {
@@ -73,15 +78,17 @@ public class RecipeServiceImpl implements RecipeService {
 		} catch (MaxRecipeIngredientsException e) {
 			throw new MaxRecipeIngredientsException("Maximum number of ingredients in recipe exceeded!");
 		} catch (NullPointerException e) {
-			throw new InvalidIngredientException("Invalid ingredient added!");
+			throw new InvalidIngredientException("Invalid ingredient added or invalid recipe name provided!");
 		} catch (PersistenceException e) {
 			throw new PersistenceException();
+		} catch (NoDataWasChangedException e) {
+			throw new NoDataWasChangedException("No data was changed! Info may have been invalid!");
 		} catch (Exception e) {
 			throw new UnknownServerErrorException("Unknown server error!");
 		}
 	}
 
-	public void removeIngredientFromRecipe(Recipe recipe, User user) throws InvalidPermissionsException, NotEnoughRecipeIngredientsException, InvalidIngredientException, UnknownServerErrorException {
+	public void removeIngredientFromRecipe(Recipe recipe, User user) throws InvalidPermissionsException, NotEnoughRecipeIngredientsException, InvalidIngredientException, NoDataWasChangedException, UnknownServerErrorException {
 		try {
 			dao.removeIngredientFromRecipe(recipe, user);
 		} catch (InvalidPermissionsException e) {
@@ -89,7 +96,9 @@ public class RecipeServiceImpl implements RecipeService {
 		} catch (NotEnoughRecipeIngredientsException e) {
 			throw new NotEnoughRecipeIngredientsException("Not enough ingredients in recipe!");
 		} catch (NullPointerException e) {
-			throw new InvalidIngredientException("Invalid ingredient deleted!");
+			throw new InvalidIngredientException("Invalid ingredient deleted or invalid recipe name provided!");
+		} catch (NoDataWasChangedException e) {
+			throw new NoDataWasChangedException("No data was changed! Info may have been invalid!");
 		} catch (Exception e) {
 			throw new UnknownServerErrorException("Unknown server error!");
 		}

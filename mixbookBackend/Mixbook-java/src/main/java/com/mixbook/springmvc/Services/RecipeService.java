@@ -11,6 +11,7 @@ import com.mixbook.springmvc.Exceptions.NotEnoughRecipeIngredientsException;
 import com.mixbook.springmvc.Exceptions.InvalidIngredientException;
 import com.mixbook.springmvc.Exceptions.InvalidPermissionsException;
 import com.mixbook.springmvc.Exceptions.MaxRecipeIngredientsException;
+import com.mixbook.springmvc.Exceptions.NoDataWasChangedException;
 import com.mixbook.springmvc.Exceptions.UnknownServerErrorException;
 import com.mixbook.springmvc.Models.Brand;
 
@@ -18,13 +19,13 @@ public interface RecipeService {
 
 	void createRecipe(Recipe recipe, User user) throws InvalidIngredientException, PersistenceException, UnknownServerErrorException;
 
-	void editRecipe(Recipe recipe, User user) throws UnknownServerErrorException;
+	void editRecipe(Recipe recipe, User user) throws NoDataWasChangedException, UnknownServerErrorException;
 
-	void deleteRecipe(Recipe recipe, User user) throws UnknownServerErrorException;
+	void deleteRecipe(Recipe recipe, User user) throws NoDataWasChangedException, UnknownServerErrorException;
 
-	void addIngredientToRecipe(Recipe recipe, User user) throws InvalidPermissionsException, MaxRecipeIngredientsException, InvalidIngredientException, PersistenceException, UnknownServerErrorException;
+	void addIngredientToRecipe(Recipe recipe, User user) throws InvalidPermissionsException, MaxRecipeIngredientsException, InvalidIngredientException, PersistenceException, NoDataWasChangedException, UnknownServerErrorException;
 
-	void removeIngredientFromRecipe(Recipe recipe, User user) throws InvalidPermissionsException, NotEnoughRecipeIngredientsException, InvalidIngredientException, UnknownServerErrorException;
+	void removeIngredientFromRecipe(Recipe recipe, User user) throws InvalidPermissionsException, NotEnoughRecipeIngredientsException, InvalidIngredientException, NoDataWasChangedException, UnknownServerErrorException;
 
 	List<Recipe> searchForRecipeByName(Recipe recipe) throws UnknownServerErrorException;
 
