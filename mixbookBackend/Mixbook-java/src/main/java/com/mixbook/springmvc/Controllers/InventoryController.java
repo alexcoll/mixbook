@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mixbook.springmvc.Exceptions.InvalidIngredientException;
 import com.mixbook.springmvc.Exceptions.MaxInventoryItemsException;
+import com.mixbook.springmvc.Exceptions.NoDataWasChangedException;
 import com.mixbook.springmvc.Exceptions.UnknownServerErrorException;
 import com.mixbook.springmvc.Models.Brand;
 import com.mixbook.springmvc.Models.JsonResponse;
@@ -52,6 +53,8 @@ public class InventoryController {
 			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","Invalid ingredient added"), HttpStatus.BAD_REQUEST);
 		} catch (PersistenceException e) {
 			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","Ingredient of that name already in user inventory"), HttpStatus.BAD_REQUEST);
+		} catch (NoDataWasChangedException e) {
+			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","No data was changed. Info may have been invalid."), HttpStatus.BAD_REQUEST);
 		} catch (UnknownServerErrorException e) {
 			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","Unknown server error"), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
@@ -70,6 +73,8 @@ public class InventoryController {
 			inventoryService.deleteIngredientFromInventory(brand, user);
 		} catch (InvalidIngredientException e) {
 			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","Invalid ingredient deleted"), HttpStatus.BAD_REQUEST);
+		} catch (NoDataWasChangedException e) {
+			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","No data was changed. Info may have been invalid."), HttpStatus.BAD_REQUEST);
 		} catch (UnknownServerErrorException e) {
 			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","Unknown server error"), HttpStatus.INTERNAL_SERVER_ERROR);
 		}

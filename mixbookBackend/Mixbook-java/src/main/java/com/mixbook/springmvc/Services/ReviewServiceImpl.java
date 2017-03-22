@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mixbook.springmvc.DAO.ReviewDao;
+import com.mixbook.springmvc.Exceptions.NoDataWasChangedException;
 import com.mixbook.springmvc.Exceptions.ReviewOwnRecipeException;
 import com.mixbook.springmvc.Exceptions.UnknownServerErrorException;
 import com.mixbook.springmvc.Models.Recipe;
@@ -22,29 +23,35 @@ public class ReviewServiceImpl implements ReviewService {
 	@Autowired
 	private ReviewDao dao;
 
-	public void createReview(UserRecipeHasReview review) throws ReviewOwnRecipeException, PersistenceException, UnknownServerErrorException {
+	public void createReview(UserRecipeHasReview review) throws ReviewOwnRecipeException, PersistenceException, NoDataWasChangedException, UnknownServerErrorException {
 		try {
 			dao.createReview(review);
 		} catch (ReviewOwnRecipeException e) {
 			throw new ReviewOwnRecipeException("Attempted to review own recipe or recipe does not exist!");
 		} catch (PersistenceException e) {
 			throw new PersistenceException();
+		} catch (NoDataWasChangedException e) {
+			throw new NoDataWasChangedException("No data was changed! Info may have been invalid!");
 		} catch (Exception e) {
 			throw new UnknownServerErrorException("Unknown server error!");
 		}
 	}
 
-	public void editReview(UserRecipeHasReview review) throws UnknownServerErrorException {
+	public void editReview(UserRecipeHasReview review) throws NoDataWasChangedException, UnknownServerErrorException {
 		try {
 			dao.editReview(review);
+		} catch (NoDataWasChangedException e) {
+			throw new NoDataWasChangedException("No data was changed! Info may have been invalid!");
 		} catch (Exception e) {
 			throw new UnknownServerErrorException("Unknown server error!");
 		}
 	}
 
-	public void deleteReview(UserRecipeHasReview review) throws UnknownServerErrorException {
+	public void deleteReview(UserRecipeHasReview review) throws NoDataWasChangedException, UnknownServerErrorException {
 		try {
 			dao.deleteReview(review);
+		} catch (NoDataWasChangedException e) {
+			throw new NoDataWasChangedException("No data was changed! Info may have been invalid!");
 		} catch (Exception e) {
 			throw new UnknownServerErrorException("Unknown server error!");
 		}

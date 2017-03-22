@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.mixbook.springmvc.Exceptions.InvalidIngredientException;
 import com.mixbook.springmvc.Exceptions.InvalidPermissionsException;
 import com.mixbook.springmvc.Exceptions.MaxRecipeIngredientsException;
+import com.mixbook.springmvc.Exceptions.NoDataWasChangedException;
 import com.mixbook.springmvc.Exceptions.NotEnoughRecipeIngredientsException;
 import com.mixbook.springmvc.Exceptions.UnknownServerErrorException;
 import com.mixbook.springmvc.Models.Brand;
@@ -99,6 +100,8 @@ public class RecipeController {
 		user.setUsername(username);
 		try {
 			recipeService.editRecipe(recipe, user);
+		} catch (NoDataWasChangedException e) {
+			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","No data was changed. Info may have been invalid."), HttpStatus.BAD_REQUEST);
 		} catch (UnknownServerErrorException e) {
 			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","Unknown server error"), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
@@ -115,6 +118,8 @@ public class RecipeController {
 		user.setUsername(username);
 		try {
 			recipeService.deleteRecipe(recipe, user);
+		} catch (NoDataWasChangedException e) {
+			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","No data was changed. Info may have been invalid."), HttpStatus.BAD_REQUEST);
 		} catch (UnknownServerErrorException e) {
 			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","Unknown server error"), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
@@ -135,13 +140,15 @@ public class RecipeController {
 		try {
 			recipeService.addIngredientToRecipe(recipe, user);
 		} catch (InvalidPermissionsException e) {
-			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED", "Invalid permissions"), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","Invalid permissions"), HttpStatus.BAD_REQUEST);
 		} catch (MaxRecipeIngredientsException e) {
 			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","Too many ingredients added"), HttpStatus.BAD_REQUEST);
 		} catch (InvalidIngredientException e) {
-			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","Invalid ingredient added"), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","Invalid ingredient added or invalid recipe name provided"), HttpStatus.BAD_REQUEST);
 		} catch (PersistenceException e) {
 			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","Duplicate recipe creation"), HttpStatus.BAD_REQUEST);
+		} catch (NoDataWasChangedException e) {
+			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","No data was changed. Info may have been invalid."), HttpStatus.BAD_REQUEST);
 		} catch (UnknownServerErrorException e) {
 			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","Unknown server error"), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
@@ -166,7 +173,9 @@ public class RecipeController {
 		} catch (NotEnoughRecipeIngredientsException e) {
 			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED", "Not enough ingredients in recipe!"), HttpStatus.BAD_REQUEST);
 		} catch (InvalidIngredientException e) {
-			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","Invalid ingredient added"), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","Invalid ingredient removed or invalid recipe name provided"), HttpStatus.BAD_REQUEST);
+		} catch (NoDataWasChangedException e) {
+			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","No data was changed. Info may have been invalid."), HttpStatus.BAD_REQUEST);
 		} catch (UnknownServerErrorException e) {
 			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","Unknown server error"), HttpStatus.INTERNAL_SERVER_ERROR);
 		}

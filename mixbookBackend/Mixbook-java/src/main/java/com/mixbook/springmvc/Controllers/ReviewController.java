@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.mixbook.springmvc.Exceptions.NoDataWasChangedException;
 import com.mixbook.springmvc.Exceptions.ReviewOwnRecipeException;
 import com.mixbook.springmvc.Exceptions.UnknownServerErrorException;
 import com.mixbook.springmvc.Models.JsonResponse;
@@ -61,6 +62,8 @@ public class ReviewController {
 			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","Attempted to review own recipe or recipe does not exist"), HttpStatus.BAD_REQUEST);
 		} catch (PersistenceException e) {
 			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","Duplicate review creation"), HttpStatus.BAD_REQUEST);
+		} catch (NoDataWasChangedException e) {
+			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","No data was changed. Info may have been invalid."), HttpStatus.BAD_REQUEST);
 		} catch (UnknownServerErrorException e) {
 			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","Unknown server error"), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
@@ -101,6 +104,8 @@ public class ReviewController {
 		review.getPk().setUser(user);
 		try {
 			reviewService.editReview(review);
+		} catch (NoDataWasChangedException e) {
+			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","No data was changed. Info may have been invalid."), HttpStatus.BAD_REQUEST);
 		} catch (UnknownServerErrorException e) {
 			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","Unknown server error"), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
@@ -121,6 +126,8 @@ public class ReviewController {
 		}
 		try {
 			reviewService.deleteReview(review);
+		} catch (NoDataWasChangedException e) {
+			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","No data was changed. Info may have been invalid."), HttpStatus.BAD_REQUEST);
 		} catch (UnknownServerErrorException e) {
 			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","Unknown server error"), HttpStatus.INTERNAL_SERVER_ERROR);
 		}

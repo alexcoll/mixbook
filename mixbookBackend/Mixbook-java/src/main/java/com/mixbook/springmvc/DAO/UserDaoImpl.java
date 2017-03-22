@@ -7,14 +7,19 @@ import org.apache.logging.log4j.Logger;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
+import org.hibernate.SQLQuery;
 import org.hibernate.criterion.Restrictions;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.mixbook.springmvc.Models.User;
+import com.mixbook.springmvc.Services.UserService;
 
 @Repository("userDao")
 public class UserDaoImpl extends AbstractDao<Integer, User> implements UserDao {
+
+	@Autowired
+	UserService userService;
 
 	private static final Logger logger = LogManager.getLogger(UserDaoImpl.class);
 
@@ -30,6 +35,10 @@ public class UserDaoImpl extends AbstractDao<Integer, User> implements UserDao {
 	}
 
 	public void deleteUser(User user) throws Exception {
+		user = this.userService.findByEntityUsername(user.getUsername());
+		SQLQuery updateQuery = getSession().createSQLQuery("UPDATE recipe r1 INNER JOIN users_recipe_has_review r2 ON r1.recipe_id = r2.recipe_recipe_id SET r1.number_of_ratings = r1.number_of_ratings - 1, r1.total_rating = r1.total_rating - r2.rating WHERE r2.users_user_id = ?");
+		updateQuery.setParameter(0, user.getUserId());
+		updateQuery.executeUpdate();
 		Query query = getSession().createQuery("delete User where username = :username");
 		query.setParameter("username", user.getUsername());
 		query.executeUpdate();
