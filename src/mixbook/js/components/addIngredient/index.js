@@ -128,9 +128,9 @@ class AddIngredient extends Component {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
-              'Authorization': data.userInfo.token,
+              'Authorization': data.token,
             },
-              body: JSON.stringify({
+            body: JSON.stringify({
               brandName: item
             })
           })

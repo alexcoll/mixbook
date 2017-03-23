@@ -79,12 +79,20 @@ class MyDrinks extends Component {
   }
 
   getLocalData() {
+    // store.get('mydrinks')
+    // .then((data) => {
+    //   this.setstate({
+    //     rawData: data,
+    //   })
+    // })
     return;
   }
 
   getRemoteData() {
-    store.get('account').then((data) => {
+    store.get('account')
+    .then((data) => {
       if (data.isGuest) {
+        this.getLocalData();
         return;
       }
 
@@ -92,7 +100,7 @@ class MyDrinks extends Component {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': data.userInfo.token,
+          'Authorization': data.token,
         }
       }).then(async (response) => {
         if (response.status == 200) {

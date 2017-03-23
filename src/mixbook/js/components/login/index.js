@@ -24,7 +24,6 @@ class Login extends Component {
     })
   }
 
-
   constructor(props) {
     super(props);
     this.state = {
@@ -44,7 +43,6 @@ class Login extends Component {
   updatePassword = (text) => {
     this.setState({inputPassword: text})
   }
-
 
   checkInput() {
     if (this.state.inputUsername == '') {
@@ -100,7 +98,7 @@ class Login extends Component {
 
 
   submitToServer() {
-    return fetch('https://activitize.net/mixbook/auth', {
+    fetch('https://activitize.net/mixbook/auth', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -114,9 +112,21 @@ class Login extends Component {
     .then(async (response) => {
       if (response.status == 200) {
         var json = await response.json();
-        this.updateDatabase(json);
+        store.save('account', {
+          isLoggedIn: true,
+          isGuest: false,
+          token: json.token
+        })
+        .then(() => {
+          this.replaceAt('mydrinks');
+          this.updateDatabase(json.token);
+        })
+        .catch((error) => {
+          console.warn("error updating account local store");
+          console.warn(error.message);
+        });
         return;
-      } else if (response.status == 401) {
+      } else if (response.status === 401) {
         this.showBadInfoAlert();
         return;
       } else {
@@ -130,25 +140,40 @@ class Login extends Component {
   }
 
 
-  updateDatabase(json) {
-    // Store account details into local store
-    store.save('account', {
-      isLoggedIn: true,
-      isGuest: false,
-      userInfo: {
-        username: this.state.inputUsername,
-        email: "placeholder@example.com",
-        firstName: "John",
-        lastName: "Doe",
-        thumbnail: "../../../img/camera.png",
-        token: json.token
+  updateDatabase(token: string) {
+    // Get user profile information
+    fetch('https://activitize.net/mixbook/user/getUserInfo', {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Authorization': token,
       }
-    }).then(() => {
-      this.replaceAt('mydrinks');
-    }).catch((error) => {
-      console.warn("error updating account local store");
-      console.warn(error.message);
     })
+    .then(async (response) => {
+      if (response.status == 200) {
+        var json = await response.json();
+        // Store account details into local store
+        store.update('account', {
+          userInfo: {
+            username: json.username,
+            email: json.email,
+            firstName: json.firstName,
+            lastName: json.lastName
+          }
+        })
+        .catch((error) => {
+          console.warn("error updating account local store");
+          console.warn(error.message);
+        });
+        return;
+      } else {
+        this.showServerErrorAlert(response);
+        return;
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+    });
   }
 
 
@@ -165,13 +190,12 @@ class Login extends Component {
     store.save('account', {
       isLoggedIn: true,
       isGuest: true,
+      token: "",
       userInfo: {
         username: "guest_user",
         email: "guest@mixbook.com",
         firstName: "Guest",
         lastName: "User",
-        thumbnail: "../../../img/camera.png",
-        token: ""
       }
     }).then(() => {
       this.replaceAt('mydrinks');

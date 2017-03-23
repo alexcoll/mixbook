@@ -95,7 +95,7 @@ class Ingredients extends Component {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': data.userInfo.token,
+          'Authorization': data.token,
         }
       })
       .then(async (response) => {
@@ -154,23 +154,28 @@ class Ingredients extends Component {
     var list = this.state.rawData;
     var index = list.indexOf(item);
     if (index > -1) {
-      // list.splice(index, 1);
-      // this.setState({
-      //   rawData: list,
-      //   dataSource: this.state.dataSource.cloneWithRows(list),
-      // });
+      list.splice(index, 1);
+      this.setState({
+        rawData: list,
+        dataSource: this.state.dataSource.cloneWithRows(list),
+      });
 
-      // store.save('inventory', this.state.rawData).catch((error) => {
-      //   console.warn("error storing inventory into local store");
-      // });
+      store.save('inventory', this.state.rawData)
+      .catch((error) => {
+        console.warn("error storing inventory into local store");
+      });
 
       // Delete the ingredient from the server
       store.get('account').then((data) => {
+        if (data.isGuest) {
+          return;
+        }
+
         fetch('https://activitize.net/mixbook/inventory/deleteIngredientFromInventory', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': data.userInfo.token,
+            'Authorization': data.token,
           },
           body: JSON.stringify({
             brandName: item

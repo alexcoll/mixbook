@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { TouchableOpacity, View } from 'react-native';
+import { ToastAndroid, TouchableOpacity, View, Alert } from 'react-native';
 import { connect } from 'react-redux';
 import { Container, Header, Title, Content, Button, Icon, List, ListItem, InputGroup, Input, Text, Thumbnail } from 'native-base';
 
@@ -47,14 +47,16 @@ class Account extends Component {
 
 
   componentDidMount() {
-    store.get('account').then((data) => {
+    store.get('account')
+    .then((data) => {
       this.setState({
         inputUsername: data.userInfo.username,
         inputFirstName: data.userInfo.firstName,
         inputLastName: data.userInfo.lastName,
         inputEmail: data.userInfo.email
       });
-    }).catch((error) => {
+    })
+    .catch((error) => {
       console.warn("error getting settings from local store");
     });
   }
@@ -64,23 +66,158 @@ class Account extends Component {
     store.update('account', {
       isLoggedIn: false,
       isGuest: false,
+      token: "",
       userInfo: {
         username: "",
         email: "",
         firstName: "",
-        lastName: "",
-        thumbnail: "",
-        token: "",
+        lastName: ""
       }
-    }).catch((error) => {
-      console.warn("error storing settings into local store");
+    })
+    .then(() => {
+      this.replaceAt('login');
+      ToastAndroid.show("Logged out", ToastAndroid.SHORT);
+    })
+    .catch((error) => {
+      console.warn("error clearing account data from local store");
     });
-    this.replaceAt('login')
+
   }
 
   onSubmit() {
-    alert("not implemented");
-    return;
+    store.get('account')
+    .then((data) => {
+      var wasAnythingChanged = false;
+
+      if (this.state.inputEmail !== data.userInfo.email) {
+        console.log("email has been changed, updating...");
+        this.updateEmail(data.token, this.state.inputEmail);
+        wasAnythingChanged = true;
+      }
+
+      if ((this.state.inputFirstName !== data.userInfo.firstName) || (this.state.inputLastName !== data.userInfo.lastName)) {
+        console.log("first or last name has been changed, updating...");
+        this.updateNames(data.token, this.state.inputFirstName, this.state.inputLastName);
+        wasAnythingChanged = true;
+      }
+
+      if (wasAnythingChanged) {
+        ToastAndroid.show("Profile updated", ToastAndroid.SHORT);
+      } else {
+        ToastAndroid.show("Nothing changed", ToastAndroid.SHORT);
+      }
+    }).catch((error) => {
+      console.warn("error getting account data from local store");
+    });
+  }
+
+  updateNames(token: string, firstName: string, lastName: string) {
+    fetch('https://activitize.net/mixbook/user/editUser', {
+      method: 'POST',
+      headers: {
+        'Authorization': token,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        firstName: firstName,
+        lastName: lastName
+      }),
+    }).then(async (response) => {
+      if (response.status === 200) {
+        var json = await response.json();
+        if (json.responseStatus === "OK") {
+          store.get('account')
+          .then((data) => {
+            data.userInfo.firstName = firstName;
+            data.userInfo.lastName = lastName;
+            store.save('account', data)
+            .catch((error) => {
+              console.warn("error storing account data into local store");
+              console.warn(error);
+            })
+          }).catch((error) => {
+            console.warn("error getting account data from local store");
+            console.warn(error);
+          });
+        } else {
+          Alert("something went wrong");
+        }
+      } else if (response.status === 400) {
+        var json = await response.json();
+        Alert.alert(
+          "Error Updating Names",
+          json.errorMessage,
+          [
+            {text: 'Ok', style: 'cancel'},
+          ],
+          { cancelable: true }
+        )
+      } else {
+        console.warn(response.status + response.message);
+        return;
+      }
+    }).catch((error) => {
+      console.error(error);
+      this.setState({
+        empty: true,
+        isLoading: false,
+      });
+    });
+  }
+
+  updateEmail(token: string, newEmail: string) {
+    fetch('https://activitize.net/mixbook/user/changeEmail', {
+      method: 'POST',
+      headers: {
+        'Authorization': token,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email: newEmail
+      }),
+    }).then(async (response) => {
+      if (response.status === 200) {
+        var json = await response.json();
+        if (json.responseStatus === "OK") {
+          store.get('account')
+          .then((data) => {
+            data.userInfo.email = newEmail;
+            store.save('account', data)
+            .then(() => {
+              // ToastAndroid.show("Profile updated", ToastAndroid.SHORT);
+            })
+            .catch((error) => {
+              console.warn("error storing account data into local store");
+              console.warn(error);
+            })
+          }).catch((error) => {
+            console.warn("error getting account data from local store");
+            console.warn(error);
+          });
+        } else {
+          Alert("something went wrong");
+        }
+      } else if (response.status === 400) {
+        var json = await response.json();
+        Alert.alert(
+          "Error Updating Email",
+          json.errorMessage,
+          [
+            {text: 'Ok', style: 'cancel'},
+          ],
+          { cancelable: true }
+        )
+      } else {
+        Alert(response.status + response.message);
+        return;
+      }
+    }).catch((error) => {
+      console.error(error);
+      this.setState({
+        empty: true,
+        isLoading: false,
+      });
+    });
   }
 
 
@@ -96,13 +233,6 @@ class Account extends Component {
         </Header>
 
         <Content>
-          <TouchableOpacity>
-            <Thumbnail
-              size={80}
-              source={camera}
-              style={styles.thumbnails}
-            />
-          </TouchableOpacity>
           <List>
             <ListItem>
               <InputGroup>
