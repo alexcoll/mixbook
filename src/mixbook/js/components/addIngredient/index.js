@@ -22,11 +22,11 @@ class AddIngredient extends Component {
     super(props);
     const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
-      dataSource: ds.cloneWithRows(['Start typing to search possible ingredients']),
+      dataSource: ds.cloneWithRows([]),
       searchText: "",
       isLoading: false,
       empty: false,
-      rawData: ['Start typing to search possible ingredients'],
+      rawData: [],
     };
   }
 
@@ -43,7 +43,7 @@ class AddIngredient extends Component {
       "Refresh Brand List",
       'Are you sure you want to refresh? This may take a long time to load',
       [
-        {text: 'Refresh', onPress: () => this.fetchBrands()},
+        {text: 'Refresh', onPress: () => this.getRemoteData()},
         {text: 'Cancel', style: 'cancel'},
       ],
       { cancelable: true }
@@ -207,6 +207,7 @@ class AddIngredient extends Component {
   render() {
     return (
       <View style={styles.container}>
+
         <Header>
           <Button transparent onPress={() => this.navigateTo('ingredients')}>
             <Icon name="ios-arrow-back" />
@@ -219,7 +220,7 @@ class AddIngredient extends Component {
 
         <TextInput
           style={styles.searchBar}
-          placeholder="Search inventory"
+          placeholder="Search ingredients"
           value={this.state.searchText}
           onChange={this.setSearchText.bind(this)}
           multiline={false}
@@ -228,24 +229,30 @@ class AddIngredient extends Component {
           autoCorrect={false}
         />
 
-        <ListView
-          dataSource={this.state.dataSource}
-          renderRow={(rowData: string, sectionID: number, rowID: number, highlightRow: (sectionID: number, rowID: number) => void) =>
-            <TouchableHighlight onPress={() => {
-              this._pressRow(rowData);
-              // highlightRow(sectionID, rowID);
-            }}>
-              <View>
+        <View>
+          <ListView
+            dataSource={this.state.dataSource}
+            renderRow={(rowData: string, sectionID: number, rowID: number, highlightRow: (sectionID: number, rowID: number) => void) =>
+              <TouchableHighlight onPress={() => {
+                this._pressRow(rowData);
+                // highlightRow(sectionID, rowID);
+              }}>
                 <View style={styles.row}>
                   <Text style={styles.rowText}>
                     {rowData}
                   </Text>
                 </View>
-              </View>
-            </TouchableHighlight>
-          }
-          renderSeperator={this._renderSeparator}
-        />
+              </TouchableHighlight>
+            }
+            renderSeperator={this._renderSeparator}
+          />
+        </View>
+
+        <View>
+          <Text style={styles.centerText}>
+            Start typing to search possible ingredients
+          </Text>
+        </View>
       </View>
     );
   }

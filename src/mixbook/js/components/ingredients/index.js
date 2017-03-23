@@ -46,20 +46,14 @@ class Ingredients extends Component {
   }
 
   componentWillReceiveProps() {
-    console.log("willProps");
-    this.getData();
+    //console.log("willProps");
+    this.getLocalData();
   }
 
   componentWillMount() {
-    console.log("willMount");
-    this.fetchData();
+    //console.log("willMount");
+    this.getRemoteData();
   }
-
-  componentDidMount() {
-    // console.warn("didMount");
-  }
-
-
 
   showServerErrorAlert(response) {
     Alert.alert(
@@ -72,7 +66,7 @@ class Ingredients extends Component {
       );
   }
 
-  getData() {
+  getLocalData() {
     store.get('inventory').
     then((data) => {
       this.setState({
@@ -91,7 +85,7 @@ class Ingredients extends Component {
     });
   }
 
-  fetchData() {
+  getRemoteData() {
     store.get('account').then((data) => {
       if (data.isGuest) {
         return;
@@ -254,6 +248,7 @@ class Ingredients extends Component {
     return (
 
       <View style={styles.container}>
+
         <Header>
           <Button transparent onPress={this.props.openDrawer}>
             <Icon name="ios-menu" />

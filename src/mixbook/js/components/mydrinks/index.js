@@ -55,12 +55,12 @@ class MyDrinks extends Component {
 
   componentWillReceiveProps() {
     // console.warn("willProps");
-    this.fetchData();
+    this.getLocalData();
   }
 
   componentWillMount() {
     // console.warn("willMount");
-    this.fetchData();
+    this.getRemoteData();
   }
 
   componentDidMount() {
@@ -78,8 +78,16 @@ class MyDrinks extends Component {
     );
   }
 
-  fetchData() {
+  getLocalData() {
+    return;
+  }
+
+  getRemoteData() {
     store.get('account').then((data) => {
+      if (data.isGuest) {
+        return;
+      }
+
       fetch('https://activitize.net/mixbook/recipe/getAllRecipesUserCanMake', {
         method: 'GET',
         headers: {
@@ -135,7 +143,7 @@ class MyDrinks extends Component {
 
   _onRefresh() {
     this.setState({refreshing: true});
-    this.fetchData();
+    this.getRemoteData();
     this.setState({refreshing: false});
   }
 
