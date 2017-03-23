@@ -5,18 +5,11 @@ const { StyleSheet } = React;
 
 module.exports = StyleSheet.create({
   container: {
-    backgroundColor: 'white'
+    flex: 1,
+    backgroundColor: 'white',
   },
 
-  editButton: {
-    alignSelf: 'flex-end'
-    },
-
-  listText: {
-    alignSelf: 'flex-start'
-  },
-
-    rowText: {
+  rowText: {
     flex: 1,
     marginLeft: 12,
     fontSize: 16,
