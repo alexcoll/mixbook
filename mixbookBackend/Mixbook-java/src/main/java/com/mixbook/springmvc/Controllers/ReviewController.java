@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mixbook.springmvc.Exceptions.NoDataWasChangedException;
@@ -153,12 +154,13 @@ public class ReviewController {
 
 	@RequestMapping(value = "/loadReviewsForRecipe", method = RequestMethod.GET)
 	@ResponseBody
-	public ResponseEntity<List<UserRecipeHasReview>> loadReviewsForRecipe(HttpServletRequest request, @RequestBody Recipe recipe) {
+	public ResponseEntity<List<UserRecipeHasReview>> loadReviewsForRecipe(HttpServletRequest request, @RequestParam("id") Integer id) {
 		List<UserRecipeHasReview> tempList = new ArrayList<UserRecipeHasReview>();
 		List<UserRecipeHasReview> emptyList = new ArrayList<UserRecipeHasReview>();
-		if (recipe.getRecipeId() < 1) {
+		if (id < 1) {
 			return new ResponseEntity<List<UserRecipeHasReview>>(emptyList, HttpStatus.BAD_REQUEST);
 		}
+		Recipe recipe = new Recipe(id);
 		try {
 			tempList = reviewService.loadReviewsForRecipe(recipe);
 		} catch (UnknownServerErrorException e) {

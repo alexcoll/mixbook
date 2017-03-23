@@ -6,6 +6,6 @@ import com.mixbook.springmvc.Models.Style;
 
 public interface StyleDao {
 
-	List<Style> getStyles() throws Exception;
+	List<String> getStyles() throws Exception;
 
 }

@@ -7,6 +7,6 @@ import com.mixbook.springmvc.Models.Brand;
 
 public interface BrandService {
 
-	List<Brand> getBrands() throws UnknownServerErrorException;
+	List<String> getBrands() throws UnknownServerErrorException;
 
 }

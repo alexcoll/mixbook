@@ -58,10 +58,10 @@ public class RecipeDaoImpl extends AbstractDao<Integer, Recipe> implements Recip
 		user = this.userService.findByEntityUsername(user.getUsername());
 		//Updating both recipe directions and recipe difficulty
 		if (recipe.getDirections() != null && recipe.getDifficulty() != 0) {
-			Query q = getSession().createQuery("update Recipe set directions = :directions, difficulty = :difficulty where recipe_name = :recipe_name AND user_recipe_id = :user_recipe_id");
+			Query q = getSession().createQuery("update Recipe set directions = :directions, difficulty = :difficulty where recipe_id = :recipe_id AND user_recipe_id = :user_recipe_id");
 			q.setParameter("directions", recipe.getDirections());
 			q.setParameter("difficulty", recipe.getDifficulty());
-			q.setParameter("recipe_name", recipe.getRecipeName());
+			q.setParameter("recipe_id", recipe.getRecipeId());
 			q.setParameter("user_recipe_id", user.getUserId());
 			int numRowsAffected = q.executeUpdate();
 			if (numRowsAffected < 1) {
@@ -70,9 +70,9 @@ public class RecipeDaoImpl extends AbstractDao<Integer, Recipe> implements Recip
 		}
 		//Updating recipe directions
 		else if (recipe.getDirections() != null) {
-			Query q = getSession().createQuery("update Recipe set directions = :directions where recipe_name = :recipe_name AND user_recipe_id = :user_recipe_id");
+			Query q = getSession().createQuery("update Recipe set directions = :directions where recipe_id = :recipe_id AND user_recipe_id = :user_recipe_id");
 			q.setParameter("directions", recipe.getDirections());
-			q.setParameter("recipe_name", recipe.getRecipeName());
+			q.setParameter("recipe_id", recipe.getRecipeId());
 			q.setParameter("user_recipe_id", user.getUserId());
 			int numRowsAffected = q.executeUpdate();
 			if (numRowsAffected < 1) {
@@ -81,9 +81,9 @@ public class RecipeDaoImpl extends AbstractDao<Integer, Recipe> implements Recip
 		}
 		//Updating recipe difficulty
 		else if (recipe.getDifficulty() != 0) {
-			Query q = getSession().createQuery("update Recipe set difficulty = :difficulty where recipe_name = :recipe_name AND user_recipe_id = :user_recipe_id");
+			Query q = getSession().createQuery("update Recipe set difficulty = :difficulty where recipe_id = :recipe_id AND user_recipe_id = :user_recipe_id");
 			q.setParameter("difficulty", recipe.getDifficulty());
-			q.setParameter("recipe_name", recipe.getRecipeName());
+			q.setParameter("recipe_id", recipe.getRecipeId());
 			q.setParameter("user_recipe_id", user.getUserId());
 			int numRowsAffected = q.executeUpdate();
 			if (numRowsAffected < 1) {
@@ -98,8 +98,8 @@ public class RecipeDaoImpl extends AbstractDao<Integer, Recipe> implements Recip
 
 	public void deleteRecipe(Recipe recipe, User user) throws NoDataWasChangedException, Exception {
 		user = this.userService.findByEntityUsername(user.getUsername());
-		Query query = getSession().createQuery("delete Recipe where recipe_name = :recipe_name AND user_recipe_id = :user_recipe_id");
-		query.setParameter("recipe_name", recipe.getRecipeName());
+		Query query = getSession().createQuery("delete Recipe where recipe_id = :recipe_id AND user_recipe_id = :user_recipe_id");
+		query.setParameter("recipe_id", recipe.getRecipeId());
 		query.setParameter("user_recipe_id", user.getUserId());
 		int numRowsAffected = query.executeUpdate();
 		if (numRowsAffected < 1) {
@@ -109,7 +109,7 @@ public class RecipeDaoImpl extends AbstractDao<Integer, Recipe> implements Recip
 
 	public void addIngredientToRecipe(Recipe recipe, User user) throws InvalidPermissionsException, MaxRecipeIngredientsException, NullPointerException, PersistenceException, NoDataWasChangedException, Exception {
 		user = this.userService.findByEntityUsername(user.getUsername());
-		SQLQuery countQuery = getSession().createSQLQuery("SELECT number_of_ingredients as result FROM recipe WHERE recipe_name = :recipe_name AND user_recipe_id = :user_recipe_id").setParameter("recipe_name", recipe.getRecipeName()).setParameter("user_recipe_id", user.getUserId());
+		SQLQuery countQuery = getSession().createSQLQuery("SELECT number_of_ingredients as result FROM recipe WHERE recipe_id = :recipe_id AND user_recipe_id = :user_recipe_id").setParameter("recipe_id", recipe.getRecipeId()).setParameter("user_recipe_id", user.getUserId());
 		countQuery.addScalar("result", new IntegerType());
 		Integer tempNum = (Integer) countQuery.uniqueResult();
 		int number_of_ingredients = tempNum.intValue();
@@ -145,7 +145,7 @@ public class RecipeDaoImpl extends AbstractDao<Integer, Recipe> implements Recip
 
 	public void removeIngredientFromRecipe(Recipe recipe, User user) throws InvalidPermissionsException, NotEnoughRecipeIngredientsException, NullPointerException, NoDataWasChangedException, Exception {
 		user = this.userService.findByEntityUsername(user.getUsername());
-		SQLQuery countQuery = getSession().createSQLQuery("SELECT number_of_ingredients as result FROM recipe WHERE recipe_name = :recipe_name AND user_recipe_id = :user_recipe_id").setParameter("recipe_name", recipe.getRecipeName()).setParameter("user_recipe_id", user.getUserId());
+		SQLQuery countQuery = getSession().createSQLQuery("SELECT number_of_ingredients as result FROM recipe WHERE recipe_id = :recipe_id AND user_recipe_id = :user_recipe_id").setParameter("recipe_id", recipe.getRecipeId()).setParameter("user_recipe_id", user.getUserId());
 		countQuery.addScalar("result", new IntegerType());
 		Integer tempNum = (Integer) countQuery.uniqueResult();
 		int number_of_ingredients = tempNum.intValue();
@@ -200,13 +200,9 @@ public class RecipeDaoImpl extends AbstractDao<Integer, Recipe> implements Recip
 		return recipeList;
 	}
 
-	public List<Recipe> getAllRecipesAnonymousUserCanMake(List<Brand> brands) throws Exception {
-		List<String> brandNames = new ArrayList<String>(brands.size());
-		for (Brand brand : brands) {
-			brandNames.add(brand.getBrandName());
-		}
-		Query searchQuery = getSession().createQuery("FROM Brand brand WHERE brand.brand_name IN (:brandNames)");
-		searchQuery.setParameterList("brandNames", brandNames);
+	public List<Recipe> getAllRecipesAnonymousUserCanMake(List<String> brands) throws Exception {
+		Query searchQuery = getSession().createQuery("FROM Brand brand WHERE brand.brand_name IN (:brands)");
+		searchQuery.setParameterList("brands", brands);
 		List<Brand> brandList = searchQuery.getResultList();
 		SQLQuery query = getSession().createSQLQuery("SELECT * FROM recipe WHERE recipe_id NOT IN (SELECT recipe_recipe_id FROM recipe_has_brand WHERE brand_brand_id NOT IN (:brandIds))");
 		query.setParameterList("brandIds", brandList);

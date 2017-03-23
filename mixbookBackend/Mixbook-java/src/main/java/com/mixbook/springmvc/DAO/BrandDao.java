@@ -6,6 +6,6 @@ import com.mixbook.springmvc.Models.Brand;
 
 public interface BrandDao {
 
-	List<Brand> getBrands() throws Exception;
+	List<String> getBrands() throws Exception;
 
 }

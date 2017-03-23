@@ -18,8 +18,8 @@ public class StyleServiceImpl implements StyleService {
 	@Autowired
 	private StyleDao dao;
 
-	public List<Style> getStyles() throws UnknownServerErrorException {
-		List<Style> tempList = new ArrayList<Style>();
+	public List<String> getStyles() throws UnknownServerErrorException {
+		List<String> tempList = new ArrayList<String>();
 		try {
 			tempList = dao.getStyles();
 		} catch (Exception e) {

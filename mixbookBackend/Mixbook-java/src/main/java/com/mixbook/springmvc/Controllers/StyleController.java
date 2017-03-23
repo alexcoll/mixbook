@@ -24,15 +24,15 @@ public class StyleController {
 
 	@RequestMapping(value = "/getStyles", method = RequestMethod.GET)
 	@ResponseBody
-	public ResponseEntity<List<Style>> getStyles() {
-		List<Style> tempList = new ArrayList<Style>();
+	public ResponseEntity<List<String>> getStyles() {
+		List<String> tempList = new ArrayList<String>();
 		try {
 			tempList = styleService.getStyles();
 		} catch (UnknownServerErrorException e) {
-			List<Style> emptyList = new ArrayList<Style>();
-			return new ResponseEntity<List<Style>>(emptyList, HttpStatus.INTERNAL_SERVER_ERROR);
+			List<String> emptyList = new ArrayList<String>();
+			return new ResponseEntity<List<String>>(emptyList, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		return new ResponseEntity<List<Style>>(tempList, HttpStatus.OK);
+		return new ResponseEntity<List<String>>(tempList, HttpStatus.OK);
 	}
 
 }

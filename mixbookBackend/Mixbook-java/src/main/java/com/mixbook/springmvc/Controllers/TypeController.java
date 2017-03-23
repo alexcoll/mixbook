@@ -24,15 +24,15 @@ public class TypeController {
 
 	@RequestMapping(value = "/getTypes", method = RequestMethod.GET)
 	@ResponseBody
-	public ResponseEntity<List<Type>> getTypes() {
-		List<Type> tempList = new ArrayList<Type>();
+	public ResponseEntity<List<String>> getTypes() {
+		List<String> tempList = new ArrayList<String>();
 		try {
 			tempList = typeService.getTypes();
 		} catch (UnknownServerErrorException e) {
-			List<Type> emptyList = new ArrayList<Type>();
-			return new ResponseEntity<List<Type>>(emptyList, HttpStatus.INTERNAL_SERVER_ERROR);
+			List<String> emptyList = new ArrayList<String>();
+			return new ResponseEntity<List<String>>(emptyList, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		return new ResponseEntity<List<Type>>(tempList, HttpStatus.OK);
+		return new ResponseEntity<List<String>>(tempList, HttpStatus.OK);
 	}
 
 }

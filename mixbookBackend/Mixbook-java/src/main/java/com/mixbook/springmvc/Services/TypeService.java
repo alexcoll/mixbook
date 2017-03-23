@@ -7,6 +7,6 @@ import com.mixbook.springmvc.Models.Type;
 
 public interface TypeService {
 
-	List<Type> getTypes() throws UnknownServerErrorException;
+	List<String> getTypes() throws UnknownServerErrorException;
 
 }

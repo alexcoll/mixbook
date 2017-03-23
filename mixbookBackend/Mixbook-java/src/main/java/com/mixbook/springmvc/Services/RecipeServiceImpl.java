@@ -133,7 +133,7 @@ public class RecipeServiceImpl implements RecipeService {
 		}	
 	}
 
-	public List<Recipe> getAllRecipesAnonymousUserCanMake(List<Brand> brands) throws UnknownServerErrorException {
+	public List<Recipe> getAllRecipesAnonymousUserCanMake(List<String> brands) throws UnknownServerErrorException {
 		List<Recipe> tempList = new ArrayList<Recipe>();
 		try {
 			tempList = dao.getAllRecipesAnonymousUserCanMake(brands);
