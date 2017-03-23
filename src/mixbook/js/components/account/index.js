@@ -63,7 +63,15 @@ class Account extends Component {
   onLogout() {
     store.update('account', {
       isLoggedIn: false,
-      isGuest: false
+      isGuest: false,
+      userInfo: {
+        username: "",
+        email: "",
+        firstName: "",
+        lastName: "",
+        thumbnail: "",
+        token: "",
+      }
     }).catch((error) => {
       console.warn("error storing settings into local store");
     });

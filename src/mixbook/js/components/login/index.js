@@ -26,18 +26,16 @@ class Login extends Component {
 
 
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       inputUsername: '',
       inputPassword: ''
-    }
+    };
   }
-
 
   replaceAt(route) {
     this.props.replaceAt('login', { key: route }, this.props.navigation.key);
   }
-
 
   updateUsername = (text) => {
     this.setState({inputUsername: text})

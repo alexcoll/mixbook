@@ -1,4 +1,3 @@
-
 import { actions } from 'react-native-navigation-redux-helpers';
 
 const {

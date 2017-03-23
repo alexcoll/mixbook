@@ -7,7 +7,7 @@ import navigateTo from '../../actions/pageNav'
 import styles from './styles';
 import store from 'react-native-simple-store';
 
-var lodash = require('lodash');
+var filter = require('lodash/filter');
 
 class AddIngredient extends Component {
 
@@ -35,6 +35,22 @@ class AddIngredient extends Component {
   }
 
   componentDidMount() {
+    this.getLocalData();
+  }
+
+  onTapRefresh() {
+    Alert.alert(
+      "Refresh Brand List",
+      'Are you sure you want to refresh? This may take a long time to load',
+      [
+        {text: 'Refresh', onPress: () => this.fetchBrands()},
+        {text: 'Cancel', style: 'cancel'},
+      ],
+      { cancelable: true }
+    )
+  }
+
+  getLocalData() {
     store.get('brands').then((data) => {
       this.setState({
         // dataSource: this.state.dataSource.cloneWithRows(data),
@@ -51,41 +67,25 @@ class AddIngredient extends Component {
     });
   }
 
-  onTapRefresh() {
-    Alert.alert(
-      "Refresh Brand List",
-      'Are you sure you want to refresh? This may take a long time to load',
-      [
-        {text: 'Refresh', onPress: () => this.fetchBrands()},
-        {text: 'Cancel', style: 'cancel'},
-      ],
-      { cancelable: true }
-    )
-  }
-
-  fetchBrands() {
+  getRemoteData() {
     fetch('https://activitize.net/mixbook/brand/getBrands', {
       method: 'GET',
-      headers: {
-        'Authorization': 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbGV4dGVzdCIsImF1ZGllbmNlIjoid2ViIiwiY3JlYXRlZCI6MTQ4ODkyMzEwMjI0NiwiZXhwIjoxNDg5NTI3OTAyfQ.OeghNTe9adLZOmfhULvPpvY2JSTFCxtSOi8VEc2nIJDNEYsuJUr2_48WrrlUX5uyHrRuyb7xHHupbY5hGu0PSg'
-      }
     })
     .then(async (response) => {
       if (response.status == 200) {
-        var json = await response.json();
-        // console.warn(json[0]);
-        var brandList = [ ];
-        for (i = 0; i < json.length; i++) {
-          brandList[i] = json[i][2];
-        }
-        store.save("brands", brandList).catch(error => {
+        var brandList = await response.json();
+
+        store.save("brands", brandList)
+        .catch(error => {
           console.warn("error storing the brand list into the local store");
         });
+
         this.setState({
           dataSource: this.state.dataSource.cloneWithRows(brandList),
           rawData: brandList,
         });
-        return json;
+
+        return brandList;
       } else {
         this.showServerErrorAlert(response);
         return;
@@ -101,7 +101,7 @@ class AddIngredient extends Component {
       "Server Error",
       "Got response: " + response.status + " " + response.statusText,
       [
-      {text: 'Dismiss', style: 'cancel'}
+        {text: 'Dismiss', style: 'cancel'}
       ],
       { cancelable: true }
       );
@@ -109,44 +109,57 @@ class AddIngredient extends Component {
 
   onItemAdd(item) {
     // Add the ingredient to the server
-    store.get('account').then((data) => {
-      fetch('https://activitize.net/mixbook/inventory/addIngredientToInventory', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': data.userInfo.token,
-        },
-        body: JSON.stringify({
-          brandName: item
+    store.get("inventory")
+    .then((data) => {
+      var list = data;
+
+      list.push(item);
+      store.save("inventory", list)
+      .then(() => {
+        this.navigateTo('ingredients');
+        ToastAndroid.show("Item added", ToastAndroid.SHORT);
+
+        store.get('account').then((data) => {
+          if (data.isGuest) {
+            return;
+          }
+
+          fetch('https://activitize.net/mixbook/inventory/addIngredientToInventory', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': data.userInfo.token,
+            },
+              body: JSON.stringify({
+              brandName: item
+            })
+          })
+          .then((response) => {
+            if (response.status == 200) {
+              console.log("inventory list pushed successfully");
+            } else {
+              this.showServerErrorAlert(response);
+              return;
+            }
+          })
+          .catch((error) => {
+            console.error(error);
+          });
         })
-      }).then((response) => {
-        if (response.status == 200) {
-          console.log("inventory list pushed successfully");
-          store.get("inventory").then((data) => {
-            var list = data;
-            list.push(item);
-            store.save("inventory", list).catch((error) => {
-              console.warn("error stroing new inventory list into local store");
-              console.warn(error);
-            });
-            ToastAndroid.show("Item added", ToastAndroid.SHORT);
-          }).catch((error) => {
-              console.warn("error getting inventory list from local store");
-              console.warn(error);
-            });
-        } else {
-          this.showServerErrorAlert(response);
-          return;
-        }
-      }).catch((error) => {
-        console.error(error);
+        .catch((error) => {
+          console.warn("error getting user token from local store");
+          console.warn(error);
+        });
+      })
+      .catch((error) => {
+        console.warn("error stroing new inventory list into local store");
+        console.warn(error);
       });
-    }).catch((error) => {
-      console.warn("error getting user token from local store");
+    })
+    .catch((error) => {
+      console.warn("error getting inventory list from local store");
       console.warn(error);
     });
-
-    this.navigateTo('ingredients');
   }
 
   setSearchText(event) {
@@ -161,7 +174,7 @@ class AddIngredient extends Component {
 
   filterItems(searchText, items) {
     let text = searchText.toLowerCase();
-    return lodash.filter(items, (n) => {
+    return filter(items, (n) => {
       let item = n.toLowerCase();
       return item.search(text) !== -1;
     });
@@ -220,7 +233,7 @@ class AddIngredient extends Component {
           renderRow={(rowData: string, sectionID: number, rowID: number, highlightRow: (sectionID: number, rowID: number) => void) =>
             <TouchableHighlight onPress={() => {
               this._pressRow(rowData);
-              highlightRow(sectionID, rowID);
+              // highlightRow(sectionID, rowID);
             }}>
               <View>
                 <View style={styles.row}>
