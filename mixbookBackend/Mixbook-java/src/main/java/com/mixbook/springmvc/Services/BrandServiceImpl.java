@@ -18,8 +18,8 @@ public class BrandServiceImpl implements BrandService {
 	@Autowired
 	private BrandDao dao;
 
-	public List<Brand> getBrands() throws UnknownServerErrorException {
-		List<Brand> tempList = new ArrayList<Brand>();
+	public List<String> getBrands() throws UnknownServerErrorException {
+		List<String> tempList = new ArrayList<String>();
 		try {
 			tempList = dao.getBrands();
 		} catch (Exception e) {

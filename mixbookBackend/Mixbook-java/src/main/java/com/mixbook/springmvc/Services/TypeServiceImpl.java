@@ -18,8 +18,8 @@ public class TypeServiceImpl implements TypeService {
 	@Autowired
 	private TypeDao dao;
 
-	public List<Type> getTypes() throws UnknownServerErrorException {
-		List<Type> tempList = new ArrayList<Type>();
+	public List<String> getTypes() throws UnknownServerErrorException {
+		List<String> tempList = new ArrayList<String>();
 		try {
 			tempList = dao.getTypes();
 		} catch (Exception e) {

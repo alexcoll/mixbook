@@ -7,6 +7,6 @@ import com.mixbook.springmvc.Models.Style;
 
 public interface StyleService {
 
-	List<Style> getStyles() throws UnknownServerErrorException;
+	List<String> getStyles() throws UnknownServerErrorException;
 
 }

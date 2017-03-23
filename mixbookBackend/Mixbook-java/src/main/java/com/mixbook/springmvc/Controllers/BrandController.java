@@ -24,15 +24,15 @@ public class BrandController {
 
 	@RequestMapping(value = "/getBrands", method = RequestMethod.GET)
 	@ResponseBody
-	public ResponseEntity<List<Brand>> getBrands() {
-		List<Brand> tempList = new ArrayList<Brand>();
+	public ResponseEntity<List<String>> getBrands() {
+		List<String> tempList = new ArrayList<String>();
 		try {
 			tempList = brandService.getBrands();
 		} catch (UnknownServerErrorException e) {
-			List<Brand> emptyList = new ArrayList<Brand>();
-			return new ResponseEntity<List<Brand>>(emptyList, HttpStatus.INTERNAL_SERVER_ERROR);
+			List<String> emptyList = new ArrayList<String>();
+			return new ResponseEntity<List<String>>(emptyList, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		return new ResponseEntity<List<Brand>>(tempList, HttpStatus.OK);
+		return new ResponseEntity<List<String>>(tempList, HttpStatus.OK);
 	}
 
 }

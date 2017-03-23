@@ -6,6 +6,6 @@ import com.mixbook.springmvc.Models.Type;
 
 public interface TypeDao {
 
-	List<Type> getTypes() throws Exception;
+	List<String> getTypes() throws Exception;
 
 }
