@@ -88,10 +88,7 @@ class NewAccount extends Component {
 			alert('Please enter a password');
 			return false;
 		}
-		if (this.state.inputPassword1 != this.state.inputPassword2) {
-			alert('Please enter matching passwords');
-			return false;
-		}
+
 
     return true;
   }
@@ -148,7 +145,6 @@ class NewAccount extends Component {
         this.showBadInfoAlert();
         return;
       } else {
-        this.showServerErrorAlert(response);
         return;
       }
     })
@@ -183,7 +179,7 @@ class NewAccount extends Component {
 
 	render() {
 		return (
-			<KeyboardAvoidingView behavior="padding" style={styles.container}>
+			<View behavior="padding" style={styles.container}>
 				<View style={styles.noAccount}>
 					<TouchableOpacity
 						style={styles.noAccountingButtonContainer}
@@ -219,7 +215,7 @@ class NewAccount extends Component {
 						</TouchableOpacity>
 					</View>
 				</View>
-			</KeyboardAvoidingView>
+			</View>
 
 		);
 	}

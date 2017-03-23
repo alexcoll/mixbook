@@ -122,7 +122,6 @@ class Login extends Component {
         this.showBadInfoAlert();
         return;
       } else {
-        this.showServerErrorAlert(response);
         return;
       }
     })
@@ -168,10 +167,10 @@ class Login extends Component {
       isLoggedIn: true,
       isGuest: true,
       userInfo: {
-        username: "guest_user",
-        email: "guest@mixbook.com",
-        firstName: "Guest",
-        lastName: "User",
+        username: "",
+        email: "",
+        firstName: "",
+        lastName: "",
         thumbnail: "../../../img/camera.png",
         token: ""
       }
@@ -191,7 +190,7 @@ class Login extends Component {
 
   render() {
     return (
-      <KeyboardAvoidingView behavior="padding" style={styles.container}>
+      <View behavior="padding" style={styles.container}>
         <View style={styles.noAccount}>
           <TouchableOpacity
             style={styles.noAccountingButtonContainer}
@@ -229,7 +228,7 @@ class Login extends Component {
             </TouchableOpacity>
           </View>
         </View>
-      </KeyboardAvoidingView>
+      </View>
     );
   }
 
