@@ -206,6 +206,7 @@ public class RecipeController {
 		else if (name.isEmpty()) {
 			return new ResponseEntity<List<Recipe>>(emptyList, HttpStatus.BAD_REQUEST);
 		}
+		name = "%" + name + "%";
 		Recipe recipe = new Recipe(name);
 		try {
 			tempList = recipeService.searchForRecipeByName(recipe);
