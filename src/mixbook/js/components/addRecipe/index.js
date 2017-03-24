@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { ToastAndroid, TouchableHighlight, Alert, View, Text, TextInput, ListView, RefreshControl, List, ListItem, TouchableOpacity} from 'react-native';
 import { connect } from 'react-redux';
 import { Header, Title, Button, Icon } from 'native-base';
-import { SplitPane } from 'react-split-pane';
 
 import navigateTo from '../../actions/pageNav'
 import styles from './styles';
@@ -127,11 +126,12 @@ class AddRecipe extends Component {
   onItemAdd(item) {
     store.get('recipeIngredients').then((data) => {
       var list = this.state.ingredients;
+      var key = "brandName";
+      var obj = {};
+      obj[key] = item;
       list.push(
-        JSON.stringify({
-          brandName: item
-        })
-        );
+        obj
+      );
       Alert.alert(
         "Recipe has",
         "Ingredients: " + list,
@@ -151,6 +151,17 @@ class AddRecipe extends Component {
 
   onSubmitLogin() {
     // Add the ingredient to the server
+    console.log(this.state.ingredients);
+
+    var body = JSON.stringify({
+          recipeName: this.state.recipeName,
+          directions: this.state.directions,
+          difficulty: this.state.difficulty,
+          brands: this.state.ingredients
+      });
+
+    console.log(body);
+
     store.get('account').then((data) => {
       fetch('https://activitize.net/mixbook/recipe/createRecipe', {
         method: 'POST',
@@ -162,9 +173,7 @@ class AddRecipe extends Component {
           recipeName: this.state.recipeName,
           directions: this.state.directions,
           difficulty: this.state.difficulty,
-          brands: JSON.stringify({
-            brandName: this.state.ingredients
-        })
+          brands: this.state.ingredients
       })
       }).then((response) => {
         if (response.status == 200) {

@@ -208,6 +208,7 @@ class Recipes extends Component {
           global.recipeName = item[1];
           global.recipeId = item[0];
           global.directions = item[2];
+          global.reviewOwner = item[7];
 
           //console.warn(global.recipeName);
           this.navigateTo('review')

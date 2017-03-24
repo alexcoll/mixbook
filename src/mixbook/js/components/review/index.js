@@ -5,7 +5,9 @@ import { actions } from 'react-native-navigation-redux-helpers';
 import { Container, Header, Title, Content, Button, Icon, List, ListItem, ListView, Text, Picker, Thumbnail, Input, InputGroup, View, Grid, Col } from 'native-base';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
-import '../recipes/index.js'
+//Load global variables
+import '../recipes/index.js';
+import '../login/index.js';
 
 import styles from './styles';
 import store from 'react-native-simple-store';
@@ -33,22 +35,27 @@ class Reviews extends Component {
       name: global.recipeName,
       directions: global.directions, 
       drinkNumber: global.recipeId,
-      rating: 0.0, 
+      reviewOwner: global.reviewOwner,
+      userReviewing: global.username,
+      rating: 0, 
       numRatings: 0.0, 
       reviews: "",
-      theList: [{"rating":1, "reviewCommentary":"No Available Reviews"}],
-      ingredientsList: {}
+      theList: [],
+      ingredientsList: {},
+      pkNumber: {}
     };
   }
 
   componentWillReceiveProps() {
     // console.warn("willProps");
     this.fetchData();
+    this.setUpPK();
   }
 
   componentWillMount() {
     // console.warn("willMount");
     this.fetchData();
+    this.setUpPK();
   }
 
   showServerErrorAlert(response) {
@@ -126,7 +133,7 @@ class Reviews extends Component {
   }
 
   submitRating(ratingInput){
-    if(ratingInput < 0.0 || ratingInput >= 5.0 )
+    if(ratingInput < 0.0 || ratingInput > 5.0 )
     {
       Alert.alert(
         "Rating not valid",
@@ -158,7 +165,28 @@ class Reviews extends Component {
     else
     {
           this.setState({reviews: reviewInput});
+          console.log(this.state.reviews);
     }
+  }
+
+  setUpPK(){
+      var innerKey = "recipeId";
+      var innerObj = {};
+      innerObj[innerKey] = this.state.drinkNumber;
+
+      console.log(innerObj);
+
+      var key = "recipe";
+      var obj = {};
+      obj[key] = innerObj;
+
+      console.log(obj);
+
+      this.state.pkNumber = obj;
+
+      //this.setState({pkNumber: obj});
+
+      console.log(this.state.pkNumber);
   }
 
 
@@ -172,32 +200,79 @@ class Reviews extends Component {
       return;
     }
 
+    this.setUpPK();
+
+    var body = JSON.stringify({
+          pk: this.state.pkNumber,
+          reviewCommentary: this.state.reviews,
+          rating: this.state.rating
+        });
+
+    console.log(body);
+
     store.get('account').then((data) => {
       fetch('https://activitize.net/mixbook/review/createReview', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': this.state.token
+          'Authorization': 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJHdWVzdDQiLCJhdWRpZW5jZSI6IndlYiIsImNyZWF0ZWQiOjE0OTAzMzUzNjQzMDAsImV4cCI6MTQ5MDk0MDE2NH0.6QXgGm0-3cvXTYKh-EYderiIS5X9DgpSD7iXD9K8SpQagTJew_D8HjhOjxmbPzPHmqSwQYSGsBuaM4SWAr7rUw'
         },
         body: JSON.stringify({
-          pk: JSON.stringify({
-            recipe: JSON.stringify({
-              recipeId: this.state.drinkNumber
-            })
-          }),
+          pk: this.state.pkNumber,
           reviewCommentary: this.state.reviews,
           rating: this.state.rating
         })
       }).then(async (response) => {
         if (response.status == 200) {
           var json = await response.json();
-          console.warn(json[0]);
+          console.warn("Success");
           return json;
         } else if (response.status == 401)
         {
           alert("User can not rate own recipe");
         }
-         else {
+        else if (response.status == 400)
+        {
+          console.log(this.state.userReviewing +  "!==" + this.state.reviewOwner);
+          if (this.state.userReviewing !== this.state.reviewOwner){
+            store.get('account').then((data) => {
+              fetch('https://activitize.net/mixbook/review/editReview', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJHdWVzdDQiLCJhdWRpZW5jZSI6IndlYiIsImNyZWF0ZWQiOjE0OTAzMzUzNjQzMDAsImV4cCI6MTQ5MDk0MDE2NH0.6QXgGm0-3cvXTYKh-EYderiIS5X9DgpSD7iXD9K8SpQagTJew_D8HjhOjxmbPzPHmqSwQYSGsBuaM4SWAr7rUw'
+                },
+                body: JSON.stringify({
+                  pk: this.state.pkNumber,
+                  reviewCommentary: this.state.reviews,
+                  rating: this.state.rating
+                })
+              }).then(async (response) => {
+                if (response.status == 200) {
+                  var json = await response.json();
+                  console.warn("Successful edit of Review");
+                  return json;
+                } else if (response.status == 401)
+                {
+                  alert("Was not able to edit/create review");
+                }
+                 else {
+                  this.showServerErrorAlert(response);
+                  return;
+                }
+              }).catch((error) => {
+                console.error(error);
+              });
+            }).catch((error) => {
+              console.warn("error getting user token from local store");
+            });
+          }
+          else
+          {
+            alert("User can not rate own recipe");
+          }
+        }
+         else  {
           this.showServerErrorAlert(response);
           return;
         }
@@ -226,7 +301,7 @@ class Reviews extends Component {
           <View>
           <List>
             <ListItem>
-            <Text>About</Text>
+            <Text>By {this.state.reviewOwner}</Text>
             </ListItem>
             <ListItem>
               <Text style={styles.headers}>Ingredients</Text>
@@ -262,7 +337,7 @@ class Reviews extends Component {
                   inlineLabel label="Rating"
                   placeholder="0-5"
                   value={this.state.rating}
-                  onChangeText={rating => this.submitRating({rating})}
+                  onChangeText={rating => this.submitRating(rating)}
                 />
               </InputGroup>
             </ListItem>
@@ -271,7 +346,7 @@ class Reviews extends Component {
                 <Input inlineLabel label="Review"
                 placeholder="Enter a review "
                 value={this.state.reviews}
-                onChangeText={review => this.submitReview({review})}
+                onChangeText={review => this.submitReview(review)}
                 />
               </InputGroup>
             </ListItem>
