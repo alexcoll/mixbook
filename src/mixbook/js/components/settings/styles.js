@@ -7,4 +7,16 @@ module.exports = StyleSheet.create({
   container: {
     backgroundColor: '#FBFAFA',
   },
+
+  keepLoggedInCheckbox: {
+
+  },
+
+  checkboxText: {
+    color: "black",
+  },
+
+  checkboxTextDisabled: {
+    color: "#afafaf",
+  },
 });

@@ -6,18 +6,11 @@ const { StyleSheet } = React;
 module.exports = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white'
+    flexDirection: 'column',
+    backgroundColor: 'white',
   },
 
-  editButton: {
-    alignSelf: 'flex-end'
-    },
-
-  listText: {
-    alignSelf: 'flex-start'
-  },
-
-    rowText: {
+  rowText: {
     flex: 1,
     marginLeft: 12,
     fontSize: 16,
@@ -33,18 +26,9 @@ module.exports = StyleSheet.create({
 
   searchBar: {
     paddingLeft: 30,
-    fontSize: 22,
-    height: 10,
-    flex: .1,
+    fontSize: 16,
+    height: 50,
     borderWidth: 9,
     borderColor: '#E4E4E4',
-  },
-
-  topHalf: {
-
-  },
-
-  bottomHalf: {
-
   },
 });

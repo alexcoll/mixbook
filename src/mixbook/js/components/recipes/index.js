@@ -15,7 +15,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import ActionButton from 'react-native-action-button';
 import store from 'react-native-simple-store';
 
-var lodash = require('lodash');
+var filter = require('lodash/filter');
 
 class Recipes extends Component {
 
@@ -139,8 +139,8 @@ class Recipes extends Component {
 
   filterItems(searchText, items) {
     let text = searchText.toLowerCase();
-    return lodash.filter(items, (n) => {
-      let item = n.toLowerCase();
+    return filter(items, (n) => {
+      let item = n[1].toLowerCase();
       return item.search(text) !== -1;
     });
   }
@@ -285,7 +285,7 @@ class Recipes extends Component {
           renderRow={(rowData: string, sectionID: number, rowID: number, highlightRow: (sectionID: number, rowID: number) => void) =>
             <TouchableHighlight onPress={() => {
               this._pressRow(rowData);
-              highlightRow(sectionID, rowID);
+              // highlightRow(sectionID, rowID);
             }}>
               <View>
                 <View style={styles.row}>

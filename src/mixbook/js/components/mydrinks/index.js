@@ -1,21 +1,18 @@
 
 import React, { Component } from 'react';
-import { ToastAndroid, TextInput, Alert, View, StyleSheet, ListView, Text, TouchableHighlight, RefreshControl} from 'react-native';
+import { ToastAndroid, TextInput, Alert, View, ListView, Text, TouchableHighlight, RefreshControl } from 'react-native';
 import { connect } from 'react-redux';
+import { Header, Title, Button, Icon } from 'native-base';
 
-// import { actions } from 'react-native-navigation-redux-helpers';
-import { Header, Title, Content, Button, Icon } from 'native-base';
-
-import navigateTo from '../../actions/pageNav'
+import navigateTo from '../../actions/pageNav';
 import { openDrawer } from '../../actions/drawer';
 import myTheme from '../../themes/base-theme';
 import styles from './styles';
 
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import ActionButton from 'react-native-action-button';
 import store from 'react-native-simple-store';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
-var lodash = require('lodash');
+var filter = require('lodash/filter');
 
 class MyDrinks extends Component {
 
@@ -23,6 +20,7 @@ class MyDrinks extends Component {
     super(props);
     const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
+      isGuest: false,
       refreshing: false,
       dataSource: ds.cloneWithRows(['Pull to refesh data']),
       searchText: "",
@@ -30,6 +28,16 @@ class MyDrinks extends Component {
       empty: false,
       rawData: ['Pull to refesh data'],
     };
+
+    store.get('account')
+    .then((data) => {
+      this.setState({
+        isGuest: data.isGuest
+      });
+    })
+    .catch((error) => {
+      console.warn("error getting account guest data from local store");
+    });
   }
 
   static propTypes = {
@@ -47,12 +55,12 @@ class MyDrinks extends Component {
 
   componentWillReceiveProps() {
     // console.warn("willProps");
-    this.fetchData();
+    this.getRemoteData();
   }
 
   componentWillMount() {
     // console.warn("willMount");
-    this.fetchData();
+    this.getRemoteData();
   }
 
   componentDidMount() {
@@ -72,7 +80,7 @@ class MyDrinks extends Component {
       );
   }
 
-  getData() {
+  getLocalData() {
     store.get('recipes').then((data) => {
       this.setState({
         dataSource: this.state.dataSource.cloneWithRows(data),
@@ -89,13 +97,13 @@ class MyDrinks extends Component {
     });
   }
 
-  fetchData() {
+  getRemoteData() {
     store.get('account').then((data) => {
       fetch('https://activitize.net/mixbook/recipe/getAllRecipesUserCanMake', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': data.userInfo.token
+          'Authorization': data.token
         }
       }).then(async (response) => {
         if (response.status == 200) {
@@ -140,8 +148,8 @@ class MyDrinks extends Component {
 
   filterItems(searchText, items) {
     let text = searchText.toLowerCase();
-    return lodash.filter(items, (n) => {
-      let item = n.toLowerCase();
+    return filter(items, (n) => {
+      let item = n[1].toLowerCase();
       return item.search(text) !== -1;
     });
   }
@@ -167,7 +175,7 @@ class MyDrinks extends Component {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': data.userInfo.token,
+            'Authorization': data.token,
           },
           body: JSON.stringify({
             brandName: item
@@ -195,7 +203,7 @@ class MyDrinks extends Component {
 
   _onRefresh() {
     this.setState({refreshing: true});
-    this.fetchData();
+    this.getRemoteData();
     this.setState({refreshing: false});
   }
 
@@ -211,7 +219,7 @@ class MyDrinks extends Component {
           global.directions = item[2];
 
           //console.warn(global.recipeName);
-          this.navigateTo('review')
+          this.navigateTo('review');
           }
         },
         {text: 'Delete', onPress: () => this.onListItemRemove(item)},
@@ -260,12 +268,12 @@ class MyDrinks extends Component {
             <Icon name="ios-menu" />
           </Button>
 
-          <Title>My Possible Drinks</Title>
+          <Title>My Drinks</Title>
         </Header>
 
         <TextInput
           style={styles.searchBar}
-          placeholder="Search Possible Drinks"
+          placeholder="Search drinks"
           value={this.state.searchText}
           onChange={this.setSearchText.bind(this)}
           multiline={false}
@@ -285,7 +293,7 @@ class MyDrinks extends Component {
           renderRow={(rowData: string, sectionID: number, rowID: number, highlightRow: (sectionID: number, rowID: number) => void) =>
             <TouchableHighlight onPress={() => {
               this._pressRow(rowData);
-              highlightRow(sectionID, rowID);
+              // highlightRow(sectionID, rowID);
             }}>
               <View>
                 <View style={styles.row}>

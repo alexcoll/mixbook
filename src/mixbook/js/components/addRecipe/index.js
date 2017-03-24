@@ -9,7 +9,7 @@ import store from 'react-native-simple-store';
 
 import RecipeForm from './recipeForm';
 
-var lodash = require('lodash');
+var filter = require('lodash/filter');
 
 class AddRecipe extends Component {
 
@@ -217,7 +217,7 @@ class AddRecipe extends Component {
 
   filterItems(searchText, items) {
     let text = searchText.toLowerCase();
-    return lodash.filter(items, (n) => {
+    return filter(items, (n) => {
       let item = n.toLowerCase();
       return item.search(text) !== -1;
     });

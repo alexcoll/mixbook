@@ -25,9 +25,9 @@ module.exports = StyleSheet.create({
 
   searchBar: {
     paddingLeft: 30,
-    fontSize: 22,
-    height: 10,
-    flex: .1,
+    fontSize: 16,
+    height: 50,
+    flex: .2,
     borderWidth: 9,
     borderColor: '#E4E4E4',
   },

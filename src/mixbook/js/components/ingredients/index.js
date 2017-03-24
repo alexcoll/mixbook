@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 // import { actions } from 'react-native-navigation-redux-helpers';
 import { Header, Title, Content, Button, Icon } from 'native-base';
 
-import navigateTo from '../../actions/pageNav'
+import navigateTo from '../../actions/pageNav';
 import { openDrawer } from '../../actions/drawer';
 import myTheme from '../../themes/base-theme';
 import styles from './styles';
@@ -15,7 +15,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import ActionButton from 'react-native-action-button';
 import store from 'react-native-simple-store';
 
-var lodash = require('lodash');
+var filter = require('lodash/filter');
 
 class Ingredients extends Component {
 
@@ -46,20 +46,14 @@ class Ingredients extends Component {
   }
 
   componentWillReceiveProps() {
-    // console.warn("willProps");
-    this.fetchData();
+    //console.log("willProps");
+    this.getLocalData();
   }
 
   componentWillMount() {
-    // console.warn("willMount");
-    this.fetchData();
+    //console.log("willMount");
+    this.getRemoteData();
   }
-
-  componentDidMount() {
-    // console.warn("didMount");
-  }
-
-
 
   showServerErrorAlert(response) {
     Alert.alert(
@@ -72,15 +66,17 @@ class Ingredients extends Component {
       );
   }
 
-  getData() {
-    store.get('inventory').then((data) => {
+  getLocalData() {
+    store.get('inventory').
+    then((data) => {
       this.setState({
         dataSource: this.state.dataSource.cloneWithRows(data),
         isLoading: false,
         empty: false,
         rawData: data,
       });
-    }).catch(error => {
+    })
+    .catch(error => {
       console.warn("error getting the inventory list from the local store");
       this.setState({
         empty: true,
@@ -89,40 +85,47 @@ class Ingredients extends Component {
     });
   }
 
-  fetchData() {
+  getRemoteData() {
     store.get('account').then((data) => {
+      if (data.isGuest) {
+        return;
+      }
+
       fetch('https://activitize.net/mixbook/inventory/getUserInventory', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': data.userInfo.token,
+          'Authorization': data.token,
         }
-      }).then(async (response) => {
+      })
+      .then(async (response) => {
         if (response.status == 200) {
           var json = await response.json();
-        // console.warn(json[0]);
-        store.save("inventory", json).catch(error => {
-          console.warn("error storing the inventory list into the local store");
-        });
-        this.setState({
-          dataSource: this.state.dataSource.cloneWithRows(json),
-          isLoading: false,
-          empty: false,
-          rawData: json,
-        });
-        return json;
+          store.save("inventory", json)
+          .catch(error => {
+            console.warn("error storing the inventory list into the local store");
+          });
+          this.setState({
+            dataSource: this.state.dataSource.cloneWithRows(json),
+            isLoading: false,
+            empty: false,
+            rawData: json,
+          });
+          return json;
         } else {
           this.showServerErrorAlert(response);
           return;
         }
-      }).catch((error) => {
+      })
+      .catch((error) => {
         console.error(error);
         this.setState({
           empty: true,
           isLoading: false,
         });
       });
-    }).catch((error) => {
+    })
+    .catch((error) => {
       console.warn("error getting user token from local store");
     });
   }
@@ -140,7 +143,7 @@ class Ingredients extends Component {
 
   filterItems(searchText, items) {
     let text = searchText.toLowerCase();
-    return lodash.filter(items, (n) => {
+    return filter(items, (n) => {
       let item = n.toLowerCase();
       return item.search(text) !== -1;
     });
@@ -151,23 +154,28 @@ class Ingredients extends Component {
     var list = this.state.rawData;
     var index = list.indexOf(item);
     if (index > -1) {
-      // list.splice(index, 1);
-      // this.setState({
-      //   rawData: list,
-      //   dataSource: this.state.dataSource.cloneWithRows(list),
-      // });
+      list.splice(index, 1);
+      this.setState({
+        rawData: list,
+        dataSource: this.state.dataSource.cloneWithRows(list),
+      });
 
-      // store.save('inventory', this.state.rawData).catch((error) => {
-      //   console.warn("error storing inventory into local store");
-      // });
+      store.save('inventory', this.state.rawData)
+      .catch((error) => {
+        console.warn("error storing inventory into local store");
+      });
 
       // Delete the ingredient from the server
       store.get('account').then((data) => {
+        if (data.isGuest) {
+          return;
+        }
+
         fetch('https://activitize.net/mixbook/inventory/deleteIngredientFromInventory', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': data.userInfo.token,
+            'Authorization': data.token,
           },
           body: JSON.stringify({
             brandName: item
@@ -195,7 +203,7 @@ class Ingredients extends Component {
 
   _onRefresh() {
     this.setState({refreshing: true});
-    this.fetchData();
+    this.getRemoteData();
     this.setState({refreshing: false});
   }
 
@@ -245,6 +253,7 @@ class Ingredients extends Component {
     return (
 
       <View style={styles.container}>
+
         <Header>
           <Button transparent onPress={this.props.openDrawer}>
             <Icon name="ios-menu" />
@@ -275,7 +284,7 @@ class Ingredients extends Component {
           renderRow={(rowData: string, sectionID: number, rowID: number, highlightRow: (sectionID: number, rowID: number) => void) =>
             <TouchableHighlight onPress={() => {
               this._pressRow(rowData);
-              highlightRow(sectionID, rowID);
+              // highlightRow(sectionID, rowID);
             }}>
               <View>
                 <View style={styles.row}>
