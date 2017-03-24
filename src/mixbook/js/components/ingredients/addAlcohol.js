@@ -116,7 +116,6 @@ class AddAlcohol extends Component {
                 <Input
                   inlineLabel label="Proof"
                   placeholder="80"
-                  keyboardType="numeric"
                   value={this.state.inputProof}
                   onChangeText={inputProof => this.setState({ inputProof })}
                 />

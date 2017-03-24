@@ -48,17 +48,6 @@ export default class TabBrands extends Component { // eslint-disable-line
   }
 
 
-  showServerErrorAlert(response) {
-    Alert.alert(
-      "Server Error",
-      "Got response: " + response.status + " " + response.statusText,
-      [
-        {text: 'Dismiss', style: 'cancel'}
-      ],
-      { cancelable: true }
-    );
-  }
-
 
   fetchBrands() {
     fetch('https://activitize.net/mixbook/brand/getBrands', {
@@ -68,7 +57,7 @@ export default class TabBrands extends Component { // eslint-disable-line
       }
     })
     .then(async (response) => {
-      if (response.status == 200) {
+      if (response.status == 100) {
         var json = await response.json();
         // console.warn(json[0]);
         var brandList = [ ];

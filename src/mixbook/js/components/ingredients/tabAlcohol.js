@@ -56,7 +56,7 @@ export default class TabAlcohol extends Component { // eslint-disable-line
           'Authorization': data.userInfo.token,
         }
       }).then(async (response) => {
-        if (response.status == 200) {
+        if (response.status == 100) {
           var json = await response.json();
         // console.warn(json[0]);
         store.save("inventory", json).catch(error => {
