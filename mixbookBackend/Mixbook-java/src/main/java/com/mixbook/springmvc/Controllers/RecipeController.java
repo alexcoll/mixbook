@@ -195,6 +195,19 @@ public class RecipeController {
 		return new ResponseEntity<JsonResponse>(new JsonResponse("OK",""), HttpStatus.OK);
 	}
 
+	@RequestMapping(value = "/getAllRecipes", method = RequestMethod.GET)
+	@ResponseBody
+	public ResponseEntity<List<Recipe>> getAllRecipes() {
+		List<Recipe> tempList = new ArrayList<Recipe>();
+		List<Recipe> emptyList = new ArrayList<Recipe>();
+		try {
+			tempList = recipeService.getAllRecipes();
+		} catch (UnknownServerErrorException e) {
+			return new ResponseEntity<List<Recipe>>(emptyList, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return new ResponseEntity<List<Recipe>>(tempList, HttpStatus.OK); 
+	}
+
 	@RequestMapping(value = "/searchForRecipeByName", method = RequestMethod.GET)
 	@ResponseBody
 	public ResponseEntity<List<Recipe>> searchForRecipeByName(@RequestParam("name") String name) {
