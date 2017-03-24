@@ -177,6 +177,12 @@ public class RecipeDaoImpl extends AbstractDao<Integer, Recipe> implements Recip
 		}
 	}
 
+	public List<Recipe> getAllRecipes() throws Exception {
+		SQLQuery query = getSession().createSQLQuery("SELECT r.recipe_id, r.recipe_name, r.directions, r.number_of_ingredients, r.difficulty, r.number_of_ratings, r.total_rating, u.username FROM recipe AS r INNER JOIN users AS u ON r.user_recipe_id = u.user_id");
+		List result = query.list();
+		return result;
+	}
+
 	public List<Recipe> searchForRecipeByName(Recipe recipe) throws Exception {
 		SQLQuery query = getSession().createSQLQuery("SELECT r.recipe_id, r.recipe_name, r.directions, r.number_of_ingredients, r.difficulty, r.number_of_ratings, r.total_rating, u.username FROM recipe AS r INNER JOIN users AS u ON r.user_recipe_id = u.user_id WHERE r.recipe_name LIKE ?").setParameter(0, recipe.getRecipeName());
 		List result = query.list();
