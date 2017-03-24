@@ -42,10 +42,11 @@ class App extends Component {
   setupAsyncStore() {
     // Setup account store
     store.get('account').then((data) => {
-      if (data == null) {
+      if (true) {
         store.save('account', {
           isLoggedIn: false,
           isGuest: false,
+          token: "",
           userInfo: {}
         }).catch(error => {
           console.warn("error getting account key from store");
