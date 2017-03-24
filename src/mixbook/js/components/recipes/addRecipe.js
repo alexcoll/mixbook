@@ -26,11 +26,26 @@ class AddRecipe extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      ingredientList: [{ingredientName:''}],
       inputName: '',
       inputMixers: '',
       inputAlcohol: '',
       inputInstructions: ''
     };
+  }
+
+  componentDidMount() {
+    store.get('inventory').then((data) => {
+      this.setState({ingredientList: data});
+    }).catch(error => {
+        console.error(error.message);
+      });
+
+    store.get('account').then((data) => {
+      this.setState({username: data.userInfo.firstName}).catch(error => {
+        console.error(error.message);
+      });
+    });
   }
 
 
