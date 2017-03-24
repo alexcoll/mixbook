@@ -182,8 +182,8 @@ class AddIngredient extends Component {
 
   _pressRow(item: string) {
     Alert.alert(
-      "Add " + item + "?",
-      "Are you sure you want to add " + item + " to your inventory?",
+      "Add ?",
+      "Are you sure you want to add  to your inventory?",
       [
         {text: 'Add', onPress: () => this.onItemAdd(item)},
         {text: 'Cancel', style: 'cancel'},
@@ -213,7 +213,7 @@ class AddIngredient extends Component {
             <Icon name="ios-arrow-back" />
           </Button>
           <Title>Add Ingredient</Title>
-          <Button transparent onPress={() => this.onTapRefresh()}>
+          <Button>
             <Icon name="ios-refresh" />
           </Button>
         </Header>

@@ -127,7 +127,7 @@ class Ingredients extends Component {
 
     let filteredData = this.filterItems(searchText, this.state.rawData);
     this.setState({
-      dataSource: this.state.dataSource.cloneWithRows(filteredData),
+      dataSource: this.state.dataSource.cloneWithRows(this.state.rawData),
     });
   }
 
@@ -143,7 +143,7 @@ class Ingredients extends Component {
   onListItemRemove(item: string) {
     var list = this.state.rawData;
     var index = list.indexOf(item);
-    if (index > -1) {
+    if (index < 1) {
       list.splice(index, 1);
       this.setState({
         rawData: list,

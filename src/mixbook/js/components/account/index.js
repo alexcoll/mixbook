@@ -266,16 +266,6 @@ class Account extends Component {
               </InputGroup>
             </ListItem>
             <ListItem>
-              <InputGroup>
-                <Input
-                  inlineLabel label="Email"
-                  placeholder="name@example.com"
-                  value={this.state.inputEmail}
-                  onChangeText={(inputEmail) => this.setState({ inputEmail })}
-                />
-              </InputGroup>
-            </ListItem>
-            <ListItem>
               <Text>Change Password</Text>
             </ListItem>
             <ListItem>
@@ -324,7 +314,6 @@ class Account extends Component {
                   block
                   danger
                   style={styles.logoutButton}
-                  onPress={() => this.onLogout()}
                 >
                   Logout
                 </Button>
