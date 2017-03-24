@@ -123,39 +123,7 @@ class Account extends Component {
         lastName: lastName
       }),
     }).then(async (response) => {
-      if (response.status === 200) {
-        var json = await response.json();
-        if (json.responseStatus === "OK") {
-          store.get('account')
-          .then((data) => {
-            data.userInfo.firstName = firstName;
-            data.userInfo.lastName = lastName;
-            store.save('account', data)
-            .catch((error) => {
-              console.warn("error storing account data into local store");
-              console.warn(error);
-            })
-          }).catch((error) => {
-            console.warn("error getting account data from local store");
-            console.warn(error);
-          });
-        } else {
-          Alert("something went wrong");
-        }
-      } else if (response.status === 400) {
-        var json = await response.json();
-        Alert.alert(
-          "Error Updating Names",
-          json.errorMessage,
-          [
-            {text: 'Ok', style: 'cancel'},
-          ],
-          { cancelable: true }
-        )
-      } else {
-        console.warn(response.status + response.message);
-        return;
-      }
+
     }).catch((error) => {
       console.error(error);
       this.setState({
