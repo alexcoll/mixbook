@@ -36,6 +36,7 @@ class App extends Component {
       showInstalling: false,
       downloadProgress: 0,
     };
+    this.setupAsyncStore();
   }
 
 
@@ -45,7 +46,6 @@ class App extends Component {
       if (data == null) {
         store.save('account', {
           isLoggedIn: false,
-          token:"",
           isGuest: false,
           userInfo: {}
         }).catch(error => {
@@ -60,7 +60,7 @@ class App extends Component {
     store.get('settings').then((data) => {
       if (data == null) {
         store.save('settings', {
-          keepLoggedIn: true
+          doStuff: true
         }).catch(error => {
           console.warn("error getting account key from store");
         });
@@ -70,6 +70,9 @@ class App extends Component {
     });
 
     // Setup recipes store
+    /*store.save('recipes', {
+      recipeList: ['Rum & Coke', 'Screwdriver'],
+    })*/
     store.get('recipes').then((data) => {
       if (data == null) {
         store.save('recipes', [ ]).catch(error => {
@@ -80,7 +83,39 @@ class App extends Component {
       console.warn("error getting recipes key from store");
     });
 
-    // Setup inventory store
+    // Setup alcohol list
+    /*store.save('alcohol', [
+        {name: "McCormicks", type: "Vodka", proof: 80},
+        {name: "Seagreams", type: "Gin", proof: 76}
+    ]);*/
+    store.get('alcohol').then((data) => {
+      if (data == null) {
+        store.save('alcohol', [ ]).catch(error => {
+          console.warn("error getting alcohol key from store");
+        });
+      }
+    }).catch(error => {
+      console.warn("error getting alcohol key from store");
+    });
+
+    // Setup mixer list
+    /*store.save('mixers', [
+        {brand: "Red Bull", name: "Energy Drink", type: "Soda"},
+        {brand: "Tropicana", name: "Orange Juice", type: "Juice"}
+    ]);*/
+    store.get('mixers').then((data) => {
+      if (data == null) {
+        store.save('mixers', [ ]).catch(error => {
+          console.warn("error getting mixers key from store");
+        });
+      }
+    }).catch(error => {
+      console.warn("error getting mixers key from store");
+    });
+  }
+
+
+<<<<<<< HEAD
     store.get('inventory').then((data) => {
       if (data == null) {
         store.save('inventory', ["Refresh to get inventory"])
@@ -92,7 +127,6 @@ class App extends Component {
       console.warn("error getting inventory key from store");
     });
 
-    // Setup brands store
     store.get('brands').then((data) => {
       if (data == null) {
         store.save('brands', ["Refresh to get brands"])
@@ -103,9 +137,8 @@ class App extends Component {
     }).catch(error => {
       console.warn("error getting brands key from store");
     });
-  }
 
-
+=======
   componentDidMount() {
     CodePush.sync({ updateDialog: true, installMode: CodePush.InstallMode.IMMEDIATE },
       (status) => {
@@ -129,8 +162,7 @@ class App extends Component {
         this.setState({ downloadProgress: (receivedBytes / totalBytes) * 100 });
       }
     );
-
-    this.setupAsyncStore();
+>>>>>>> codepush-fix
   }
 
 

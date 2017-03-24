@@ -46,6 +46,7 @@
 		7CBD234F616E404FBD1867BA /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D8A6083E9922492A8FB97F8B /* MaterialIcons.ttf */; };
 		C39CDC2D91714188B107FDA7 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 297F56E06A8F4AE1BA446989 /* Octicons.ttf */; };
 		7D8DCB1DF6114BE2B46384CA /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E5D843A13C5F48B083BEEDCA /* Zocial.ttf */; };
+		FAE0F8DE4905445C805C7252 /* libRNSearchBar.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BAFE71D334124DAD8F31A64A /* libRNSearchBar.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -190,6 +191,8 @@
 		D8A6083E9922492A8FB97F8B /* MaterialIcons.ttf */ = {isa = PBXFileReference; name = "MaterialIcons.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		297F56E06A8F4AE1BA446989 /* Octicons.ttf */ = {isa = PBXFileReference; name = "Octicons.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		E5D843A13C5F48B083BEEDCA /* Zocial.ttf */ = {isa = PBXFileReference; name = "Zocial.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		110C9A57E78F48B9ABDA11A2 /* RNSearchBar.xcodeproj */ = {isa = PBXFileReference; name = "RNSearchBar.xcodeproj"; path = "../node_modules/react-native-search-bar/RNSearchBar.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		BAFE71D334124DAD8F31A64A /* libRNSearchBar.a */ = {isa = PBXFileReference; name = "libRNSearchBar.a"; path = "libRNSearchBar.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -219,6 +222,7 @@
 				2B474C93306344289F3EDBD9 /* libCodePush.a in Frameworks */,
 				59DF327B061840A59BC50D2A /* libz.tbd in Frameworks */,
 				2FE8ECE029FE45CE8A81C523 /* libRNVectorIcons.a in Frameworks */,
+				FAE0F8DE4905445C805C7252 /* libRNSearchBar.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -353,6 +357,7 @@
 				139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */,
 				F1EB88385B5C45C2AB55CB05 /* CodePush.xcodeproj */,
 				ACDCF32A6ED34057A569D959 /* RNVectorIcons.xcodeproj */,
+				110C9A57E78F48B9ABDA11A2 /* RNSearchBar.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -745,6 +750,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 			};
 			name = Debug;
@@ -761,6 +767,7 @@
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Mixbook.app/Mixbook";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
@@ -842,6 +849,7 @@
 					"$(SRCROOT)/../node_modules/react-native/ReactCommon/**",
 					"$(SRCROOT)/../node_modules/react-native-code-push/ios/CodePush/**",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
+					"$(SRCROOT)/../node_modules/react-native-search-bar",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -884,6 +892,7 @@
 					"$(SRCROOT)/../node_modules/react-native/ReactCommon/**",
 					"$(SRCROOT)/../node_modules/react-native-code-push/ios/CodePush/**",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
+					"$(SRCROOT)/../node_modules/react-native-search-bar",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
