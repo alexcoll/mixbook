@@ -112,19 +112,7 @@ class Login extends Component {
     .then(async (response) => {
       if (response.status == 200) {
         var json = await response.json();
-        store.save('account', {
-          isLoggedIn: true,
-          isGuest: false,
-          token: json.token
-        })
-        .then(() => {
-          this.replaceAt('mydrinks');
-          this.updateDatabase(json.token);
-        })
-        .catch((error) => {
-          console.warn("error updating account local store");
-          console.warn(error.message);
-        });
+        this.updateDatabase(json.token);
         return;
       } else if (response.status === 401) {
         this.showBadInfoAlert();
@@ -153,13 +141,19 @@ class Login extends Component {
       if (response.status == 200) {
         var json = await response.json();
         // Store account details into local store
-        store.update('account', {
+        store.save('account', {
+          isLoggedIn: true,
+          isGuest: false,
+          token: token,
           userInfo: {
             username: json.username,
             email: json.email,
             firstName: json.firstName,
             lastName: json.lastName
           }
+        })
+        .then(() => {
+          this.replaceAt('mydrinks');
         })
         .catch((error) => {
           console.warn("error updating account local store");

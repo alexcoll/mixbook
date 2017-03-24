@@ -35,7 +35,7 @@ class AddIngredient extends Component {
   }
 
   componentDidMount() {
-    this.getLocalData();
+    this.getRemoteData();
   }
 
   onTapRefresh() {

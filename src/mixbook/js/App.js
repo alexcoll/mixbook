@@ -49,11 +49,22 @@ class App extends Component {
           token: "",
           userInfo: {}
         }).catch(error => {
-          console.warn("error getting account key from store");
+          console.warn("error saving account into store");
+          console.warn(error);
         });
       }
     }).catch(error => {
       console.warn("error getting account key from store");
+      console.warn(error);
+      store.save('account', {
+          isLoggedIn: false,
+          isGuest: false,
+          token: "",
+          userInfo: {}
+        }).catch(error => {
+          console.warn("error saving account into store");
+          console.warn(error);
+        });
     });
 
     // Setup settings store
@@ -102,6 +113,17 @@ class App extends Component {
       }
     }).catch(error => {
       console.warn("error getting brands key from store");
+    });
+
+
+    store.get('recipeIngredients').then((data) => {
+      if (data == null) {
+        store.save('recipeIngredients', []).catch(error => {
+          console.warn("error setting recipe ingredients store");
+        });
+      }
+    }).catch(error => {
+      console.warn("error setting recipe ingredients store");
     });
   }
 

@@ -6,7 +6,6 @@ const { StyleSheet } = React;
 module.exports = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: 'column',
     backgroundColor: 'white',
   },
 
@@ -26,9 +25,15 @@ module.exports = StyleSheet.create({
 
   searchBar: {
     paddingLeft: 30,
-    fontSize: 16,
-    height: 50,
+    fontSize: 22,
+    height: 10,
+    flex: .1,
     borderWidth: 9,
     borderColor: '#E4E4E4',
   },
+
+  header:{
+    fontSize: 16,
+    paddingLeft:20,
+  }
 });

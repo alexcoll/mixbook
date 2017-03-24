@@ -59,6 +59,7 @@ class SplashScreen extends Component {
             });
             return;
           } else {
+            Alert("Server connection error");
             console.warn(response);
           }
         })
@@ -70,8 +71,9 @@ class SplashScreen extends Component {
       }
     })
     .catch((error) => {
-      console.warn("error getting account isLoggedIn key from local store");
-      console.warn(error);
+      // console.warn("error getting account isLoggedIn key from local store");
+      // console.warn(error);
+      this.replaceAt('login');
     });
 
 
