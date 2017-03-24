@@ -5,6 +5,7 @@ import { actions } from 'react-native-navigation-redux-helpers';
 import { Container, Header, Title, Content, Button, Icon, List, ListItem, ListView, Text, Picker, Thumbnail, Input, InputGroup, View, Grid, Col } from 'native-base';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
+import '../recipes/index.js'
 
 import styles from './styles';
 import store from 'react-native-simple-store';
@@ -25,12 +26,13 @@ class Reviews extends Component {
     }),
   }
 
-  constructor(data, props) {
+  constructor(props) {
     super(props);
+    console.log(props.items);
     this.state = {
-      name: "Whiskey and Coke",
-      directions: "Mix it together", 
-      drinkNumber: 18,
+      name: global.recipeName,
+      directions: global.directions, 
+      drinkNumber: global.recipeId,
       rating: 0.0, 
       numRatings: 0.0, 
       reviews: "",
@@ -62,7 +64,7 @@ class Reviews extends Component {
 
   fetchData() {
     store.get('account').then((data) => {
-      fetch('https://activitize.net/mixbook/review/loadReviewsForRecipe?id=18', {
+      fetch(`https://activitize.net/mixbook/review/loadReviewsForRecipe?id=${this.state.drinkNumber}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -90,7 +92,7 @@ class Reviews extends Component {
     });
 
     store.get('account').then((data) => {
-      fetch('https://activitize.net/mixbook/recipe/getBrandsForRecipe?id=18', {
+      fetch(`https://activitize.net/mixbook/recipe/getBrandsForRecipe?id=${this.state.drinkNumber}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -171,7 +173,7 @@ class Reviews extends Component {
     }
 
     store.get('account').then((data) => {
-      fetch('https://activitize.net/mixbook/review/createRecipe', {
+      fetch('https://activitize.net/mixbook/review/createReview', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -180,7 +182,7 @@ class Reviews extends Component {
         body: JSON.stringify({
           pk: JSON.stringify({
             recipe: JSON.stringify({
-              recipeId: this.state.recipeId
+              recipeId: this.state.drinkNumber
             })
           }),
           reviewCommentary: this.state.reviews,
@@ -191,7 +193,11 @@ class Reviews extends Component {
           var json = await response.json();
           console.warn(json[0]);
           return json;
-        } else {
+        } else if (response.status == 401)
+        {
+          alert("User can not rate own recipe");
+        }
+         else {
           this.showServerErrorAlert(response);
           return;
         }

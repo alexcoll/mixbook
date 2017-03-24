@@ -12,7 +12,7 @@ import Recipes from './components/recipes/';
 import MyDrinks from './components/mydrinks/';
 import Ingredients from './components/ingredients/';
 import AddIngredient from './components/addIngredient/';
-import AddRecipe from './components/recipes/addRecipe';
+import AddRecipe from './components/addRecipe';
 import Account from './components/account/';
 import Login from './components/login/';
 import Settings from './components/settings/';

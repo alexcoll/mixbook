@@ -91,11 +91,10 @@ class Recipes extends Component {
 
   fetchData() {
     store.get('account').then((data) => {
-      fetch('https://activitize.net/mixbook/recipe/getAllRecipesCreatedByUser', {
+      fetch('https://activitize.net/mixbook/recipe/getAllRecipes', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': data.userInfo.token,
         }
       }).then(async (response) => {
         if (response.status == 200) {
@@ -204,7 +203,16 @@ class Recipes extends Component {
       "Edit " + item,
       'What do you want to do?',
       [
-        {text: 'Review', onPress: (item) => this.navigateTo('review')},
+        {text: 'Review', onPress: () => {
+          //this.props.navigator.push({name:'review', data:item});
+          global.recipeName = item[1];
+          global.recipeId = item[0];
+          global.directions = item[2];
+
+          //console.warn(global.recipeName);
+          this.navigateTo('review')
+          }
+        },
         {text: 'Delete', onPress: () => this.onListItemRemove(item)},
         {text: 'Cancel', style: 'cancel'},
       ],
