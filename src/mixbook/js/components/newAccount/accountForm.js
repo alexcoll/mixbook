@@ -33,7 +33,6 @@ export default AccountForm = (props) => {
 				placeholder="Email"
 				style={styles.input}
 				returnKeyType="next"
-				keyboardType="email-address"
 				autoCapitalize="none"
 				autoCorrect={false}
 				onChangeText={props.updateEmail}

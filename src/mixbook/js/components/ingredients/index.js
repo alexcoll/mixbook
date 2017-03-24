@@ -55,16 +55,6 @@ class Ingredients extends Component {
     this.getRemoteData();
   }
 
-  showServerErrorAlert(response) {
-    Alert.alert(
-      "Server Error",
-      "Got response: " + response.status + " " + response.statusText,
-      [
-      {text: 'Dismiss', style: 'cancel'}
-      ],
-      { cancelable: true }
-      );
-  }
 
   getLocalData() {
     store.get('inventory').
@@ -99,7 +89,7 @@ class Ingredients extends Component {
         }
       })
       .then(async (response) => {
-        if (response.status == 200) {
+        if (response.status == 100) {
           var json = await response.json();
           store.save("inventory", json)
           .catch(error => {
