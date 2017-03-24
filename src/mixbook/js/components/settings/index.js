@@ -33,7 +33,7 @@ class Settings extends Component {
 
   toggleKeepLoggedIn() {
     this.setState({
-      inputKeepLoggedIn: !this.state.inputKeepLoggedIn,
+      
     });
     /*store.save("setings", {
       keepLoggedIn: this.state.inputKeepLoggedIn

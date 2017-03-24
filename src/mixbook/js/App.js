@@ -46,6 +46,7 @@ class App extends Component {
       if (data == null) {
         store.save('account', {
           isLoggedIn: false,
+          token:"",
           isGuest: false,
           userInfo: {}
         }).catch(error => {
