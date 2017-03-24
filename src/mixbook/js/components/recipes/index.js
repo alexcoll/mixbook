@@ -200,7 +200,7 @@ class Recipes extends Component {
 
   _pressRow(item: string) {
     Alert.alert(
-      "Edit " + item,
+      "Edit " + item[1],
       'What do you want to do?',
       [
         {text: 'Review', onPress: () => {

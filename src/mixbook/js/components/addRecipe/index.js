@@ -134,7 +134,7 @@ class AddRecipe extends Component {
       );
       Alert.alert(
         "Recipe has",
-        "Ingredients: " + list,
+        "Ingredients: " + list.brandName,
         [
         {text: 'Dismiss', style: 'cancel'}
         ],
@@ -151,16 +151,6 @@ class AddRecipe extends Component {
 
   onSubmitLogin() {
     // Add the ingredient to the server
-    console.log(this.state.ingredients);
-
-    var body = JSON.stringify({
-          recipeName: this.state.recipeName,
-          directions: this.state.directions,
-          difficulty: this.state.difficulty,
-          brands: this.state.ingredients
-      });
-
-    console.log(body);
 
     store.get('account').then((data) => {
       fetch('https://activitize.net/mixbook/recipe/createRecipe', {
@@ -178,6 +168,14 @@ class AddRecipe extends Component {
       }).then((response) => {
         if (response.status == 200) {
           console.log("recipe added successfully");
+          Alert.alert(
+            "Recipe has been added",
+            "",
+            [
+              {text: 'Dismiss', style: 'cancel'}
+            ],
+            { cancelable: true }
+          );
           // store.get("inventory").then((data) => {
           //   var list = data;
           //   list.push(item);
