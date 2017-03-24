@@ -250,9 +250,6 @@ class AddRecipe extends Component {
       <View style={{flex: 1}}>
         <View style={styles.container}>
           <Header>
-            <Button transparent onPress={() => this.navigateTo('recipe')}>
-              <Icon name="ios-arrow-back" />
-            </Button>
             <Title>Add Recipe</Title>
             <Button transparent onPress={() => this.onTapRefresh()}>
               <Icon name="ios-refresh" />

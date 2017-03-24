@@ -289,9 +289,6 @@ class Reviews extends Component {
     return (
       <Container style={styles.container}>
         <Header>
-          <Button transparent onPress={() => this.replaceAt('recipes')}>
-            <Icon name="ios-arrow-back" />
-          </Button>
 
           <Title>{this.state.name}</Title>
         </Header>
