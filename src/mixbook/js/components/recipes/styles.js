@@ -5,6 +5,7 @@ const { StyleSheet } = React;
 
 module.exports = StyleSheet.create({
   container: {
+    flex: 1,
     backgroundColor: 'white'
   },
 
@@ -37,5 +38,13 @@ module.exports = StyleSheet.create({
     flex: .1,
     borderWidth: 9,
     borderColor: '#E4E4E4',
+  },
+
+  topHalf: {
+
+  },
+
+  bottomHalf: {
+
   },
 });

@@ -281,13 +281,17 @@ class Recipes extends Component {
               <View>
                 <View style={styles.row}>
                   <Text style={styles.rowText}>
-                    {rowData[2]}
+                    {rowData[1]}
                   </Text>
                 </View>
               </View>
             </TouchableHighlight>
           }
           renderSeparator={this._renderSeparator}
+        />
+        <ActionButton
+          buttonColor="rgba(231,76,60,1)"
+          onPress={() => this.navigateTo('addRecipe')}
         />
       </View>
     );

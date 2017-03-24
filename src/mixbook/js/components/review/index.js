@@ -28,13 +28,14 @@ class Reviews extends Component {
   constructor(data, props) {
     super(props);
     this.state = {
-      name: data[2],
-      directions: data[3], 
-      drinkNumber: data[1],
+      name: "Whiskey and Coke",
+      directions: "Mix it together", 
+      drinkNumber: 18,
       rating: 0.0, 
       numRatings: 0.0, 
       reviews: "",
-      theList: [{"rating":5.0, "reviewCommentary":"No Available Reviews"}]
+      theList: [{"rating":1, "reviewCommentary":"No Available Reviews"}],
+      ingredientsList: {}
     };
   }
 
@@ -61,22 +62,53 @@ class Reviews extends Component {
 
   fetchData() {
     store.get('account').then((data) => {
-      fetch('https://activitize.net/mixbook/review/loadReviewsForRecipe', {
+      fetch('https://activitize.net/mixbook/review/loadReviewsForRecipe?id=18', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
-        },
-        data: JSON.stringify({
-          recipeId: this.state.drinkNumber
-        })
+        }
       }).then(async (response) => {
         if (response.status == 200) {
           var json = await response.json();
-          console.warn(json[0]);
-          return json;
+          //console.warn(json[0]);
+          this.setState({theList: json});
         } else {
-          this.showServerErrorAlert(response);
-          return;
+          Alert.alert(
+            "Server Error",
+            "Could Not Load Reviews",
+            [
+              {text: 'Dismiss', style: 'cancel'}
+            ],
+            { cancelable: true }
+          );
+        }
+      }).catch((error) => {
+        console.error(error);
+      });
+    }).catch((error) => {
+      console.warn("error getting user token from local store");
+    });
+
+    store.get('account').then((data) => {
+      fetch('https://activitize.net/mixbook/recipe/getBrandsForRecipe?id=18', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }).then(async (response) => {
+        if (response.status == 200) {
+          var json = await response.json();
+          // console.warn(json[0]);
+          this.setState({ingredientsList: json});
+        } else {
+          Alert.alert(
+            "Server Error",
+            "Could Not Load Ingredients",
+            [
+              {text: 'Dismiss', style: 'cancel'}
+            ],
+            { cancelable: true }
+          );
         }
       }).catch((error) => {
         console.error(error);
@@ -184,9 +216,39 @@ class Reviews extends Component {
         </Header>
 
         <Content>
-          <TouchableOpacity>
-            <Thumbnail size={80} source={camera} style={{ alignSelf: 'center', marginTop: 20, marginBottom: 10 }} />
-          </TouchableOpacity>
+
+          <View>
+          <List>
+            <ListItem>
+            <Text>About</Text>
+            </ListItem>
+            <ListItem>
+              <Text style={styles.headers}>Ingredients</Text>
+
+                 <List dataArray={this.state.ingredientsList}
+                  renderRow={(data) =>
+                    <ListItem>
+                      <Grid>
+                            <Col>
+                              <Text style={styles.listTest}>{data}</Text>
+                            </Col>
+                       </Grid>
+                    </ListItem>
+                    }>
+                </List>
+            </ListItem>
+            <ListItem>
+              <Text>
+                Directions: {this.state.directions}
+              </Text>
+            </ListItem>
+            <ListItem>
+              <Text>
+                Write a review
+              </Text>
+            </ListItem>
+          </List>
+          </View>
           <List>
             <ListItem>
               <InputGroup>
@@ -214,19 +276,22 @@ class Reviews extends Component {
           >
             Add
           </Button>
-          <Text>Reviews</Text>
+
           <View>
+          <List>
+            <ListItem>
+              <Text>Reviews</Text>
+            </ListItem>
+            <ListItem>
              <List dataArray={this.state.theList}
               renderRow={(data) =>
-            <ListItem>
-              <Grid>
-                    <Col>
-                      <Text style={styles.listTest}>{data.rating} stars</Text>
-                      <Text style={styles.listTest} note>{data.reviewCommentary}</Text>
-                    </Col>
-               </Grid>
+                <ListItem>
+                          <Text style={styles.listTest}>{data[2]}: {data[0]}</Text>
+                          <Text style={styles.listTest} note>{data[1]} stars</Text>
+                </ListItem>
+                }>
+              </List>
             </ListItem>
-            }>
           </List>
           </View>
         </Content>

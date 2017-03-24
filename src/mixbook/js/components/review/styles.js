@@ -31,4 +31,9 @@ module.exports = StyleSheet.create({
     borderWidth: 9,
     borderColor: '#E4E4E4',
   },
+
+  header:{
+    fontSize: 16,
+    paddingLeft:20,
+  }
 });
