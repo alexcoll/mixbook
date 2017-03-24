@@ -55,7 +55,7 @@ class MyDrinks extends Component {
 
   componentWillReceiveProps() {
     // console.warn("willProps");
-    this.getLocalData();
+    this.getRemoteData();
   }
 
   componentWillMount() {
@@ -67,45 +67,49 @@ class MyDrinks extends Component {
     // console.warn("didMount");
   }
 
+
+
   showServerErrorAlert(response) {
     Alert.alert(
       "Server Error",
       "Got response: " + response.status + " " + response.statusText,
       [
-        {text: 'Dismiss', style: 'cancel'}
+      {text: 'Dismiss', style: 'cancel'}
       ],
       { cancelable: true }
-    );
+      );
   }
 
   getLocalData() {
-    // store.get('mydrinks')
-    // .then((data) => {
-    //   this.setstate({
-    //     rawData: data,
-    //   })
-    // })
-    return;
+    store.get('recipes').then((data) => {
+      this.setState({
+        dataSource: this.state.dataSource.cloneWithRows(data),
+        isLoading: false,
+        empty: false,
+        rawData: data,
+      });
+    }).catch(error => {
+      console.warn("error getting the recipe list from the local store");
+      this.setState({
+        empty: true,
+        isLoading: false,
+      });
+    });
   }
 
   getRemoteData() {
-    store.get('account')
-    .then((data) => {
-      if (data.isGuest) {
-        this.getLocalData();
-        return;
-      }
-
+    store.get('account').then((data) => {
       fetch('https://activitize.net/mixbook/recipe/getAllRecipesUserCanMake', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': data.token,
+          'Authorization': data.token
         }
       }).then(async (response) => {
         if (response.status == 200) {
           var json = await response.json();
-        store.save("inventory", json).catch(error => {
+        // console.warn(json[0]);
+        store.save("recipe", json).catch(error => {
           console.warn("error storing the recipe list into the local store");
         });
         this.setState({
@@ -131,6 +135,7 @@ class MyDrinks extends Component {
     });
   }
 
+
   setSearchText(event) {
     let searchText = event.nativeEvent.text;
     this.setState({searchText});
@@ -144,9 +149,56 @@ class MyDrinks extends Component {
   filterItems(searchText, items) {
     let text = searchText.toLowerCase();
     return filter(items, (n) => {
-      let item = n[2].toLowerCase();
+      let item = n[1].toLowerCase();
       return item.search(text) !== -1;
     });
+  }
+
+
+  onListItemRemove(item: string) {
+    var list = this.state.rawData;
+    var index = list.indexOf(item);
+    if (index > -1) {
+      // list.splice(index, 1);
+      // this.setState({
+      //   rawData: list,
+      //   dataSource: this.state.dataSource.cloneWithRows(list),
+      // });
+
+      // store.save('inventory', this.state.rawData).catch((error) => {
+      //   console.warn("error storing inventory into local store");
+      // });
+
+      // Delete the ingredient from the server
+      store.get('account').then((data) => {
+        fetch('https://activitize.net/mixbook/recipe/deleteRecipe', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': data.token,
+          },
+          body: JSON.stringify({
+            brandName: item
+          })
+        }).then((response) => {
+          if (response.status == 200) {
+            ToastAndroid.show("Recipe removed", ToastAndroid.SHORT);
+            this.fetchData();
+            console.log("recipe list pushed successfully");
+            return;
+          } else {
+            this.showServerErrorAlert(response);
+            return;
+          }
+        }).catch((error) => {
+          console.error(error);
+        });
+      }).catch((error) => {
+        console.warn("error getting user token from local store");
+        console.warn(error);
+      });
+
+    }
   }
 
   _onRefresh() {
@@ -156,25 +208,43 @@ class MyDrinks extends Component {
   }
 
   _pressRow(item: string) {
-    ToastAndroid.show("Waiting on wyatt for this feature", ToastAndroid.SHORT);
+    Alert.alert(
+      "Edit " + item,
+      'What do you want to do?',
+      [
+        {text: 'Review', onPress: () => {
+          //this.props.navigator.push({name:'review', data:item});
+          global.recipeName = item[1];
+          global.recipeId = item[0];
+          global.directions = item[2];
+
+          //console.warn(global.recipeName);
+          this.navigateTo('review');
+          }
+        },
+        {text: 'Delete', onPress: () => this.onListItemRemove(item)},
+        {text: 'Cancel', style: 'cancel'},
+      ],
+      { cancelable: true }
+    )
   }
 
-  // _renderRow(rowData: string, sectionID: number, rowID: number, highlightRow: (sectionID: number, rowID: number) => void) {
-  //   return (
-  //     <TouchableHighlight onPress={() => {
-  //       this._pressRow(rowData);
-  //       highlightRow(sectionID, rowID);
-  //     }}>
-  //       <View>
-  //         <View style={styles.row}>
-  //           <Text style={styles.rowText}>
-  //             {rowData[2]}
-  //           </Text>
-  //         </View>
-  //       </View>
-  //     </TouchableHighlight>
-  //   );
-  // }
+  /*_renderRow(rowData: string, sectionID: number, rowID: number, highlightRow: (sectionID: number, rowID: number) => void) {
+    return (
+      <TouchableHighlight onPress={() => {
+          this._pressRow(rowID);
+          highlightRow(sectionID, rowID);
+        }}>
+        <View>
+          <View style={styles.row}>
+            <Text style={styles.rowText}>
+              {rowData}
+            </Text>
+          </View>
+        </View>
+      </TouchableHighlight>
+    );
+  }*/
 
   _renderSeparator(sectionID, rowID, adjacentRowHighlighted) {
     return (
@@ -191,6 +261,7 @@ class MyDrinks extends Component {
 
   render() { // eslint-disable-line
     return (
+
       <View style={styles.container}>
         <Header>
           <Button transparent onPress={this.props.openDrawer}>
@@ -227,7 +298,7 @@ class MyDrinks extends Component {
               <View>
                 <View style={styles.row}>
                   <Text style={styles.rowText}>
-                    {rowData[2]}
+                    {rowData[1]}
                   </Text>
                 </View>
               </View>
