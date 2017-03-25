@@ -126,14 +126,15 @@ class AddRecipe extends Component {
   onItemAdd(item) {
     store.get('recipeIngredients').then((data) => {
       var list = this.state.ingredients;
+      var key = "brandName";
+      var obj = {};
+      obj[key] = item;
       list.push(
-        JSON.stringify({
-          brandName: item
-        })
-        );
+        obj
+      );
       Alert.alert(
-        "Recipe has",
-        "Ingredients: " + list,
+        "Recipe now includes:",
+        "" +  item,
         [
         {text: 'Dismiss', style: 'cancel'}
         ],
@@ -150,24 +151,31 @@ class AddRecipe extends Component {
 
   onSubmitLogin() {
     // Add the ingredient to the server
+
     store.get('account').then((data) => {
       fetch('https://activitize.net/mixbook/recipe/createRecipe', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJHdWVzdDQiLCJhdWRpZW5jZSI6IndlYiIsImNyZWF0ZWQiOjE0OTAzMzUzNjQzMDAsImV4cCI6MTQ5MDk0MDE2NH0.6QXgGm0-3cvXTYKh-EYderiIS5X9DgpSD7iXD9K8SpQagTJew_D8HjhOjxmbPzPHmqSwQYSGsBuaM4SWAr7rUw',
+          'Authorization': data.token,
         },
         body: JSON.stringify({
           recipeName: this.state.recipeName,
           directions: this.state.directions,
           difficulty: this.state.difficulty,
-          brands: JSON.stringify({
-            brandName: this.state.ingredients
-        })
+          brands: this.state.ingredients
       })
       }).then((response) => {
         if (response.status == 200) {
           console.log("recipe added successfully");
+          Alert.alert(
+            "Recipe has been added",
+            "",
+            [
+              {text: 'Dismiss', style: 'cancel'}
+            ],
+            { cancelable: true }
+          );
           // store.get("inventory").then((data) => {
           //   var list = data;
           //   list.push(item);
@@ -242,9 +250,6 @@ class AddRecipe extends Component {
       <View style={{flex: 1}}>
         <View style={styles.container}>
           <Header>
-            <Button transparent onPress={() => this.navigateTo('recipe')}>
-              <Icon name="ios-arrow-back" />
-            </Button>
             <Title>Add Recipe</Title>
             <Button transparent onPress={() => this.onTapRefresh()}>
               <Icon name="ios-refresh" />

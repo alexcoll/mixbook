@@ -98,7 +98,8 @@ class Login extends Component {
 
 
   submitToServer() {
-    fetch('https://activitize.net/mixbook/auth', {
+    global.username = this.state.inputUsername;
+    return fetch('https://activitize.net/mixbook/auth', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',

@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Image } from 'react-native';
+import { Image, Alert } from 'react-native';
 import { actions } from 'react-native-navigation-redux-helpers';
 
 import store from 'react-native-simple-store';
@@ -59,12 +59,14 @@ class SplashScreen extends Component {
             });
             return;
           } else {
-            Alert("Server connection error");
+            Alert.alert("Server connection error");
             console.warn(response);
+            this.replaceAt('login');
           }
         })
         .catch((error) => {
           console.error(error);
+          this.replaceAt('login');
         });
       } else {
         this.replaceAt('login');
