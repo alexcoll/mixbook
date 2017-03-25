@@ -133,8 +133,8 @@ class AddRecipe extends Component {
         obj
       );
       Alert.alert(
-        "Recipe has",
-        "Ingredients: " + list.brandName,
+        "Recipe now includes:",
+        "" +  item,
         [
         {text: 'Dismiss', style: 'cancel'}
         ],
@@ -157,7 +157,7 @@ class AddRecipe extends Component {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJHdWVzdDQiLCJhdWRpZW5jZSI6IndlYiIsImNyZWF0ZWQiOjE0OTAzMzUzNjQzMDAsImV4cCI6MTQ5MDk0MDE2NH0.6QXgGm0-3cvXTYKh-EYderiIS5X9DgpSD7iXD9K8SpQagTJew_D8HjhOjxmbPzPHmqSwQYSGsBuaM4SWAr7rUw',
+          'Authorization': data.token,
         },
         body: JSON.stringify({
           recipeName: this.state.recipeName,

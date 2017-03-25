@@ -215,7 +215,7 @@ class Reviews extends Component {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJHdWVzdDQiLCJhdWRpZW5jZSI6IndlYiIsImNyZWF0ZWQiOjE0OTAzMzUzNjQzMDAsImV4cCI6MTQ5MDk0MDE2NH0.6QXgGm0-3cvXTYKh-EYderiIS5X9DgpSD7iXD9K8SpQagTJew_D8HjhOjxmbPzPHmqSwQYSGsBuaM4SWAr7rUw'
+          'Authorization': data.token,
         },
         body: JSON.stringify({
           pk: this.state.pkNumber,
@@ -226,6 +226,7 @@ class Reviews extends Component {
         if (response.status == 200) {
           var json = await response.json();
           console.warn("Success");
+          fetchData();
           return json;
         } else if (response.status == 401)
         {
@@ -240,7 +241,7 @@ class Reviews extends Component {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json',
-                  'Authorization': 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJHdWVzdDQiLCJhdWRpZW5jZSI6IndlYiIsImNyZWF0ZWQiOjE0OTAzMzUzNjQzMDAsImV4cCI6MTQ5MDk0MDE2NH0.6QXgGm0-3cvXTYKh-EYderiIS5X9DgpSD7iXD9K8SpQagTJew_D8HjhOjxmbPzPHmqSwQYSGsBuaM4SWAr7rUw'
+                  'Authorization': data.token,
                 },
                 body: JSON.stringify({
                   pk: this.state.pkNumber,
@@ -251,6 +252,7 @@ class Reviews extends Component {
                 if (response.status == 200) {
                   var json = await response.json();
                   console.warn("Successful edit of Review");
+                  fetchData();
                   return json;
                 } else if (response.status == 401)
                 {
