@@ -23,6 +23,7 @@ class Ingredients extends Component {
     super(props);
     const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
+      isGuest: true,
       refreshing: false,
       dataSource: ds.cloneWithRows([]),
       searchText: "",
@@ -47,11 +48,21 @@ class Ingredients extends Component {
 
   componentWillReceiveProps() {
     //console.log("willProps");
-    this.getRemoteData();
+    this.getLocalData();
+    // this.getRemoteData();
   }
 
   componentWillMount() {
     //console.log("willMount");
+    store.get('account').then((data) => {
+      this.setState({
+        isGuest: data.isGuest,
+      })
+    }).catch((error) => {
+      console.warn("error getting isGuest from local store");
+      console.warn(error);
+    });
+
     this.getRemoteData();
   }
 
@@ -153,51 +164,58 @@ class Ingredients extends Component {
 
 
   onListItemRemove(item: string) {
+    this.setState({
+      isLoading: true,
+    });
+
     var list = this.state.rawData;
     var index = list.indexOf(item);
     if (index > -1) {
       list.splice(index, 1);
       this.setState({
-        rawData: list,
         dataSource: this.state.dataSource.cloneWithRows(list),
+        isLoading: false,
+        rawData: list,
       });
 
       store.save('inventory', list)
-      .catch((error) => {
-        console.warn("error storing inventory into local store");
-      });
-
-      // Delete the ingredient from the server
-      store.get('account').then((data) => {
-        if (data.isGuest) {
-          return;
-        }
-
-        fetch('https://activitize.net/mixbook/inventory/deleteIngredientFromInventory', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': data.token,
-          },
-          body: JSON.stringify({
-            brandName: item
-          })
-        }).then((response) => {
-          if (response.status == 200) {
+      .then(() => {
+        // Delete the ingredient from the server
+        store.get('account').then((data) => {
+          if (data.isGuest) {
             ToastAndroid.show("Item removed", ToastAndroid.SHORT);
-            this.getRemoteData();
-            console.log("inventory list pushed successfully");
-            return;
-          } else {
-            this.showServerErrorAlert(response);
             return;
           }
+
+          fetch('https://activitize.net/mixbook/inventory/deleteIngredientFromInventory', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': data.token,
+            },
+            body: JSON.stringify({
+              brandName: item
+            })
+          }).then((response) => {
+            if (response.status == 200) {
+              ToastAndroid.show("Item removed", ToastAndroid.SHORT);
+              this.getRemoteData();
+              console.log("inventory list pushed successfully");
+              return;
+            } else {
+              this.showServerErrorAlert(response);
+              return;
+            }
+          }).catch((error) => {
+            console.error(error);
+          });
         }).catch((error) => {
-          console.error(error);
+          console.warn("error getting user token from local store");
+          console.warn(error);
         });
-      }).catch((error) => {
-        console.warn("error getting user token from local store");
-        console.warn(error);
+      })
+      .catch((error) => {
+        console.warn("error storing inventory into local store");
       });
     } else {
       Alert.alert("Error");
