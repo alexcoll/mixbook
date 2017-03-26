@@ -278,7 +278,9 @@ class Ingredients extends Component {
           autoCorrect={false}
         />
 
+
         <ListView
+          enableEmptySections={true}
           refreshControl={
             <RefreshControl
               refreshing={this.state.refreshing}

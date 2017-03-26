@@ -231,6 +231,7 @@ class AddIngredient extends Component {
 
         <View>
           <ListView
+            enableEmptySections={true}
             dataSource={this.state.dataSource}
             renderRow={(rowData: string, sectionID: number, rowID: number, highlightRow: (sectionID: number, rowID: number) => void) =>
               <TouchableHighlight onPress={() => {

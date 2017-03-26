@@ -277,6 +277,7 @@ class Recipes extends Component {
         />
 
         <ListView
+          enableEmptySections={true}
           refreshControl={
             <RefreshControl
               refreshing={this.state.refreshing}
