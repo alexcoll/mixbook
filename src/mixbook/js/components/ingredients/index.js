@@ -55,15 +55,15 @@ class Ingredients extends Component {
     this.getRemoteData();
   }
 
-  showServerErrorAlert(response) {
+  showServerErrorAlert(json) {
     Alert.alert(
-      "Server Error",
-      "Got response: " + response.status + " " + response.statusText,
+      "Error",
+      json.errorMessage,
       [
-      {text: 'Dismiss', style: 'cancel'}
+        {text: 'Dismiss', style: 'cancel'}
       ],
       { cancelable: true }
-      );
+    );
   }
 
   getLocalData() {
@@ -113,7 +113,8 @@ class Ingredients extends Component {
           });
           return json;
         } else {
-          this.showServerErrorAlert(response);
+          var json = await response.json();
+          this.showServerErrorAlert(json);
           return;
         }
       })

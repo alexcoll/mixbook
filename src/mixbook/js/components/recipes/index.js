@@ -93,6 +93,7 @@ class Recipes extends Component {
   fetchData() {
     store.get('account').then((data) => {
       this.setState({
+        username: data.userInfo.username,
         isGuest: data.isGuest,
       });
 
@@ -152,48 +153,33 @@ class Recipes extends Component {
 
 
   onListItemRemove(item: string) {
-    var list = this.state.rawData;
-    var index = list.indexOf(item);
-    if (index > -1) {
-      // list.splice(index, 1);
-      // this.setState({
-      //   rawData: list,
-      //   dataSource: this.state.dataSource.cloneWithRows(list),
-      // });
-
-      // store.save('inventory', this.state.rawData).catch((error) => {
-      //   console.warn("error storing inventory into local store");
-      // });
-
-      // Delete the ingredient from the server
-      store.get('account').then((data) => {
-        fetch('https://activitize.net/mixbook/recipe/deleteRecipe', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': data.token,
-          },
-          body: JSON.stringify({
-            brandName: item
-          })
-        }).then((response) => {
-          if (response.status == 200) {
-            ToastAndroid.show("Recipe removed", ToastAndroid.SHORT);
-            this.fetchData();
-            console.log("recipe list pushed successfully");
-          } else {
-            this.showServerErrorAlert(response);
-            return;
-          }
-        }).catch((error) => {
-          console.error(error);
-        });
+    // Delete the ingredient from the server
+    store.get('account').then((data) => {
+      fetch('https://activitize.net/mixbook/recipe/deleteRecipe', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': data.token,
+        },
+        body: JSON.stringify({
+          recipeId: item[0]
+        })
+      }).then((response) => {
+        if (response.status == 200) {
+          ToastAndroid.show("Recipe removed", ToastAndroid.SHORT);
+          this.fetchData();
+          console.log("recipe list pushed successfully");
+        } else {
+          this.showServerErrorAlert(response);
+          return;
+        }
       }).catch((error) => {
-        console.warn("error getting user token from local store");
-        console.warn(error);
+        console.error(error);
       });
-
-    }
+    }).catch((error) => {
+      console.warn("error getting user token from local store");
+      console.warn(error);
+    });
   }
 
   _onRefresh() {
@@ -203,7 +189,7 @@ class Recipes extends Component {
   }
 
   _pressRow(item: string) {
-    if (this.state.isGuest) {
+    if (this.state.isGuest || item[7] !== this.state.username) {
       Alert.alert(
         "Edit " + item[1],
         'What do you want to do?',

@@ -97,10 +97,10 @@ class NewAccount extends Component {
   }
 
 
-	showServerErrorAlert(response) {
+  showServerErrorAlert(json) {
     Alert.alert(
-      "Server/Network Error",
-      "Got response: " + response.status + " " + response.statusText,
+      "Error",
+      json.errorMessage,
       [
         {text: 'Dismiss', style: 'cancel'}
       ],
@@ -144,9 +144,9 @@ class NewAccount extends Component {
         } else {
         	this.showServerInvalidAlert(json);
         }
-      } else if (response.status == 401) {
-        this.showBadInfoAlert();
-        return;
+      } else if (response.status == 401 || response.status == 400) {
+        var json = await response.json();
+        this.showServerErrorAlert(json);
       } else {
         this.showServerErrorAlert(response);
         return;
