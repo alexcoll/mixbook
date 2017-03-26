@@ -31,6 +31,7 @@ class Account extends Component {
     super(props);
     this.state = {
       token: '',
+      isGuest: true,
       inputUsername: '',
       inputFirstName: '',
       inputLastName: '',
@@ -51,6 +52,7 @@ class Account extends Component {
     store.get('account')
     .then((data) => {
       this.setState({
+        isGuest: data.isGuest,
         token: data.token,
         inputUsername: data.userInfo.username,
         inputFirstName: data.userInfo.firstName,
@@ -65,7 +67,7 @@ class Account extends Component {
 
 
   onLogout() {
-    store.update('account', {
+    store.save('account', {
       isLoggedIn: false,
       isGuest: false,
       token: "",
@@ -84,11 +86,17 @@ class Account extends Component {
       console.warn("error clearing account data from local store");
     });
 
+    store.save('inventory', []);
   }
 
   onSubmit() {
     store.get('account')
     .then((data) => {
+      if (data.isGuest) {
+        Alert("Cannot change guest account information");
+        return;
+      }
+
       var wasAnythingChanged = false;
 
       // Check if password is being changed
@@ -222,10 +230,6 @@ class Account extends Component {
     .catch((error) => {
       console.error(error);
     });
-
-
-
-
   }
 
   updateNames(token: string, firstName: string, lastName: string) {
@@ -350,7 +354,7 @@ class Account extends Component {
         <Content>
           <List>
             <ListItem>
-              <InputGroup>
+              <InputGroup disabled={this.state.isGuest}>
                 <Input
                   disabled
                   inlineLabel label="Username"
@@ -361,7 +365,7 @@ class Account extends Component {
               </InputGroup>
             </ListItem>
             <ListItem>
-              <InputGroup>
+              <InputGroup disabled={this.state.isGuest}>
                 <Input
                   inlineLabel label="First Name"
                   placeholder="John"
@@ -371,7 +375,7 @@ class Account extends Component {
               </InputGroup>
             </ListItem>
             <ListItem>
-              <InputGroup>
+              <InputGroup disabled={this.state.isGuest}>
                 <Input
                   inlineLabel label="Last Name"
                   placeholder="Doe"
@@ -381,7 +385,7 @@ class Account extends Component {
               </InputGroup>
             </ListItem>
             <ListItem>
-              <InputGroup>
+              <InputGroup disabled={this.state.isGuest}>
                 <Input
                   inlineLabel label="Email"
                   placeholder="name@example.com"
@@ -394,7 +398,7 @@ class Account extends Component {
               <Text>Change Password</Text>
             </ListItem>
             <ListItem>
-              <InputGroup>
+              <InputGroup disabled={this.state.isGuest}>
                 <Icon name="ios-unlock" style={styles.icons} />
                 <Input
                   secureTextEntry
@@ -405,7 +409,7 @@ class Account extends Component {
               </InputGroup>
             </ListItem>
             <ListItem>
-              <InputGroup>
+              <InputGroup disabled={this.state.isGuest}>
                 <Icon name="ios-unlock" style={styles.icons} />
                 <Input
                   secureTextEntry
@@ -416,7 +420,7 @@ class Account extends Component {
               </InputGroup>
             </ListItem>
             <ListItem>
-              <InputGroup>
+              <InputGroup disabled={this.state.isGuest}>
                 <Icon name="ios-unlock" style={styles.icons} />
                 <Input
                   secureTextEntry
@@ -429,6 +433,7 @@ class Account extends Component {
             <ListItem>
               <View>
                 <Button
+                  disabled={this.state.isGuest}
                   block
                   style={styles.saveButton}
                   onPress={() => this.onSubmit()}

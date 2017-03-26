@@ -57,27 +57,14 @@ class App extends Component {
       console.warn("error getting account key from store");
       console.warn(error);
       store.save('account', {
-          isLoggedIn: false,
-          isGuest: false,
-          token: "",
-          userInfo: {}
-        }).catch(error => {
-          console.warn("error saving account into store");
-          console.warn(error);
-        });
-    });
-
-    // Setup settings store
-    store.get('settings').then((data) => {
-      if (data == null) {
-        store.save('settings', {
-          keepLoggedIn: true
-        }).catch(error => {
-          console.warn("error getting account key from store");
-        });
-      }
-    }).catch(error => {
-      console.warn("error getting account key from store");
+        isLoggedIn: false,
+        isGuest: false,
+        token: "",
+        userInfo: {}
+      }).catch(error => {
+        console.warn("error saving account into store");
+        console.warn(error);
+      });
     });
 
     // Setup recipes store
@@ -94,7 +81,7 @@ class App extends Component {
     // Setup inventory store
     store.get('inventory').then((data) => {
       if (data == null) {
-        store.save('inventory', ["Refresh to get inventory"])
+        store.save('inventory', [])
         .catch(error => {
           console.warn("error getting inventory key from store");
         });

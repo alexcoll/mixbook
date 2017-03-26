@@ -22,11 +22,11 @@ class MyDrinks extends Component {
     this.state = {
       isGuest: false,
       refreshing: false,
-      dataSource: ds.cloneWithRows(['Pull to refesh data']),
+      dataSource: ds.cloneWithRows([]),
       searchText: "",
       isLoading: false,
       empty: false,
-      rawData: ['Pull to refesh data'],
+      rawData: [],
     };
 
     store.get('account')
@@ -55,7 +55,7 @@ class MyDrinks extends Component {
 
   componentWillReceiveProps() {
     // console.warn("willProps");
-    this.getRemoteData();
+    // this.getRemoteData();
   }
 
   componentWillMount() {
@@ -98,30 +98,92 @@ class MyDrinks extends Component {
   }
 
   getRemoteData() {
-    store.get('account').then((data) => {
-      fetch('https://activitize.net/mixbook/recipe/getAllRecipesUserCanMake', {
+    store.get('account')
+    .then((data) => {
+      if (data.isGuest) {
+        this.getDrinksGuest();
+      } else {
+        this.getDrinksAccount(data.token);
+      }
+    })
+    .catch((error) => {
+      console.warn(error);
+      console.warn("1error getting user token from local store");
+    });
+  }
+
+  getDrinksAccount(token: string) {
+    fetch('https://activitize.net/mixbook/recipe/getAllRecipesUserCanMake', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': token
+      }
+    }).then(async (response) => {
+      if (response.status == 200) {
+        var json = await response.json();
+      // store.save("recipe", json).catch(error => {
+      //   console.warn("error storing the recipe list into the local store");
+      // });
+      this.setState({
+        dataSource: this.state.dataSource.cloneWithRows(json),
+        isLoading: false,
+        empty: false,
+        rawData: json,
+      });
+      return json;
+      } else {
+        this.showServerErrorAlert(response);
+        return;
+      }
+    }).catch((error) => {
+      console.error(error);
+      this.setState({
+        empty: true,
+        isLoading: false,
+      });
+    });
+  }
+
+
+  getDrinksGuest() {
+    store.get('inventory')
+    .then((data) => {
+      if (data.length < 1) {
+        ToastAndroid.show("Inventory empty", ToastAndroid.SHORT);
+        return;
+      }
+
+      // Build url parameters
+      var baseURL = "https://activitize.net/mixbook/recipe/getAllRecipesAnonymousUserCanMake?brands=";
+      // Add each ingredient to the parameter
+      for (i = 0; i < data.length; i++) {
+        baseURL = baseURL + data[i] + ',';
+      }
+      // Take off last comma from URL
+      baseURL = baseURL.slice(0, -1);
+      console.log("URL=" + baseURL);
+
+      fetch(baseURL, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': data.token
         }
       }).then(async (response) => {
         if (response.status == 200) {
           var json = await response.json();
-        // console.warn(json[0]);
-        store.save("recipe", json).catch(error => {
-          console.warn("error storing the recipe list into the local store");
-        });
-        this.setState({
-          dataSource: this.state.dataSource.cloneWithRows(json),
-          isLoading: false,
-          empty: false,
-          rawData: json,
-        });
-        return json;
+          // store.save("recipe", json).catch(error => {
+          //   console.warn("error storing the recipe list into the local store");
+          // });
+          this.setState({
+            dataSource: this.state.dataSource.cloneWithRows(json),
+            isLoading: false,
+            empty: false,
+            rawData: json,
+          });
+          return json;
         } else {
           this.showServerErrorAlert(response);
-          return;
         }
       }).catch((error) => {
         console.error(error);
@@ -130,8 +192,10 @@ class MyDrinks extends Component {
           isLoading: false,
         });
       });
-    }).catch((error) => {
-      console.warn("error getting user token from local store");
+    })
+    .catch((error) => {
+      console.warn("error getting ingredients from store");
+      console.warn(error);
     });
   }
 
@@ -145,6 +209,7 @@ class MyDrinks extends Component {
       dataSource: this.state.dataSource.cloneWithRows(filteredData),
     });
   }
+
 
   filterItems(searchText, items) {
     let text = searchText.toLowerCase();
@@ -183,7 +248,7 @@ class MyDrinks extends Component {
         }).then((response) => {
           if (response.status == 200) {
             ToastAndroid.show("Recipe removed", ToastAndroid.SHORT);
-            this.fetchData();
+            this.getRemoteData();
             console.log("recipe list pushed successfully");
             return;
           } else {
@@ -208,26 +273,31 @@ class MyDrinks extends Component {
   }
 
   _pressRow(item: string) {
-    Alert.alert(
-      "Edit " + item[1],
-      'What do you want to do?',
-      [
-        {text: 'Review', onPress: () => {
-          //this.props.navigator.push({name:'review', data:item});
-          global.recipeName = item[1];
-          global.recipeId = item[0];
-          global.directions = item[2];
-          global.reviewOwner = item[7];
+    global.recipeName = item[1];
+    global.recipeId = item[0];
+    global.directions = item[2];
+    global.reviewOwner = item[7];
 
-          //console.warn(global.recipeName);
-          this.navigateTo('review');
-          }
-        },
-        {text: 'Delete', onPress: () => this.onListItemRemove(item)},
-        {text: 'Cancel', style: 'cancel'},
-      ],
-      { cancelable: true }
-    )
+    this.navigateTo('review');
+    // Alert.alert(
+    //   "Edit " + item[1],
+    //   'What do you want to do?',
+    //   [
+    //     {text: 'Review', onPress: () => {
+    //       //this.props.navigator.push({name:'review', data:item});
+    //       global.recipeName = item[1];
+    //       global.recipeId = item[0];
+    //       global.directions = item[2];
+    //       global.reviewOwner = item[7];
+
+    //       this.navigateTo('review');
+    //       }
+    //     },
+    //     // {text: 'Delete', onPress: () => this.onListItemRemove(item)},
+    //     {text: 'Cancel', style: 'cancel'},
+    //   ],
+    //   { cancelable: true }
+    // )
   }
 
   /*_renderRow(rowData: string, sectionID: number, rowID: number, highlightRow: (sectionID: number, rowID: number) => void) {
@@ -262,7 +332,6 @@ class MyDrinks extends Component {
 
   render() { // eslint-disable-line
     return (
-
       <View style={styles.container}>
         <Header>
           <Button transparent onPress={this.props.openDrawer}>
@@ -270,6 +339,10 @@ class MyDrinks extends Component {
           </Button>
 
           <Title>My Drinks</Title>
+
+          <Button transparent onPress={() => this._onRefresh()}>
+            <Icon name="ios-refresh" />
+          </Button>
         </Header>
 
         <TextInput

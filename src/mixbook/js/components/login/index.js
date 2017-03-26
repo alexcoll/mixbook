@@ -193,6 +193,8 @@ class Login extends Component {
         lastName: "User",
       }
     }).then(() => {
+      store.save('inventory', []);
+      store.save('recipes', []);
       this.replaceAt('mydrinks');
     }).catch((error) => {
       console.warn("error updating account local store");
