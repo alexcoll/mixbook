@@ -133,21 +133,7 @@ class Reviews extends Component {
   }
 
   submitRating(ratingInput){
-    if(ratingInput < 0.0 || ratingInput > 5.0 )
-    {
-      Alert.alert(
-        "Rating not valid",
-        '',
-        [
-          {text: 'Okay', style: 'cancel'},
-        ],
-        { cancelable: true }
-      )
-    }
-    else
-    {
-      this.setState({rating: ratingInput});
-    }
+
   }
 
   submitReview(reviewInput){
@@ -191,10 +177,6 @@ class Reviews extends Component {
 
 
   onSubmit() {
-    if (this.state.rating < 0.0) {
-      alert('Please enter a rating between 0-5');
-      return;
-    }
     if (this.state.reviews == '') {
       alert('Please add a review');
       return;
