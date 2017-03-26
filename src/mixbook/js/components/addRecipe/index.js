@@ -132,6 +132,55 @@ class AddRecipe extends Component {
 
   onSubmitLogin() {
     // Add the ingredient to the server
+    // Add the ingredient to the server
+
+    store.get('account').then((data) => {
+      fetch('https://activitize.net/mixbook/recipe/createRecipe', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': data.token,
+        },
+        body: JSON.stringify({
+          recipeName: this.state.recipeName,
+          directions: this.state.directions,
+          difficulty: this.state.difficulty,
+          brands: this.state.ingredients
+      })
+      }).then((response) => {
+        if (response.status == 200) {
+          console.log("recipe added successfully");
+          Alert.alert(
+            "Recipe has been added",
+            "",
+            [
+              {text: 'Dismiss', style: 'cancel'}
+            ],
+            { cancelable: true }
+          );
+          // store.get("inventory").then((data) => {
+          //   var list = data;
+          //   list.push(item);
+          //   store.save("inventory", list).catch((error) => {
+          //     console.warn("error stroing new inventory list into local store");
+          //     console.warn(error);
+          //   });
+          //   ToastAndroid.show("Item added", ToastAndroid.SHORT);
+          // }).catch((error) => {
+          //     console.warn("error getting inventory list from local store");
+          //     console.warn(error);
+          //   });
+        } else {
+          this.navigateTo('mydrinks');
+          
+        }
+      }).catch((error) => {
+        console.error(error);
+      });
+    }).catch((error) => {
+      console.warn("error getting user token from local store");
+      console.warn(error);
+    });
 
     //this.props.popRoute();
   }
