@@ -23,12 +23,13 @@ class Recipes extends Component {
     super(props);
     const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
+      isGuest: true,
       refreshing: false,
-      dataSource: ds.cloneWithRows(['Pull to refesh data']),
+      dataSource: ds.cloneWithRows([]),
       searchText: "",
       isLoading: false,
       empty: false,
-      rawData: ['Pull to refesh data'],
+      rawData: [],
     };
   }
 
@@ -91,6 +92,10 @@ class Recipes extends Component {
 
   fetchData() {
     store.get('account').then((data) => {
+      this.setState({
+        isGuest: data.isGuest,
+      });
+
       fetch('https://activitize.net/mixbook/recipe/getAllRecipes', {
         method: 'GET',
         headers: {
@@ -251,6 +256,18 @@ class Recipes extends Component {
   }
 
 
+  _renderFAB() {
+    if (!this.state.isGuest) {
+      return (
+        <ActionButton
+          buttonColor="rgba(231,76,60,1)"
+          onPress={() => this.navigateTo('addRecipe')}
+        />
+      );
+    }
+  }
+
+
   render() { // eslint-disable-line
     return (
 
@@ -261,6 +278,10 @@ class Recipes extends Component {
           </Button>
 
           <Title>Recipes</Title>
+
+          <Button transparent onPress={() => this._onRefresh()}>
+            <Icon name="ios-refresh" />
+          </Button>
         </Header>
 
         <TextInput
@@ -298,10 +319,7 @@ class Recipes extends Component {
           }
           renderSeparator={this._renderSeparator}
         />
-        <ActionButton
-          buttonColor="rgba(231,76,60,1)"
-          onPress={() => this.navigateTo('addRecipe')}
-        />
+        {this._renderFAB()}
       </View>
     );
   }
