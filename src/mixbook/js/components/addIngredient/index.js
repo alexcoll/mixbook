@@ -112,6 +112,19 @@ class AddIngredient extends Component {
     store.get("inventory")
     .then((data) => {
       var list = data;
+      // Check if item exists in inventory already
+      if (list.indexOf(item) >= 0) {
+        Alert.alert(
+          "Cannot Add Item",
+          "You already have " + item + " in your inventory.",
+          [
+
+            {text: 'Dismiss', style: 'cancel'},
+          ],
+          { cancelable: true }
+        )
+        return;
+      }
 
       list.push(item);
       store.save("inventory", list)

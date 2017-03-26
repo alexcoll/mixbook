@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { TouchableOpacity, Alert } from 'react-native';
+import { ToastAndroid, TouchableOpacity, Alert } from 'react-native';
 import { connect } from 'react-redux';
 import { actions } from 'react-native-navigation-redux-helpers';
-import { Container, Header, Title, Content, Button, Icon, List, ListItem, ListView, Text, Picker, Thumbnail, Input, InputGroup, View, Grid, Col } from 'native-base';
+import { Container, Header, Title, Content, Button, Icon, List, ListItem, ListView, Text, Picker, Input, InputGroup, View, Grid, Col } from 'native-base';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 //Load global variables
@@ -13,7 +13,6 @@ import styles from './styles';
 import store from 'react-native-simple-store';
 
 const Item = Picker.Item;
-const camera = require('../../../img/camera.png');
 
 const {
   replaceAt,
@@ -48,13 +47,11 @@ class Reviews extends Component {
   }
 
   componentWillReceiveProps() {
-    // console.warn("willProps");
     this.fetchData();
     this.setUpPK();
   }
 
   componentWillMount() {
-    // console.warn("willMount");
     this.fetchData();
     this.setUpPK();
   }
@@ -225,14 +222,12 @@ class Reviews extends Component {
         if (response.status == 200) {
           var json = await response.json();
           console.warn("Success");
-          fetchData();
+          this.fetchData();
           return json;
         } else if (response.status == 401)
         {
           alert("User can not rate own recipe");
-        }
-        else if (response.status == 400)
-        {
+        } else if (response.status == 400) {
           console.log(this.state.userReviewing +  "!==" + this.state.reviewOwner);
           if (this.state.userReviewing !== this.state.reviewOwner){
             store.get('account').then((data) => {
@@ -250,8 +245,9 @@ class Reviews extends Component {
               }).then(async (response) => {
                 if (response.status == 200) {
                   var json = await response.json();
-                  console.warn("Successful edit of Review");
-                  fetchData();
+                  console.log("Successful edit of Review");
+                  ToastAndroid.show("Review edited", ToastAndroid.SHORT);
+                  this.fetchData();
                   return json;
                 } else if (response.status == 401)
                 {
@@ -267,13 +263,10 @@ class Reviews extends Component {
             }).catch((error) => {
               console.warn("error getting user token from local store");
             });
-          }
-          else
-          {
+          } else {
             alert("User can not rate own recipe");
           }
-        }
-         else  {
+        } else {
           this.showServerErrorAlert(response);
           return;
         }

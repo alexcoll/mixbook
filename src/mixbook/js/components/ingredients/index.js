@@ -47,7 +47,7 @@ class Ingredients extends Component {
 
   componentWillReceiveProps() {
     //console.log("willProps");
-    this.getLocalData();
+    this.getRemoteData();
   }
 
   componentWillMount() {
@@ -88,6 +88,7 @@ class Ingredients extends Component {
   getRemoteData() {
     store.get('account').then((data) => {
       if (data.isGuest) {
+        this.getLocalData();
         return;
       }
 
@@ -161,7 +162,7 @@ class Ingredients extends Component {
         dataSource: this.state.dataSource.cloneWithRows(list),
       });
 
-      store.save('inventory', this.state.rawData)
+      store.save('inventory', list)
       .catch((error) => {
         console.warn("error storing inventory into local store");
       });
@@ -184,7 +185,7 @@ class Ingredients extends Component {
         }).then((response) => {
           if (response.status == 200) {
             ToastAndroid.show("Item removed", ToastAndroid.SHORT);
-            this.fetchData();
+            this.getRemoteData();
             console.log("inventory list pushed successfully");
             return;
           } else {
@@ -198,7 +199,8 @@ class Ingredients extends Component {
         console.warn("error getting user token from local store");
         console.warn(error);
       });
-
+    } else {
+      Alert.alert("Error");
     }
   }
 
