@@ -38,11 +38,6 @@ class SideBar extends Component {
         style={styles.sidebar}
       >
         <Image source={drawerCover} style={styles.drawerCover}>
-          <Image
-            square
-            style={styles.drawerImage}
-            source={drawerImage}
-          />
         </Image>
         <List>
           <ListItem button iconLeft onPress={() => this.navigateTo('mydrinks')} >
@@ -69,14 +64,14 @@ class SideBar extends Component {
               <Text style={styles.text}>Recipes</Text>
             </View>
           </ListItem>
-          <ListItem button iconLeft onPress={() => this.navigateTo('settings')} >
+          {/*<ListItem button iconLeft onPress={() => this.navigateTo('settings')} >
             <View style={styles.listItemContainer}>
               <View style={[styles.iconContainer, {}]}>
                 <MaterialIcons name="settings" size={25} color="#4F8EF7" />
               </View>
               <Text style={styles.text}>Settings</Text>
             </View>
-          </ListItem>
+          </ListItem>*/}
           <ListItem button iconLeft onPress={() => this.navigateTo('account')} >
             <View style={styles.listItemContainer}>
               <View style={[styles.iconContainer, {}]}>

@@ -30,13 +30,15 @@ class Account extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      token: '',
+      isGuest: true,
       inputUsername: '',
       inputFirstName: '',
       inputLastName: '',
       inputEmail: '',
       inputOldPassword: '',
       inputNewPassword1: '',
-      inputNewpassword2: ''
+      inputNewpassword2: '',
     };
   }
 
@@ -50,10 +52,12 @@ class Account extends Component {
     store.get('account')
     .then((data) => {
       this.setState({
+        isGuest: data.isGuest,
+        token: data.token,
         inputUsername: data.userInfo.username,
         inputFirstName: data.userInfo.firstName,
         inputLastName: data.userInfo.lastName,
-        inputEmail: data.userInfo.email
+        inputEmail: data.userInfo.email,
       });
     })
     .catch((error) => {
@@ -63,7 +67,7 @@ class Account extends Component {
 
 
   onLogout() {
-    store.update('account', {
+    store.save('account', {
       isLoggedIn: false,
       isGuest: false,
       token: "",
@@ -82,12 +86,24 @@ class Account extends Component {
       console.warn("error clearing account data from local store");
     });
 
+    store.save('inventory', []);
   }
 
   onSubmit() {
     store.get('account')
     .then((data) => {
+      if (data.isGuest) {
+        Alert("Cannot change guest account information");
+        return;
+      }
+
       var wasAnythingChanged = false;
+
+      // Check if password is being changed
+      if (this.state.inputOldPassword !== "" && this.state.inputNewPassword1 !== "" && this.state.inputNewPassword2 !== "") {
+        this.updatePassword(data.token, this.state.inputOldPassword, this.state.inputNewPassword1, this.state.inputNewPassword2);
+        wasAnythingChanged = true;
+      }
 
       if (this.state.inputEmail !== data.userInfo.email) {
         console.log("email has been changed, updating...");
@@ -101,13 +117,118 @@ class Account extends Component {
         wasAnythingChanged = true;
       }
 
-      if (wasAnythingChanged) {
-        ToastAndroid.show("Profile updated", ToastAndroid.SHORT);
-      } else {
+      if (!wasAnythingChanged) {
         ToastAndroid.show("Nothing changed", ToastAndroid.SHORT);
       }
-    }).catch((error) => {
+    })
+    .catch((error) => {
       console.warn("error getting account data from local store");
+      console.warn(error);
+    });
+  }
+
+  updatePassword(token, oldPass, newPass1, newPass2) {
+    // Make sure both new passwords match
+    if (newPass1 !== newPass2) {
+      Alert.alert(
+        "Error Changing Password",
+        "The two new passwords must match",
+        [
+          {text: 'Ok', style: 'cancel'},
+        ],
+        { cancelable: true }
+      )
+      return;
+    }
+
+    // Make sure the new password is different from the old password
+    if (oldPass === newPass1) {
+      Alert.alert(
+        "Error Changing Password",
+        "The new password must be different from your old password.",
+        [
+          {text: 'Ok', style: 'cancel'},
+        ],
+        { cancelable: true }
+      )
+      return;
+    }
+
+    // Make sure old password is right
+    fetch('https://activitize.net/mixbook/auth', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        username: this.state.inputUsername,
+        password: this.state.inputOldPassword
+      })
+    })
+    .then(async (response) => {
+      if (response.status == 200) {
+        // Password is correct, update password on server
+
+        // Change the password
+        fetch('https://activitize.net/mixbook/user/changePassword', {
+          method: 'POST',
+          headers: {
+            'Authorization': token,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            password: newPass1
+          }),
+        }).then(async (response) => {
+          if (response.status === 200) {
+            var json = await response.json();
+            if (json.responseStatus === "OK") {
+              ToastAndroid.show("Changed password", ToastAndroid.SHORT);
+            } else {
+              Alert.alert(
+                "Error Changing Password",
+                json.errorMessage,
+                [
+                  {text: 'Ok', style: 'cancel'},
+                ],
+                { cancelable: true }
+              )
+            }
+          } else if (response.status === 400 && response.status === 401) {
+            var json = await response.json();
+            Alert.alert(
+              "Error Changing Password",
+              json.errorMessage,
+              [
+                {text: 'Ok', style: 'cancel'},
+              ],
+              { cancelable: true }
+            )
+          } else {
+            Alert("Something went wrong with the server");
+            console.warn(response.status + response.message);
+            return;
+          }
+        }).catch((error) => {
+          console.error(error);
+        });
+
+      } else if (response.status === 401) {
+        Alert.alert(
+          "Incorrect Password",
+          "The old password entered is incorrect, please try again",
+          [
+            {text: 'Ok', style: 'cancel'},
+          ],
+          { cancelable: true }
+        )
+      } else {
+        Alert("something went wrong");
+      }
+    })
+    .catch((error) => {
+      console.error(error);
     });
   }
 
@@ -126,10 +247,6 @@ class Account extends Component {
 
     }).catch((error) => {
       console.error(error);
-      this.setState({
-        empty: true,
-        isLoading: false,
-      });
     });
   }
 
@@ -181,10 +298,6 @@ class Account extends Component {
       }
     }).catch((error) => {
       console.error(error);
-      this.setState({
-        empty: true,
-        isLoading: false,
-      });
     });
   }
 
@@ -203,7 +316,7 @@ class Account extends Component {
         <Content>
           <List>
             <ListItem>
-              <InputGroup>
+              <InputGroup disabled={this.state.isGuest}>
                 <Input
                   disabled
                   inlineLabel label="Username"
@@ -214,7 +327,7 @@ class Account extends Component {
               </InputGroup>
             </ListItem>
             <ListItem>
-              <InputGroup>
+              <InputGroup disabled={this.state.isGuest}>
                 <Input
                   inlineLabel label="First Name"
                   placeholder="John"
@@ -224,7 +337,7 @@ class Account extends Component {
               </InputGroup>
             </ListItem>
             <ListItem>
-              <InputGroup>
+              <InputGroup disabled={this.state.isGuest}>
                 <Input
                   inlineLabel label="Last Name"
                   placeholder="Doe"
@@ -237,7 +350,7 @@ class Account extends Component {
               <Text>Change Password</Text>
             </ListItem>
             <ListItem>
-              <InputGroup>
+              <InputGroup disabled={this.state.isGuest}>
                 <Icon name="ios-unlock" style={styles.icons} />
                 <Input
                   secureTextEntry
@@ -248,7 +361,7 @@ class Account extends Component {
               </InputGroup>
             </ListItem>
             <ListItem>
-              <InputGroup>
+              <InputGroup disabled={this.state.isGuest}>
                 <Icon name="ios-unlock" style={styles.icons} />
                 <Input
                   secureTextEntry
@@ -259,7 +372,7 @@ class Account extends Component {
               </InputGroup>
             </ListItem>
             <ListItem>
-              <InputGroup>
+              <InputGroup disabled={this.state.isGuest}>
                 <Icon name="ios-unlock" style={styles.icons} />
                 <Input
                   secureTextEntry
@@ -272,6 +385,7 @@ class Account extends Component {
             <ListItem>
               <View>
                 <Button
+                  disabled={this.state.isGuest}
                   block
                   style={styles.saveButton}
                   onPress={() => this.onSubmit()}

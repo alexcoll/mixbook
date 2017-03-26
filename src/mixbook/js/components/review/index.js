@@ -32,17 +32,18 @@ class Reviews extends Component {
     super(props);
     console.log(props.items);
     this.state = {
+      isGuest: true,
       name: global.recipeName,
-      directions: global.directions, 
+      directions: global.directions,
       drinkNumber: global.recipeId,
       reviewOwner: global.reviewOwner,
       userReviewing: global.username,
-      rating: 0, 
-      numRatings: 0.0, 
+      rating: 0,
+      numRatings: 0.0,
       reviews: "",
       theList: [],
       ingredientsList: {},
-      pkNumber: {}
+      pkNumber: {},
     };
   }
 
@@ -63,14 +64,17 @@ class Reviews extends Component {
       "Server Error",
       "Got response: " + response.status + " " + response.statusText,
       [
-      {text: 'Dismiss', style: 'cancel'}
+        {text: 'Dismiss', style: 'cancel'}
       ],
       { cancelable: true }
-      );
+    );
   }
 
   fetchData() {
     store.get('account').then((data) => {
+      this.setState({
+        isGuest: data.isGuest,
+      });
       fetch(`https://activitize.net/mixbook/review/loadReviewsForRecipe?id=${this.state.drinkNumber}`, {
         method: 'GET',
         headers: {
@@ -147,11 +151,9 @@ class Reviews extends Component {
         ],
         { cancelable: true }
       )
-    }
-    else
-    {
-          this.setState({reviews: reviewInput});
-          console.log(this.state.reviews);
+    } else {
+      this.setState({reviews: reviewInput});
+      console.log(this.state.reviews);
     }
   }
 
@@ -313,7 +315,7 @@ class Reviews extends Component {
           </View>
           <List>
             <ListItem>
-              <InputGroup>
+              <InputGroup disabled={this.state.isGuest}>
                 <Input
                   inlineLabel label="Rating"
                   placeholder="0-5"
@@ -323,7 +325,7 @@ class Reviews extends Component {
               </InputGroup>
             </ListItem>
             <ListItem>
-              <InputGroup>
+              <InputGroup disabled={this.state.isGuest}>
                 <Input inlineLabel label="Review"
                 placeholder="Enter a review "
                 value={this.state.reviews}
@@ -333,6 +335,7 @@ class Reviews extends Component {
             </ListItem>
           </List>
           <Button
+            disabled={this.state.isGuest}
             style={{ alignSelf: 'center', marginTop: 20, marginBottom: 20 }}
             onPress={() => this.onSubmit()}
           >
@@ -348,8 +351,8 @@ class Reviews extends Component {
              <List dataArray={this.state.theList}
               renderRow={(data) =>
                 <ListItem>
-                          <Text style={styles.listTest}>{data[2]}: {data[0]}</Text>
-                          <Text style={styles.listTest} note>{data[1]} stars</Text>
+                  <Text style={styles.listTest}>{data[2]}: {data[0]}</Text>
+                  <Text style={styles.listTest} note>{data[1]} stars</Text>
                 </ListItem>
                 }>
               </List>

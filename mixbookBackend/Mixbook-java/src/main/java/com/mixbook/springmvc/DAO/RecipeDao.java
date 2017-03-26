@@ -24,6 +24,8 @@ public interface RecipeDao {
 
 	void removeIngredientFromRecipe(Recipe recipe, User user) throws InvalidPermissionsException, NotEnoughRecipeIngredientsException, NullPointerException, NoDataWasChangedException, Exception;
 
+	List<Recipe> getAllRecipes() throws Exception;
+
 	List<Recipe> searchForRecipeByName(Recipe recipe) throws Exception;
 
 	List<Recipe> getAllRecipesCreatedByUser(User user) throws Exception;

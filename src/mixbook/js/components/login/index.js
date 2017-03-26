@@ -99,7 +99,7 @@ class Login extends Component {
 
   submitToServer() {
     global.username = this.state.inputUsername;
-    return fetch('https://activitize.net/mixbook/auth', {
+    fetch('https://activitize.net/mixbook/auth', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -194,6 +194,8 @@ class Login extends Component {
         token: ""
       }
     }).then(() => {
+      store.save('inventory', []);
+      store.save('recipes', []);
       this.replaceAt('mydrinks');
     }).catch((error) => {
       console.warn("error updating account local store");

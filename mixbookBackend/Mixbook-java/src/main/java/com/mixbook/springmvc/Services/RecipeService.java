@@ -27,6 +27,8 @@ public interface RecipeService {
 
 	void removeIngredientFromRecipe(Recipe recipe, User user) throws InvalidPermissionsException, NotEnoughRecipeIngredientsException, InvalidIngredientException, NoDataWasChangedException, UnknownServerErrorException;
 
+	List<Recipe> getAllRecipes() throws UnknownServerErrorException;
+
 	List<Recipe> searchForRecipeByName(Recipe recipe) throws UnknownServerErrorException;
 
 	List<Recipe> getAllRecipesCreatedByUser(User user) throws UnknownServerErrorException;

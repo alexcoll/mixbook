@@ -24,11 +24,11 @@ class Ingredients extends Component {
     const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
       refreshing: false,
-      dataSource: ds.cloneWithRows(['Pull to refesh data']),
+      dataSource: ds.cloneWithRows([]),
       searchText: "",
       isLoading: false,
       empty: false,
-      rawData: ['Pull to refesh data'],
+      rawData: [],
     };
   }
 
@@ -103,7 +103,8 @@ class Ingredients extends Component {
           });
           return json;
         } else {
-          this.showServerErrorAlert(response);
+          var json = await response.json();
+          this.showServerErrorAlert(json);
           return;
         }
       })
@@ -250,6 +251,10 @@ class Ingredients extends Component {
           </Button>
 
           <Title>Ingredients</Title>
+
+          <Button transparent onPress={() => this._onRefresh()}>
+            <Icon name="ios-refresh" />
+          </Button>
         </Header>
 
         <TextInput
@@ -263,7 +268,9 @@ class Ingredients extends Component {
           autoCorrect={false}
         />
 
+
         <ListView
+          enableEmptySections={true}
           refreshControl={
             <RefreshControl
               refreshing={this.state.refreshing}

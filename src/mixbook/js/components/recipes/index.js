@@ -23,12 +23,13 @@ class Recipes extends Component {
     super(props);
     const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
+      isGuest: true,
       refreshing: false,
-      dataSource: ds.cloneWithRows(['Pull to refesh data']),
+      dataSource: ds.cloneWithRows([]),
       searchText: "",
       isLoading: false,
       empty: false,
-      rawData: ['Pull to refesh data'],
+      rawData: [],
     };
   }
 
@@ -91,6 +92,11 @@ class Recipes extends Component {
 
   fetchData() {
     store.get('account').then((data) => {
+      this.setState({
+        username: data.userInfo.username,
+        isGuest: data.isGuest,
+      });
+
       fetch('https://activitize.net/mixbook/recipe/getAllRecipes', {
         method: 'GET',
         headers: {
@@ -147,49 +153,33 @@ class Recipes extends Component {
 
 
   onListItemRemove(item: string) {
-    var list = this.state.rawData;
-    var index = list.indexOf(item);
-    if (index > -1) {
-      // list.splice(index, 1);
-      // this.setState({
-      //   rawData: list,
-      //   dataSource: this.state.dataSource.cloneWithRows(list),
-      // });
-
-      // store.save('inventory', this.state.rawData).catch((error) => {
-      //   console.warn("error storing inventory into local store");
-      // });
-
-      // Delete the ingredient from the server
-      store.get('account').then((data) => {
-        fetch('https://activitize.net/mixbook/recipe/deleteRecipe', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': data.userInfo.token,
-          },
-          body: JSON.stringify({
-            brandName: item
-          })
-        }).then((response) => {
-          if (response.status == 200) {
-            ToastAndroid.show("Recipe removed", ToastAndroid.SHORT);
-            this.fetchData();
-            console.log("recipe list pushed successfully");
-            return;
-          } else {
-            this.showServerErrorAlert(response);
-            return;
-          }
-        }).catch((error) => {
-          console.error(error);
-        });
+    // Delete the ingredient from the server
+    store.get('account').then((data) => {
+      fetch('https://activitize.net/mixbook/recipe/deleteRecipe', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': data.token,
+        },
+        body: JSON.stringify({
+          recipeId: item[0]
+        })
+      }).then((response) => {
+        if (response.status == 200) {
+          ToastAndroid.show("Recipe removed", ToastAndroid.SHORT);
+          this.fetchData();
+          console.log("recipe list pushed successfully");
+        } else {
+          this.showServerErrorAlert(response);
+          return;
+        }
       }).catch((error) => {
-        console.warn("error getting user token from local store");
-        console.warn(error);
+        console.error(error);
       });
-
-    }
+    }).catch((error) => {
+      console.warn("error getting user token from local store");
+      console.warn(error);
+    });
   }
 
   _onRefresh() {
@@ -199,44 +189,40 @@ class Recipes extends Component {
   }
 
   _pressRow(item: string) {
-    Alert.alert(
-      "Edit " + item[1],
-      'What do you want to do?',
-      [
-        {text: 'Review', onPress: () => {
-          //this.props.navigator.push({name:'review', data:item});
-          global.recipeName = item[1];
-          global.recipeId = item[0];
-          global.directions = item[2];
-          global.reviewOwner = item[7];
-
-          //console.warn(global.recipeName);
-          this.navigateTo('review')
-          }
-        },
-        {text: 'Delete', onPress: () => this.onListItemRemove(item)},
-        {text: 'Cancel', style: 'cancel'},
-      ],
-      { cancelable: true }
-    )
+    if (this.state.isGuest || item[7] !== this.state.username) {
+      Alert.alert(
+        "Edit " + item[1],
+        'What do you want to do?',
+        [
+          {text: 'Review', onPress: () => this.goToReviewPage(item)},
+          {text: 'Cancel', style: 'cancel'},
+        ],
+        { cancelable: true }
+      )
+    } else {
+      Alert.alert(
+        "Edit " + item[1],
+        'What do you want to do?',
+        [
+          {text: 'Review', onPress: () => this.goToReviewPage(item)},
+          {text: 'Delete', onPress: () => this.onListItemRemove(item)},
+          {text: 'Cancel', style: 'cancel'},
+        ],
+        { cancelable: true }
+      )
+    }
   }
 
-  /*_renderRow(rowData: string, sectionID: number, rowID: number, highlightRow: (sectionID: number, rowID: number) => void) {
-    return (
-      <TouchableHighlight onPress={() => {
-          this._pressRow(rowID);
-          highlightRow(sectionID, rowID);
-        }}>
-        <View>
-          <View style={styles.row}>
-            <Text style={styles.rowText}>
-              {rowData}
-            </Text>
-          </View>
-        </View>
-      </TouchableHighlight>
-    );
-  }*/
+  goToReviewPage(item: string) {
+    //this.props.navigator.push({name:'review', data:item});
+    global.recipeName = item[1];
+    global.recipeId = item[0];
+    global.directions = item[2];
+    global.reviewOwner = item[7];
+
+    //console.warn(global.recipeName);
+    this.navigateTo('review');
+  }
 
   _renderSeparator(sectionID, rowID, adjacentRowHighlighted) {
     return (
@@ -251,6 +237,18 @@ class Recipes extends Component {
   }
 
 
+  _renderFAB() {
+    if (!this.state.isGuest) {
+      return (
+        <ActionButton
+          buttonColor="rgba(231,76,60,1)"
+          onPress={() => this.navigateTo('addRecipe')}
+        />
+      );
+    }
+  }
+
+
   render() { // eslint-disable-line
     return (
 
@@ -261,6 +259,10 @@ class Recipes extends Component {
           </Button>
 
           <Title>Recipes</Title>
+
+          <Button transparent onPress={() => this._onRefresh()}>
+            <Icon name="ios-refresh" />
+          </Button>
         </Header>
 
         <TextInput
@@ -275,6 +277,7 @@ class Recipes extends Component {
         />
 
         <ListView
+          enableEmptySections={true}
           refreshControl={
             <RefreshControl
               refreshing={this.state.refreshing}
@@ -298,10 +301,7 @@ class Recipes extends Component {
           }
           renderSeparator={this._renderSeparator}
         />
-        <ActionButton
-          buttonColor="rgba(231,76,60,1)"
-          onPress={() => this.navigateTo('addRecipe')}
-        />
+        {this._renderFAB()}
       </View>
     );
   }

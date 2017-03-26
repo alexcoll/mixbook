@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Image, Alert } from 'react-native';
+import { Image, Alert, View } from 'react-native';
 import { actions } from 'react-native-navigation-redux-helpers';
 
 import store from 'react-native-simple-store';
@@ -47,17 +47,19 @@ class SplashScreen extends Component {
                 username: json.username,
                 email: json.email,
                 firstName: json.firstName,
-                lastName: json.lastName
+                lastName: json.lastName,
               }
             })
             .then(() => {
+              store.save('inventory', []);
               this.replaceAt('mydrinks');
             })
             .catch((error) => {
               console.warn("error updating account local store");
               console.warn(error.message);
             });
-            return;
+
+
           } else {
             Alert.alert("Server connection error");
             console.warn(response);
@@ -83,7 +85,8 @@ class SplashScreen extends Component {
 
   render() { // eslint-disable-line class-methods-use-this
     return (
-      <Image source={splashscreen} style={{ flex: 1, height: null, width: null }} />
+      <View>
+      </View>
     );
   }
 }

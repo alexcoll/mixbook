@@ -104,6 +104,15 @@ public class RecipeServiceImpl implements RecipeService {
 		}
 	}
 
+	public List<Recipe> getAllRecipes() throws UnknownServerErrorException {
+		try {
+			List<Recipe> tempList = dao.getAllRecipes();
+			return tempList;
+		} catch (Exception e) {
+			throw new UnknownServerErrorException("Unknown server error!");
+		}
+	}
+
 	public List<Recipe> searchForRecipeByName(Recipe recipe) throws UnknownServerErrorException {
 		try {
 			List<Recipe> tempList = dao.searchForRecipeByName(recipe);
