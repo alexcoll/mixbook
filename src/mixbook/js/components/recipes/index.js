@@ -171,7 +171,7 @@ class Recipes extends Component {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': data.userInfo.token,
+            'Authorization': data.token,
           },
           body: JSON.stringify({
             brandName: item
@@ -181,7 +181,6 @@ class Recipes extends Component {
             ToastAndroid.show("Recipe removed", ToastAndroid.SHORT);
             this.fetchData();
             console.log("recipe list pushed successfully");
-            return;
           } else {
             this.showServerErrorAlert(response);
             return;
@@ -204,44 +203,40 @@ class Recipes extends Component {
   }
 
   _pressRow(item: string) {
-    Alert.alert(
-      "Edit " + item[1],
-      'What do you want to do?',
-      [
-        {text: 'Review', onPress: () => {
-          //this.props.navigator.push({name:'review', data:item});
-          global.recipeName = item[1];
-          global.recipeId = item[0];
-          global.directions = item[2];
-          global.reviewOwner = item[7];
-
-          //console.warn(global.recipeName);
-          this.navigateTo('review')
-          }
-        },
-        {text: 'Delete', onPress: () => this.onListItemRemove(item)},
-        {text: 'Cancel', style: 'cancel'},
-      ],
-      { cancelable: true }
-    )
+    if (this.state.isGuest) {
+      Alert.alert(
+        "Edit " + item[1],
+        'What do you want to do?',
+        [
+          {text: 'Review', onPress: () => this.goToReviewPage(item)},
+          {text: 'Cancel', style: 'cancel'},
+        ],
+        { cancelable: true }
+      )
+    } else {
+      Alert.alert(
+        "Edit " + item[1],
+        'What do you want to do?',
+        [
+          {text: 'Review', onPress: () => this.goToReviewPage(item)},
+          {text: 'Delete', onPress: () => this.onListItemRemove(item)},
+          {text: 'Cancel', style: 'cancel'},
+        ],
+        { cancelable: true }
+      )
+    }
   }
 
-  /*_renderRow(rowData: string, sectionID: number, rowID: number, highlightRow: (sectionID: number, rowID: number) => void) {
-    return (
-      <TouchableHighlight onPress={() => {
-          this._pressRow(rowID);
-          highlightRow(sectionID, rowID);
-        }}>
-        <View>
-          <View style={styles.row}>
-            <Text style={styles.rowText}>
-              {rowData}
-            </Text>
-          </View>
-        </View>
-      </TouchableHighlight>
-    );
-  }*/
+  goToReviewPage(item: string) {
+    //this.props.navigator.push({name:'review', data:item});
+    global.recipeName = item[1];
+    global.recipeId = item[0];
+    global.directions = item[2];
+    global.reviewOwner = item[7];
+
+    //console.warn(global.recipeName);
+    this.navigateTo('review');
+  }
 
   _renderSeparator(sectionID, rowID, adjacentRowHighlighted) {
     return (
