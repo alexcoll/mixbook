@@ -38,11 +38,6 @@ class SideBar extends Component {
         style={styles.sidebar}
       >
         <Image source={drawerCover} style={styles.drawerCover}>
-          <Image
-            square
-            style={styles.drawerImage}
-            source={drawerImage}
-          />
         </Image>
         <List>
           <ListItem button iconLeft onPress={() => this.navigateTo('mydrinks')} >
