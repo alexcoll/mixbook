@@ -11,16 +11,16 @@ import Home from './components/home/';
 import Recipes from './components/recipes/';
 import MyDrinks from './components/mydrinks/';
 import Ingredients from './components/ingredients/';
-import AddAlcohol from './components/ingredients/addAlcohol';
-import AddMixer from './components/ingredients/addMixer';
-import AddRecipe from './components/recipes/addRecipe';
+import AddIngredient from './components/addIngredient/';
+import AddRecipe from './components/addRecipe';
 import Account from './components/account/';
 import Login from './components/login/';
 import Settings from './components/settings/';
-import SplashPage from './components/splashscreen/';
+import SplashScreen from './components/splashscreen/';
 import SideBar from './components/sidebar';
 import statusBarColor from './themes/base-theme';
 import NewAccount from './components/newAccount';
+import Review from './components/review/'
 
 const {
   popRoute,
@@ -31,6 +31,13 @@ const {
 } = NavigationExperimental;
 
 class AppNavigator extends Component {
+
+  constructor(props) {
+    super(props);
+    // this.state = {
+    //   isLoggedin: false,
+    // };
+  }
 
   static propTypes = {
     drawerState: React.PropTypes.string,
@@ -44,6 +51,17 @@ class AppNavigator extends Component {
 
 
   componentDidMount() {
+    // See if user is already logged in
+    // store.get('account')
+    // .then((data) => {
+    //   this.setState({
+    //     isLoggedIn: data.isLoggedIn
+    //   });
+    // })
+    // .catch((error) => {
+    //   console.warn("error getting account guest data from local store");
+    // });
+
     BackAndroid.addEventListener('hardwareBackPress', () => {
       const routes = this.props.navigation.routes;
 
@@ -88,7 +106,7 @@ class AppNavigator extends Component {
   _renderScene(props) { // eslint-disable-line class-methods-use-this
     switch (props.scene.route.key) {
       case 'splashscreen':
-        return <SplashPage />;
+        return <SplashScreen />;
       case 'login':
         return <Login />;
       case 'mydrinks':
@@ -101,12 +119,12 @@ class AppNavigator extends Component {
         return <Settings />;
       case 'account':
         return <Account />;
-      case 'addAlcohol':
-        return <AddAlcohol />;
-      case 'addMixer':
-        return <AddMixer />;
+      case 'addIngredient':
+        return <AddIngredient />;
       case 'addRecipe':
         return <AddRecipe />;
+      case 'review':
+        return <Review />;
       case 'newAccount':
         return <NewAccount />;
       default:

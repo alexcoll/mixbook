@@ -31,4 +31,10 @@ module.exports = StyleSheet.create({
     borderWidth: 9,
     borderColor: '#E4E4E4',
   },
+
+  centerText: {
+    alignSelf: 'center',
+    fontSize: 16,
+    color: 'gray',
+  },
 });

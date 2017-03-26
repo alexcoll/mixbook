@@ -6,7 +6,6 @@ const { StyleSheet } = React;
 module.exports = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: 'column',
     backgroundColor: 'white',
   },
 
@@ -28,7 +27,29 @@ module.exports = StyleSheet.create({
     paddingLeft: 30,
     fontSize: 16,
     height: 50,
+    flex: .2,
     borderWidth: 9,
     borderColor: '#E4E4E4',
   },
+
+  buttonContainer: {
+    backgroundColor: '#2980b9',
+    paddingVertical: 20
+  },
+
+  Bcontainer: {
+    padding: 20
+  },
+
+  noAccountingButtonContainer: {
+    backgroundColor: '#2980b9',
+    paddingVertical: 2,
+    height: 42
+  },
+
+  buttonText: {
+    textAlign: 'center',
+    color: '#FFFFFF',
+    fontWeight: '700'
+  }
 });
