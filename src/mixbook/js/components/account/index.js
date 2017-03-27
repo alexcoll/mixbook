@@ -54,10 +54,10 @@ class Account extends Component {
       this.setState({
         isGuest: data.isGuest,
         token: data.token,
-        inputUsername: data.userInfo.username,
-        inputFirstName: data.userInfo.firstName,
-        inputLastName: data.userInfo.lastName,
-        inputEmail: data.userInfo.email,
+        inputUsername: "",
+        inputFirstName: "",
+        inputLastName: "",
+        inputEmail: "",
       });
     })
     .catch((error) => {
@@ -302,7 +302,7 @@ class Account extends Component {
         <Content>
           <List>
             <ListItem>
-              <InputGroup disabled={this.state.isGuest}>
+              <InputGroup>
                 <Input
                   disabled
                   inlineLabel label="Username"
@@ -313,7 +313,7 @@ class Account extends Component {
               </InputGroup>
             </ListItem>
             <ListItem>
-              <InputGroup disabled={this.state.isGuest}>
+              <InputGroup>
                 <Input
                   inlineLabel label="First Name"
                   placeholder="John"
@@ -323,7 +323,7 @@ class Account extends Component {
               </InputGroup>
             </ListItem>
             <ListItem>
-              <InputGroup disabled={this.state.isGuest}>
+              <InputGroup>
                 <Input
                   inlineLabel label="Last Name"
                   placeholder="Doe"
@@ -336,7 +336,7 @@ class Account extends Component {
               <Text>Change Password</Text>
             </ListItem>
             <ListItem>
-              <InputGroup disabled={this.state.isGuest}>
+              <InputGroup>
                 <Icon name="ios-unlock" style={styles.icons} />
                 <Input
                   secureTextEntry
@@ -347,7 +347,7 @@ class Account extends Component {
               </InputGroup>
             </ListItem>
             <ListItem>
-              <InputGroup disabled={this.state.isGuest}>
+              <InputGroup>
                 <Icon name="ios-unlock" style={styles.icons} />
                 <Input
                   secureTextEntry
@@ -358,7 +358,7 @@ class Account extends Component {
               </InputGroup>
             </ListItem>
             <ListItem>
-              <InputGroup disabled={this.state.isGuest}>
+              <InputGroup>
                 <Icon name="ios-unlock" style={styles.icons} />
                 <Input
                   secureTextEntry
@@ -371,7 +371,6 @@ class Account extends Component {
             <ListItem>
               <View>
                 <Button
-                  disabled={this.state.isGuest}
                   block
                   style={styles.saveButton}
                   onPress={() => this.onSubmit()}
