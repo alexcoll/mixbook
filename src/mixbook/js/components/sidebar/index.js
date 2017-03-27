@@ -51,7 +51,7 @@ class SideBar extends Component {
           <ListItem button iconLeft onPress={() => this.navigateTo('ingredients')} >
             <View style={styles.listItemContainer}>
               <View style={[styles.iconContainer, {}]}>
-                <MaterialIcons name="local-grocery-store" size={25} color="#4F8EF7" />
+                <MaterialIcons name="local-bar" size={25} color="#4F8EF7" />
               </View>
               <Text style={styles.text}>Ingredients</Text>
             </View>
