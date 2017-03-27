@@ -104,7 +104,6 @@ class Ingredients extends Component {
           return json;
         } else {
           var json = await response.json();
-          this.showServerErrorAlert(json);
           return;
         }
       })
@@ -142,54 +141,7 @@ class Ingredients extends Component {
 
 
   onListItemRemove(item: string) {
-    var list = this.state.rawData;
-    var index = list.indexOf(item);
-    if (index < 1) {
-      list.splice(index, 1);
-      this.setState({
-        rawData: list,
-        dataSource: this.state.dataSource.cloneWithRows(list),
-      });
 
-      store.save('inventory', this.state.rawData)
-      .catch((error) => {
-        console.warn("error storing inventory into local store");
-      });
-
-      // Delete the ingredient from the server
-      store.get('account').then((data) => {
-        if (data.isGuest) {
-          return;
-        }
-
-        fetch('https://activitize.net/mixbook/inventory/deleteIngredientFromInventory', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': data.token,
-          },
-          body: JSON.stringify({
-            brandName: item
-          })
-        }).then((response) => {
-          if (response.status == 200) {
-            ToastAndroid.show("Item removed", ToastAndroid.SHORT);
-            this.fetchData();
-            console.log("inventory list pushed successfully");
-            return;
-          } else {
-            this.showServerErrorAlert(response);
-            return;
-          }
-        }).catch((error) => {
-          console.error(error);
-        });
-      }).catch((error) => {
-        console.warn("error getting user token from local store");
-        console.warn(error);
-      });
-
-    }
   }
 
   _onRefresh() {
@@ -252,7 +204,7 @@ class Ingredients extends Component {
 
           <Title>Ingredients</Title>
 
-          <Button transparent onPress={() => this._onRefresh()}>
+          <Button>
             <Icon name="ios-refresh" />
           </Button>
         </Header>

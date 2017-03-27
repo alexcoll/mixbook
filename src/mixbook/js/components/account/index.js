@@ -233,21 +233,7 @@ class Account extends Component {
   }
 
   updateNames(token: string, firstName: string, lastName: string) {
-    fetch('https://activitize.net/mixbook/user/editUser', {
-      method: 'POST',
-      headers: {
-        'Authorization': token,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        firstName: firstName,
-        lastName: lastName
-      }),
-    }).then(async (response) => {
 
-    }).catch((error) => {
-      console.error(error);
-    });
   }
 
   updateEmail(token: string, newEmail: string) {

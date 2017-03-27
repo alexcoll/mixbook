@@ -80,10 +80,6 @@ class NewAccount extends Component {
 			alert('Please enter your last name');
 			return false;
 		}
-		if (this.state.inputEmail.indexOf('@') == -1 || this.state.inputEmail.indexOf('.') == -1) {
-			alert('Please enter a valid email address');
-			return false;
-		}
 		if (this.state.inputPassword1 == '' || this.state.inputPassword2 == '') {
 			alert('Please enter a password');
 			return false;
@@ -139,11 +135,9 @@ class NewAccount extends Component {
         if (json.responseStatus == "OK") {
         	this.goToLogin();
         } else {
-        	this.showServerInvalidAlert(json);
         }
       } else if (response.status == 401 || response.status == 400) {
         var json = await response.json();
-        this.showServerErrorAlert(json);
       } else {
         return;
       }
