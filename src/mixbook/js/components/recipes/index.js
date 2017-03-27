@@ -201,10 +201,10 @@ class Recipes extends Component {
       )
     } else {
       Alert.alert(
-        "Edit " + item[1],
+        item[1],
         'What do you want to do?',
         [
-          {text: 'Review', onPress: () => this.goToReviewPage(item)},
+          {text: 'Details', onPress: () => this.goToReviewPage(item)},
           {text: 'Delete', onPress: () => this.onListItemRemove(item)},
           {text: 'Cancel', style: 'cancel'},
         ],

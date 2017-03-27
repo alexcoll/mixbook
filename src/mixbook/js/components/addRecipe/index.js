@@ -41,21 +41,7 @@ class AddRecipe extends Component {
   }
 
   componentDidMount() {
-    store.get('brands').then((data) => {
-      this.setState({
-        // dataSource: this.state.dataSource.cloneWithRows(data),
-        isLoading: false,
-        empty: false,
-        rawData: data,
-      });
-    }).catch(error => {
-      console.warn("error getting the brand list from the local store");
-      this.setState({
-        empty: true,
-        isLoading: false,
-      });
-    });
-
+    this.getBrands();
     this.getRemoteData();
   }
 
@@ -69,6 +55,23 @@ class AddRecipe extends Component {
 
   updateDifficulty = (text) => {
     this.setState({difficulty: text})
+  }
+
+  getBrands() {
+    store.get('brands').then((data) => {
+      this.setState({
+        dataSource: this.state.dataSource.cloneWithRows(data),
+        isLoading: false,
+        empty: false,
+        rawData: data,
+      });
+    }).catch(error => {
+      console.warn("error getting the brand list from the local store");
+      this.setState({
+        empty: true,
+        isLoading: false,
+      });
+    });
   }
 
   onTapRefresh() {

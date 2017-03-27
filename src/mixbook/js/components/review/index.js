@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { TouchableOpacity, Alert } from 'react-native';
+import { ToastAndroid, TouchableOpacity, Alert } from 'react-native';
 import { connect } from 'react-redux';
 import { actions } from 'react-native-navigation-redux-helpers';
-import { Container, Header, Title, Content, Button, Icon, List, ListItem, ListView, Text, Picker, Thumbnail, Input, InputGroup, View, Grid, Col } from 'native-base';
+import { Container, Header, Title, Content, Button, Icon, List, ListItem, ListView, Text, Picker, Input, InputGroup, View, Grid, Col } from 'native-base';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 //Load global variables
@@ -13,7 +13,6 @@ import styles from './styles';
 import store from 'react-native-simple-store';
 
 const Item = Picker.Item;
-const camera = require('../../../img/camera.png');
 
 const {
   replaceAt,
@@ -44,17 +43,17 @@ class Reviews extends Component {
       theList: [],
       ingredientsList: {},
       pkNumber: {},
+      inputRating: 1,
+      inputReviewText: "",
     };
   }
 
   componentWillReceiveProps() {
-    // console.warn("willProps");
     this.fetchData();
     this.setUpPK();
   }
 
   componentWillMount() {
-    // console.warn("willMount");
     this.fetchData();
     this.setUpPK();
   }
@@ -75,6 +74,16 @@ class Reviews extends Component {
       this.setState({
         isGuest: data.isGuest,
       });
+
+      // Very hacky way of doing this, please change at some point
+      // Make sure a user can't review they're own recipe
+      // Do this by setting isGuest to true, which will disbale user inputs in this page
+      if (data.userInfo.username == this.state.reviewOwner) {
+        this.setState({
+          isGuest: true,
+        });
+      }
+
       fetch(`https://activitize.net/mixbook/review/loadReviewsForRecipe?id=${this.state.drinkNumber}`, {
         method: 'GET',
         headers: {
@@ -140,22 +149,38 @@ class Reviews extends Component {
 
   }
 
-  submitReview(reviewInput){
-    if(reviewInput == '')
-    {
-      Alert.alert(
-        "Review not valid",
-        '',
-        [
-          {text: 'Okay', style: 'cancel'},
-        ],
-        { cancelable: true }
-      )
-    } else {
-      this.setState({reviews: reviewInput});
-      console.log(this.state.reviews);
-    }
-  }
+  // submitRating(ratingInput: number){
+  //   if (ratingInput  0 || ratingInput > 5 ) {
+  //     Alert.alert(
+  //       "Rating not valid",
+  //       '',
+  //       [
+  //         {text: 'Okay', style: 'cancel'},
+  //       ],
+  //       { cancelable: true }
+  //     )
+  //   } else {
+  //     this.setState({rating: ratingInput});
+  //   }
+  // }
+
+
+  // submitReview(reviewInput: string) {
+  //   if (reviewInput == '') {
+  //     Alert.alert(
+  //       "Review not valid",
+  //       '',
+  //       [
+  //         {text: 'Okay', style: 'cancel'},
+  //       ],
+  //       { cancelable: true }
+  //     )
+  //   } else {
+  //     this.setState({reviews: reviewInput});
+  //     console.log(this.state.reviews);
+  //   }
+  // }
+
 
   setUpPK(){
       var innerKey = "recipeId";
@@ -184,81 +209,74 @@ class Reviews extends Component {
       return;
     }
 
+    // Do this thing
     this.setUpPK();
 
+    // Build the resposne
     var body = JSON.stringify({
           pk: this.state.pkNumber,
-          reviewCommentary: this.state.reviews,
-          rating: this.state.rating
+          reviewCommentary: this.state.inputReviewText,
+          rating: this.state.inputRating
         });
 
-    console.log(body);
+    console.log("Request body: " + body);
 
+    // Make the request
     store.get('account').then((data) => {
+      var token = data.token;
       fetch('https://activitize.net/mixbook/review/createReview', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': data.token,
+          'Authorization': token,
         },
         body: JSON.stringify({
           pk: this.state.pkNumber,
-          reviewCommentary: this.state.reviews,
-          rating: this.state.rating
+          reviewCommentary: this.state.inputReviewText,
+          rating: this.state.inputRating
         })
       }).then(async (response) => {
         if (response.status == 200) {
           var json = await response.json();
           console.warn("Success");
-          fetchData();
+          this.fetchData();
           return json;
-        } else if (response.status == 401)
-        {
+        } else if (response.status == 401) {
           alert("User can not rate own recipe");
-        }
-        else if (response.status == 400)
-        {
+        } else if (response.status == 400) {
           console.log(this.state.userReviewing +  "!==" + this.state.reviewOwner);
-          if (this.state.userReviewing !== this.state.reviewOwner){
-            store.get('account').then((data) => {
-              fetch('https://activitize.net/mixbook/review/editReview', {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                  'Authorization': data.token,
-                },
-                body: JSON.stringify({
-                  pk: this.state.pkNumber,
-                  reviewCommentary: this.state.reviews,
-                  rating: this.state.rating
-                })
-              }).then(async (response) => {
-                if (response.status == 200) {
-                  var json = await response.json();
-                  console.warn("Successful edit of Review");
-                  fetchData();
-                  return json;
-                } else if (response.status == 401)
-                {
-                  alert("Was not able to edit/create review");
-                }
-                 else {
-                  this.showServerErrorAlert(response);
-                  return;
-                }
-              }).catch((error) => {
-                console.error(error);
-              });
+          if (this.state.userReviewing !== this.state.reviewOwner) {
+            fetch('https://activitize.net/mixbook/review/editReview', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': token,
+              },
+              body: JSON.stringify({
+                pk: this.state.pkNumber,
+                reviewCommentary: this.state.inputReviewText,
+                rating: this.state.inputRating
+              })
+            }).then(async (response) => {
+              if (response.status == 200) {
+                var json = await response.json();
+                console.log("Successful edit of Review");
+                ToastAndroid.show("Review edited", ToastAndroid.SHORT);
+                this.fetchData();
+                return json;
+              } else if (response.status == 401) {
+                alert("Was not able to edit/create review");
+              } else {
+                this.showServerErrorAlert(response);
+                return;
+              }
             }).catch((error) => {
-              console.warn("error getting user token from local store");
+              console.error(error);
             });
+          } else {
+            Alert.alert("You can't rate own recipe");
           }
-          else
-          {
-            alert("User can not rate own recipe");
-          }
-        }
-         else  {
+        } else {
           this.showServerErrorAlert(response);
           return;
         }
@@ -288,17 +306,16 @@ class Reviews extends Component {
             </ListItem>
             <ListItem>
               <Text style={styles.headers}>Ingredients</Text>
-
                  <List dataArray={this.state.ingredientsList}
                   renderRow={(data) =>
                     <ListItem>
                       <Grid>
-                            <Col>
-                              <Text style={styles.listTest}>{data}</Text>
-                            </Col>
+                        <Col>
+                          <Text style={styles.listTest}>{data}</Text>
+                        </Col>
                        </Grid>
                     </ListItem>
-                    }>
+                  }>
                 </List>
             </ListItem>
             <ListItem>
@@ -319,8 +336,8 @@ class Reviews extends Component {
                 <Input
                   inlineLabel label="Rating"
                   placeholder="0-5"
-                  value={this.state.rating}
-                  onChangeText={rating => this.submitRating(rating)}
+                  value={this.state.inputRating}
+                  onChangeText={(inputRating) => this.setState({ inputRating })}
                 />
               </InputGroup>
             </ListItem>

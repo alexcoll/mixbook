@@ -23,6 +23,7 @@ class Ingredients extends Component {
     super(props);
     const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
+      isGuest: true,
       refreshing: false,
       dataSource: ds.cloneWithRows([]),
       searchText: "",
@@ -48,10 +49,20 @@ class Ingredients extends Component {
   componentWillReceiveProps() {
     //console.log("willProps");
     this.getLocalData();
+    // this.getRemoteData();
   }
 
   componentWillMount() {
     //console.log("willMount");
+    store.get('account').then((data) => {
+      this.setState({
+        isGuest: data.isGuest,
+      })
+    }).catch((error) => {
+      console.warn("error getting isGuest from local store");
+      console.warn(error);
+    });
+
     this.getRemoteData();
   }
 
@@ -78,6 +89,7 @@ class Ingredients extends Component {
   getRemoteData() {
     store.get('account').then((data) => {
       if (data.isGuest) {
+        this.getLocalData();
         return;
       }
 
