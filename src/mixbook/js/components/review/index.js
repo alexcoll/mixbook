@@ -315,7 +315,7 @@ class Reviews extends Component {
           </View>
           <List>
             <ListItem>
-              <InputGroup disabled={this.state.isGuest}>
+              <InputGroup>
                 <Input
                   inlineLabel label="Rating"
                   placeholder="0-5"
@@ -325,7 +325,7 @@ class Reviews extends Component {
               </InputGroup>
             </ListItem>
             <ListItem>
-              <InputGroup disabled={this.state.isGuest}>
+              <InputGroup>
                 <Input inlineLabel label="Review"
                 placeholder="Enter a review "
                 value={this.state.reviews}
@@ -335,7 +335,7 @@ class Reviews extends Component {
             </ListItem>
           </List>
           <Button
-            disabled={this.state.isGuest}
+            
             style={{ alignSelf: 'center', marginTop: 20, marginBottom: 20 }}
             onPress={() => this.onSubmit()}
           >

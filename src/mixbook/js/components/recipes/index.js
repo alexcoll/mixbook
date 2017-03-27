@@ -238,14 +238,13 @@ class Recipes extends Component {
 
 
   _renderFAB() {
-    if (!this.state.isGuest) {
       return (
         <ActionButton
           buttonColor="rgba(231,76,60,1)"
           onPress={() => this.navigateTo('addRecipe')}
         />
       );
-    }
+    
   }
 
 

@@ -350,6 +350,7 @@ class MyDrinks extends Component {
           placeholder="Search drinks"
           value={this.state.searchText}
           onChange={this.setSearchText.bind(this)}
+          keyboardType='numeric'
           multiline={false}
           autoFocus={false}
           returnKeyType='done'
