@@ -346,13 +346,13 @@ class Reviews extends Component {
                 <Input inlineLabel label="Review"
                 placeholder="Enter a review "
                 value={this.state.reviews}
-                onChangeText={review => this.submitReview(review)}
+                onChangeText={review => this.setState({inputReviewText})}
                 />
               </InputGroup>
             </ListItem>
           </List>
           <Button
-            
+
             style={{ alignSelf: 'center', marginTop: 20, marginBottom: 20 }}
             onPress={() => this.onSubmit()}
           >
