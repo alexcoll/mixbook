@@ -346,7 +346,7 @@ class Reviews extends Component {
                 <Input inlineLabel label="Review"
                 placeholder="Enter a review "
                 value={this.state.reviews}
-                onChangeText={review => this.setState({this.state.reviews})}
+                onChangeText={review => this.setState({reviews})}
                 />
               </InputGroup>
             </ListItem>
