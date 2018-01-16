@@ -68,7 +68,7 @@ class AddIngredient extends Component {
   }
 
   getRemoteData() {
-    fetch('https://activitize.net/mixbook/brand/getBrands', {
+    fetch('https://mymixbook.com/mixbook/brand/getBrands', {
       method: 'GET',
     })
     .then(async (response) => {
@@ -137,7 +137,7 @@ class AddIngredient extends Component {
             return;
           }
 
-          fetch('https://activitize.net/mixbook/inventory/addIngredientToInventory', {
+          fetch('https://mymixbook.com/mixbook/inventory/addIngredientToInventory', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

@@ -31,7 +31,7 @@ class SplashScreen extends Component {
       console.log("isLoggedIn=" + data.token);
       if (data.token !== "") {
         // Get user profile information
-        fetch('https://activitize.net/mixbook/user/getUserInfo', {
+        fetch('https://mymixbook.com/mixbook/user/getUserInfo', {
           method: 'GET',
           headers: {
             'Accept': 'application/json',

@@ -113,7 +113,7 @@ class MyDrinks extends Component {
   }
 
   getDrinksAccount(token: string) {
-    fetch('https://activitize.net/mixbook/recipe/getAllRecipesUserCanMake', {
+    fetch('https://mymixbook.com/mixbook/recipe/getAllRecipesUserCanMake', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -155,7 +155,7 @@ class MyDrinks extends Component {
       }
 
       // Build url parameters
-      var baseURL = "https://activitize.net/mixbook/recipe/getAllRecipesAnonymousUserCanMake?brands=";
+      var baseURL = "https://mymixbook.com/mixbook/recipe/getAllRecipesAnonymousUserCanMake?brands=";
       // Add each ingredient to the parameter
       for (i = 0; i < data.length; i++) {
         baseURL = baseURL + data[i] + ',';
@@ -236,7 +236,7 @@ class MyDrinks extends Component {
 
       // Delete the ingredient from the server
       store.get('account').then((data) => {
-        fetch('https://activitize.net/mixbook/recipe/deleteRecipe', {
+        fetch('https://mymixbook.com/mixbook/recipe/deleteRecipe', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

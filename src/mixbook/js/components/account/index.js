@@ -155,7 +155,7 @@ class Account extends Component {
     }
 
     // Make sure old password is right
-    fetch('https://activitize.net/mixbook/auth', {
+    fetch('https://mymixbook.com/mixbook/auth', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -171,7 +171,7 @@ class Account extends Component {
         // Password is correct, update password on server
 
         // Change the password
-        fetch('https://activitize.net/mixbook/user/changePassword', {
+        fetch('https://mymixbook.com/mixbook/user/changePassword', {
           method: 'POST',
           headers: {
             'Authorization': token,
@@ -233,7 +233,7 @@ class Account extends Component {
   }
 
   updateNames(token: string, firstName: string, lastName: string) {
-    fetch('https://activitize.net/mixbook/user/editUser', {
+    fetch('https://mymixbook.com/mixbook/user/editUser', {
       method: 'POST',
       headers: {
         'Authorization': token,
@@ -289,7 +289,7 @@ class Account extends Component {
   }
 
   updateEmail(token: string, newEmail: string) {
-    fetch('https://activitize.net/mixbook/user/changeEmail', {
+    fetch('https://mymixbook.com/mixbook/user/changeEmail', {
       method: 'POST',
       headers: {
         'Authorization': token,

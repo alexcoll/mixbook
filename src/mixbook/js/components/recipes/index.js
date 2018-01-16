@@ -97,7 +97,7 @@ class Recipes extends Component {
         isGuest: data.isGuest,
       });
 
-      fetch('https://activitize.net/mixbook/recipe/getAllRecipes', {
+      fetch('https://mymixbook.com/mixbook/recipe/getAllRecipes', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -155,7 +155,7 @@ class Recipes extends Component {
   onListItemRemove(item: string) {
     // Delete the ingredient from the server
     store.get('account').then((data) => {
-      fetch('https://activitize.net/mixbook/recipe/deleteRecipe', {
+      fetch('https://mymixbook.com/mixbook/recipe/deleteRecipe', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -84,7 +84,7 @@ class Reviews extends Component {
         });
       }
 
-      fetch(`https://activitize.net/mixbook/review/loadReviewsForRecipe?id=${this.state.drinkNumber}`, {
+      fetch(`https://mymixbook.com/mixbook/review/loadReviewsForRecipe?id=${this.state.drinkNumber}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -112,7 +112,7 @@ class Reviews extends Component {
     });
 
     store.get('account').then((data) => {
-      fetch(`https://activitize.net/mixbook/recipe/getBrandsForRecipe?id=${this.state.drinkNumber}`, {
+      fetch(`https://mymixbook.com/mixbook/recipe/getBrandsForRecipe?id=${this.state.drinkNumber}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -227,7 +227,7 @@ class Reviews extends Component {
     // Make the request
     store.get('account').then((data) => {
       var token = data.token;
-      fetch('https://activitize.net/mixbook/review/createReview', {
+      fetch('https://mymixbook.com/mixbook/review/createReview', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -249,7 +249,7 @@ class Reviews extends Component {
         } else if (response.status == 400) {
           console.log(this.state.userReviewing +  "!==" + this.state.reviewOwner);
           if (this.state.userReviewing !== this.state.reviewOwner) {
-            fetch('https://activitize.net/mixbook/review/editReview', {
+            fetch('https://mymixbook.com/mixbook/review/editReview', {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',

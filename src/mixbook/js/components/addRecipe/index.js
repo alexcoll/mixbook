@@ -87,7 +87,7 @@ class AddRecipe extends Component {
   }
 
   getRemoteData() {
-    fetch('https://activitize.net/mixbook/brand/getBrands', {
+    fetch('https://mymixbook.com/mixbook/brand/getBrands', {
       method: 'GET',
     })
     .then(async (response) => {
@@ -156,7 +156,7 @@ class AddRecipe extends Component {
     // Add the ingredient to the server
 
     store.get('account').then((data) => {
-      fetch('https://activitize.net/mixbook/recipe/createRecipe', {
+      fetch('https://mymixbook.com/mixbook/recipe/createRecipe', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

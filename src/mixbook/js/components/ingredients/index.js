@@ -103,7 +103,7 @@ class Ingredients extends Component {
         return;
       }
 
-      fetch('https://activitize.net/mixbook/inventory/getUserInventory', {
+      fetch('https://mymixbook.com/mixbook/inventory/getUserInventory', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -187,7 +187,7 @@ class Ingredients extends Component {
             return;
           }
 
-          fetch('https://activitize.net/mixbook/inventory/deleteIngredientFromInventory', {
+          fetch('https://mymixbook.com/mixbook/inventory/deleteIngredientFromInventory', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

@@ -122,7 +122,7 @@ class NewAccount extends Component {
 
 
   submitToServer() {
-    return fetch('https://activitize.net/mixbook/user/createUser', {
+    return fetch('https://mymixbook.com/mixbook/user/createUser', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',

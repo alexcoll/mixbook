@@ -99,7 +99,7 @@ class Login extends Component {
 
   submitToServer() {
     global.username = this.state.inputUsername;
-    fetch('https://activitize.net/mixbook/auth', {
+    fetch('https://mymixbook.com/mixbook/auth', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -131,7 +131,7 @@ class Login extends Component {
 
   updateDatabase(token: string) {
     // Get user profile information
-    fetch('https://activitize.net/mixbook/user/getUserInfo', {
+    fetch('https://mymixbook.com/mixbook/user/getUserInfo', {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
