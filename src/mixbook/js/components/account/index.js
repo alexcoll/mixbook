@@ -6,6 +6,8 @@ import { Container, Header, Title, Content, Button, Icon, List, ListItem, InputG
 import { openDrawer } from '../../actions/drawer';
 import { actions } from 'react-native-navigation-redux-helpers';
 
+import * as GLOBAL from '../../globals';
+
 import styles from './styles';
 
 const camera = require('../../../img/camera.png');
@@ -155,7 +157,7 @@ class Account extends Component {
     }
 
     // Make sure old password is right
-    fetch('https://mymixbook.com/mixbook/auth', {
+    fetch(GLOBAL.API.BASE_URL + '/mixbook/auth', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -171,7 +173,7 @@ class Account extends Component {
         // Password is correct, update password on server
 
         // Change the password
-        fetch('https://mymixbook.com/mixbook/user/changePassword', {
+        fetch(GLOBAL.API.BASE_URL + 'mixbook/user/changePassword', {
           method: 'POST',
           headers: {
             'Authorization': token,
@@ -233,7 +235,7 @@ class Account extends Component {
   }
 
   updateNames(token: string, firstName: string, lastName: string) {
-    fetch('https://mymixbook.com/mixbook/user/editUser', {
+    fetch(GLOBAL.API.BASE_URL + '/mixbook/user/editUser', {
       method: 'POST',
       headers: {
         'Authorization': token,
@@ -289,7 +291,7 @@ class Account extends Component {
   }
 
   updateEmail(token: string, newEmail: string) {
-    fetch('https://mymixbook.com/mixbook/user/changeEmail', {
+    fetch(GLOBAL.API.BASE_URL + '/mixbook/user/changeEmail', {
       method: 'POST',
       headers: {
         'Authorization': token,

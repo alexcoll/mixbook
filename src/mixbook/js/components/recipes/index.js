@@ -1,7 +1,8 @@
-
 import React, { Component } from 'react';
 import { ToastAndroid, TextInput, Alert, View, StyleSheet, ListView, Text, TouchableHighlight, RefreshControl} from 'react-native';
 import { connect } from 'react-redux';
+
+import * as GLOBAL from '../../globals';
 
 // import { actions } from 'react-native-navigation-redux-helpers';
 import { Header, Title, Content, Button, Icon } from 'native-base';
@@ -97,7 +98,7 @@ class Recipes extends Component {
         isGuest: data.isGuest,
       });
 
-      fetch('https://mymixbook.com/mixbook/recipe/getAllRecipes', {
+      fetch(GLOBAL.API.BASE_URL + '/mixbook/recipe/getAllRecipes', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -155,7 +156,7 @@ class Recipes extends Component {
   onListItemRemove(item: string) {
     // Delete the ingredient from the server
     store.get('account').then((data) => {
-      fetch('https://mymixbook.com/mixbook/recipe/deleteRecipe', {
+      fetch(GLOBAL.API.BASE_URL + '/mixbook/recipe/deleteRecipe', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

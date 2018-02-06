@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-
 import { StyleSheet, View, Image, Text, KeyboardAvoidingView, TouchableOpacity, Alert } from 'react-native';
+
+import * as GLOBAL from '../../globals';
+
 import LoginForm from './LoginForm';
 import navigateTo from '../../actions/sideBarNav';
 import { actions } from 'react-native-navigation-redux-helpers';
@@ -99,7 +101,8 @@ class Login extends Component {
 
   submitToServer() {
     global.username = this.state.inputUsername;
-    fetch('https://mymixbook.com/mixbook/auth', {
+    console.log(`${GLOBAL.API.BASE_URL}/mixbook/auth`);
+    fetch(GLOBAL.API.BASE_URL + GLOBAL.API.AUTH, {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -131,7 +134,7 @@ class Login extends Component {
 
   updateDatabase(token: string) {
     // Get user profile information
-    fetch('https://mymixbook.com/mixbook/user/getUserInfo', {
+    fetch(`${GLOBAL.API.BASE_URL}/mixbook/user/getUserInfo`, {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
@@ -141,8 +144,7 @@ class Login extends Component {
     .then(async (response) => {
       if (response.status == 200) {
         var json = await response.json();
-        // Store account details into local store
-        store.save('account', {
+        store.save('accsount', {
           isLoggedIn: true,
           isGuest: false,
           token: token,
@@ -173,9 +175,7 @@ class Login extends Component {
 
 
   onSubmitLogin() {
-    // Do some simple input syntax checking
     if (this.checkInput()) {
-      // Send info to server
       this.submitToServer();
     }
   }
@@ -188,7 +188,7 @@ class Login extends Component {
       token: "",
       userInfo: {
         username: "guest_user",
-        email: "guest@mixbook.com",
+        email: "guest@mymixbook.com",
         firstName: "Guest",
         lastName: "User",
       }

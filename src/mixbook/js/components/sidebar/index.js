@@ -1,8 +1,9 @@
-
 import React, { Component } from 'react';
 import { Image } from 'react-native';
 import { connect } from 'react-redux';
 import { Content, Text, List, ListItem, Icon, View } from 'native-base';
+
+import * as GLOBAL from '../../globals';
 
 import navigateTo from '../../actions/sideBarNav';
 import sidebarTheme from './sidebar-theme';

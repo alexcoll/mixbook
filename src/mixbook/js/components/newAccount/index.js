@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { StyleSheet, View, Image, Text, KeyboardAvoidingView, TouchableOpacity, Alert } from 'react-native';
 
+import * as GLOBAL from '../../globals';
+
 import { actions } from 'react-native-navigation-redux-helpers';
 
 import AccountForm from './accountForm';
@@ -122,7 +124,7 @@ class NewAccount extends Component {
 
 
   submitToServer() {
-    return fetch('https://mymixbook.com/mixbook/user/createUser', {
+    return fetch(GLOBAL.API.BASE_URL + '/mixbook/user/createUser', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',

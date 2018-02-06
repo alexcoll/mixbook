@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { ToastAndroid, TouchableOpacity, Alert } from 'react-native';
 import { connect } from 'react-redux';
+
+import * as GLOBAL from '../../globals';
+
 import { actions } from 'react-native-navigation-redux-helpers';
 import { Container, Header, Title, Content, Button, Icon, List, ListItem, ListView, Text, Picker, Input, InputGroup, View, Grid, Col } from 'native-base';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -84,7 +87,7 @@ class Reviews extends Component {
         });
       }
 
-      fetch(`https://mymixbook.com/mixbook/review/loadReviewsForRecipe?id=${this.state.drinkNumber}`, {
+      fetch(`${GLOBAL.API.BASE_URL}/mixbook/review/loadReviewsForRecipe?id=${this.state.drinkNumber}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -112,7 +115,7 @@ class Reviews extends Component {
     });
 
     store.get('account').then((data) => {
-      fetch(`https://mymixbook.com/mixbook/recipe/getBrandsForRecipe?id=${this.state.drinkNumber}`, {
+      fetch(`${GLOBAL.API.BASE_URL}/mixbook/recipe/getBrandsForRecipe?id=${this.state.drinkNumber}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -227,7 +230,7 @@ class Reviews extends Component {
     // Make the request
     store.get('account').then((data) => {
       var token = data.token;
-      fetch('https://mymixbook.com/mixbook/review/createReview', {
+      fetch(`${GLOBAL.API.BASE_URL}/mixbook/review/createReview`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -249,7 +252,7 @@ class Reviews extends Component {
         } else if (response.status == 400) {
           console.log(this.state.userReviewing +  "!==" + this.state.reviewOwner);
           if (this.state.userReviewing !== this.state.reviewOwner) {
-            fetch('https://mymixbook.com/mixbook/review/editReview', {
+            fetch(`${GLOBAL.API.BASE_URL}/mixbook/review/editReview`, {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',

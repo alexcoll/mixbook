@@ -3,6 +3,8 @@ import React, { Component } from 'react';
 import { ToastAndroid, TextInput, Alert, View, StyleSheet, ListView, Text, TouchableHighlight, RefreshControl} from 'react-native';
 import { connect } from 'react-redux';
 
+import * as GLOBAL from '../../globals';
+
 // import { actions } from 'react-native-navigation-redux-helpers';
 import { Header, Title, Content, Button, Icon } from 'native-base';
 
@@ -103,7 +105,7 @@ class Ingredients extends Component {
         return;
       }
 
-      fetch('https://mymixbook.com/mixbook/inventory/getUserInventory', {
+      fetch(GLOBAL.API.BASE_URL + '/mixbook/inventory/getUserInventory', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -187,7 +189,7 @@ class Ingredients extends Component {
             return;
           }
 
-          fetch('https://mymixbook.com/mixbook/inventory/deleteIngredientFromInventory', {
+          fetch(GLOBAL.API.BASE_URL + '/mixbook/inventory/deleteIngredientFromInventory', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

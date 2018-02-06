@@ -1,8 +1,9 @@
-
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Image, Alert, View } from 'react-native';
 import { actions } from 'react-native-navigation-redux-helpers';
+
+import * as GLOBAL from '../../globals';
 
 import store from 'react-native-simple-store';
 
@@ -31,7 +32,7 @@ class SplashScreen extends Component {
       console.log("isLoggedIn=" + data.token);
       if (data.token !== "") {
         // Get user profile information
-        fetch('https://mymixbook.com/mixbook/user/getUserInfo', {
+        fetch(GLOBAL.API.BASE_URL + '/mixbook/user/getUserInfo', {
           method: 'GET',
           headers: {
             'Accept': 'application/json',

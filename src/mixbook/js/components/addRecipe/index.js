@@ -3,6 +3,8 @@ import { ToastAndroid, TouchableHighlight, Alert, View, Text, TextInput, ListVie
 import { connect } from 'react-redux';
 import { Header, Title, Button, Icon } from 'native-base';
 
+import * as GLOBAL from '../../globals';
+
 import navigateTo from '../../actions/pageNav'
 import styles from './styles';
 import store from 'react-native-simple-store';
@@ -87,7 +89,7 @@ class AddRecipe extends Component {
   }
 
   getRemoteData() {
-    fetch('https://mymixbook.com/mixbook/brand/getBrands', {
+    fetch(GLOBAL.API.BASE_URL + '/mixbook/brand/getBrands', {
       method: 'GET',
     })
     .then(async (response) => {
@@ -156,7 +158,7 @@ class AddRecipe extends Component {
     // Add the ingredient to the server
 
     store.get('account').then((data) => {
-      fetch('https://mymixbook.com/mixbook/recipe/createRecipe', {
+      fetch(GLOBAL.API.BASE_URL + 'mixbook/recipe/createRecipe', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
