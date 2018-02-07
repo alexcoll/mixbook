@@ -102,7 +102,7 @@ class Login extends Component {
   submitToServer() {
     global.username = this.state.inputUsername;
     console.log(`${GLOBAL.API.BASE_URL}/mixbook/auth`);
-    fetch(GLOBAL.API.BASE_URL + GLOBAL.API.AUTH, {
+    fetch(GLOBAL.API.BASE_URL + '/mixbook/auth', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -144,7 +144,7 @@ class Login extends Component {
     .then(async (response) => {
       if (response.status == 200) {
         var json = await response.json();
-        store.save('accsount', {
+        store.save('account', {
           isLoggedIn: true,
           isGuest: false,
           token: token,
