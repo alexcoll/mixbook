@@ -48,6 +48,8 @@ class Reviews extends Component {
       pkNumber: {},
       inputRating: 1,
       inputReviewText: "",
+      isOwnRecipe: false,
+      hasUserReviewed: false,
     };
   }
 
@@ -78,12 +80,9 @@ class Reviews extends Component {
         isGuest: data.isGuest,
       });
 
-      // Very hacky way of doing this, please change at some point
-      // Make sure a user can't review they're own recipe
-      // Do this by setting isGuest to true, which will disbale user inputs in this page
       if (data.userInfo.username == this.state.reviewOwner) {
         this.setState({
-          isGuest: true,
+          isOwnRecipe: true,
         });
       }
 
@@ -97,6 +96,17 @@ class Reviews extends Component {
           var json = await response.json();
           //console.warn(json[0]);
           this.setState({theList: json});
+
+          // Check if user has already written a review
+          for (i = 0; i < json.length; i++) {
+            if (json[i][2] == data.userInfo.username) {
+              this.setState({
+                hasUserReviewed: true,
+                inputRating: 5,
+                inputReviewText: json[i][0],
+              })
+            }
+          }
         } else {
           Alert.alert(
             "Server Error",
@@ -142,6 +152,7 @@ class Reviews extends Component {
       console.warn("error getting user token from local store");
     });
   }
+
 
 
   replaceAt(route) {
@@ -304,6 +315,21 @@ class Reviews extends Component {
     });
   }
 
+  getReviewSectionHeaderText() {
+    if (this.state.hasUserReviewed) {
+      return "Edit review";
+    } else {
+      return "Write review";
+    }
+  }
+
+  getReviewSubmitButtonText() {
+    if (this.state.hasUserReviewed) {
+      return "Edit";
+    } else {
+      return "Add";
+    }
+  }
 
   render() {
     return (
@@ -341,14 +367,14 @@ class Reviews extends Component {
             </ListItem>
             <ListItem>
               <Text>
-                Write a review
+                {this.getReviewSectionHeaderText()}
               </Text>
             </ListItem>
           </List>
           </View>
           <List>
             <ListItem>
-              <InputGroup disabled={this.state.isGuest}>
+              <InputGroup disabled={this.state.isGuest || this.state.isOwnRecipe}>
                 <Input
                   inlineLabel label="Rating"
                   placeholder="0-5"
@@ -358,7 +384,7 @@ class Reviews extends Component {
               </InputGroup>
             </ListItem>
             <ListItem>
-              <InputGroup disabled={this.state.isGuest}>
+              <InputGroup disabled={this.state.isGuest || this.state.isOwnRecipe}>
                 <Input
                   inlineLabel label="Review"
                   placeholder="Review text"
@@ -369,11 +395,11 @@ class Reviews extends Component {
             </ListItem>
           </List>
           <Button
-            disabled={this.state.isGuest}
+            disabled={this.state.isGuest || this.state.isOwnRecipe}
             style={{ alignSelf: 'center', marginTop: 20, marginBottom: 20 }}
             onPress={() => this.onSubmit()}
           >
-            Add
+            {this.getReviewSubmitButtonText()}
           </Button>
 
           <View>
