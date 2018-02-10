@@ -45,22 +45,23 @@ class Reviews extends Component {
       reviews: "",
       theList: [],
       ingredientsList: {},
-      pkNumber: {},
-      inputRating: 1,
+      inputRating: "",
       inputReviewText: "",
       isOwnRecipe: false,
       hasUserReviewed: false,
     };
+
+    this.current_user = "";
+    this.auth_token = "";
   }
 
   componentWillReceiveProps() {
-    this.fetchData();
-    this.setUpPK();
+    this.getRemoteData();
   }
 
   componentWillMount() {
-    this.fetchData();
-    this.setUpPK();
+    this.getLocalData();
+    this.getRemoteData();
   }
 
   showServerErrorAlert(response) {
@@ -74,8 +75,11 @@ class Reviews extends Component {
     );
   }
 
-  fetchData() {
+  getLocalData() {
     store.get('account').then((data) => {
+      this.current_user = data.userInfo.username;
+      this.auth_token = data.token;
+
       this.setState({
         isGuest: data.isGuest,
       });
@@ -84,234 +88,163 @@ class Reviews extends Component {
         this.setState({
           isOwnRecipe: true,
         });
+      } else {
+        this.setState({
+          isOwnRecipe: false,
+        });
       }
-
-      fetch(`${GLOBAL.API.BASE_URL}/mixbook/review/loadReviewsForRecipe?id=${this.state.drinkNumber}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      }).then(async (response) => {
-        if (response.status == 200) {
-          var json = await response.json();
-          //console.warn(json[0]);
-          this.setState({theList: json});
-
-          // Check if user has already written a review
-          for (i = 0; i < json.length; i++) {
-            if (json[i][2] == data.userInfo.username) {
-              this.setState({
-                hasUserReviewed: true,
-                inputRating: 5,
-                inputReviewText: json[i][0],
-              })
-            }
-          }
-        } else {
-          Alert.alert(
-            "Server Error",
-            "Could Not Load Reviews",
-            [
-              {text: 'Dismiss', style: 'cancel'}
-            ],
-            { cancelable: true }
-          );
-        }
-      }).catch((error) => {
-        console.error(error);
-      });
-    }).catch((error) => {
-      console.warn("error getting user token from local store");
-    });
-
-    store.get('account').then((data) => {
-      fetch(`${GLOBAL.API.BASE_URL}/mixbook/recipe/getBrandsForRecipe?id=${this.state.drinkNumber}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      }).then(async (response) => {
-        if (response.status == 200) {
-          var json = await response.json();
-          // console.warn(json[0]);
-          this.setState({ingredientsList: json});
-        } else {
-          Alert.alert(
-            "Server Error",
-            "Could Not Load Ingredients",
-            [
-              {text: 'Dismiss', style: 'cancel'}
-            ],
-            { cancelable: true }
-          );
-        }
-      }).catch((error) => {
-        console.error(error);
-      });
     }).catch((error) => {
       console.warn("error getting user token from local store");
     });
   }
 
+  getRemoteData() {
+    this.getBrandsForRecipe();
+    this.loadReviewsForRecipe();
+  }
+
+  loadReviewsForRecipe() {
+    fetch(`${GLOBAL.API.BASE_URL}/mixbook/review/loadReviewsForRecipe?id=${this.state.drinkNumber}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(async (response) => {
+      if (response.status == 200) {
+        var json = await response.json();
+
+        // Check if user has already written a review
+        for (i = 0; i < json.length; i++) {
+          if (json[i][2] == this.current_user) {
+            this.setState({
+              hasUserReviewed: true,
+              inputRating: String(json[i][1]),
+              inputReviewText: json[i][0],
+            })
+          }
+          break;
+        }
+
+        this.setState({theList: json});
+      } else {
+        Alert.alert(
+          "Server Error",
+          "Could Not Load Reviews",
+          [
+            {text: 'Dismiss', style: 'cancel'}
+          ],
+          { cancelable: true }
+        );
+      }
+    }).catch((error) => {
+      console.error(error);
+    });
+  }
+
+  getBrandsForRecipe() {
+    fetch(`${GLOBAL.API.BASE_URL}/mixbook/recipe/getBrandsForRecipe?id=${this.state.drinkNumber}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(async (response) => {
+      if (response.status == 200) {
+        var json = await response.json();
+        this.setState({ingredientsList: json});
+      } else {
+        Alert.alert(
+          "Server Error",
+          "Could Not Load Ingredients",
+          [
+            {text: 'Dismiss', style: 'cancel'}
+          ],
+          { cancelable: true }
+        );
+      }
+    }).catch((error) => {
+      console.error(error);
+    });
+  }
 
 
   replaceAt(route) {
     this.props.replaceAt('recipes', { key: route }, this.props.navigation.key);
   }
 
-
-  // submitRating(ratingInput: number){
-  //   if (ratingInput  0 || ratingInput > 5 ) {
-  //     Alert.alert(
-  //       "Rating not valid",
-  //       '',
-  //       [
-  //         {text: 'Okay', style: 'cancel'},
-  //       ],
-  //       { cancelable: true }
-  //     )
-  //   } else {
-  //     this.setState({rating: ratingInput});
-  //   }
-  // }
-
-
-  // submitReview(reviewInput: string) {
-  //   if (reviewInput == '') {
-  //     Alert.alert(
-  //       "Review not valid",
-  //       '',
-  //       [
-  //         {text: 'Okay', style: 'cancel'},
-  //       ],
-  //       { cancelable: true }
-  //     )
-  //   } else {
-  //     this.setState({reviews: reviewInput});
-  //     console.log(this.state.reviews);
-  //   }
-  // }
-
-
-  setUpPK(){
-      var innerKey = "recipeId";
-      var innerObj = {};
-      innerObj[innerKey] = this.state.drinkNumber;
-
-      console.log(innerObj);
-
-      var key = "recipe";
-      var obj = {};
-      obj[key] = innerObj;
-
-      console.log(obj);
-
-      this.state.pkNumber = obj;
-
-      //this.setState({pkNumber: obj});
-
-      console.log(this.state.pkNumber);
-  }
-
-
   onSubmit() {
-    // Validate user input
-    if (this.state.inputRating < 1 ||  this.state.inputRating > 5 || typeof this.state.inputRating == 'undefined') {
+    if (this.state.userReviewing == this.state.reviewOwner || typeof this.state.inputRating == 'undefined') {
+      Alert.alert("You can't rate your own recipe");
+    }
+
+    if (this.state.inputRating < 1 || this.state.inputRating > 5|| typeof this.state.inputReview == 'undefined') {
       Alert.alert('Please enter a rating between 1-5');
       return;
     }
 
-    if (this.state.inputReview == "" || typeof this.state.inputReview == 'undefined')  {
-      Alert.alert('Please enter some text in the review body');
+    if (this.state.inputReview == "") {
+      Alert.alert('Reviews cannot be blank');
       return;
     }
 
-    // Do this thing
-    this.setUpPK();
+    if (this.state.hasUserReviewed) {
+      this.editReview();
+    } else {
+      this.createReview();
+    }
+  }
 
-    // Build the resposne
-    var body = JSON.stringify({
-          pk: this.state.pkNumber,
-          reviewCommentary: this.state.inputReviewText,
-          rating: this.state.inputRating
-        });
-
-    console.log("Request body: " + body);
-
-    // Make the request
-    store.get('account').then((data) => {
-      var token = data.token;
-      fetch(`${GLOBAL.API.BASE_URL}/mixbook/review/createReview`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': token,
-        },
-        body: JSON.stringify({
-          pk: this.state.pkNumber,
-          reviewCommentary: this.state.inputReviewText,
-          rating: this.state.inputRating
-        })
-      }).then(async (response) => {
-        if (response.status == 200) {
-          var json = await response.json();
-          console.warn("Success");
-          ToastAndroid.show("Review added!", ToastAndroid.SHORT);
-          this.setState({
-            inputRating : "",
-            inputReviewText : ""
-          })
-          this.fetchData();
-          return json;
-        } else if (response.status == 401) {
-          alert("User can not rate your own recipe!");
-        } else if (response.status == 400) {
-          console.log(this.state.userReviewing +  "!==" + this.state.reviewOwner);
-          if (this.state.userReviewing !== this.state.reviewOwner) {
-            fetch(`${GLOBAL.API.BASE_URL}/mixbook/review/editReview`, {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                'Authorization': token,
-              },
-              body: JSON.stringify({
-                pk: this.state.pkNumber,
-                reviewCommentary: this.state.inputReviewText,
-                rating: this.state.inputRating
-              })
-            }).then(async (response) => {
-              if (response.status == 200) {
-                var json = await response.json();
-                console.log("Successful edit of Review");
-                ToastAndroid.show("Review edited", ToastAndroid.SHORT);
-                this.fetchData();
-                this.setState({
-                  inputRating : "",
-                  inputReviewText : ""
-                })
-
-                return json;
-              } else if (response.status == 401) {
-                alert("Was not able to edit/create review");
-              } else {
-                this.showServerErrorAlert(response);
-                return;
-              }
-            }).catch((error) => {
-              console.error(error);
-            });
-          } else {
-            Alert.alert("You can't rate own recipe");
-          }
-        } else {
-          this.showServerErrorAlert(response);
-          return;
-        }
-      }).catch((error) => {
-        console.error(error);
-      });
+  createReview() {
+    fetch(`${GLOBAL.API.BASE_URL}/mixbook/review/createReview`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': this.auth_token,
+      },
+      body: JSON.stringify({
+        pk: {recipe: { recipeId: this.state.drinkNumber }},
+        reviewCommentary: this.state.inputReviewText,
+        rating: this.state.inputRating
+      })
+    }).then(async (response) => {
+      if (response.status == 200) {
+        var json = await response.json();
+        ToastAndroid.show("Review added", ToastAndroid.SHORT);
+        this.getRemoteData();
+        return json;
+      } else {
+        this.showServerErrorAlert(response);
+        return;
+      }
     }).catch((error) => {
-      console.warn("error getting user token from local store");
+      console.error(error);
+    });
+  }
+
+  editReview() {
+    fetch(`${GLOBAL.API.BASE_URL}/mixbook/review/editReview`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': this.auth_token,
+      },
+      body: JSON.stringify({
+        pk: {recipe: { recipeId: this.state.drinkNumber }},
+        reviewCommentary: this.state.inputReviewText,
+        rating: this.state.inputRating
+      })
+    }).then(async (response) => {
+      if (response.status == 200) {
+        var json = await response.json();
+        console.log("Successful edit of Review");
+        ToastAndroid.show("Review edited", ToastAndroid.SHORT);
+        this.getRemoteData();
+        return json;
+      } else {
+        this.showServerErrorAlert(response);
+        return;
+      }
+    }).catch((error) => {
+      console.error(error);
     });
   }
 
@@ -335,12 +268,9 @@ class Reviews extends Component {
     return (
       <Container style={styles.container}>
         <Header>
-
           <Title>{this.state.name}</Title>
         </Header>
-
         <Content>
-
           <View>
           <List>
             <ListItem>
@@ -378,7 +308,7 @@ class Reviews extends Component {
                 <Input
                   inlineLabel label="Rating"
                   placeholder="0-5"
-                  value={this.state.inputRating}
+                  value={String(this.state.inputRating)}
                   onChangeText={(inputRating) => this.setState({ inputRating })}
                 />
               </InputGroup>
