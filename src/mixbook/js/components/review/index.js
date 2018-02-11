@@ -205,12 +205,12 @@ class Reviews extends Component {
 
   onSubmit() {
     // Validate user input
-    if (this.state.inputRating < 1 || this.state.inputRating > 5) {
+    if (this.state.inputRating < 1 ||  this.state.inputRating > 5 || typeof this.state.inputRating == 'undefined') {
       Alert.alert('Please enter a rating between 1-5');
       return;
     }
 
-    if (this.state.inputReview == "") {
+    if (this.state.inputReview == "" || typeof this.state.inputReview == 'undefined')  {
       Alert.alert('Please enter some text in the review body');
       return;
     }
@@ -245,10 +245,15 @@ class Reviews extends Component {
         if (response.status == 200) {
           var json = await response.json();
           console.warn("Success");
+          ToastAndroid.show("Review added!", ToastAndroid.SHORT);
+          this.setState({
+            inputRating : "",
+            inputReviewText : ""
+          })
           this.fetchData();
           return json;
         } else if (response.status == 401) {
-          alert("User can not rate own recipe");
+          alert("User can not rate your own recipe!");
         } else if (response.status == 400) {
           console.log(this.state.userReviewing +  "!==" + this.state.reviewOwner);
           if (this.state.userReviewing !== this.state.reviewOwner) {
@@ -269,6 +274,11 @@ class Reviews extends Component {
                 console.log("Successful edit of Review");
                 ToastAndroid.show("Review edited", ToastAndroid.SHORT);
                 this.fetchData();
+                this.setState({
+                  inputRating : "",
+                  inputReviewText : ""
+                })
+
                 return json;
               } else if (response.status == 401) {
                 alert("Was not able to edit/create review");
