@@ -350,7 +350,7 @@ class Account extends Component {
             <Icon name="ios-menu" />
           </Button>
 
-          <Title>Account</Title>
+          <Title>My Profile</Title>
         </Header>
 
         <Content>

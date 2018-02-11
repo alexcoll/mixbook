@@ -15,6 +15,7 @@ import styles from './styles';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import ActionButton from 'react-native-action-button';
 import store from 'react-native-simple-store';
+import ModalDropdown from 'react-native-modal-dropdown';
 
 var filter = require('lodash/filter');
 
@@ -139,6 +140,8 @@ class Recipes extends Component {
     this.setState({searchText});
 
     let filteredData = this.filterItems(searchText, this.state.rawData);
+    
+    
     this.setState({
       dataSource: this.state.dataSource.cloneWithRows(filteredData),
     });
@@ -151,6 +154,43 @@ class Recipes extends Component {
       return item.search(text) !== -1;
     });
   }
+
+  _recipeSortOnSelect(idx, value) {
+
+    let sortedData = this.sortRecipes(this.state.rawData, idx.toString());
+
+    //This is correct...Not sure why the list view is not updating
+    console.log(sortedData);
+
+    this.setState({
+      dataSource: this.state.dataSource.cloneWithRows(sortedData),
+    });
+  }
+
+  sortRecipes(items, idx) {
+    if(idx === '0')
+    {
+      console.log("Sort up");
+      return items.sort(function (a,b) {
+        console.log("A: " + a[6] + "; B: " + b[6]);
+        if (b[6] < a[6]) return -1;
+        if (b[6] > a[6]) return 1;
+        return 0;
+      })
+    }
+
+    if(idx === '1') {
+      console.log("Sort down");
+      return items.sort(function (a,b) {
+        return b[6] > a[6] ? -1
+             : b[6] < a[6] ? 1
+             : 0
+      })
+    }
+  }
+
+
+
 
 
   onListItemRemove(item: string) {
@@ -238,6 +278,7 @@ class Recipes extends Component {
   }
 
 
+
   _renderFAB() {
     if (!this.state.isGuest) {
       return (
@@ -266,6 +307,8 @@ class Recipes extends Component {
           </Button>
         </Header>
 
+        <View style={{flexDirection: 'row'}}>
+
         <TextInput
           style={styles.searchBar}
           placeholder="Search Recipes"
@@ -276,6 +319,18 @@ class Recipes extends Component {
           returnKeyType='done'
           autoCorrect={false}
         />
+
+        <ModalDropdown 
+          options={['Ranking ↑', 'Ranking ↓']}
+          defaultValue='Sort'
+          style={styles.dropDownStyle}
+          textStyle={styles.dropDownTextStyle}
+          onSelect={(idx, value) => this._recipeSortOnSelect(idx, value)}
+          />
+
+          
+
+          </View>
 
         <ListView
           enableEmptySections={true}

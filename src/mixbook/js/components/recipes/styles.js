@@ -28,7 +28,21 @@ module.exports = StyleSheet.create({
     paddingLeft: 30,
     fontSize: 16,
     height: 50,
+    width: 340,
     borderWidth: 9,
     borderColor: '#E4E4E4',
   },
+
+  dropDownStyle: {
+    width: 75,
+    backgroundColor: 'cornflowerblue',
+
+  },
+
+  dropDownTextStyle: {
+    fontSize: 16,
+    textAlign: 'center',
+    paddingTop: 10,
+    textAlignVertical: 'center'
+  }
 });
