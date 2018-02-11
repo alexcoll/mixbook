@@ -15,19 +15,21 @@ import styles from './styles';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import ActionButton from 'react-native-action-button';
 import store from 'react-native-simple-store';
+import ModalDropdown from 'react-native-modal-dropdown';
 
 var filter = require('lodash/filter');
-
+var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => true});
 class Recipes extends Component {
 
   constructor(props) {
     super(props);
-    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+
     this.state = {
       isGuest: true,
       refreshing: false,
       dataSource: ds.cloneWithRows([]),
       searchText: "",
+      sortDirection: "",
       isLoading: false,
       empty: false,
       rawData: [],
@@ -138,19 +140,71 @@ class Recipes extends Component {
     let searchText = event.nativeEvent.text;
     this.setState({searchText});
 
-    let filteredData = this.filterItems(searchText, this.state.rawData);
+    this.filterOnSearchText(searchText, this.state.rawData);
+
+  
+  }
+
+  filterOnSearchText(searchText, data) {
+
+    let filteredData = this.filterItems(searchText, data);
+    
+    
     this.setState({
-      dataSource: this.state.dataSource.cloneWithRows(filteredData),
+        dataSource: this.state.dataSource.cloneWithRows(filteredData),
     });
+
+
   }
 
   filterItems(searchText, items) {
     let text = searchText.toLowerCase();
+
+    if(text === "")
+      return items;
+
     return filter(items, (n) => {
       let item = n[1].toLowerCase();
       return item.search(text) !== -1;
     });
   }
+
+  _recipeSortOnSelect(idx, value) {
+
+    let sortedData = this.sortRecipes(this.state.rawData, idx.toString());
+
+    this.setState({
+      rawData: sortedData,
+      dataSource: ds.cloneWithRows(sortedData)
+    });
+
+
+    this.filterOnSearchText(this.state.searchText, this.state.rawData);
+
+
+  }
+
+  sortRecipes(items, idx) {
+    if(idx === '0')
+    {
+      return items.sort(function (a,b) {
+        if ((b[6]/b[5]) < (a[6]/a[5])) return -1;
+        if ((b[6]/b[5]) > (a[6]/a[5])) return 1;
+        return 0;
+      })
+    }
+
+    if(idx === '1') {
+      return items.sort(function (a,b) {
+        if ((b[6]/b[5]) > (a[6]/a[5])) return -1;
+        if ((b[6]/b[5]) < (a[6]/a[5])) return 1;
+        return 0;
+      })
+    }
+  }
+
+
+
 
 
   onListItemRemove(item: string) {
@@ -238,6 +292,7 @@ class Recipes extends Component {
   }
 
 
+
   _renderFAB() {
     if (!this.state.isGuest) {
       return (
@@ -266,6 +321,8 @@ class Recipes extends Component {
           </Button>
         </Header>
 
+        <View style={{flexDirection: 'row'}}>
+
         <TextInput
           style={styles.searchBar}
           placeholder="Search Recipes"
@@ -276,6 +333,18 @@ class Recipes extends Component {
           returnKeyType='done'
           autoCorrect={false}
         />
+
+        <ModalDropdown 
+          options={['Ranking ↑', 'Ranking ↓']}
+          defaultValue='Sort'
+          style={styles.dropDownStyle}
+          textStyle={styles.dropDownTextStyle}
+          onSelect={(idx, value) => this._recipeSortOnSelect(idx, value)}
+          />
+
+          
+
+          </View>
 
         <ListView
           enableEmptySections={true}
