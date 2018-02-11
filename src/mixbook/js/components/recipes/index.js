@@ -18,17 +18,18 @@ import store from 'react-native-simple-store';
 import ModalDropdown from 'react-native-modal-dropdown';
 
 var filter = require('lodash/filter');
-
+var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => true});
 class Recipes extends Component {
 
   constructor(props) {
     super(props);
-    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+
     this.state = {
       isGuest: true,
       refreshing: false,
       dataSource: ds.cloneWithRows([]),
       searchText: "",
+      sortDirection: "",
       isLoading: false,
       empty: false,
       rawData: [],
@@ -139,16 +140,29 @@ class Recipes extends Component {
     let searchText = event.nativeEvent.text;
     this.setState({searchText});
 
-    let filteredData = this.filterItems(searchText, this.state.rawData);
+    this.filterOnSearchText(searchText, this.state.rawData);
+
+  
+  }
+
+  filterOnSearchText(searchText, data) {
+
+    let filteredData = this.filterItems(searchText, data);
     
     
     this.setState({
-      dataSource: this.state.dataSource.cloneWithRows(filteredData),
+        dataSource: this.state.dataSource.cloneWithRows(filteredData),
     });
+
+
   }
 
   filterItems(searchText, items) {
     let text = searchText.toLowerCase();
+
+    if(text === "")
+      return items;
+
     return filter(items, (n) => {
       let item = n[1].toLowerCase();
       return item.search(text) !== -1;
@@ -159,32 +173,32 @@ class Recipes extends Component {
 
     let sortedData = this.sortRecipes(this.state.rawData, idx.toString());
 
-    //This is correct...Not sure why the list view is not updating
-    console.log(sortedData);
-
     this.setState({
-      dataSource: this.state.dataSource.cloneWithRows(sortedData),
+      rawData: sortedData,
+      dataSource: ds.cloneWithRows(sortedData)
     });
+
+
+    this.filterOnSearchText(this.state.searchText, this.state.rawData);
+
+
   }
 
   sortRecipes(items, idx) {
     if(idx === '0')
     {
-      console.log("Sort up");
       return items.sort(function (a,b) {
-        console.log("A: " + a[6] + "; B: " + b[6]);
-        if (b[6] < a[6]) return -1;
-        if (b[6] > a[6]) return 1;
+        if ((b[6]/b[5]) < (a[6]/a[5])) return -1;
+        if ((b[6]/b[5]) > (a[6]/a[5])) return 1;
         return 0;
       })
     }
 
     if(idx === '1') {
-      console.log("Sort down");
       return items.sort(function (a,b) {
-        return b[6] > a[6] ? -1
-             : b[6] < a[6] ? 1
-             : 0
+        if ((b[6]/b[5]) > (a[6]/a[5])) return -1;
+        if ((b[6]/b[5]) < (a[6]/a[5])) return 1;
+        return 0;
       })
     }
   }
