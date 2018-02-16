@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 
 import * as GLOBAL from '../../globals';
 
-// import { actions } from 'react-native-navigation-redux-helpers';
+import { actions } from 'react-native-navigation-redux-helpers';
 import { Header, Title, Content, Button, Icon } from 'native-base';
 
 import navigateTo from '../../actions/pageNav';

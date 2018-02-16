@@ -20,7 +20,8 @@ import SplashScreen from './components/splashscreen/';
 import SideBar from './components/sidebar';
 import statusBarColor from './themes/base-theme';
 import NewAccount from './components/newAccount';
-import Review from './components/review/'
+import Review from './components/review/';
+import UserProfile from './components/userProfile/';
 
 const {
   popRoute,
@@ -125,6 +126,8 @@ class AppNavigator extends Component {
         return <AddRecipe />;
       case 'review':
         return <Review />;
+      case 'userprofile':
+        return <UserProfile />;
       case 'newAccount':
         return <NewAccount />;
       default:

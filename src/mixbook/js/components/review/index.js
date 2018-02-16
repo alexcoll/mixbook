@@ -15,6 +15,8 @@ import '../login/index.js';
 import styles from './styles';
 import store from 'react-native-simple-store';
 
+import navigateTo from '../../actions/pageNav';
+
 const Item = Picker.Item;
 
 const {
@@ -50,6 +52,21 @@ class Reviews extends Component {
       inputReviewText: "",
     };
   }
+
+  static propTypes = {
+    openDrawer: React.PropTypes.func,
+    navigation: React.PropTypes.shape({
+      key: React.PropTypes.string,
+      routes: React.PropTypes.array,
+    }),
+    navigateTo: React.PropTypes.func,
+  }
+
+
+  navigateTo(route) {
+    this.props.navigateTo(route, 'userprofile');
+  }
+
 
   componentWillReceiveProps() {
     this.fetchData();
@@ -305,12 +322,14 @@ class Reviews extends Component {
   }
 
 
+
   render() {
     return (
       <Container style={styles.container}>
         <Header>
 
           <Title>{this.state.name}</Title>
+ 
         </Header>
 
         <Content>
@@ -319,6 +338,12 @@ class Reviews extends Component {
           <List>
             <ListItem>
             <Text>By {this.state.reviewOwner}</Text>
+            <Button
+              style={{ alignSelf: 'center', marginTop: 20, marginBottom: 20 }}
+              onPress={() => this.navigateTo('userProfile')}
+              >
+              View User Profile
+             </Button>
             </ListItem>
             <ListItem>
               <Text style={styles.headers}>Ingredients</Text>
