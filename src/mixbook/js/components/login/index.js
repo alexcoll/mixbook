@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { StyleSheet, View, Image, Text, KeyboardAvoidingView, TouchableOpacity, Alert } from 'react-native';
+import { StyleSheet, View, Image, Text, KeyboardAvoidingView, TouchableOpacity, Alert, Linking } from 'react-native';
 
 import * as GLOBAL from '../../globals';
 
@@ -247,6 +247,16 @@ class Login extends Component {
               <Text style={styles.buttonText}>Login</Text>
             </TouchableOpacity>
           </View>
+
+          <View style={styles.Bcontainer}>
+            <TouchableOpacity
+              style={styles.buttonContainer}
+              onPress={ ()=> Linking.openURL('https://mymixbook.com/mixbook/user/requestReset')}
+            >
+              <Text style={styles.buttonText}>Forgot Password</Text>
+            </TouchableOpacity>
+          </View>
+
         </View>
       </KeyboardAvoidingView>
     );

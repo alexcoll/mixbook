@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { ToastAndroid, TouchableOpacity, View, Alert } from 'react-native';
 import { connect } from 'react-redux';
-import { Container, Header, Title, Content, Button, Icon, List, ListItem, InputGroup, Input, Text, Thumbnail } from 'native-base';
+import { Container, Header, Title, Content, Button, Icon, List, ListItem, InputGroup, Input, Text, Thumbnail, ListView } from 'native-base';
 
 import { openDrawer } from '../../actions/drawer';
 import { actions } from 'react-native-navigation-redux-helpers';
@@ -40,7 +40,7 @@ class UserProfile extends Component {
 
 
   replaceAt(route) {
-    this.props.replaceAt('account', { key: route }, this.props.navigation.key);
+    this.props.replaceAt('userprofile', { key: route }, this.props.navigation.key);
   }
 
 
@@ -90,6 +90,15 @@ class UserProfile extends Component {
   }
 
   render() {
+
+    var dummy_user = [
+      {
+        user_name: 'test',
+        recipes: ['recipe1', 'recipe2'],
+        badges: ['badge1', 'badge2']
+
+      },
+    ];
     return (
       <Container style={styles.container}>
         <Header>
@@ -97,22 +106,22 @@ class UserProfile extends Component {
             <Icon name="ios-menu" />
           </Button>
 
-          <Title>My Profile</Title>
+          <Title>{this.state.inputUsername}'s Profile</Title>
         </Header>
 
         <Content>
           <List>
-            <ListItem>
-              <InputGroup disabled={this.state.isGuest}>
-                <Input
-                  disabled
-                  inlineLabel label="Username"
-                  placeholder="user"
-                  value={this.state.inputUsername}
-                  onChangeText={(inputUsername) => this.setState({ inputUsername })}
-                />
-              </InputGroup>
+          <ListItem>
+              <Text style={styles.headers}>
+              Recipes:
+              </Text> 
+
             </ListItem>
+            <ListItem>
+              <Text>
+              Badges:
+              </Text>
+          </ListItem>
 
           </List>
         </Content>

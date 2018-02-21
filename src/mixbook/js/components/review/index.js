@@ -64,8 +64,8 @@ class Reviews extends Component {
 
 
   navigateTo(route) {
-    this.props.navigateTo(route, 'userprofile');
-  }
+     this.props.navigateTo(route, 'userprofile');
+   }
 
 
   componentWillReceiveProps() {
@@ -320,6 +320,7 @@ class Reviews extends Component {
       console.warn("error getting user token from local store");
     });
   }
+  
 
 
 
@@ -427,6 +428,7 @@ class Reviews extends Component {
 function bindAction(dispatch) {
   return {
     replaceAt: (routeKey, route, key) => dispatch(replaceAt(routeKey, route, key)),
+    navigateTo: (route, homeRoute) => dispatch(navigateTo(route, homeRoute)),
   };
 }
 

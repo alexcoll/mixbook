@@ -126,7 +126,7 @@ class AppNavigator extends Component {
         return <AddRecipe />;
       case 'review':
         return <Review />;
-      case 'userprofile':
+      case 'userProfile':
         return <UserProfile />;
       case 'newAccount':
         return <NewAccount />;
