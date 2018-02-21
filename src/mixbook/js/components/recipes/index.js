@@ -260,8 +260,8 @@ class Recipes extends Component {
         'What do you want to do?',
         [
           {text: 'Details', onPress: () => this.goToReviewPage(item)},
+          {text: 'Edit'},
           {text: 'Delete', onPress: () => this.onListItemRemove(item)},
-          {text: 'Cancel', style: 'cancel'},
         ],
         { cancelable: true }
       )
