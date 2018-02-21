@@ -3,11 +3,14 @@ package com.mixbook.springmvc.Services;
 import javax.persistence.PersistenceException;
 
 import com.mixbook.springmvc.Exceptions.UnknownServerErrorException;
+import com.mixbook.springmvc.Models.PasswordResetToken;
 import com.mixbook.springmvc.Models.User;
 
 public interface UserService {
 
 	User findByEntityUsername(String username) throws UnknownServerErrorException;
+	
+	User findByEntityEmail(String email) throws UnknownServerErrorException;
 
 	void createUser(User user) throws PersistenceException, UnknownServerErrorException;
 

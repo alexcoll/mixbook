@@ -9,9 +9,11 @@ import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.query.NativeQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.mixbook.springmvc.Models.PasswordResetToken;
 import com.mixbook.springmvc.Models.User;
 import com.mixbook.springmvc.Services.UserService;
 
@@ -26,6 +28,13 @@ public class UserDaoImpl extends AbstractDao<Integer, User> implements UserDao {
 	public User findByEntityUsername(String username) throws Exception {
 		Criteria crit = createEntityCriteria();
 		crit.add(Restrictions.eq("username", username));
+		User user = (User)crit.uniqueResult();
+		return user;
+	}
+	
+	public User findByEntityEmail(String email) throws Exception {
+		Criteria crit = createEntityCriteria();
+		crit.add(Restrictions.eq("email", email));
 		User user = (User)crit.uniqueResult();
 		return user;
 	}
@@ -82,10 +91,10 @@ public class UserDaoImpl extends AbstractDao<Integer, User> implements UserDao {
 	}
 
 	public void changePassword(User user) throws Exception {
-		Query q = getSession().createQuery("update User set password = :password where username = :username");
+		Query q = getSession().createQuery("update User set password = :password, lastpasswordresetdate = :lastpasswordresetdate where username = :username");
 		q.setParameter("password", user.getPassword());
+		q.setParameter("lastpasswordresetdate", user.getLastPasswordResetDate());
 		q.setParameter("username", user.getUsername());
 		q.executeUpdate();
 	}
-
 }

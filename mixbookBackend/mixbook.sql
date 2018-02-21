@@ -34,6 +34,27 @@ ROW_FORMAT = DYNAMIC;
 
 
 -- -----------------------------------------------------
+-- Table `mixbookdb`.`users`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mixbookdb`.`password_reset_token` (
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
+  `user_user_id` BIGINT NOT NULL UNIQUE,
+  `token` VARCHAR(128) NOT NULL UNIQUE,
+  `expiry_date` TIMESTAMP NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `fk_user1_idx` (`user_id` ASC),
+  CONSTRAINT `fk_user1`
+    FOREIGN KEY (`user_id`)
+    REFERENCES `mixbookdb`.`users` (`user_id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE utf8mb4_unicode_ci
+ROW_FORMAT = DYNAMIC;
+
+
+-- -----------------------------------------------------
 -- Table `mixbookdb`.`AUTHORITY`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mixbookdb`.`AUTHORITY` (

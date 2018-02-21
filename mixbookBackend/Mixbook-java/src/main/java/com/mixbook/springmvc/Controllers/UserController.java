@@ -1,22 +1,38 @@
 package com.mixbook.springmvc.Controllers;
 
+import java.util.Arrays;
+
 import javax.persistence.PersistenceException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import static org.springframework.security.web.context.HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mixbook.springmvc.Exceptions.UnknownServerErrorException;
 import com.mixbook.springmvc.Models.JsonResponse;
+import com.mixbook.springmvc.Models.PasswordDto;
+import com.mixbook.springmvc.Models.PasswordResetToken;
 import com.mixbook.springmvc.Models.User;
 import com.mixbook.springmvc.Security.JwtTokenUtil;
+import com.mixbook.springmvc.Services.EmailService;
+import com.mixbook.springmvc.Services.PasswordResetTokenService;
 import com.mixbook.springmvc.Services.UserService;
 
 @Controller
@@ -25,11 +41,19 @@ public class UserController {
 
 	@Autowired
 	UserService userService;
+	
+	@Autowired
+	PasswordResetTokenService passwordResetTokenService;
+	
+	@Autowired
+	EmailService emailService;
 
 	private String tokenHeader = "Authorization";
 
 	@Autowired
 	private JwtTokenUtil jwtTokenUtil;
+	
+	private static final Logger logger = LogManager.getLogger(UserController.class);
 
 	@RequestMapping(value = "/createUser", 
 			method = RequestMethod.POST,
@@ -156,6 +180,89 @@ public class UserController {
 			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","Unknown server error"), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		return new ResponseEntity<JsonResponse>(new JsonResponse("OK",""), HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/resetPassword",
+			method = RequestMethod.POST)
+	@ResponseBody
+	public ResponseEntity<JsonResponse> resetPassword(HttpServletRequest request, @RequestParam("email") String email) {
+		try {
+			User user = userService.findByEntityEmail(email);
+			if (user == null) {
+				return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","No user found with that email"), HttpStatus.UNAUTHORIZED);
+			}
+			String token = passwordResetTokenService.generatePasswordResetToken(user);
+			String url = "https://" + request.getServerName() + request.getContextPath() + "/user/updatePassword?id=" + user.getUserId() + "&token=" + token;
+			emailService.generateResetPasswordEmail(email, url);
+		} catch (PersistenceException e) {
+			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","Password reset request has already been requested in the last 24 hours"), HttpStatus.BAD_REQUEST);
+		} catch (UnknownServerErrorException e) {
+			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","Unknown server error"), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return new ResponseEntity<JsonResponse>(new JsonResponse("OK",""), HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/savePassword",
+			method = RequestMethod.POST)
+	@ResponseBody
+	public ResponseEntity<JsonResponse> savePassword(HttpServletRequest request, PasswordDto passwordDto) {
+		try {
+			if (!userService.isUserPasswordValid(passwordDto.getNewPassword())) {
+				return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","Invalid password format"), HttpStatus.BAD_REQUEST);
+			}
+		} catch (UnknownServerErrorException e) {
+			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","Unknown server error"), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		try {
+			user.setPassword(passwordDto.getNewPassword());
+			userService.changePassword(user);
+			PasswordResetToken token = new PasswordResetToken();
+			user = userService.findByEntityUsername(user.getUsername());
+			token.setUser(user);
+			passwordResetTokenService.deleteToken(token);
+		} catch (UnknownServerErrorException e) {
+			SecurityContextHolder.getContext().setAuthentication(null);
+			SecurityContextHolder.clearContext();
+			HttpSession session = request.getSession();
+			session.invalidate();
+			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","Unknown server error"), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		SecurityContextHolder.getContext().setAuthentication(null);
+		SecurityContextHolder.clearContext();
+		HttpSession session = request.getSession();
+		session.invalidate();
+		return new ResponseEntity<JsonResponse>(new JsonResponse("OK",""), HttpStatus.OK);
+	}
+	@RequestMapping(value = "/updatePassword", method = RequestMethod.GET)
+	public String showChangePasswordPage(HttpServletRequest request, HttpServletResponse response, @RequestParam("id") Integer id, @RequestParam("token") String token) {
+		try {
+			User result = passwordResetTokenService.validatePasswordResetToken(id, token);
+			if (result == null) {
+				response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+				return "redirect:https://mymixbook.com";
+			}
+			Authentication authentication = new UsernamePasswordAuthenticationToken(result, null,
+					Arrays.asList(new SimpleGrantedAuthority("CHANGE_PASSWORD_PRIVILEGE")));
+			SecurityContext sc = SecurityContextHolder.getContext();
+			sc.setAuthentication(authentication);
+			HttpSession session = request.getSession(true);
+			session.setAttribute(SPRING_SECURITY_CONTEXT_KEY, sc);
+			return "redirect:/user/loadSavePasswordPage";
+		} catch (UnknownServerErrorException e) {
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			return "redirect:https://mymixbook.com";
+		}
+	}
+	
+	@RequestMapping(value = "/loadSavePasswordPage", method = RequestMethod.GET)
+	public String showSavePasswordPage() {
+		return "savePassword";
+	}
+	
+	@RequestMapping(value = "/requestReset", method = RequestMethod.GET)
+	public String requestReset() {
+		return "requestResetPassword";
 	}
 
 	@RequestMapping(value = "/getUserInfo", method = RequestMethod.GET)
