@@ -158,7 +158,7 @@ class AddRecipe extends Component {
     // Add the ingredient to the server
 
     store.get('account').then((data) => {
-      fetch(GLOBAL.API.BASE_URL + 'mixbook/recipe/createRecipe', {
+      fetch(GLOBAL.API.BASE_URL + '/mixbook/recipe/createRecipe', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
