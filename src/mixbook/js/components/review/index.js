@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { ToastAndroid, TouchableOpacity, Alert } from 'react-native';
 import { connect } from 'react-redux';
+
+import * as GLOBAL from '../../globals';
+
 import { actions } from 'react-native-navigation-redux-helpers';
 import { Container, Header, Title, Content, Button, Icon, List, ListItem, ListView, Text, Picker, Input, InputGroup, View, Grid, Col } from 'native-base';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -84,7 +87,7 @@ class Reviews extends Component {
         });
       }
 
-      fetch(`https://activitize.net/mixbook/review/loadReviewsForRecipe?id=${this.state.drinkNumber}`, {
+      fetch(`${GLOBAL.API.BASE_URL}/mixbook/review/loadReviewsForRecipe?id=${this.state.drinkNumber}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -112,7 +115,7 @@ class Reviews extends Component {
     });
 
     store.get('account').then((data) => {
-      fetch(`https://activitize.net/mixbook/recipe/getBrandsForRecipe?id=${this.state.drinkNumber}`, {
+      fetch(`${GLOBAL.API.BASE_URL}/mixbook/recipe/getBrandsForRecipe?id=${this.state.drinkNumber}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -202,12 +205,12 @@ class Reviews extends Component {
 
   onSubmit() {
     // Validate user input
-    if (this.state.inputRating < 1 || this.state.inputRating > 5) {
+    if (this.state.inputRating < 1 ||  this.state.inputRating > 5 || typeof this.state.inputRating == 'undefined') {
       Alert.alert('Please enter a rating between 1-5');
       return;
     }
 
-    if (this.state.inputReview == "") {
+    if (this.state.inputReview == "" || typeof this.state.inputReview == 'undefined')  {
       Alert.alert('Please enter some text in the review body');
       return;
     }
@@ -227,7 +230,7 @@ class Reviews extends Component {
     // Make the request
     store.get('account').then((data) => {
       var token = data.token;
-      fetch('https://activitize.net/mixbook/review/createReview', {
+      fetch(`${GLOBAL.API.BASE_URL}/mixbook/review/createReview`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -242,14 +245,19 @@ class Reviews extends Component {
         if (response.status == 200) {
           var json = await response.json();
           console.warn("Success");
+          ToastAndroid.show("Review added!", ToastAndroid.SHORT);
+          this.setState({
+            inputRating : "",
+            inputReviewText : ""
+          })
           this.fetchData();
           return json;
         } else if (response.status == 401) {
-          alert("User can not rate own recipe");
+          alert("User can not rate your own recipe!");
         } else if (response.status == 400) {
           console.log(this.state.userReviewing +  "!==" + this.state.reviewOwner);
           if (this.state.userReviewing !== this.state.reviewOwner) {
-            fetch('https://activitize.net/mixbook/review/editReview', {
+            fetch(`${GLOBAL.API.BASE_URL}/mixbook/review/editReview`, {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
@@ -266,6 +274,11 @@ class Reviews extends Component {
                 console.log("Successful edit of Review");
                 ToastAndroid.show("Review edited", ToastAndroid.SHORT);
                 this.fetchData();
+                this.setState({
+                  inputRating : "",
+                  inputReviewText : ""
+                })
+
                 return json;
               } else if (response.status == 401) {
                 alert("Was not able to edit/create review");

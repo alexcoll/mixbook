@@ -1,8 +1,9 @@
-
 import React, { Component } from 'react';
 import { ToastAndroid, TextInput, Alert, View, ListView, Text, TouchableHighlight, RefreshControl } from 'react-native';
 import { connect } from 'react-redux';
 import { Header, Title, Button, Icon } from 'native-base';
+
+import * as GLOBAL from '../../globals';
 
 import navigateTo from '../../actions/pageNav';
 import { openDrawer } from '../../actions/drawer';
@@ -113,7 +114,7 @@ class MyDrinks extends Component {
   }
 
   getDrinksAccount(token: string) {
-    fetch('https://activitize.net/mixbook/recipe/getAllRecipesUserCanMake', {
+    fetch(GLOBAL.API.BASE_URL + '/mixbook/recipe/getAllRecipesUserCanMake', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -155,7 +156,7 @@ class MyDrinks extends Component {
       }
 
       // Build url parameters
-      var baseURL = "https://activitize.net/mixbook/recipe/getAllRecipesAnonymousUserCanMake?brands=";
+      var baseURL = GLOBAL.API.BASE_URL + "/mixbook/recipe/getAllRecipesAnonymousUserCanMake?brands=";
       // Add each ingredient to the parameter
       for (i = 0; i < data.length; i++) {
         baseURL = baseURL + data[i] + ',';
@@ -236,7 +237,7 @@ class MyDrinks extends Component {
 
       // Delete the ingredient from the server
       store.get('account').then((data) => {
-        fetch('https://activitize.net/mixbook/recipe/deleteRecipe', {
+        fetch(GLOBAL.API.BASE_URL + '/mixbook/recipe/deleteRecipe', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

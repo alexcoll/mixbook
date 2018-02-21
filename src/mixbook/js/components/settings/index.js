@@ -1,8 +1,9 @@
-
 import React, { Component } from 'react';
 import { View, Text } from 'react-native';
 import { connect } from 'react-redux';
 import { Container, Header, Title, Content, Button, Icon, List, ListItem } from 'native-base';
+
+import * as GLOBAL from '../../globals';
 
 import { openDrawer } from '../../actions/drawer';
 import styles from './styles';

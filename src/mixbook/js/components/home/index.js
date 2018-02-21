@@ -3,6 +3,8 @@ import { Image } from 'react-native';
 import { connect } from 'react-redux';
 import { Container, Button, View, H3 } from 'native-base';
 
+import * as GLOBAL from '../../globals';
+
 import { openDrawer } from '../../actions/drawer';
 import myTheme from '../../themes/base-theme';
 import styles from './styles';
