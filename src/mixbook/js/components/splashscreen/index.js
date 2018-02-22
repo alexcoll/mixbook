@@ -30,9 +30,10 @@ class SplashScreen extends Component {
     store.get('account')
     .then((data) => {
       console.log("isLoggedIn=" + data.token);
+      
       if (data.token !== "") {
         // Get user profile information
-        fetch(GLOBAL.API.BASE_URL + '/mixbook/user/getUserInfo', {
+        fetch(`${GLOBAL.API.BASE_URL}/mixbook/user/getUserInfo?username=${data.userInfo.username}`, {
           method: 'GET',
           headers: {
             'Accept': 'application/json',
