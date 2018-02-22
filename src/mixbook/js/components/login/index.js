@@ -134,7 +134,7 @@ class Login extends Component {
 
   updateDatabase(token: string) {
     // Get user profile information
-    fetch(`${GLOBAL.API.BASE_URL}/mixbook/user/getUserInfo`, {
+    fetch(`${GLOBAL.API.BASE_URL}/mixbook/user/getUserInfo?username=${this.state.inputUsername}`, {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
