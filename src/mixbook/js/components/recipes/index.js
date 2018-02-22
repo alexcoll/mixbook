@@ -260,7 +260,7 @@ class Recipes extends Component {
         'What do you want to do?',
         [
           {text: 'Details', onPress: () => this.goToReviewPage(item)},
-          {text: 'Edit'},
+          {text: 'Edit', onPress: () => this.goToEditPage(item)},
           {text: 'Delete', onPress: () => this.onListItemRemove(item)},
         ],
         { cancelable: true }
@@ -277,6 +277,17 @@ class Recipes extends Component {
 
     //console.warn(global.recipeName);
     this.navigateTo('review');
+  }
+
+  goToEditPage(item: string) {
+
+    global.recipeName = item[1];
+    global.recipeId = item[0];
+    global.directions = item[2];
+    global.reviewOwner = item[7];
+
+    //console.warn(global.recipeName);
+    this.navigateTo('editRecipe');
   }
 
   _renderSeparator(sectionID, rowID, adjacentRowHighlighted) {
