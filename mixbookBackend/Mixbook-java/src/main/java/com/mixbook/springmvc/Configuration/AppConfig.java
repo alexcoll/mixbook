@@ -9,6 +9,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.format.FormatterRegistry;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mobile.device.DeviceHandlerMethodArgumentResolver;
@@ -28,6 +30,8 @@ import org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring4.view.ThymeleafViewResolver;
 import org.thymeleaf.templateresolver.ITemplateResolver;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
 import com.mixbook.springmvc.Formatters.NameFormatter;
 
 @Configuration
@@ -118,6 +122,20 @@ public class AppConfig extends WebMvcConfigurerAdapter {
 		props.put("mail.debug", "true");
 
 		return mailSender;
+	}
+	
+	public MappingJackson2HttpMessageConverter jacksonMessageConverter() {
+		MappingJackson2HttpMessageConverter messageConverter = new MappingJackson2HttpMessageConverter();
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.registerModule(new Hibernate5Module());
+		messageConverter.setObjectMapper(mapper);
+		return messageConverter;
+	}
+
+	@Override
+	public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+		converters.add(jacksonMessageConverter());
+		super.configureMessageConverters(converters);
 	}
 
 	@Bean
