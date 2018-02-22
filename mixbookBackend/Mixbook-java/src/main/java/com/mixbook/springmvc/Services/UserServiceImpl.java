@@ -57,14 +57,25 @@ public class UserServiceImpl implements UserService {
 			throw new UnknownServerErrorException("Unknown server error!");
 		}
 	}
+	
+	public User loadUserProfile(String username) throws PersistenceException, UnknownServerErrorException {
+		try {
+			User user = dao.loadUserProfile(username);
+			return user;
+		} catch (PersistenceException e) {
+			throw new PersistenceException("User not found!");
+		} catch (Exception e) {
+			throw new UnknownServerErrorException("Unknown server error!");
+		}
+	}
 
 	public void createUser(User user) throws PersistenceException, UnknownServerErrorException {
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		user.setEnabled(true);
 		Date currentTimestamp = new Date();
 		user.setLastPasswordResetDate(currentTimestamp);
-		user.setNumber_of_recipes(0);
-		user.setNumber_of_ratings(0);
+		user.setNumberOfRecipes(0);
+		user.setNumberOfRatings(0);
 		List<Authority> authorities = new ArrayList<Authority>();
 		Authority authority = new Authority();
 		authority.setId(1);

@@ -23,8 +23,12 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
 @Entity
 @Table(name="users")
+@JsonInclude(Include.NON_EMPTY)
 public class User implements Serializable {
 
 	@Id
@@ -169,19 +173,19 @@ public class User implements Serializable {
 		this.email = email;
 	}
 
-	public int getNumber_of_recipes() {
+	public int getNumberOfRecipes() {
 		return number_of_recipes;
 	}
 
-	public void setNumber_of_recipes(int number_of_recipes) {
+	public void setNumberOfRecipes(int number_of_recipes) {
 		this.number_of_recipes = number_of_recipes;
 	}
 
-	public int getNumber_of_ratings() {
+	public int getNumberOfRatings() {
 		return number_of_ratings;
 	}
 
-	public void setNumber_of_ratings(int number_of_ratings) {
+	public void setNumberOfRatings(int number_of_ratings) {
 		this.number_of_ratings = number_of_ratings;
 	}
 

@@ -2,7 +2,6 @@ package com.mixbook.springmvc.DAO;
 
 import java.util.List;
 
-import javax.persistence.NoResultException;
 import javax.persistence.PersistenceException;
 
 import org.hibernate.query.NativeQuery;

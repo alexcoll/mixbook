@@ -11,6 +11,8 @@ public interface UserService {
 	User findByEntityUsername(String username) throws UnknownServerErrorException;
 	
 	User findByEntityEmail(String email) throws UnknownServerErrorException;
+	
+	User loadUserProfile(String username) throws PersistenceException, UnknownServerErrorException;
 
 	void createUser(User user) throws PersistenceException, UnknownServerErrorException;
 

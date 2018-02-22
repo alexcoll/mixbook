@@ -59,7 +59,7 @@ public class BadgeServiceImpl implements BadgeService {
 	}
 	
 	private void determineRecipeBadgesToAdd(User user) throws Exception {
-		int numberOfRecipes = user.getNumber_of_recipes();
+		int numberOfRecipes = user.getNumberOfRecipes();
 		Badge createdFirstRecipe = new Badge(1, "Created First Recipe", "The user has created their first recipe!");
 		Badge bronzeRecipeCreation = new Badge(3, "Bronze Recipe Creation", "The user has created 5 total recipes!");
 		Badge silverRecipeCreation = new Badge(5, "Silver Recipe Creation", "The user has created 25 total recipes!");
@@ -88,7 +88,7 @@ public class BadgeServiceImpl implements BadgeService {
 	}
 	
 	private void determineReviewBadgesToAdd(User user) throws Exception {
-		int numberOfRatings = user.getNumber_of_ratings();
+		int numberOfRatings = user.getNumberOfRatings();
 		Badge createdFirstReview = new Badge(2, "Created First Review", "The user has reviewed their first recipe!");
 		Badge bronzeReviewCreation = new Badge(4, "Bronze Review Creation", "The user has reviewed 5 total recipes!");
 		Badge silverReviewCreation = new Badge(6, "Silver Review Creation", "The user has reviewed 25 total recipes!");

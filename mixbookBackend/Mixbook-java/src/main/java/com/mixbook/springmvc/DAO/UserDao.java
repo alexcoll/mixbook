@@ -10,6 +10,8 @@ public interface UserDao {
 	User findByEntityUsername(String username) throws Exception;
 	
 	User findByEntityEmail(String email) throws Exception;
+	
+	User loadUserProfile(String username) throws PersistenceException, Exception;
 
 	void createUser(User user) throws PersistenceException, Exception;
 
