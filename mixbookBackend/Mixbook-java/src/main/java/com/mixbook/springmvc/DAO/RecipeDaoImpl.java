@@ -16,6 +16,7 @@ import org.apache.logging.log4j.Logger;
 
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
+import org.hibernate.query.NativeQuery;
 import org.hibernate.type.IntegerType;
 
 import com.mixbook.springmvc.Exceptions.InvalidPermissionsException;
@@ -52,6 +53,9 @@ public class RecipeDaoImpl extends AbstractDao<Integer, Recipe> implements Recip
 		Set<Brand> brandIds = new HashSet<Brand>(brandList);
 		recipe.setBrands(brandIds);
 		persist(recipe);
+		NativeQuery q = getSession().createNativeQuery("UPDATE users SET number_of_recipes = number_of_recipes + 1 WHERE user_id = :user_id");
+		q.setParameter("user_id", user.getUserId());
+		q.executeUpdate();
 	}
 
 	public void editRecipe(Recipe recipe, User user) throws NoDataWasChangedException, Exception {

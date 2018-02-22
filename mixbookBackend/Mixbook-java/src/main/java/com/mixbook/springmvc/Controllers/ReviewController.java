@@ -24,6 +24,7 @@ import com.mixbook.springmvc.Models.Recipe;
 import com.mixbook.springmvc.Models.User;
 import com.mixbook.springmvc.Models.UserRecipeHasReview;
 import com.mixbook.springmvc.Security.JwtTokenUtil;
+import com.mixbook.springmvc.Services.BadgeService;
 import com.mixbook.springmvc.Services.ReviewService;
 
 @Controller
@@ -32,6 +33,9 @@ public class ReviewController {
 
 	@Autowired
 	ReviewService reviewService;
+	
+	@Autowired
+	private BadgeService badgeService;
 
 	private String tokenHeader = "Authorization";
 
@@ -59,6 +63,7 @@ public class ReviewController {
 		}
 		try {
 			reviewService.createReview(review);
+			badgeService.checkForNewBadges(review.getUser());
 		} catch (ReviewOwnRecipeException e) {
 			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","Attempted to review own recipe or recipe does not exist"), HttpStatus.BAD_REQUEST);
 		} catch (PersistenceException e) {

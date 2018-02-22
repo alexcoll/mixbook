@@ -267,17 +267,17 @@ public class UserController {
 
 	@RequestMapping(value = "/getUserInfo", method = RequestMethod.GET)
 	@ResponseBody
-	public ResponseEntity<User> getUserInfo(HttpServletRequest request) {
-		String token = request.getHeader(tokenHeader);
-		String username = jwtTokenUtil.getUsernameFromToken(token);
+	public ResponseEntity<User> getUserInfo(@RequestParam("username") String username) {
 		try {
-			User user = userService.findByEntityUsername(username);
-			User tempUser = new User();
-			tempUser.setUsername(username);
-			tempUser.setEmail(user.getEmail());
-			tempUser.setFirstName(user.getFirstName());
-			tempUser.setLastName(user.getLastName());
-			return new ResponseEntity<User>(tempUser, HttpStatus.OK);
+			User user = userService.loadUserProfile(username);
+			user.setPassword(null);
+			user.setEnabled(null);
+			user.setLastPasswordResetDate(null);
+			user.setAuthorities(null);
+			return new ResponseEntity<User>(user, HttpStatus.OK);
+		} catch (PersistenceException e) {
+			User emptyUser = new User();
+			return new ResponseEntity<User>(emptyUser, HttpStatus.BAD_REQUEST);
 		} catch (UnknownServerErrorException e) {
 			User emptyUser = new User();
 			return new ResponseEntity<User>(emptyUser, HttpStatus.INTERNAL_SERVER_ERROR);
