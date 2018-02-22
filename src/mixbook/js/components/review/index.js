@@ -176,7 +176,7 @@ class Reviews extends Component {
       Alert.alert("You can't rate your own recipe");
     }
 
-    if (this.state.inputRating < 1 || this.state.inputRating > 5|| typeof this.state.inputReview == 'undefined') {
+    if (this.state.inputRating < 1 || this.state.inputRating > 5 ) {
       Alert.alert('Please enter a rating between 1-5');
       return;
     }
