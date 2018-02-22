@@ -134,7 +134,7 @@ class Login extends Component {
 
   updateDatabase(token: string) {
     // Get user profile information
-    fetch(`${GLOBAL.API.BASE_URL}/mixbook/user/getUserInfo?username=${this.state.inputUsername}`, {
+    fetch(`${GLOBAL.API.BASE_URL}/mixbook/user/getUserInfo`, {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
@@ -185,7 +185,7 @@ class Login extends Component {
     store.save('account', {
       isLoggedIn: true,
       isGuest: true,
-      // token: "",
+      token: "",
       userInfo: {
         username: "guest_user",
         email: "guest@mymixbook.com",

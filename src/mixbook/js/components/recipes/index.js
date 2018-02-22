@@ -260,22 +260,12 @@ class Recipes extends Component {
         'What do you want to do?',
         [
           {text: 'Details', onPress: () => this.goToReviewPage(item)},
-          {text: 'Edit', onPress: () => this.goToEditPage(item) },
+          {text: 'Edit'},
           {text: 'Delete', onPress: () => this.onListItemRemove(item)},
         ],
         { cancelable: true }
       )
     }
-  }
-
-  goToEditPage(item: string) {
-    global.recipeName = item[1];
-    global.recipeId = item[0];
-    global.directions = item[2];
-    global.reviewOwner = item[7];
-    
-    this.navigateTo('editRecipe');
-
   }
 
   goToReviewPage(item: string) {
