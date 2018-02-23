@@ -155,7 +155,8 @@ class Login extends Component {
             firstName: json.firstName,
             lastName: json.lastName,
             badges: json.badges,
-            
+            numOfRatings: json.numberOfRatings,
+            numOfRecipes: json.numberOfRecipes,
           }
         })
         .then(() => {

@@ -364,8 +364,6 @@ class Recipes extends Component {
                 <View style={styles.row}>
                   <Text style={styles.rowText}>
                     {rowData[1]}
-                    {rowData[5]}
-                    {rowData[6]}
                   </Text>
                 </View>
               </View>

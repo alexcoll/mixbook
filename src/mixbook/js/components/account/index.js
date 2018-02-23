@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ToastAndroid, TouchableOpacity, View, Alert } from 'react-native';
+import { ToastAndroid, TouchableOpacity, TouchableHighlight, View, Alert } from 'react-native';
 import { connect } from 'react-redux';
 import { Container, Header, Title, Content, Button, Icon, List, ListItem, InputGroup, Input, Text, Thumbnail } from 'native-base';
 
@@ -42,6 +42,9 @@ class Account extends Component {
       inputOldPassword: '',
       inputNewPassword1: '',
       inputNewpassword2: '',
+      badges: [],
+      ratings: 0,
+      recipes: 0,
     };
   }
 
@@ -61,7 +64,13 @@ class Account extends Component {
         inputFirstName: data.userInfo.firstName,
         inputLastName: data.userInfo.lastName,
         inputEmail: data.userInfo.email,
+        badges: data.userInfo.badges,
+        ratings: data.userInfo.numOfRatings,
+        recipes: data.userInfo.numOfRecipes,
       });
+      console.log(this.state.badges);
+      console.log(this.state.ratings);
+      console.log(this.state.recipes);
     })
     .catch((error) => {
       console.warn("error getting settings from local store");
@@ -78,7 +87,10 @@ class Account extends Component {
         username: "",
         email: "",
         firstName: "",
-        lastName: ""
+        lastName: "",
+        badges: [],
+        numOfRatings: 0,
+        numOfRecipes: 0,
       }
     })
     .then(() => {
@@ -344,49 +356,49 @@ class Account extends Component {
 
   fillReviewBadges(goal : number) {
 
-    if(goal == 1 && false) {
+    if(goal == 1 && this.state.badges.some(b => b.badgeId === 2)) {
       return {
         color: "#4F8EF7"
       }
     }
 
-    if(goal == 5 && true) {
+    if(goal == 5 && this.state.badges.some(b => b.badgeId === 4)) {
       return {
         color: "#cc9900"
       }
     }
 
-    if(goal == 25 && true) {
+    if(goal == 25 && this.state.badges.some(b => b.badgeId === 6)) {
       return {
         color: "#808080"
       }
     }
 
-    if(goal == 50 && true) {
+    if(goal == 50 && this.state.badges.some(b => b.badgeId === 8)) {
       return {
         color: "#ffff00"
       }
     }
 
-    if(goal == 100 && true) {
+    if(goal == 100 && this.state.badges.some(b => b.badgeId === 10)) {
       return {
         color: "#4d4d4d"
       }
     }
 
-    if(goal == 250 && true) {
+    if(goal == 250 && this.state.badges.some(b => b.badgeId === 12)) {
       return {
         color: "#b9f2ff"
       }
     }
 
-    if(goal == 500 && true) {
+    if(goal == 500 && this.state.badges.some(b => b.badgeId === 14)) {
       return {
         color: "#b36b00"
       }
     }
 
-    if(goal == 1000 && true) {
+    if(goal == 1000 && this.state.badges.some(b => b.badgeId === 16)) {
       return {
         color: "#cc0000"
       }
@@ -394,56 +406,56 @@ class Account extends Component {
 
     else {
       return {
-        color: "#f2f2f2"
+        color: "#e6e6e6"
       }
     }
   }
 
   fillRecipeBadges(goal : number) {
     
-        if(goal == 1 && true) {
+        if(goal == 1 && this.state.badges.some(b => b.badgeId === 1)) {
           return {
             color: "#4F8EF7"
           }
         }
     
-        if(goal == 5 && true) {
+        if(goal == 5 && this.state.badges.some(b => b.badgeId === 3)) {
           return {
             color: "#cc9900"
           }
         }
     
-        if(goal == 25 && true) {
+        if(goal == 25 && this.state.badges.some(b => b.badgeId === 5)) {
           return {
             color: "#808080"
           }
         }
     
-        if(goal == 50 && true) {
+        if(goal == 50 && this.state.badges.some(b => b.badgeId === 7)) {
           return {
             color: "#ffff00"
           }
         }
     
-        if(goal == 100 && true) {
+        if(goal == 100 && this.state.badges.some(b => b.badgeId === 9)) {
           return {
             color: "#4d4d4d"
           }
         }
     
-        if(goal == 250 && true) {
+        if(goal == 250 && this.state.badges.some(b => b.badgeId === 11)) {
           return {
             color: "#b9f2ff"
           }
         }
     
-        if(goal == 500 && true) {
+        if(goal == 500 && this.state.badges.some(b => b.badgeId === 13)) {
           return {
             color: "#b36b00"
           }
         }
     
-        if(goal == 1000 && true) {
+        if(goal == 1000 && this.state.badges.some(b => b.badgeId === 15)) {
           return {
             color: "#cc0000"
           }
@@ -451,9 +463,52 @@ class Account extends Component {
     
         else {
           return {
-            color: "#f2f2f2"
+            color: "#e6e6e6"
           }
         }
+      }
+
+      _pressBadge(badgeName: string, badgeLevel: string, target: number) {
+        if(badgeName.startsWith("review"))
+        {
+          var leftToGo = target - this.state.ratings;
+          var currentValue = this.state.ratings;
+        }
+          
+
+        if(badgeName.startsWith("recipe"))
+        {
+          var leftToGo = target - this.state.recipes;
+          var currentValue = this.state.recipes;
+        }
+
+
+        //User has not gotten badge yet
+        if(leftToGo > 0)  
+        {
+          Alert.alert(
+            badgeLevel,
+            "You have completed " + currentValue + " " + badgeName + ". You need " + leftToGo + " more " + badgeName + " to get this badge!",
+            [
+              {text: 'Close', style: 'cancel'},
+            ],
+            { cancelable: true }
+          )
+        }
+
+        //User has earned this badge
+        else
+        {
+          Alert.alert(
+            badgeLevel,
+            "You have earned the " + badgeLevel + " badge for having created at least " + target + " " + badgeName + "!",
+            [
+              {text: 'Close', style: 'cancel'},
+            ],
+            { cancelable: true }
+          )
+        }
+
       }
 
   render() {
@@ -511,29 +566,107 @@ class Account extends Component {
               </InputGroup>
             </ListItem>
             <ListItem>
-              <Text>{`Badges 
-                `}
+              <View>
+                <Text>{`Badges\n`} </Text>
                 
-                <MaterialIcons name="border-color" size={25} style={this.fillReviewBadges(1)}/>{`    `}
-                <MaterialIcons name="border-color" size={25} style={this.fillReviewBadges(5)}/>{`    `}
-                <MaterialIcons name="border-color" size={25} style={this.fillReviewBadges(25)}/>{`    `}
-                <MaterialIcons name="border-color" size={25} style={this.fillReviewBadges(50)}/>{`    `}
-                <MaterialIcons name="border-color" size={25} style={this.fillReviewBadges(100)}/>{`    `}
-                <MaterialIcons name="border-color" size={25} style={this.fillReviewBadges(250)}/>{`    `}
-                <MaterialIcons name="border-color" size={25} style={this.fillReviewBadges(500)}/>{`    `}
-                <MaterialIcons name="border-color" size={25} style={this.fillReviewBadges(1000)}/>{`    `}
-                {`
+                <View style={{flexDirection: 'row'}}>
+                  <Text>{`      `}</Text>
+                  <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("review", "First Review", 1)}}>
+                    <MaterialIcons name="border-color" size={25} style={this.fillReviewBadges(1)} />
+                  </TouchableOpacity>
+                  <Text>{`    `}</Text>
 
-                `}
-                <MaterialIcons name="local-drink" size={25} style={this.fillRecipeBadges(1)}/>{`    `}
-                <MaterialIcons name="local-drink" size={25} style={this.fillRecipeBadges(5)}/>{`    `}
-                <MaterialIcons name="local-drink" size={25} style={this.fillRecipeBadges(25)}/>{`    `}
-                <MaterialIcons name="local-drink" size={25} style={this.fillRecipeBadges(50)}/>{`    `}
-                <MaterialIcons name="local-drink" size={25} style={this.fillRecipeBadges(100)}/>{`    `}
-                <MaterialIcons name="local-drink" size={25} style={this.fillRecipeBadges(250)}/>{`    `}
-                <MaterialIcons name="local-drink" size={25} style={this.fillRecipeBadges(500)}/>{`    `}
-                <MaterialIcons name="local-drink" size={25} style={this.fillRecipeBadges(1000)}/>{`    `}
-              </Text>
+                  <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("reviews", "Bronze", 5)}}>
+                    <MaterialIcons name="border-color" size={25} style={this.fillReviewBadges(5)}/>
+                  </TouchableOpacity>
+                  <Text>{`    `}</Text>
+
+                  <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("reviews", "Silver", 25)}}>
+                    <MaterialIcons name="border-color" size={25} style={this.fillReviewBadges(25)}/>
+                  </TouchableOpacity>
+                  <Text>{`    `}</Text>
+
+
+                  <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("reviews", "Gold", 50)}}>
+                    <MaterialIcons name="border-color" size={25} style={this.fillReviewBadges(50)}/>
+                  </TouchableOpacity>
+                  <Text>{`    `}</Text>
+
+
+                  <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("reviews", "Platinum", 100)}}>
+                    <MaterialIcons name="border-color" size={25} style={this.fillReviewBadges(100)}/>
+                  </TouchableOpacity>
+                  <Text>{`    `}</Text>
+
+
+                  <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("reviews", "Diamond", 250)}}>
+                    <MaterialIcons name="border-color" size={25} style={this.fillReviewBadges(250)}/>
+                  </TouchableOpacity>
+                  <Text>{`    `}</Text>
+
+
+                  <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("reviews", "Centurion", 500)}}>
+                    <MaterialIcons name="border-color" size={25} style={this.fillReviewBadges(500)}/>
+                  </TouchableOpacity>
+                  <Text>{`    `}</Text>
+
+
+                  <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("reviews", "Mixologist", 1000)}}>
+                    <MaterialIcons name="border-color" size={25} style={this.fillReviewBadges(1000)}/>
+                  </TouchableOpacity>
+                  <Text>{`    `}</Text>
+                
+              </View>
+
+              <Text>{`\n`}</Text>
+            
+            <View style={{flexDirection: 'row'}}>
+              <Text>{`      `}</Text>
+              <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("recipe", "First Review", 1)}}>
+              <MaterialIcons name="local-drink" size={25} style={this.fillRecipeBadges(1)} />
+            </TouchableOpacity>
+            <Text>{`    `}</Text>
+
+            <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("recipes", "Bronze", 5)}}>
+              <MaterialIcons name="local-drink" size={25} style={this.fillRecipeBadges(5)}/>
+            </TouchableOpacity>
+            <Text>{`    `}</Text>
+
+            <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("recipes", "Silver", 25)}}>
+              <MaterialIcons name="local-drink" size={25} style={this.fillRecipeBadges(25)}/>
+            </TouchableOpacity>
+            <Text>{`    `}</Text>
+
+
+            <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("recipes", "Gold", 50)}}>
+              <MaterialIcons name="local-drink" size={25} style={this.fillRecipeBadges(50)}/>
+            </TouchableOpacity>
+            <Text>{`    `}</Text>
+
+
+            <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("recipes", "Platinum", 100)}}>
+              <MaterialIcons name="local-drink" size={25} style={this.fillRecipeBadges(100)}/>
+            </TouchableOpacity>
+            <Text>{`    `}</Text>
+
+
+            <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("recipes", "Diamond", 250)}}>
+              <MaterialIcons name="local-drink" size={25} style={this.fillRecipeBadges(250)}/>
+            </TouchableOpacity>
+            <Text>{`    `}</Text>
+
+
+            <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("recipes", "Centurion", 500)}}>
+              <MaterialIcons name="local-drink" size={25} style={this.fillRecipeBadges(500)}/>
+            </TouchableOpacity>
+            <Text>{`    `}</Text>
+
+
+            <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("recipes", "Mixologist", 1000)}}>
+              <MaterialIcons name="local-drink" size={25} style={this.fillRecipeBadges(1000)}/>
+            </TouchableOpacity>
+            </View>
+            </View>
             </ListItem>
             <ListItem>
               <Text>Change Password</Text>
