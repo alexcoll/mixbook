@@ -44,5 +44,27 @@ module.exports = StyleSheet.create({
     textAlign: 'center',
     paddingTop: 10,
     textAlignVertical: 'center'
+  },
+  input: {
+		height: 40,
+		backgroundColor: 'rgba(255,255,255,0.7)',
+		marginBottom: 20
+  },
+  inputdir: {
+		height: 100,
+		backgroundColor: 'rgba(255,255,255,0.7)',
+		marginBottom: 20
+  },
+  Bcontainer: {
+    padding: 20
+  },
+  buttonContainer: {
+    backgroundColor: '#2980b9',
+    paddingVertical: 20
+  },
+  buttonText: {
+    textAlign: 'center',
+    color: '#FFFFFF',
+    fontWeight: '700'
   }
 });

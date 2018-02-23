@@ -1,67 +1,120 @@
 import React, { Component } from 'react';
-import { ToastAndroid, TouchableOpacity, Alert } from 'react-native';
+import { ToastAndroid, TouchableHighlight, Alert, View, Text, TextInput, ListView, RefreshControl, List, ListItem, TouchableOpacity} from 'react-native';
 import { connect } from 'react-redux';
+import { Header, Title, Button, Icon } from 'native-base';
 
 import * as GLOBAL from '../../globals';
 
-import { actions } from 'react-native-navigation-redux-helpers';
-import { Container, Header, Title, Content, Button, Icon, List, ListItem, ListView, Text, Picker, Input, InputGroup, View, Grid, Col } from 'native-base';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-
-//Load global variables
-import '../recipes/index.js';
-import '../login/index.js';
-
+import navigateTo from '../../actions/pageNav'
 import styles from './styles';
 import store from 'react-native-simple-store';
 
-const Item = Picker.Item;
+import RecipeForm from './recipeForm';
 
-const {
-  replaceAt,
-} = actions;
+var filter = require('lodash/filter');
 
 class EditRecipe extends Component {
 
   static propTypes = {
-    replaceAt: React.PropTypes.func,
     navigation: React.PropTypes.shape({
       key: React.PropTypes.string,
     }),
+    navigateTo: React.PropTypes.func,
   }
 
   constructor(props) {
     super(props);
-    console.log(props.items);
+    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
-      isGuest: true,
-      name: global.recipeName,
-      directions: global.directions,
-      drinkNumber: global.recipeId,
-      reviewOwner: global.reviewOwner,
-      userReviewing: global.username,
-      rating: 0,
-      numRatings: 0.0,
-      reviews: "",
-      theList: [],
-      ingredientsList: {},
-      inputRating: "",
-      inputReviewText: "",
-      isOwnRecipe: false,
-      hasUserReviewed: false,
+      dataSource: ds.cloneWithRows(['Start typing to search possible ingredients']),
+      searchText: "",
+      isLoading: false,
+      empty: false,
+      rawData: ['Start typing to search possible ingredients'],
+      ingredients: [],
+      drinkName: "",
+      difficulty: 0,
+      directions: ""
     };
-
-    this.current_user = "";
-    this.auth_token = "";
   }
 
-  componentWillReceiveProps() {
+  navigateTo(route) {
+    this.props.navigateTo(route, 'editRecipe');
+  }
+
+  componentDidMount() {
+    this.getBrands();
     this.getRemoteData();
   }
 
-  componentWillMount() {
-    this.getLocalData();
-    this.getRemoteData();
+  updateRecipeName = (text) => {
+    this.setState({recipeName: text})
+  }
+
+  updateDirections = (text) => {
+    this.setState({directions: text})
+  }
+
+  updateDifficulty = (text) => {
+    this.setState({difficulty: text})
+  }
+
+  getBrands() {
+    store.get('brands').then((data) => {
+      this.setState({
+        dataSource: this.state.dataSource.cloneWithRows(data),
+        isLoading: false,
+        empty: false,
+        rawData: data,
+      });
+    }).catch(error => {
+      console.warn("error getting the brand list from the local store");
+      this.setState({
+        empty: true,
+        isLoading: false,
+      });
+    });
+  }
+
+  onTapRefresh() {
+    Alert.alert(
+      "Refresh Brand List",
+      'Are you sure you want to refresh? This may take a long time to load',
+      [
+        {text: 'Refresh', onPress: () => this.getRemoteData()},
+        {text: 'Cancel', style: 'cancel'},
+      ],
+      { cancelable: true }
+    )
+  }
+
+  getRemoteData() {
+    fetch(GLOBAL.API.BASE_URL + '/mixbook/brand/getBrands', {
+      method: 'GET',
+    })
+    .then(async (response) => {
+      if (response.status == 200) {
+        var brandList = await response.json();
+
+        store.save("brands", brandList)
+        .catch(error => {
+          console.warn("error storing the brand list into the local store");
+        });
+
+        this.setState({
+          dataSource: this.state.dataSource.cloneWithRows(brandList),
+          rawData: brandList,
+        });
+
+        return brandList;
+      } else {
+        this.showServerErrorAlert(response);
+        return;
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+    });
   }
 
   showServerErrorAlert(response) {
@@ -69,295 +122,164 @@ class EditRecipe extends Component {
       "Server Error",
       "Got response: " + response.status + " " + response.statusText,
       [
-        {text: 'Dismiss', style: 'cancel'}
+      {text: 'Dismiss', style: 'cancel'}
       ],
       { cancelable: true }
-    );
+      );
   }
 
-  getLocalData() {
-    store.get('account').then((data) => {
-      this.current_user = data.userInfo.username;
-      this.auth_token = data.token;
-
-      this.setState({
-        isGuest: data.isGuest,
+  onItemAdd(item) {
+    store.get('recipeIngredients').then((data) => {
+      var list = this.state.ingredients;
+      var key = "brandName";
+      var obj = {};
+      obj[key] = item;
+      list.push(
+        obj
+      );
+      Alert.alert(
+        "Recipe now includes:",
+        "" +  item,
+        [
+        {text: 'Dismiss', style: 'cancel'}
+        ],
+        { cancelable: true }
+      );
+      store.update('recipeIngredients', list).catch((error) => {
+        console.warn("Could not add to recipe");
       });
 
-      if (data.userInfo.username == this.state.reviewOwner) {
-        this.setState({
-          isOwnRecipe: true,
-        });
-      } else {
-        this.setState({
-          isOwnRecipe: false,
-        });
-      }
+        this.setState({ingredients: list});
+    });
+  }
+
+
+  onSubmitLogin() {
+    console.log()
+    store.get('account').then((data) => {
+      fetch(GLOBAL.API.BASE_URL + '/mixbook/recipe/createRecipe', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': data.token,
+        },
+        body: JSON.stringify({
+          recipeName: this.state.recipeName,
+          directions: this.state.directions,
+          difficulty: this.state.difficulty,
+          brands: this.state.ingredients
+      })
+      }).then((response) => {
+        if (response.status == 200) {
+          console.log("recipe added successfully");
+          Alert.alert(
+            "Recipe has been added",
+            "",
+            [
+              {text: 'Dismiss', style: 'cancel'}
+            ],
+            { cancelable: true }
+          );
+          // store.get("inventory").then((data) => {
+          //   var list = data;
+          //   list.push(item);
+          //   store.save("inventory", list).catch((error) => {
+          //     console.warn("error stroing new inventory list into local store");
+          //     console.warn(error);
+          //   });
+          //   ToastAndroid.show("Item added", ToastAndroid.SHORT);
+          // }).catch((error) => {
+          //     console.warn("error getting inventory list from local store");
+          //     console.warn(error);
+          //   });
+        } else {
+          this.showServerErrorAlert(response);
+          return;
+        }
+      }).catch((error) => {
+        console.error(error);
+      });
     }).catch((error) => {
       console.warn("error getting user token from local store");
+      console.warn(error);
     });
-  }
 
-  getRemoteData() {
-    this.getBrandsForRecipe();
-    this.loadReviewsForRecipe();
-  }
-
-  loadReviewsForRecipe() {
-    fetch(`${GLOBAL.API.BASE_URL}/mixbook/review/loadReviewsForRecipe?id=${this.state.drinkNumber}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    }).then(async (response) => {
-      if (response.status == 200) {
-        var json = await response.json();
-
-        // Check if user has already written a review
-        for (i = 0; i < json.length; i++) {
-          if (json[i][2] == this.current_user) {
-            this.setState({
-              hasUserReviewed: true,
-              inputRating: String(json[i][1]),
-              inputReviewText: json[i][0],
-            })
-          }
-          break;
-        }
-
-        this.setState({theList: json});
-      } else {
-        Alert.alert(
-          "Server Error",
-          "Could Not Load Reviews",
-          [
-            {text: 'Dismiss', style: 'cancel'}
-          ],
-          { cancelable: true }
-        );
-      }
-    }).catch((error) => {
-      console.error(error);
-    });
-  }
-
-  getBrandsForRecipe() {
-    fetch(`${GLOBAL.API.BASE_URL}/mixbook/recipe/getBrandsForRecipe?id=${this.state.drinkNumber}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    }).then(async (response) => {
-      if (response.status == 200) {
-        var json = await response.json();
-        this.setState({ingredientsList: json});
-      } else {
-        Alert.alert(
-          "Server Error",
-          "Could Not Load Ingredients",
-          [
-            {text: 'Dismiss', style: 'cancel'}
-          ],
-          { cancelable: true }
-        );
-      }
-    }).catch((error) => {
-      console.error(error);
-    });
+    //this.props.popRoute();
   }
 
 
-  replaceAt(route) {
-    this.props.replaceAt('recipes', { key: route }, this.props.navigation.key);
-  }
 
-  onSubmit() {
-    if (this.state.userReviewing == this.state.reviewOwner || typeof this.state.inputRating == 'undefined') {
-      Alert.alert("You can't rate your own recipe");
-    }
 
-    if (this.state.inputRating < 1 || this.state.inputRating > 5 ) {
-      Alert.alert('Please enter a rating between 1-5');
-      return;
-    }
 
-    if (this.state.inputReview == "") {
-      Alert.alert('Reviews cannot be blank');
-      return;
-    }
 
-    if (this.state.hasUserReviewed) {
-      this.editReview();
-    } else {
-      this.createReview();
-    }
-  }
-
-  createReview() {
-    fetch(`${GLOBAL.API.BASE_URL}/mixbook/review/createReview`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': this.auth_token,
-      },
-      body: JSON.stringify({
-        pk: {recipe: { recipeId: this.state.drinkNumber }},
-        reviewCommentary: this.state.inputReviewText,
-        rating: this.state.inputRating
-      })
-    }).then(async (response) => {
-      if (response.status == 200) {
-        var json = await response.json();
-        ToastAndroid.show("Review added", ToastAndroid.SHORT);
-        this.getRemoteData();
-        return json;
-      } else {
-        this.showServerErrorAlert(response);
-        return;
-      }
-    }).catch((error) => {
-      console.error(error);
-    });
-  }
-
-  editReview() {
-    fetch(`${GLOBAL.API.BASE_URL}/mixbook/review/editReview`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': this.auth_token,
-      },
-      body: JSON.stringify({
-        pk: {recipe: { recipeId: this.state.drinkNumber }},
-        reviewCommentary: this.state.inputReviewText,
-        rating: this.state.inputRating
-      })
-    }).then(async (response) => {
-      if (response.status == 200) {
-        var json = await response.json();
-        console.log("Successful edit of Review");
-        ToastAndroid.show("Review edited", ToastAndroid.SHORT);
-        this.getRemoteData();
-        return json;
-      } else {
-        this.showServerErrorAlert(response);
-        return;
-      }
-    }).catch((error) => {
-      console.error(error);
-    });
-  }
-
-  getReviewSectionHeaderText() {
-    if (this.state.hasUserReviewed) {
-      return "Edit review";
-    } else {
-      return "Write review";
-    }
-  }
-
-  getReviewSubmitButtonText() {
-    if (this.state.hasUserReviewed) {
-      return "Edit";
-    } else {
-      return "Add";
-    }
+  _renderSeparator(sectionID, rowID, adjacentRowHighlighted) {
+    return (
+      <View
+        key={`${sectionID}-${rowID}`}
+        style={{
+          height: adjacentRowHighlighted ? 4 : 1,
+          backgroundColor: adjacentRowHighlighted ? '#3B5998' : '#CCCCCC',
+        }}
+      />
+    );
   }
 
   render() {
     return (
-      <Container style={styles.container}>
-        <Header>
-          <Title>{this.state.name}</Title>
-        </Header>
-        <Content>
-          <View>
-          <List>
-            <ListItem>
-            <Text>By {this.state.reviewOwner}</Text>
-            </ListItem>
-            <ListItem>
-              <Text style={styles.headers}>Ingredients</Text>
-                 <List dataArray={this.state.ingredientsList}
-                  renderRow={(data) =>
-                    <ListItem>
-                      <Grid>
-                        <Col>
-                          <Text style={styles.listTest}>{data}</Text>
-                        </Col>
-                       </Grid>
-                    </ListItem>
-                  }>
-                </List>
-            </ListItem>
-            <ListItem>
-              <Text>
-                Directions: {this.state.directions}
-              </Text>
-            </ListItem>
-            <ListItem>
-              <Text>
-                {this.getReviewSectionHeaderText()}
-              </Text>
-            </ListItem>
-          </List>
-          </View>
-          <List>
-            <ListItem>
-              <InputGroup disabled={this.state.isGuest || this.state.isOwnRecipe}>
-                <Input
-                  inlineLabel label="Rating"
-                  placeholder="0-5"
-                  value={String(this.state.inputRating)}
-                  onChangeText={(inputRating) => this.setState({ inputRating })}
-                />
-              </InputGroup>
-            </ListItem>
-            <ListItem>
-              <InputGroup disabled={this.state.isGuest || this.state.isOwnRecipe}>
-                <Input
-                  inlineLabel label="Review"
-                  placeholder="Review text"
-                  value={this.state.inputReviewText}
-                  onChangeText={(inputReviewText) => this.setState({ inputReviewText })}
-                />
-              </InputGroup>
-            </ListItem>
-          </List>
-          <Button
-            disabled={this.state.isGuest || this.state.isOwnRecipe}
-            style={{ alignSelf: 'center', marginTop: 20, marginBottom: 20 }}
-            onPress={() => this.onSubmit()}
-          >
-            {this.getReviewSubmitButtonText()}
-          </Button>
+      <View style={{flex: 1}}>
+        <View style={styles.container}>
+          <Header>
+            <Title>Edit Recipe</Title>
+            <Button transparent onPress={() => this.onTapRefresh()}>
+              <Icon name="ios-refresh" />
+            </Button>
+          </Header>
 
-          <View>
-          <List>
-            <ListItem>
-              <Text>Reviews</Text>
-            </ListItem>
-            <ListItem>
-             <List dataArray={this.state.theList}
-              renderRow={(data) =>
-                <ListItem>
-                  <Text style={styles.listTest}>{data[2]}: {data[0]}</Text>
-                  <Text style={styles.listTest} note>{data[1]} stars</Text>
-                </ListItem>
-                }>
-              </List>
-            </ListItem>
-          </List>
+
+        </View>
+
+
+            <View style ={styles.formContainer}>
+
+              <Text>Recipe Name: {global.recipeName} </Text> 
+
+              <View></View>
+              <Text>Recipe Directions </Text> 
+              <TextInput
+                underlineColorAndroid={'transparent'}
+                defaultValue={global.directions}
+                style={styles.inputdir}
+                returnKeyType="next"
+                multiline={true}
+
+             />
+               <Text>Recipe Difficulty </Text> 
+              <TextInput
+                underlineColorAndroid={'transparent'}
+                defaultValue={global.difficulty}
+                style={styles.input}
+                returnKeyType="next"
+              />
+
+
+
+        </View>
+        <View style={styles.Bcontainer}>
+            <TouchableOpacity
+              style={styles.buttonContainer}
+              // onPress={() => this.onSubmitLogin()}
+            >
+              <Text style={styles.buttonText}>Update Recipe</Text>
+            </TouchableOpacity>
           </View>
-        </Content>
-      </Container>
+        </View>
     );
   }
-}
+  }
 
 function bindAction(dispatch) {
   return {
-    replaceAt: (routeKey, route, key) => dispatch(replaceAt(routeKey, route, key)),
+    navigateTo: (route, homeRoute) => dispatch(navigateTo(route, homeRoute)),
   };
 }
 
