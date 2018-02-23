@@ -3,9 +3,10 @@ import { ToastAndroid, TouchableOpacity, View, Alert } from 'react-native';
 import { connect } from 'react-redux';
 import { Container, Header, Title, Content, Button, Icon, List, ListItem, InputGroup, Input, Text, Thumbnail } from 'native-base';
 
+import ToolTip from 'react-native-tooltip';
 import { openDrawer } from '../../actions/drawer';
 import { actions } from 'react-native-navigation-redux-helpers';
-
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import * as GLOBAL from '../../globals';
 
 import styles from './styles';
@@ -341,6 +342,119 @@ class Account extends Component {
     });
   }
 
+  fillReviewBadges(goal : number) {
+
+    if(goal == 1 && false) {
+      return {
+        color: "#4F8EF7"
+      }
+    }
+
+    if(goal == 5 && true) {
+      return {
+        color: "#cc9900"
+      }
+    }
+
+    if(goal == 25 && true) {
+      return {
+        color: "#808080"
+      }
+    }
+
+    if(goal == 50 && true) {
+      return {
+        color: "#ffff00"
+      }
+    }
+
+    if(goal == 100 && true) {
+      return {
+        color: "#4d4d4d"
+      }
+    }
+
+    if(goal == 250 && true) {
+      return {
+        color: "#b9f2ff"
+      }
+    }
+
+    if(goal == 500 && true) {
+      return {
+        color: "#b36b00"
+      }
+    }
+
+    if(goal == 1000 && true) {
+      return {
+        color: "#cc0000"
+      }
+    }
+
+    else {
+      return {
+        color: "#f2f2f2"
+      }
+    }
+  }
+
+  fillRecipeBadges(goal : number) {
+    
+        if(goal == 1 && true) {
+          return {
+            color: "#4F8EF7"
+          }
+        }
+    
+        if(goal == 5 && true) {
+          return {
+            color: "#cc9900"
+          }
+        }
+    
+        if(goal == 25 && true) {
+          return {
+            color: "#808080"
+          }
+        }
+    
+        if(goal == 50 && true) {
+          return {
+            color: "#ffff00"
+          }
+        }
+    
+        if(goal == 100 && true) {
+          return {
+            color: "#4d4d4d"
+          }
+        }
+    
+        if(goal == 250 && true) {
+          return {
+            color: "#b9f2ff"
+          }
+        }
+    
+        if(goal == 500 && true) {
+          return {
+            color: "#b36b00"
+          }
+        }
+    
+        if(goal == 1000 && true) {
+          return {
+            color: "#cc0000"
+          }
+        }
+    
+        else {
+          return {
+            color: "#f2f2f2"
+          }
+        }
+      }
 
   render() {
     return (
@@ -395,6 +509,31 @@ class Account extends Component {
                   onChangeText={(inputEmail) => this.setState({ inputEmail })}
                 />
               </InputGroup>
+            </ListItem>
+            <ListItem>
+              <Text>{`Badges 
+                `}
+                
+                <MaterialIcons name="border-color" size={25} style={this.fillReviewBadges(1)}/>{`    `}
+                <MaterialIcons name="border-color" size={25} style={this.fillReviewBadges(5)}/>{`    `}
+                <MaterialIcons name="border-color" size={25} style={this.fillReviewBadges(25)}/>{`    `}
+                <MaterialIcons name="border-color" size={25} style={this.fillReviewBadges(50)}/>{`    `}
+                <MaterialIcons name="border-color" size={25} style={this.fillReviewBadges(100)}/>{`    `}
+                <MaterialIcons name="border-color" size={25} style={this.fillReviewBadges(250)}/>{`    `}
+                <MaterialIcons name="border-color" size={25} style={this.fillReviewBadges(500)}/>{`    `}
+                <MaterialIcons name="border-color" size={25} style={this.fillReviewBadges(1000)}/>{`    `}
+                {`
+
+                `}
+                <MaterialIcons name="local-drink" size={25} style={this.fillRecipeBadges(1)}/>{`    `}
+                <MaterialIcons name="local-drink" size={25} style={this.fillRecipeBadges(5)}/>{`    `}
+                <MaterialIcons name="local-drink" size={25} style={this.fillRecipeBadges(25)}/>{`    `}
+                <MaterialIcons name="local-drink" size={25} style={this.fillRecipeBadges(50)}/>{`    `}
+                <MaterialIcons name="local-drink" size={25} style={this.fillRecipeBadges(100)}/>{`    `}
+                <MaterialIcons name="local-drink" size={25} style={this.fillRecipeBadges(250)}/>{`    `}
+                <MaterialIcons name="local-drink" size={25} style={this.fillRecipeBadges(500)}/>{`    `}
+                <MaterialIcons name="local-drink" size={25} style={this.fillRecipeBadges(1000)}/>{`    `}
+              </Text>
             </ListItem>
             <ListItem>
               <Text>Change Password</Text>

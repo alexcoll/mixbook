@@ -188,7 +188,7 @@ class Recipes extends Component {
     if(idx === '0')
     {
       return items.sort(function (a,b) {
-        if ((b[6]/b[5]) < (a[6]/a[5])) return -1;
+        if ((b[6]/b[5]) < (a[6]/a[5]) || b[5] == 0) return -1;
         if ((b[6]/b[5]) > (a[6]/a[5])) return 1;
         return 0;
       })
@@ -196,7 +196,7 @@ class Recipes extends Component {
 
     if(idx === '1') {
       return items.sort(function (a,b) {
-        if ((b[6]/b[5]) > (a[6]/a[5])) return -1;
+        if ((b[6]/b[5]) > (a[6]/a[5])  || a[5] == 0) return -1;
         if ((b[6]/b[5]) < (a[6]/a[5])) return 1;
         return 0;
       })
@@ -364,6 +364,8 @@ class Recipes extends Component {
                 <View style={styles.row}>
                   <Text style={styles.rowText}>
                     {rowData[1]}
+                    {rowData[5]}
+                    {rowData[6]}
                   </Text>
                 </View>
               </View>

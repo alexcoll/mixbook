@@ -133,6 +133,7 @@ class Login extends Component {
 
 
   updateDatabase(token: string) {
+    console.log("TOKEN: " + token);
     // Get user profile information
     fetch(`${GLOBAL.API.BASE_URL}/mixbook/user/getUserInfo`, {
       method: 'GET',
@@ -152,7 +153,9 @@ class Login extends Component {
             username: json.username,
             email: json.email,
             firstName: json.firstName,
-            lastName: json.lastName
+            lastName: json.lastName,
+            badges: json.badges,
+            
           }
         })
         .then(() => {
