@@ -38,6 +38,7 @@ class Reviews extends Component {
       name: global.recipeName,
       directions: global.directions,
       drinkNumber: global.recipeId,
+      difficulty: global.difficulty,
       reviewOwner: global.reviewOwner,
       userReviewing: global.username,
       rating: 0,
@@ -292,6 +293,9 @@ class Reviews extends Component {
                   }>
                 </List>
             </ListItem>
+            <ListItem>
+              <Text>Difficulty: {this.state.difficulty}</Text>
+              </ListItem>
             <ListItem>
               <Text>
                 Directions: {this.state.directions}
