@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 
 import * as GLOBAL from '../../globals';
 
+import navigateTo from '../../actions/pageNav';
+
 import { actions } from 'react-native-navigation-redux-helpers';
 import { Container, Header, Title, Content, Button, Icon, List, ListItem, ListView, Text, Picker, Input, InputGroup, View, Grid, Col } from 'native-base';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -267,6 +269,39 @@ class Reviews extends Component {
     }
   }
 
+  visitProfile(username: string)
+  {
+    fetch(`${GLOBAL.API.BASE_URL}/mixbook/user/getUserInfo?username=${username}`, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json'
+      }
+    })
+    .then(async (response) => {
+      if (response.status == 200) {
+        var json = await response.json();
+        
+          global.viewUsername = json.username;
+          global.viewEmail = json.email;
+          global.viewFirstName = json.firstName;
+          global.viewLastName = json.lastName;
+
+          this.navigateTo('viewAccount');
+
+      } else {
+        this.showServerErrorAlert(response);
+        return;
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+  }
+
+  navigateTo(route) {
+    this.props.navigateTo(route, 'review');
+  }
+
   render() {
     return (
       <Container style={styles.container}>
@@ -276,7 +311,7 @@ class Reviews extends Component {
         <Content>
           <View>
           <List>
-            <ListItem>
+            <ListItem onPress={() => this.visitProfile(this.state.reviewOwner)}>
             <Text>By {this.state.reviewOwner}</Text>
             </ListItem>
             <ListItem>
@@ -364,6 +399,7 @@ class Reviews extends Component {
 function bindAction(dispatch) {
   return {
     replaceAt: (routeKey, route, key) => dispatch(replaceAt(routeKey, route, key)),
+    navigateTo: (route, homeRoute) => dispatch(navigateTo(route, homeRoute)),
   };
 }
 
