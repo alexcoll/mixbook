@@ -51,20 +51,25 @@ module.exports = StyleSheet.create({
 		marginBottom: 20
   },
   inputdir: {
-		height: 100,
+		height: 70,
 		backgroundColor: 'rgba(255,255,255,0.7)',
 		marginBottom: 20
   },
   Bcontainer: {
-    padding: 20
+    padding: 5
   },
   buttonContainer: {
     backgroundColor: '#2980b9',
-    paddingVertical: 20
+    paddingVertical: 10
   },
   buttonText: {
     textAlign: 'center',
     color: '#FFFFFF',
     fontWeight: '700'
+  },
+  headers:{
+    fontSize: 16,
+    paddingLeft:20,
+    color: '#000000'
   }
 });

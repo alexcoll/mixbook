@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ToastAndroid, TouchableHighlight, Alert, View, Text, TextInput, ListView, RefreshControl, List, ListItem, TouchableOpacity} from 'react-native';
+import { ToastAndroid, ActionButton, TouchableHighlight, Alert, View, Text, TextInput, ListView, RefreshControl, List, ListItem, TouchableOpacity} from 'react-native';
 import { connect } from 'react-redux';
 import { Header, Title, Button, Icon } from 'native-base';
 
@@ -76,6 +76,31 @@ class EditRecipe extends Component {
     });
   }
 
+  getBrandsForRecipe() {
+    fetch(`${GLOBAL.API.BASE_URL}/mixbook/recipe/getBrandsForRecipe?id=${global.recipeId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(async (response) => {
+      if (response.status == 200) {
+        var json = await response.json();
+        this.setState({ingredientsList: json});
+      } else {
+        Alert.alert(
+          "Server Error",
+          "Could Not Load Ingredients",
+          [
+            {text: 'Dismiss', style: 'cancel'}
+          ],
+          { cancelable: true }
+        );
+      }
+    }).catch((error) => {
+      console.error(error);
+    });
+  }
+
   onTapRefresh() {
     Alert.alert(
       "Refresh Brand List",
@@ -115,6 +140,8 @@ class EditRecipe extends Component {
     .catch((error) => {
       console.error(error);
     });
+
+    this.getBrandsForRecipe();
   }
 
   showServerErrorAlert(response) {
@@ -154,44 +181,79 @@ class EditRecipe extends Component {
   }
 
 
-  onSubmitLogin() {
+  onAddIngredient(item) {
     console.log()
+    var key = "brandName";
+    var obj = {};
+    obj[key] = item;
     store.get('account').then((data) => {
-      fetch(GLOBAL.API.BASE_URL + '/mixbook/recipe/createRecipe', {
+      fetch(GLOBAL.API.BASE_URL + '/mixbook/recipe/addIngredientToRecipe', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': data.token,
         },
+
+        
         body: JSON.stringify({
-          recipeName: this.state.recipeName,
-          directions: this.state.directions,
-          difficulty: this.state.difficulty,
-          brands: this.state.ingredients
+          recipeId: global.recipeId,
+          brands: [obj],
       })
       }).then((response) => {
         if (response.status == 200) {
-          console.log("recipe added successfully");
+          console.log("recipe updated successfully");
           Alert.alert(
-            "Recipe has been added",
+            "Recipe has been updated",
             "",
             [
               {text: 'Dismiss', style: 'cancel'}
             ],
             { cancelable: true }
           );
-          // store.get("inventory").then((data) => {
-          //   var list = data;
-          //   list.push(item);
-          //   store.save("inventory", list).catch((error) => {
-          //     console.warn("error stroing new inventory list into local store");
-          //     console.warn(error);
-          //   });
-          //   ToastAndroid.show("Item added", ToastAndroid.SHORT);
-          // }).catch((error) => {
-          //     console.warn("error getting inventory list from local store");
-          //     console.warn(error);
-          //   });
+        } else {
+          this.showServerErrorAlert(response);
+          return;
+        }
+      }).catch((error) => {
+        console.error(error);
+      });
+    }).catch((error) => {
+      console.warn("error getting user token from local store");
+      console.warn(error);
+    });
+
+    //this.props.popRoute();
+  }
+
+  onRemoveIngredient(item) {
+    console.log()
+    var key = "brandName";
+    var obj = {};
+    obj[key] = item;
+    store.get('account').then((data) => {
+      fetch(GLOBAL.API.BASE_URL + '/mixbook/recipe/removeIngredientFromRecipe', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': data.token,
+        },
+
+        
+        body: JSON.stringify({
+          recipeId: global.recipeId,
+          brands: [obj],
+      })
+      }).then((response) => {
+        if (response.status == 200) {
+          console.log("recipe updated successfully");
+          Alert.alert(
+            "Recipe has been updated",
+            "",
+            [
+              {text: 'Dismiss', style: 'cancel'}
+            ],
+            { cancelable: true }
+          );
         } else {
           this.showServerErrorAlert(response);
           return;
@@ -208,6 +270,83 @@ class EditRecipe extends Component {
   }
 
 
+  onSubmitLogin() {
+    console.log()
+    store.get('account').then((data) => {
+      fetch(GLOBAL.API.BASE_URL + '/mixbook/recipe/editRecipe', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': data.token,
+        },
+        body: JSON.stringify({
+          recipeId: global.recipeId,
+          directions: this.state.directions,
+          difficulty: this.state.difficulty,
+      })
+      }).then((response) => {
+        if (response.status == 200) {
+          console.log("recipe updated successfully");
+          Alert.alert(
+            "Recipe has been updated",
+            "",
+            [
+              {text: 'Dismiss', style: 'cancel'}
+            ],
+            { cancelable: true }
+          );
+        } else {
+          this.showServerErrorAlert(response);
+          return;
+        }
+      }).catch((error) => {
+        console.error(error);
+      });
+    }).catch((error) => {
+      console.warn("error getting user token from local store");
+      console.warn(error);
+    });
+
+    //this.props.popRoute();
+  }
+
+  setSearchText(event) {
+    let searchText = event.nativeEvent.text;
+    this.setState({searchText});
+
+    let filteredData = this.filterItems(searchText, this.state.rawData);
+    this.setState({
+      dataSource: this.state.dataSource.cloneWithRows(filteredData),
+    });
+  }
+
+  filterItems(searchText, items) {
+    let text = searchText.toLowerCase();
+    return filter(items, (n) => {
+      let item = n.toLowerCase();
+      return item.search(text) !== -1;
+    });
+  }
+  
+
+  _pressRow(item: string) {
+    Alert.alert(
+      "Add " + item + "?",
+      "Are you sure you want to add " + item + " to your recipe?",
+      [
+        {text: 'Add', onPress: () => this.onAddIngredient(item)},
+        {text: 'Delete', onPress: () => this.onRemoveIngredient(item)},
+        {text: 'Cancel', style: 'cancel'},
+      ],
+      { cancelable: true }
+    )
+  }
+  
+  _onRefresh() {
+    this.setState({refreshing: true});
+    this.getRemoteData();
+    this.setState({refreshing: false});
+  }
 
 
 
@@ -236,42 +375,103 @@ class EditRecipe extends Component {
           </Header>
 
 
+
+           <TextInput
+              style={styles.searchBar}
+              placeholder="Search inventory"
+              value={this.state.searchText}
+              onChange={this.setSearchText.bind(this)}
+              multiline={false}
+              autoFocus={false}
+              returnKeyType='done'
+              autoCorrect={false}
+            />
+
+            <View>
+          <ListView
+          enableEmptySections={true}
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.refreshing}
+              onRefresh={this._onRefresh.bind(this)}
+            />
+          }
+            dataSource={this.state.dataSource}
+            renderRow={(rowData: string, sectionID: number, rowID: number, highlightRow: (sectionID: number, rowID: number) => void) =>
+              <TouchableHighlight onPress={() => {
+                this._pressRow(rowData);
+                // highlightRow(sectionID, rowID);
+              }}>
+                <View style={styles.row}>
+                  <Text style={styles.rowText}>
+                    {rowData}
+                  </Text>
+                </View>
+              </TouchableHighlight>
+            }
+            renderSeperator={this._renderSeparator}
+          />
         </View>
+
+
+        </View>
+
+             {/* <View style={styles.Bcontainer}>
+
+            <TouchableOpacity
+              style={styles.buttonContainer}
+              onPress={() => this.navigateTo('addIngredient')}
+            >
+              <Text style={styles.buttonText}>Add More Ingredients</Text>
+            </TouchableOpacity>
+
+            </View> */}
 
 
             <View style ={styles.formContainer}>
 
-              <Text>Recipe Name: {global.recipeName} </Text> 
+              <Text style={styles.headers}> Recipe Name: {global.recipeName} </Text> 
+              <Text style={styles.headers}> Ingredients: </Text>
+              <Text style={styles.headers}> {this.state.ingredientsList}</Text>
+
+
+
 
               <View></View>
-              <Text>Recipe Directions </Text> 
+              <Text style={styles.headers}> Recipe Directions: </Text> 
               <TextInput
                 underlineColorAndroid={'transparent'}
                 defaultValue={global.directions}
                 style={styles.inputdir}
                 returnKeyType="next"
                 multiline={true}
-
+                onChangeText={(directions) => this.setState({ directions })}
              />
-               <Text>Recipe Difficulty </Text> 
+               <Text style={styles.headers}> Recipe Difficulty: </Text> 
               <TextInput
                 underlineColorAndroid={'transparent'}
                 defaultValue={global.difficulty}
                 style={styles.input}
                 returnKeyType="next"
+                keyboardType="numeric"
+                onChangeText={(difficulty) => this.setState({ difficulty})}
               />
-
-
 
         </View>
         <View style={styles.Bcontainer}>
             <TouchableOpacity
               style={styles.buttonContainer}
-              // onPress={() => this.onSubmitLogin()}
+              onPress={() => this.onSubmitLogin()}
             >
               <Text style={styles.buttonText}>Update Recipe</Text>
             </TouchableOpacity>
+
+
+            
+
           </View>
+
+  
         </View>
     );
   }
@@ -280,6 +480,7 @@ class EditRecipe extends Component {
 function bindAction(dispatch) {
   return {
     navigateTo: (route, homeRoute) => dispatch(navigateTo(route, homeRoute)),
+    replaceAt: (routeKey, route, key) => dispatch(replaceAt(routeKey, route, key)),
   };
 }
 
