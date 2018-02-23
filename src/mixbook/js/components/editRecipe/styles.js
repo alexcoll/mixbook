@@ -48,7 +48,8 @@ module.exports = StyleSheet.create({
   input: {
 		height: 40,
 		backgroundColor: 'rgba(255,255,255,0.7)',
-		marginBottom: 20
+    marginBottom: 20,
+    color: '#000000'
   },
   inputdir: {
 		height: 70,
@@ -70,6 +71,10 @@ module.exports = StyleSheet.create({
   headers:{
     fontSize: 16,
     paddingLeft:20,
-    color: '#000000'
+    color: '#000000',
+    paddingHorizontal: 10,
+  },
+  formContainer:{
+    paddingHorizontal: 10,
   }
 });

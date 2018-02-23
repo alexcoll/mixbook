@@ -430,10 +430,19 @@ class EditRecipe extends Component {
 
             <View style ={styles.formContainer}>
 
-              <Text style={styles.headers}> Recipe Name: {global.recipeName} </Text> 
+              <Text style={styles.headers}> Recipe Name:  </Text> 
+              <TextInput
+                underlineColorAndroid={'transparent'}
+                value={global.recipeName}
+                style={styles.input}
+                returnKeyType="next"
+                keyboardType="numeric"
+                onChangeText={(difficulty) => this.setState({ difficulty})}
+                editable={false}
+              />
               <Text style={styles.headers}> Ingredients: </Text>
               <Text style={styles.headers}> {this.state.ingredientsList}</Text>
-
+              
 
 
 
