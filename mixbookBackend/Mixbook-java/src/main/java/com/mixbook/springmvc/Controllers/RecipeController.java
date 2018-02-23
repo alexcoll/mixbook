@@ -27,6 +27,7 @@ import com.mixbook.springmvc.Models.JsonResponse;
 import com.mixbook.springmvc.Models.Recipe;
 import com.mixbook.springmvc.Models.User;
 import com.mixbook.springmvc.Security.JwtTokenUtil;
+import com.mixbook.springmvc.Services.BadgeService;
 import com.mixbook.springmvc.Services.RecipeService;
 
 @Controller
@@ -35,6 +36,9 @@ public class RecipeController {
 
 	@Autowired
 	RecipeService recipeService;
+	
+	@Autowired
+	private BadgeService badgeService;
 
 	private String tokenHeader = "Authorization";
 
@@ -58,6 +62,7 @@ public class RecipeController {
 		user.setUsername(username);
 		try {
 			recipeService.createRecipe(recipe, user);
+			badgeService.checkForNewBadges(user);
 		} catch (InvalidIngredientException e) {
 			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","Invalid ingredient added"), HttpStatus.BAD_REQUEST);
 		} catch (PersistenceException e) {

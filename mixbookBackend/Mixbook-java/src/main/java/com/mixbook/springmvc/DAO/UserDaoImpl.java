@@ -6,14 +6,12 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import org.hibernate.Criteria;
-import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.query.NativeQuery;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.mixbook.springmvc.Models.PasswordResetToken;
 import com.mixbook.springmvc.Models.User;
 import com.mixbook.springmvc.Services.UserService;
 
@@ -36,6 +34,14 @@ public class UserDaoImpl extends AbstractDao<Integer, User> implements UserDao {
 		Criteria crit = createEntityCriteria();
 		crit.add(Restrictions.eq("email", email));
 		User user = (User)crit.uniqueResult();
+		return user;
+	}
+
+	@Override
+	public User loadUserProfile(String username) throws PersistenceException, Exception {
+		Query query = getSession().createQuery("select u from User u left join fetch u.badges b where u.username = :username");
+		query.setParameter("username", username);
+		User user = (User) query.getSingleResult();
 		return user;
 	}
 

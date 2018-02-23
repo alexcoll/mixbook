@@ -24,9 +24,50 @@ CREATE TABLE IF NOT EXISTS `mixbookdb`.`users` (
   `first_name` VARCHAR(255) NOT NULL,
   `last_name` VARCHAR(255) NOT NULL,
   `email` VARCHAR(255) NOT NULL,
+  `number_of_recipes` INT(11) NOT NULL,
+  `number_of_ratings` INT(11) NOT NULL,
   `ENABLED` TINYINT(1) NOT NULL,
   `LASTPASSWORDRESETDATE` TIMESTAMP NOT NULL,
   PRIMARY KEY (`user_id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE utf8mb4_unicode_ci
+ROW_FORMAT = DYNAMIC;
+
+
+-- -----------------------------------------------------
+-- Table `mixbookdb`.`badges`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mixbookdb`.`badges` (
+  `badge_id` BIGINT NOT NULL AUTO_INCREMENT,
+  `badge_name` VARCHAR(255) NOT NULL,
+  `badge_description` VARCHAR(255) NOT NULL,
+  PRIMARY KEY (`badge_id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE utf8mb4_unicode_ci
+ROW_FORMAT = DYNAMIC;
+
+
+-- -----------------------------------------------------
+-- Table `mixbookdb`.`user_has_badges`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mixbookdb`.`user_has_badges` (
+  `user_id` BIGINT NOT NULL,
+  `badge_id` BIGINT NOT NULL,
+  PRIMARY KEY (`user_id`, `badge_id`),
+  INDEX `fk_user_has_badge_badge_idx` (`badge_id` ASC),
+  INDEX `fk_user_has_badge_user_idx` (`user_id` ASC),
+  CONSTRAINT `fk_user_has_badge_user`
+    FOREIGN KEY (`user_id`)
+    REFERENCES `mixbookdb`.`users` (`user_id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_user_has_badge_badge`
+    FOREIGN KEY (`badge_id`)
+    REFERENCES `mixbookdb`.`badges` (`badge_id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE utf8mb4_unicode_ci
@@ -1783,6 +1824,40 @@ INSERT INTO brand(brand_id, style_brand_id, brand_name)
 VALUES (684, 37, 'White Balsamic Vinegar');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
 VALUES (685, 37, 'Worcestershire Sauce');
+
+
+INSERT INTO badges(badge_id, badge_name, badge_description)
+VALUES(1, 'Created First Recipe', 'The user has created their first recipe!');
+INSERT INTO badges(badge_id, badge_name, badge_description)
+VALUES(2, 'Reviewed First Recipe', 'The user has reviewed their first recipe!');
+INSERT INTO badges(badge_id, badge_name, badge_description)
+VALUES(3, 'Bronze Recipe Creation', 'The user has created 5 total recipes!');
+INSERT INTO badges(badge_id, badge_name, badge_description)
+VALUES(4, 'Bronze Review Creation', 'The user has reviewed 5 total recipes!');
+INSERT INTO badges(badge_id, badge_name, badge_description)
+VALUES(5, 'Silver Recipe Creation', 'The user has created 25 total recipes!');
+INSERT INTO badges(badge_id, badge_name, badge_description)
+VALUES(6, 'Silver Review Creation', 'The user has reviewed 25 total recipes!');
+INSERT INTO badges(badge_id, badge_name, badge_description)
+VALUES(7, 'Gold Recipe Creation', 'The user has created 50 total recipes!');
+INSERT INTO badges(badge_id, badge_name, badge_description)
+VALUES(8, 'Gold Review Creation', 'The user has reviewed 50 total recipes!');
+INSERT INTO badges(badge_id, badge_name, badge_description)
+VALUES(9, 'Platinum Recipe Creation', 'The user has created 100 total recipes!');
+INSERT INTO badges(badge_id, badge_name, badge_description)
+VALUES(10, 'Platinum Review Creation', 'The user has reviewed 100 total recipes!');
+INSERT INTO badges(badge_id, badge_name, badge_description)
+VALUES(11, 'Diamond Recipe Creation', 'The user has created 250 total recipes!');
+INSERT INTO badges(badge_id, badge_name, badge_description)
+VALUES(12, 'Diamond Review Creation', 'The user has reviewed 250 total recipes!');
+INSERT INTO badges(badge_id, badge_name, badge_description)
+VALUES(13, 'Centurion Recipe Creation', 'The user has created 500 total recipes!');
+INSERT INTO badges(badge_id, badge_name, badge_description)
+VALUES(14, 'Centurion Review Creation', 'The user has reviewed 500 total recipes!');
+INSERT INTO badges(badge_id, badge_name, badge_description)
+VALUES(15, 'Mixologist Recipe Creation', 'The user has created 1000 total recipes!');
+INSERT INTO badges(badge_id, badge_name, badge_description)
+VALUES(16, 'Mixologist Review Creation', 'The user has reviewed 1000 total recipes!');
 
 
 SET SQL_MODE=@OLD_SQL_MODE;

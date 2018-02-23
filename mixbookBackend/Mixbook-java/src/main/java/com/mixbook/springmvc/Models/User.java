@@ -23,8 +23,12 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
 @Entity
 @Table(name="users")
+@JsonInclude(Include.NON_EMPTY)
 public class User implements Serializable {
 
 	@Id
@@ -55,6 +59,12 @@ public class User implements Serializable {
 	@Size(max=255)
 	@Column(name = "email", nullable = false)
 	private String email;
+	
+	@Column(name = "number_of_recipes", nullable = false)
+	private int number_of_recipes;
+	
+	@Column(name = "number_of_ratings", nullable = false)
+	private int number_of_ratings;
 
 	@Column(name = "ENABLED")
 	@NotNull
@@ -84,26 +94,36 @@ public class User implements Serializable {
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.user", cascade=CascadeType.ALL)
 	private Set<UserRecipeHasReview> userRecipeHasReviews = new HashSet<UserRecipeHasReview>(0);
+	
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinTable(name = "user_has_badges", joinColumns = {
+			@JoinColumn(name = "user_id", nullable = false, updatable = false) },
+	inverseJoinColumns = { @JoinColumn(name = "badge_id",
+	nullable = false, updatable = false) })
+	private Set<Badge> badges = new HashSet<Badge>(0);
 
 	public User() {
 
 	}
 
 	public User(Integer user_id, String username, String password, String first_name, String last_name,
-			String email, Boolean enabled, Date lastPasswordResetDate, List<Authority> authorities, 
-			Set<Brand> brands, Set<Recipe> recipes, Set<UserRecipeHasReview> userRecipeHasReviews) {
+			String email, int number_of_recipes, int number_of_ratings, Boolean enabled, Date lastPasswordResetDate, List<Authority> authorities, 
+			Set<Brand> brands, Set<Recipe> recipes, Set<UserRecipeHasReview> userRecipeHasReviews, Set<Badge> badges) {
 		this.user_id = user_id;
 		this.username = username;	
 		this.password = password;
 		this.first_name = first_name;
 		this.last_name = last_name;
 		this.email = email;
+		this.number_of_recipes = number_of_recipes;
+		this.number_of_ratings = number_of_ratings;
 		this.enabled = enabled;
 		this.lastPasswordResetDate = lastPasswordResetDate;
 		this.authorities = authorities;
 		this.brands = brands;
 		this.recipes = recipes;
 		this.userRecipeHasReviews = userRecipeHasReviews;
+		this.badges = badges;
 	}
 
 	public Integer getUserId() {
@@ -153,6 +173,22 @@ public class User implements Serializable {
 		this.email = email;
 	}
 
+	public int getNumberOfRecipes() {
+		return number_of_recipes;
+	}
+
+	public void setNumberOfRecipes(int number_of_recipes) {
+		this.number_of_recipes = number_of_recipes;
+	}
+
+	public int getNumberOfRatings() {
+		return number_of_ratings;
+	}
+
+	public void setNumberOfRatings(int number_of_ratings) {
+		this.number_of_ratings = number_of_ratings;
+	}
+
 	public Boolean getEnabled() {
 		return enabled;
 	}
@@ -199,6 +235,14 @@ public class User implements Serializable {
 
 	public void setUserRecipeHasReviews(Set<UserRecipeHasReview> userRecipeHasReviews) {
 		this.userRecipeHasReviews = userRecipeHasReviews;
+	}
+
+	public Set<Badge> getBadges() {
+		return badges;
+	}
+
+	public void setBadges(Set<Badge> badges) {
+		this.badges = badges;
 	}
 
 	@Override

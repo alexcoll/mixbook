@@ -8,6 +8,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import org.hibernate.SQLQuery;
+import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
 import org.hibernate.type.IntegerType;
 
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Repository;
 
 import com.mixbook.springmvc.Exceptions.NoDataWasChangedException;
 import com.mixbook.springmvc.Exceptions.ReviewOwnRecipeException;
+import com.mixbook.springmvc.Models.PasswordResetToken;
 import com.mixbook.springmvc.Models.Recipe;
 import com.mixbook.springmvc.Models.User;
 import com.mixbook.springmvc.Models.UserRecipeHasReview;
@@ -50,6 +52,9 @@ public class ReviewDaoImpl extends AbstractDao<Integer, UserRecipeHasReview> imp
 			updateQuery.setParameter(0, review.getRating());
 			updateQuery.setParameter(1, review.getPk().getRecipe().getRecipeId());
 			updateQuery.executeUpdate();
+			NativeQuery q = getSession().createNativeQuery("UPDATE users SET number_of_ratings = number_of_ratings + 1 WHERE user_id = :user_id");
+			q.setParameter("user_id", user.getUserId());
+			q.executeUpdate();
 		}
 		else {
 			throw new NoDataWasChangedException("No data was changed! Info may have been invalid!");
