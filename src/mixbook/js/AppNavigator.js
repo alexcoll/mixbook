@@ -22,6 +22,7 @@ import statusBarColor from './themes/base-theme';
 import NewAccount from './components/newAccount';
 import Review from './components/review/';
 import EditRecipe from './components/editRecipe/';
+import ViewAccount from './components/viewAccount/';
 
 const {
   popRoute,
@@ -130,6 +131,8 @@ class AppNavigator extends Component {
         return <NewAccount />;
       case 'editRecipe':
         return <EditRecipe />;
+      case 'viewAccount':
+        return <ViewAccount />;
       default:
         return <MyDrinks />;
     }
