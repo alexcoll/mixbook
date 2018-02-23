@@ -2,3 +2,4 @@
 .project
 /.settings/
 .tern-project
+.DS_Store
