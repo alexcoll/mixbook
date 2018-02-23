@@ -181,8 +181,10 @@ class Reviews extends Component {
       return;
     }
 
-    if (this.state.inputReview == "") {
-      Alert.alert('Reviews cannot be blank');
+    console.log("Review: " + this.state.inputReviewText);
+
+    if (this.state.inputReviewText == "" || typeof this.state.inputReviewText == 'undefined')  {
+      Alert.alert('Please enter some text in the review body');
       return;
     }
 
