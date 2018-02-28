@@ -2,3 +2,4 @@ node_modules/
 ~$de Inspection 1.doc
 ~$*
 .DS_Store
+.vscode
