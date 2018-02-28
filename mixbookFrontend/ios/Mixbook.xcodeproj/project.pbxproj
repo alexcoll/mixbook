@@ -48,6 +48,7 @@
 		7D8DCB1DF6114BE2B46384CA /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E5D843A13C5F48B083BEEDCA /* Zocial.ttf */; };
 		FAE0F8DE4905445C805C7252 /* libRNSearchBar.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BAFE71D334124DAD8F31A64A /* libRNSearchBar.a */; };
 		E2B8672D36154ACB92BCA547 /* libRNMultiPickerIOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7652FFDF45B44B8CB4D8E10F /* libRNMultiPickerIOS.a */; };
+		F8C1DC18BB804479BE0B1C71 /* libToolTipMenu.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BF02E3198EB54008B494EB91 /* libToolTipMenu.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -196,6 +197,8 @@
 		BAFE71D334124DAD8F31A64A /* libRNSearchBar.a */ = {isa = PBXFileReference; name = "libRNSearchBar.a"; path = "libRNSearchBar.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 		EB3394EACC864DCB95B169BA /* RNMultiPicker.xcodeproj */ = {isa = PBXFileReference; name = "RNMultiPicker.xcodeproj"; path = "../node_modules/react-native-multipicker/RNMultiPicker.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
 		7652FFDF45B44B8CB4D8E10F /* libRNMultiPickerIOS.a */ = {isa = PBXFileReference; name = "libRNMultiPickerIOS.a"; path = "libRNMultiPickerIOS.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		6A1AFACC03654790A9BE7610 /* ToolTipMenu.xcodeproj */ = {isa = PBXFileReference; name = "ToolTipMenu.xcodeproj"; path = "../node_modules/react-native-tooltip/ToolTipMenu.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		BF02E3198EB54008B494EB91 /* libToolTipMenu.a */ = {isa = PBXFileReference; name = "libToolTipMenu.a"; path = "libToolTipMenu.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -227,6 +230,7 @@
 				2FE8ECE029FE45CE8A81C523 /* libRNVectorIcons.a in Frameworks */,
 				FAE0F8DE4905445C805C7252 /* libRNSearchBar.a in Frameworks */,
 				E2B8672D36154ACB92BCA547 /* libRNMultiPickerIOS.a in Frameworks */,
+				F8C1DC18BB804479BE0B1C71 /* libToolTipMenu.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -363,6 +367,7 @@
 				ACDCF32A6ED34057A569D959 /* RNVectorIcons.xcodeproj */,
 				110C9A57E78F48B9ABDA11A2 /* RNSearchBar.xcodeproj */,
 				EB3394EACC864DCB95B169BA /* RNMultiPicker.xcodeproj */,
+				6A1AFACC03654790A9BE7610 /* ToolTipMenu.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -757,6 +762,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 			};
 			name = Debug;
@@ -773,6 +779,7 @@
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Mixbook.app/Mixbook";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -858,6 +865,7 @@
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
 					"$(SRCROOT)/../node_modules/react-native-search-bar",
 					"$(SRCROOT)/../node_modules/react-native-multipicker/RNMultiPicker",
+					"$(SRCROOT)/../node_modules/react-native-tooltip/ToolTipMenu",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -902,6 +910,7 @@
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
 					"$(SRCROOT)/../node_modules/react-native-search-bar",
 					"$(SRCROOT)/../node_modules/react-native-multipicker/RNMultiPicker",
+					"$(SRCROOT)/../node_modules/react-native-tooltip/ToolTipMenu",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
