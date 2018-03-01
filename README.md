@@ -1,8 +1,8 @@
 # mixbook
 Tell the app what ingredients you have, it tells you what kind of cocktails you can make.
 
-Project for Purdue course CS408000, spring 2017.
-Also project for Purdue course CS407, spring 2018.
+Project for Purdue course CS408000, Spring 2017.
+Also project for Purdue course CS407, Spring 2018.
 
 ## License
 Copyright (C) 2018 Mixbook Team
