@@ -82,6 +82,10 @@ public class UserServiceImpl implements UserService {
 		authority.setName(AuthorityName.ROLE_USER);
 		authorities.add(authority);
 		user.setAuthorities(authorities);
+		user.getBadges().clear();
+		user.getBrands().clear();
+		user.getRecipes().clear();
+		user.getUserRecipeHasReviews().clear();
 		try {
 			dao.createUser(user);
 		} catch (PersistenceException e) {
