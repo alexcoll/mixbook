@@ -57,8 +57,8 @@ public class ReviewController {
 		String username = jwtTokenUtil.getUsernameFromToken(token);
 		User user = new User();
 		user.setUsername(username);
-		review.getPk().setUser(user);
-		if (review.getPk().getRecipe().getRecipeId() < 1) {
+		review.setUser(user);
+		if (review.getRecipe().getRecipeId() < 1) {
 			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED", "Invalid request, missing recipe"), HttpStatus.BAD_REQUEST);
 		}
 		try {
@@ -107,7 +107,10 @@ public class ReviewController {
 		String username = jwtTokenUtil.getUsernameFromToken(token);
 		User user = new User();
 		user.setUsername(username);
-		review.getPk().setUser(user);
+		review.setUser(user);
+		if (review.getRecipe().getRecipeId() < 1) {
+			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED", "Invalid request, missing recipe"), HttpStatus.BAD_REQUEST);
+		}
 		try {
 			reviewService.editReview(review);
 		} catch (NoDataWasChangedException e) {
@@ -126,8 +129,8 @@ public class ReviewController {
 		String username = jwtTokenUtil.getUsernameFromToken(token);
 		User user = new User();
 		user.setUsername(username);
-		review.getPk().setUser(user);
-		if (review.getPk().getRecipe().getRecipeId() < 1) {
+		review.setUser(user);
+		if (review.getRecipe().getRecipeId() < 1) {
 			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED", "Invalid request, missing recipe"), HttpStatus.BAD_REQUEST);
 		}
 		try {

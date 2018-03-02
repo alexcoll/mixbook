@@ -80,7 +80,7 @@ public class Type implements Serializable {
 			return true;
 		if (obj == null)
 			return false;
-		if (!(obj instanceof Brand))
+		if (!(obj instanceof Type))
 			return false;
 		Type other = (Type) obj;
 		if (type_id == null) {

@@ -92,7 +92,7 @@ public class User implements Serializable {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
 	private Set<Recipe> recipes = new HashSet<Recipe>(0);
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.user", cascade=CascadeType.ALL)
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
 	private Set<UserRecipeHasReview> userRecipeHasReviews = new HashSet<UserRecipeHasReview>(0);
 	
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -101,6 +101,9 @@ public class User implements Serializable {
 	inverseJoinColumns = { @JoinColumn(name = "badge_id",
 	nullable = false, updatable = false) })
 	private Set<Badge> badges = new HashSet<Badge>(0);
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+	private Set<UserRatingReview> userRatingReviews = new HashSet<UserRatingReview>(0);
 
 	public User() {
 
@@ -108,7 +111,7 @@ public class User implements Serializable {
 
 	public User(Integer user_id, String username, String password, String first_name, String last_name,
 			String email, int number_of_recipes, int number_of_ratings, Boolean enabled, Date lastPasswordResetDate, List<Authority> authorities, 
-			Set<Brand> brands, Set<Recipe> recipes, Set<UserRecipeHasReview> userRecipeHasReviews, Set<Badge> badges) {
+			Set<Brand> brands, Set<Recipe> recipes, Set<UserRecipeHasReview> userRecipeHasReviews, Set<Badge> badges, Set<UserRatingReview> userRatingReviews) {
 		this.user_id = user_id;
 		this.username = username;	
 		this.password = password;
@@ -124,6 +127,7 @@ public class User implements Serializable {
 		this.recipes = recipes;
 		this.userRecipeHasReviews = userRecipeHasReviews;
 		this.badges = badges;
+		this.userRatingReviews = userRatingReviews;
 	}
 
 	public Integer getUserId() {
@@ -243,6 +247,14 @@ public class User implements Serializable {
 
 	public void setBadges(Set<Badge> badges) {
 		this.badges = badges;
+	}
+
+	public Set<UserRatingReview> getUserRatingReviews() {
+		return userRatingReviews;
+	}
+
+	public void setUserRatingReviews(Set<UserRatingReview> userRatingReviews) {
+		this.userRatingReviews = userRatingReviews;
 	}
 
 	@Override

@@ -86,6 +86,7 @@ public class UserServiceImpl implements UserService {
 		user.getBrands().clear();
 		user.getRecipes().clear();
 		user.getUserRecipeHasReviews().clear();
+		user.getUserRatingReviews().clear();
 		try {
 			dao.createUser(user);
 		} catch (PersistenceException e) {

@@ -95,7 +95,7 @@ public class Style implements Serializable {
 			return true;
 		if (obj == null)
 			return false;
-		if (!(obj instanceof Brand))
+		if (!(obj instanceof Style))
 			return false;
 		Style other = (Style) obj;
 		if (style_id == null) {

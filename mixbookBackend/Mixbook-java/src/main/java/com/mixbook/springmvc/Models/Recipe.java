@@ -15,6 +15,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -57,6 +58,9 @@ public class Recipe implements Serializable {
 	inverseJoinColumns = { @JoinColumn(name = "brand_brand_id",
 	nullable = false, updatable = false) })
 	private Set<Brand> brands = new HashSet<Brand>(0);
+	
+	@OneToMany(mappedBy = "recipe", fetch = FetchType.LAZY)
+	private Set<UserRecipeHasReview> userRecipeHasReviews = new HashSet<UserRecipeHasReview>(0);
 
 	public Recipe() {
 
@@ -72,7 +76,7 @@ public class Recipe implements Serializable {
 
 	public Recipe(Integer recipe_id, String recipe_name, String directions,
 			int number_of_ingredients, int difficulty, int number_of_ratings,
-			int	total_rating, User user, Set<Brand> brands) {
+			int	total_rating, User user, Set<Brand> brands, Set<UserRecipeHasReview> userRecipeHasReviews) {
 		this.recipe_id = recipe_id;
 		this.recipe_name = recipe_name;
 		this.directions = directions;
@@ -82,6 +86,7 @@ public class Recipe implements Serializable {
 		this.total_rating = total_rating;
 		this.user = user;
 		this.brands = brands;
+		this.userRecipeHasReviews = userRecipeHasReviews;
 	}
 
 	public Integer getRecipeId() {
@@ -156,6 +161,14 @@ public class Recipe implements Serializable {
 		this.brands = brands;
 	}
 
+	public Set<UserRecipeHasReview> getUserRecipeHasReviews() {
+		return userRecipeHasReviews;
+	}
+
+	public void setUserRecipeHasReviews(Set<UserRecipeHasReview> userRecipeHasReviews) {
+		this.userRecipeHasReviews = userRecipeHasReviews;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -171,7 +184,7 @@ public class Recipe implements Serializable {
 			return true;
 		if (obj == null)
 			return false;
-		if (!(obj instanceof Brand))
+		if (!(obj instanceof Recipe))
 			return false;
 		Recipe other = (Recipe) obj;
 		if (recipe_id == null) {
