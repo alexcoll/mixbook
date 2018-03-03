@@ -75,7 +75,7 @@ ROW_FORMAT = DYNAMIC;
 
 
 -- -----------------------------------------------------
--- Table `mixbookdb`.`users`
+-- Table `mixbookdb`.`password_reset_token`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mixbookdb`.`password_reset_token` (
   `id` BIGINT NOT NULL AUTO_INCREMENT,
@@ -83,9 +83,9 @@ CREATE TABLE IF NOT EXISTS `mixbookdb`.`password_reset_token` (
   `token` VARCHAR(128) NOT NULL UNIQUE,
   `expiry_date` TIMESTAMP NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_user1_idx` (`user_id` ASC),
+  INDEX `fk_user1_idx` (`user_user_id` ASC),
   CONSTRAINT `fk_user1`
-    FOREIGN KEY (`user_id`)
+    FOREIGN KEY (`user_user_id`)
     REFERENCES `mixbookdb`.`users` (`user_id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
@@ -263,6 +263,8 @@ CREATE TABLE IF NOT EXISTS `mixbookdb`.`users_recipe_has_review` (
   `recipe_recipe_id` BIGINT NOT NULL,
   `review_commentary` TEXT NOT NULL,
   `rating` TINYINT(2) NOT NULL,
+  `number_of_up_votes` INT(11) NOT NULL,
+  `number_of_down_votes` INT(11) NOT NULL,
   PRIMARY KEY (`users_recipe_has_review_id`),
   INDEX `fk_users_recipe_has_review_recipe1_idx` (`recipe_recipe_id` ASC),
   INDEX `fk_users_recipe_has_review_users_idx` (`users_user_id` ASC),
@@ -290,14 +292,14 @@ CREATE TABLE IF NOT EXISTS `mixbookdb`.`users_rating_review` (
   `users_recipe_has_review_id` BIGINT NOT NULL,
   `vote` TINYINT(1) NOT NULL,
   PRIMARY KEY (`users_user_id`, `users_recipe_has_review_id`),
-  INDEX `fk_users_recipe_has_review_review1_idx` (`users_recipe_has_review_id` ASC),
-  INDEX `fk_users_recipe_has_review_users_idx` (`users_user_id` ASC),
-  CONSTRAINT `fk_users_recipe_has_review_users`
+  INDEX `fk_users_rating_review_review1_idx` (`users_recipe_has_review_id` ASC),
+  INDEX `fk_users_rating_review_users_idx` (`users_user_id` ASC),
+  CONSTRAINT `fk_users_rating_review_users`
     FOREIGN KEY (`users_user_id`)
     REFERENCES `mixbookdb`.`users` (`user_id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
-  CONSTRAINT `fk_users_recipe_has_review_review1`
+  CONSTRAINT `fk_users_rating_review_review1`
     FOREIGN KEY (`users_recipe_has_review_id`)
     REFERENCES `mixbookdb`.`users_recipe_has_review` (`users_recipe_has_review_id`)
     ON DELETE CASCADE

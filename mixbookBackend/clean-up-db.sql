@@ -19,6 +19,7 @@ TRUNCATE `mixbookdb`.`user_has_brand`;
 TRUNCATE `mixbookdb`.`recipe`;
 TRUNCATE `mixbookdb`.`recipe_has_brand`;
 TRUNCATE `mixbookdb`.`users_recipe_has_review`;
+TRUNCATE `mixbookdb`.`users_rating_review`;
 
 -- -----------------------------------------------------
 -- Set foreign key checks back on

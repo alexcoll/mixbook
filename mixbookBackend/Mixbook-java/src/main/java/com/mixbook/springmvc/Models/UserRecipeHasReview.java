@@ -38,6 +38,12 @@ public class UserRecipeHasReview implements Serializable {
 	@Column(name = "rating", nullable = false)
 	private int rating;
 	
+	@Column(name = "number_of_up_votes", nullable = false)
+	private int numberOfUpVotes;
+	
+	@Column(name = "number_of_down_votes", nullable = false)
+	private int numberOfDownVotes;
+	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "userRecipeHasReview")
 	private Set<UserRatingReview> userRatingReviews = new HashSet<UserRatingReview>(0);
 
@@ -45,12 +51,14 @@ public class UserRecipeHasReview implements Serializable {
 
 	}
 
-	public UserRecipeHasReview(Integer usersRecipeHasReviewId, User user, Recipe recipe, String review_commentary, int rating, Set<UserRatingReview> userRatingReviews) {
+	public UserRecipeHasReview(Integer usersRecipeHasReviewId, User user, Recipe recipe, String review_commentary, int rating, int numberOfUpVotes, int numberOfDownVotes, Set<UserRatingReview> userRatingReviews) {
 		this.usersRecipeHasReviewId = usersRecipeHasReviewId;
 		this.user = user;
 		this.recipe = recipe;
 		this.review_commentary = review_commentary;
 		this.rating = rating;
+		this.numberOfUpVotes = numberOfUpVotes;
+		this.numberOfDownVotes = numberOfDownVotes;
 		this.userRatingReviews = userRatingReviews;
 	}
 
@@ -94,6 +102,22 @@ public class UserRecipeHasReview implements Serializable {
 		this.rating = rating;
 	}
 	
+	public int getNumberOfUpVotes() {
+		return numberOfUpVotes;
+	}
+
+	public void setNumberOfUpVotes(int numberOfUpVotes) {
+		this.numberOfUpVotes = numberOfUpVotes;
+	}
+
+	public int getNumberOfDownVotes() {
+		return numberOfDownVotes;
+	}
+
+	public void setNumberOfDownVotes(int numberOfDownVotes) {
+		this.numberOfDownVotes = numberOfDownVotes;
+	}
+
 	public Set<UserRatingReview> getUserRatingReviews() {
 		return userRatingReviews;
 	}

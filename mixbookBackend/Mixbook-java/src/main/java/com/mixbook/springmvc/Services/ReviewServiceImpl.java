@@ -25,6 +25,8 @@ public class ReviewServiceImpl implements ReviewService {
 
 	public void createReview(UserRecipeHasReview review) throws ReviewOwnRecipeException, PersistenceException, NoDataWasChangedException, UnknownServerErrorException {
 		try {
+			review.setNumberOfUpVotes(0);
+			review.setNumberOfDownVotes(0);
 			dao.createReview(review);
 		} catch (ReviewOwnRecipeException e) {
 			throw new ReviewOwnRecipeException("Attempted to review own recipe or recipe does not exist!");
