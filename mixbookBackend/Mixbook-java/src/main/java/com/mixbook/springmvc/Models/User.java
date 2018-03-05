@@ -102,7 +102,7 @@ public class User implements Serializable {
 	nullable = false, updatable = false) })
 	private Set<Badge> badges = new HashSet<Badge>(0);
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.user")
 	private Set<UserRatingReview> userRatingReviews = new HashSet<UserRatingReview>(0);
 
 	public User() {

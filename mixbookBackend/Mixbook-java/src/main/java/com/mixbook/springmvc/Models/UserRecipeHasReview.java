@@ -44,7 +44,7 @@ public class UserRecipeHasReview implements Serializable {
 	@Column(name = "number_of_down_votes", nullable = false)
 	private int numberOfDownVotes;
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "userRecipeHasReview")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.userRecipeHasReview")
 	private Set<UserRatingReview> userRatingReviews = new HashSet<UserRatingReview>(0);
 
 	public UserRecipeHasReview() {

@@ -41,7 +41,7 @@ public class ReviewDaoImpl extends AbstractDao<Integer, UserRecipeHasReview> imp
 		if (count < 1) {
 			throw new ReviewOwnRecipeException("Attempted to review own recipe or recipe does not exist!");
 		}
-		SQLQuery insertQuery = getSession().createSQLQuery("" + "INSERT INTO users_recipe_has_review(users_user_id,recipe_recipe_id,review_commentary,rating)VALUES(?,?,?,?)");
+		SQLQuery insertQuery = getSession().createSQLQuery("" + "INSERT INTO users_recipe_has_review(users_user_id,recipe_recipe_id,review_commentary,rating,number_of_up_votes,number_of_down_votes)VALUES(?,?,?,?,0,0)");
 		insertQuery.setParameter(0, user.getUserId());
 		insertQuery.setParameter(1, review.getRecipe().getRecipeId());
 		insertQuery.setParameter(2, review.getReviewCommentary());
