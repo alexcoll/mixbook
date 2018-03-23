@@ -168,7 +168,7 @@ public class ReviewDaoImpl extends AbstractDao<Integer, UserRecipeHasReview> imp
 	}
 
 	public List<UserRecipeHasReview> viewAllReviewsByUser(User user) throws Exception {
-		Query q = getSession().createSQLQuery("SELECT recipe_recipe_id, review_commentary, rating FROM users_recipe_has_review WHERE users_user_id = ?");
+		Query q = getSession().createSQLQuery("SELECT recipe_recipe_id, review_commentary, rating, number_of_up_votes, number_of_down_votes FROM users_recipe_has_review WHERE users_user_id = ?");
 		user = this.userService.findByEntityUsername(user.getUsername());
 		q.setParameter(0, user.getUserId());
 		List result = q.list();
@@ -176,7 +176,7 @@ public class ReviewDaoImpl extends AbstractDao<Integer, UserRecipeHasReview> imp
 	}
 
 	public List<UserRecipeHasReview> loadReviewsForRecipe(Recipe recipe) throws Exception {
-		Query q = getSession().createSQLQuery("SELECT r.review_commentary, r.rating, u.username FROM users_recipe_has_review AS r INNER JOIN users AS u ON r.users_user_id = u.user_id WHERE r.recipe_recipe_id = ?");
+		Query q = getSession().createSQLQuery("SELECT r.review_commentary, r.rating, u.username, r.number_of_up_votes, r.number_of_down_votes FROM users_recipe_has_review AS r INNER JOIN users AS u ON r.users_user_id = u.user_id WHERE r.recipe_recipe_id = ?");
 		q.setParameter(0, recipe.getRecipeId());
 		List result = q.list();
 		return result;
