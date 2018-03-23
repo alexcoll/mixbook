@@ -16,10 +16,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.mixbook.springmvc.Exceptions.NoDataWasChangedException;
+import com.mixbook.springmvc.Exceptions.RateOwnReviewException;
 import com.mixbook.springmvc.Exceptions.ReviewOwnRecipeException;
 import com.mixbook.springmvc.Models.PasswordResetToken;
 import com.mixbook.springmvc.Models.Recipe;
 import com.mixbook.springmvc.Models.User;
+import com.mixbook.springmvc.Models.UserRatingReview;
 import com.mixbook.springmvc.Models.UserRecipeHasReview;
 import com.mixbook.springmvc.Services.UserService;
 
@@ -164,6 +166,80 @@ public class ReviewDaoImpl extends AbstractDao<Integer, UserRecipeHasReview> imp
 		}
 		else {
 			throw new NoDataWasChangedException("No data was changed! Info may have been invalid!");
+		}
+	}
+	
+	@Override
+	public void upVoteReview(UserRatingReview rating) throws RateOwnReviewException, Exception {
+		NativeQuery q = getSession().createNativeQuery("SELECT * FROM users_recipe_has_review WHERE users_recipe_has_review_id = :users_recipe_has_review_id AND users_user_id <> :users_user_id", UserRecipeHasReview.class);
+		q.setParameter("users_recipe_has_review_id", rating.getUserRecipeHasReview().getUsersRecipeHasReviewId());
+		q.setParameter("users_user_id", rating.getUser().getUserId());
+		if (q.getResultList().isEmpty()) {
+			throw new RateOwnReviewException("Attempted to up vote own review!");
+		}
+		q = getSession().createNativeQuery("SELECT * FROM users_rating_review WHERE users_user_id = :users_user_id AND users_recipe_has_review_id = :users_recipe_has_review_id", UserRatingReview.class);
+		q.setParameter("users_user_id", rating.getUser().getUserId());
+		q.setParameter("users_recipe_has_review_id", rating.getUserRecipeHasReview().getUsersRecipeHasReviewId());
+		List<UserRatingReview> userRatingReviews = (List<UserRatingReview>) q.getResultList();
+		UserRatingReview userRatingReview = null;
+		if (!userRatingReviews.isEmpty()) {
+			userRatingReview = userRatingReviews.get(0);
+		}
+		if (userRatingReview == null) {
+			getSession().persist(rating);
+			q = getSession().createNativeQuery("UPDATE users_recipe_has_review SET number_of_up_votes = number_of_up_votes + 1 WHERE users_recipe_has_review_id = :users_recipe_has_review_id");
+			q.setParameter("users_recipe_has_review_id", rating.getUserRecipeHasReview().getUsersRecipeHasReviewId());
+			q.executeUpdate();
+		} else {
+			if (userRatingReview.getVote() == true) {
+				getSession().delete(userRatingReview);
+				q = getSession().createNativeQuery("UPDATE users_recipe_has_review SET number_of_up_votes = number_of_up_votes - 1 WHERE users_recipe_has_review_id = :users_recipe_has_review_id");
+				q.setParameter("users_recipe_has_review_id", rating.getUserRecipeHasReview().getUsersRecipeHasReviewId());
+				q.executeUpdate();
+			} else {
+				userRatingReview.setVote(true);
+				getSession().update(userRatingReview);
+				q = getSession().createNativeQuery("UPDATE users_recipe_has_review SET number_of_up_votes = number_of_up_votes + 1, number_of_down_votes = number_of_down_votes - 1 WHERE users_recipe_has_review_id = :users_recipe_has_review_id");
+				q.setParameter("users_recipe_has_review_id", rating.getUserRecipeHasReview().getUsersRecipeHasReviewId());
+				q.executeUpdate();
+			}
+		}
+	}
+
+	@Override
+	public void downVoteReview(UserRatingReview rating) throws RateOwnReviewException, Exception {
+		NativeQuery q = getSession().createNativeQuery("SELECT * FROM users_recipe_has_review WHERE users_recipe_has_review_id = :users_recipe_has_review_id AND users_user_id <> :users_user_id", UserRecipeHasReview.class);
+		q.setParameter("users_recipe_has_review_id", rating.getUserRecipeHasReview().getUsersRecipeHasReviewId());
+		q.setParameter("users_user_id", rating.getUser().getUserId());
+		if (q.getResultList().isEmpty()) {
+			throw new RateOwnReviewException("Attempted to down vote own review!");
+		}
+		q = getSession().createNativeQuery("SELECT * FROM users_rating_review WHERE users_user_id = :users_user_id AND users_recipe_has_review_id = :users_recipe_has_review_id", UserRatingReview.class);
+		q.setParameter("users_user_id", rating.getUser().getUserId());
+		q.setParameter("users_recipe_has_review_id", rating.getUserRecipeHasReview().getUsersRecipeHasReviewId());
+		List<UserRatingReview> userRatingReviews = (List<UserRatingReview>) q.getResultList();
+		UserRatingReview userRatingReview = null;
+		if (!userRatingReviews.isEmpty()) {
+			userRatingReview = userRatingReviews.get(0);
+		}
+		if (userRatingReview == null) {
+			getSession().persist(rating);
+			q = getSession().createNativeQuery("UPDATE users_recipe_has_review SET number_of_down_votes = number_of_down_votes + 1 WHERE users_recipe_has_review_id = :users_recipe_has_review_id");
+			q.setParameter("users_recipe_has_review_id", rating.getUserRecipeHasReview().getUsersRecipeHasReviewId());
+			q.executeUpdate();
+		} else {
+			if (userRatingReview.getVote() == true) {
+				userRatingReview.setVote(false);
+				getSession().update(userRatingReview);
+				q = getSession().createNativeQuery("UPDATE users_recipe_has_review SET number_of_up_votes = number_of_up_votes - 1, number_of_down_votes = number_of_down_votes + 1 WHERE users_recipe_has_review_id = :users_recipe_has_review_id");
+				q.setParameter("users_recipe_has_review_id", rating.getUserRecipeHasReview().getUsersRecipeHasReviewId());
+				q.executeUpdate();
+			} else {
+				getSession().delete(userRatingReview);
+				q = getSession().createNativeQuery("UPDATE users_recipe_has_review SET number_of_down_votes = number_of_down_votes - 1 WHERE users_recipe_has_review_id = :users_recipe_has_review_id");
+				q.setParameter("users_recipe_has_review_id", rating.getUserRecipeHasReview().getUsersRecipeHasReviewId());
+				q.executeUpdate();
+			}
 		}
 	}
 

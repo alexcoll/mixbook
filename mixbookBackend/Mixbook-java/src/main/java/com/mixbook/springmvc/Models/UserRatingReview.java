@@ -14,7 +14,7 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "users_rating_review")
-@AssociationOverrides({ @AssociationOverride(name = "pk.user", joinColumns = @JoinColumn(name = "user_id")),
+@AssociationOverrides({ @AssociationOverride(name = "pk.user", joinColumns = @JoinColumn(name = "users_user_id")),
 		@AssociationOverride(name = "pk.userRecipeHasReview", joinColumns = @JoinColumn(name = "users_recipe_has_review_id")) })
 public class UserRatingReview implements Serializable {
 

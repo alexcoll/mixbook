@@ -25,11 +25,11 @@ public class UserRecipeHasReview implements Serializable {
 	private Integer usersRecipeHasReviewId;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_id")
+	@JoinColumn(name = "users_user_id")
 	private User user;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "recipe_id")
+	@JoinColumn(name = "recipe_recipe_id")
 	private Recipe recipe;
 
 	@Column(name = "review_commentary", nullable = false)
