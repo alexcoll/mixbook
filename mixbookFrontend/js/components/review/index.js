@@ -206,7 +206,7 @@ class Reviews extends Component {
         'Authorization': this.auth_token,
       },
       body: JSON.stringify({
-        pk: {recipe: { recipeId: this.state.drinkNumber }},
+        recipe: { recipeId: this.state.drinkNumber },
         reviewCommentary: this.state.inputReviewText,
         rating: this.state.inputRating
       })
@@ -233,7 +233,7 @@ class Reviews extends Component {
         'Authorization': this.auth_token,
       },
       body: JSON.stringify({
-        pk: {recipe: { recipeId: this.state.drinkNumber }},
+        recipe: { recipeId: this.state.drinkNumber },
         reviewCommentary: this.state.inputReviewText,
         rating: this.state.inputRating
       })
@@ -280,7 +280,7 @@ class Reviews extends Component {
     .then(async (response) => {
       if (response.status == 200) {
         var json = await response.json();
-        
+
           global.viewUsername = json.username;
           global.viewEmail = json.email;
           global.viewFirstName = json.firstName;
