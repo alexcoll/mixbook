@@ -26,6 +26,8 @@ CREATE TABLE IF NOT EXISTS `mixbookdb`.`users` (
   `email` VARCHAR(255) NOT NULL,
   `number_of_recipes` INT(11) NOT NULL,
   `number_of_ratings` INT(11) NOT NULL,
+  `sum_of_personal_recipe_ratings` INT(11) NOT NULL,
+  `number_of_personal_recipe_ratings` INT(11) NOT NULL,
   `ENABLED` TINYINT(1) NOT NULL,
   `LASTPASSWORDRESETDATE` TIMESTAMP NOT NULL,
   PRIMARY KEY (`user_id`))
