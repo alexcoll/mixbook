@@ -111,6 +111,13 @@ public class User implements Serializable {
 	public User() {
 
 	}
+	
+	public User(Integer user_id, String username, int sumOfPersonalRecipeRatings, int numberOfPersonalRecipeRatings) {
+		this.user_id = user_id;
+		this.username = username;
+		this.sumOfPersonalRecipeRatings = sumOfPersonalRecipeRatings;
+		this.numberOfPersonalRecipeRatings = numberOfPersonalRecipeRatings;
+	}
 
 	public User(Integer user_id, String username, String password, String first_name, String last_name, String email,
 			int number_of_recipes, int number_of_ratings, Boolean enabled, Date lastPasswordResetDate,

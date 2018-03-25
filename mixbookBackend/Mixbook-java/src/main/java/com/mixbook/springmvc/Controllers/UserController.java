@@ -1,6 +1,8 @@
 package com.mixbook.springmvc.Controllers;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import javax.persistence.PersistenceException;
 import javax.servlet.http.HttpServletRequest;
@@ -283,5 +285,15 @@ public class UserController {
 			return new ResponseEntity<User>(emptyUser, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-
+	
+	@RequestMapping(value = "/loadAllUsers", method = RequestMethod.GET)
+	@ResponseBody
+	public ResponseEntity<List<User>> loadAllUsers() {
+		try {
+			List<User> users = userService.loadAllUsers();
+			return new ResponseEntity<List<User>>(users, HttpStatus.OK);
+		} catch (UnknownServerErrorException e) {
+			return new ResponseEntity<List<User>>(new ArrayList<User>(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
 }
