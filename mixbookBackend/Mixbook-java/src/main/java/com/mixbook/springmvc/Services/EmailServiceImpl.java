@@ -24,5 +24,16 @@ public class EmailServiceImpl implements EmailService {
 		email.setText("Dear " + to + ",\r\n\r\n" + "We have received a request to reset your account password. If you did not make this request, simply disregard this email.\r\n\r\nPlease click on the following link to reset your password: " + url + "\r\n\r\nSincerely,\r\n\r\nMixbook Support");
 		mailSender.send(email);
 	}
+
+	@Override
+	@Async
+	public void generateAccountUnlockEmail(String to, String url) throws UnknownServerErrorException {
+		SimpleMailMessage email = new SimpleMailMessage();
+		email.setTo(to);
+		email.setFrom("mixbookhelp@gmail.com");
+		email.setSubject("Account Unlock Link Requested");
+		email.setText("Dear " + to + ",\r\n\r\n" + "We have received a request to unlock your account. If you did not make this request, simply disregard this email.\r\n\r\nPlease click on the following link to unlock your account: " + url + "\r\n\r\nSincerely,\r\n\r\nMixbook Support");
+		mailSender.send(email);
+	}
 	
 }
