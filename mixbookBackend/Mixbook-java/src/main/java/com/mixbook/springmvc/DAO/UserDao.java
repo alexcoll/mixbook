@@ -1,5 +1,7 @@
 package com.mixbook.springmvc.DAO;
 
+import java.util.List;
+
 import javax.persistence.PersistenceException;
 
 import com.mixbook.springmvc.Models.PasswordResetToken;
@@ -12,6 +14,8 @@ public interface UserDao {
 	User findByEntityEmail(String email) throws Exception;
 	
 	User loadUserProfile(String username) throws PersistenceException, Exception;
+	
+	List<User> loadAllUsers() throws Exception;
 
 	void createUser(User user) throws PersistenceException, Exception;
 

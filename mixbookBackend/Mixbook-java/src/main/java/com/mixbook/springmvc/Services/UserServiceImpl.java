@@ -10,12 +10,15 @@ import java.util.regex.PatternSyntaxException;
 
 import javax.persistence.PersistenceException;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mixbook.springmvc.DAO.UserDao;
+import com.mixbook.springmvc.DAO.UserDaoImpl;
 import com.mixbook.springmvc.Exceptions.UnknownServerErrorException;
 import com.mixbook.springmvc.Models.Authority;
 import com.mixbook.springmvc.Models.AuthorityName;
@@ -39,6 +42,8 @@ public class UserServiceImpl implements UserService {
 	private static final String EMAIL_PATTERN =
 			"^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
 					+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+	
+	private static final Logger logger = LogManager.getLogger(UserServiceImpl.class);
 
 	public User findByEntityUsername(String username) throws UnknownServerErrorException {
 		try {
@@ -68,6 +73,15 @@ public class UserServiceImpl implements UserService {
 			throw new UnknownServerErrorException("Unknown server error!");
 		}
 	}
+	
+	@Override
+	public List<User> loadAllUsers() throws UnknownServerErrorException {
+		try {
+			return dao.loadAllUsers();
+		} catch (Exception e) {
+			throw new UnknownServerErrorException("Unknown server error!");
+		}
+	}
 
 	public void createUser(User user) throws PersistenceException, UnknownServerErrorException {
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -76,6 +90,8 @@ public class UserServiceImpl implements UserService {
 		user.setLastPasswordResetDate(currentTimestamp);
 		user.setNumberOfRecipes(0);
 		user.setNumberOfRatings(0);
+		user.setSumOfPersonalRecipeRatings(0);
+		user.setNumberOfPersonalRecipeRatings(0);
 		List<Authority> authorities = new ArrayList<Authority>();
 		Authority authority = new Authority();
 		authority.setId(1);
@@ -250,5 +266,4 @@ public class UserServiceImpl implements UserService {
 		}
 		return true;
 	}
-
 }

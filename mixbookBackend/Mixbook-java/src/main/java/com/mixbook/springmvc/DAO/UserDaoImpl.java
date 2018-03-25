@@ -1,5 +1,7 @@
 package com.mixbook.springmvc.DAO;
 
+import java.util.List;
+
 import javax.persistence.PersistenceException;
 
 import org.apache.logging.log4j.LogManager;
@@ -8,6 +10,7 @@ import org.apache.logging.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.SQLQuery;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -43,6 +46,13 @@ public class UserDaoImpl extends AbstractDao<Integer, User> implements UserDao {
 		query.setParameter("username", username);
 		User user = (User) query.getSingleResult();
 		return user;
+	}
+	
+	@Override
+	public List<User> loadAllUsers() throws Exception {
+		Query query = getSession().createQuery("select new User(user_id, username, sumOfPersonalRecipeRatings, numberOfPersonalRecipeRatings) from User");
+		List<User> users = (List<User>) query.getResultList();
+		return users;
 	}
 
 	public void createUser(User user) throws PersistenceException, Exception {

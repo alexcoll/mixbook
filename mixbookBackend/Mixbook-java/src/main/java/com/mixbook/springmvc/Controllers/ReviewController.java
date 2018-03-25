@@ -154,6 +154,9 @@ public class ReviewController {
 		User user = new User();
 		user.setUsername(username);
 		rating.setUser(user);
+		if (rating.getVote() != true) {
+			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED", "Invalid request, wrong vote flag"), HttpStatus.BAD_REQUEST);
+		}
 		if (rating.getUserRecipeHasReview().getUsersRecipeHasReviewId() < 1) {
 			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED", "Invalid request, missing review"), HttpStatus.BAD_REQUEST);
 		}
@@ -179,6 +182,9 @@ public class ReviewController {
 		User user = new User();
 		user.setUsername(username);
 		rating.setUser(user);
+		if (rating.getVote() != false) {
+			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED", "Invalid request, wrong vote flag"), HttpStatus.BAD_REQUEST);
+		}
 		if (rating.getUserRecipeHasReview().getUsersRecipeHasReviewId() < 1) {
 			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED", "Invalid request, missing review"), HttpStatus.BAD_REQUEST);
 		}
