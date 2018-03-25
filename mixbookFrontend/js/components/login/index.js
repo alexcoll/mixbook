@@ -145,6 +145,8 @@ class Login extends Component {
     .then(async (response) => {
       if (response.status == 200) {
         var json = await response.json();
+        console.log("JSON: " + json.sumOfPersonalRecipeRatings);
+        console.log("JSON: " + json.numberOfPersonalRecipeRatings);
         store.save('account', {
           isLoggedIn: true,
           isGuest: false,
@@ -157,6 +159,8 @@ class Login extends Component {
             badges: json.badges,
             numOfRatings: json.numberOfRatings,
             numOfRecipes: json.numberOfRecipes,
+            sumOfPersonalRecipeRatings: json.sumOfPersonalRecipeRatings,
+            numberOfPersonalRecipeRatings: json.numberOfPersonalRecipeRatings,
           }
         })
         .then(() => {
