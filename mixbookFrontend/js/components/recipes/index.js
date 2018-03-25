@@ -142,14 +142,14 @@ class Recipes extends Component {
 
     this.filterOnSearchText(searchText, this.state.rawData);
 
-  
+
   }
 
   filterOnSearchText(searchText, data) {
 
     let filteredData = this.filterItems(searchText, data);
-    
-    
+
+
     this.setState({
         dataSource: this.state.dataSource.cloneWithRows(filteredData),
     });
@@ -346,7 +346,7 @@ class Recipes extends Component {
           autoCorrect={false}
         />
 
-        <ModalDropdown 
+        <ModalDropdown
           options={['Ranking ↑', 'Ranking ↓']}
           defaultValue='Sort'
           style={styles.dropDownStyle}
@@ -354,7 +354,7 @@ class Recipes extends Component {
           onSelect={(idx, value) => this._recipeSortOnSelect(idx, value)}
           />
 
-          
+
 
           </View>
 

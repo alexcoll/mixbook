@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ToastAndroid, TouchableOpacity, Alert } from 'react-native';
+import { ToastAndroid, TouchableOpacity, Alert, ListView, View, TouchableHighlight, RefreshControl } from 'react-native';
 import { connect } from 'react-redux';
 
 import * as GLOBAL from '../../globals';
@@ -7,7 +7,7 @@ import * as GLOBAL from '../../globals';
 import navigateTo from '../../actions/pageNav';
 
 import { actions } from 'react-native-navigation-redux-helpers';
-import { Container, Header, Title, Content, Button, Icon, List, ListItem, ListView, Text, Picker, Input, InputGroup, View, Grid, Col } from 'native-base';
+import { Container, Header, Title, Content, Button, Icon, List, ListItem, Text, Picker, Input, InputGroup, Grid, Col } from 'native-base';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 //Load global variables
@@ -35,6 +35,7 @@ class Reviews extends Component {
   constructor(props) {
     super(props);
     console.log(props.items);
+    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
       isGuest: true,
       name: global.recipeName,
@@ -52,6 +53,7 @@ class Reviews extends Component {
       inputReviewText: "",
       isOwnRecipe: false,
       hasUserReviewed: false,
+      dataSource: ds.cloneWithRows(['row 1', 'row 2']),
     };
 
     this.current_user = "";
@@ -118,7 +120,7 @@ class Reviews extends Component {
 
         // Check if user has already written a review
         for (i = 0; i < json.length; i++) {
-          if (json[i][2] == this.current_user) {
+          if (json[i][3] == this.current_user) {
             this.setState({
               hasUserReviewed: true,
               inputRating: String(json[i][1]),
@@ -298,6 +300,72 @@ class Reviews extends Component {
     });
   }
 
+  submitUpvote(reviewID, state) {
+    fetch(`${GLOBAL.API.BASE_URL}/mixbook/review/upVoteReview`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': this.auth_token,
+      },
+      body: JSON.stringify({
+        pk: { userRecipeHasReview: { usersRecipeHasReviewId: reviewID } },
+        vote: true
+      })
+    }).then(async (response) => {
+      if (response.status == 200) {
+        var json = await response.json();
+
+        if (!state) {
+          console.log("Successful upvote of Review");
+          ToastAndroid.show("Review upvoted", ToastAndroid.SHORT);
+        } else {
+          console.log("Successful un-upvote of Review");
+          ToastAndroid.show("Review un-upvoted", ToastAndroid.SHORT);
+        }
+        this.getRemoteData();
+        return json;
+      } else {
+        this.showServerErrorAlert(response);
+        return;
+      }
+    }).catch((error) => {
+      console.error(error);
+    });
+  }
+
+  submitDownvote(reviewID, state) {
+    fetch(`${GLOBAL.API.BASE_URL}/mixbook/review/downVoteReview`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': this.auth_token,
+      },
+      body: JSON.stringify({
+        pk: { userRecipeHasReview: { usersRecipeHasReviewId: reviewID } },
+        vote: false
+      })
+    }).then(async (response) => {
+      if (response.status == 200) {
+        var json = await response.json();
+
+        if (!state) {
+          console.log("Successful downvote of Review");
+          ToastAndroid.show("Review downvoted", ToastAndroid.SHORT);
+        } else {
+          console.log("Successful un-downvote of Review");
+          ToastAndroid.show("Review un-downvoted", ToastAndroid.SHORT);
+        }
+        this.getRemoteData();
+        return json;
+      } else {
+        this.showServerErrorAlert(response);
+        return;
+      }
+    }).catch((error) => {
+      console.error(error);
+    });
+  }
+
   navigateTo(route) {
     this.props.navigateTo(route, 'review');
   }
@@ -382,8 +450,54 @@ class Reviews extends Component {
              <List dataArray={this.state.theList}
               renderRow={(data) =>
                 <ListItem>
-                  <Text style={styles.listTest}>{data[2]}: {data[0]}</Text>
-                  <Text style={styles.listTest} note>{data[1]} stars</Text>
+                  <View style={{flex: 1, flexDirection: 'row'}}>
+                    <View style={{flex: 1, flexDirection: 'column'}}>
+                      <View>
+                        <Text style={styles.listTest}>id: {data[0]}</Text>
+                      </View>
+                      <View>
+                        <Text style={styles.listTest}>user: {data[3]}</Text>
+                      </View>
+                      <View>
+                        <Text style={styles.listTest}>stars: {data[2]} stars</Text>
+                      </View>
+                      <View>
+                        <Text style={styles.listTest}>text: {data[1]}</Text>
+                      </View>
+                      <View style={{
+                        flex: 1,
+                        flexDirection: 'row',
+                      }}>
+                        <View style={{justifyContent: 'center'}}>
+                          <Button
+                            disabled={this.state.isGuest || (this.current_user == data[3])}
+                            style={{ alignSelf: 'center', marginTop: 20, marginBottom: 20 }}
+                            onPress={() => this.submitUpvote(data[0])}
+                          >
+                            <MaterialIcons name="thumb-up" />
+                          </Button>
+                        </View>
+                        <View style={{justifyContent: 'center'}}>
+                          <Button
+                            disabled={this.state.isGuest || (this.current_user == data[3])}
+                            style={{ alignSelf: 'center', marginTop: 20, marginBottom: 20 }}
+                            onPress={() => this.submitDownvote(data[0])}
+                          >
+                            <MaterialIcons name="thumb-down" />
+                          </Button>
+                        </View>
+                        <View style={{justifyContent: 'center'}}>
+                          <Text style={styles.upCountText}>{data[4]}</Text>
+                        </View>
+                        <View style={{justifyContent: 'center'}}>
+                          <Text style={styles.listTest}>:</Text>
+                        </View>
+                        <View style={{justifyContent: 'center'}}>
+                          <Text style={styles.downCountText}>{data[5]}</Text>
+                        </View>
+                      </View>
+                    </View>
+                  </View>
                 </ListItem>
                 }>
               </List>

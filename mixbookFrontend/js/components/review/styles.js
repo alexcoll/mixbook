@@ -35,5 +35,13 @@ module.exports = StyleSheet.create({
   header:{
     fontSize: 16,
     paddingLeft:20,
+  },
+
+  upCountText: {
+    color: 'green',
+  },
+
+  downCountText: {
+    color: 'red',
   }
 });
