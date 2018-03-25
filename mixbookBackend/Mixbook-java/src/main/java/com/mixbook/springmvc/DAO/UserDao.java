@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.persistence.PersistenceException;
 
-import com.mixbook.springmvc.Models.PasswordResetToken;
 import com.mixbook.springmvc.Models.User;
 
 public interface UserDao {
@@ -26,5 +25,7 @@ public interface UserDao {
 	void changeEmail(User user) throws PersistenceException, Exception;
 	
 	void changePassword(User user) throws Exception;
+	
+	void lockAccount(User user) throws Exception;
 	
 }

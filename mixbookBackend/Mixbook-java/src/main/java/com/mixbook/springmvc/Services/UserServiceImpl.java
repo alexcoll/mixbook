@@ -3,7 +3,6 @@ package com.mixbook.springmvc.Services;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
@@ -18,11 +17,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mixbook.springmvc.DAO.UserDao;
-import com.mixbook.springmvc.DAO.UserDaoImpl;
 import com.mixbook.springmvc.Exceptions.UnknownServerErrorException;
 import com.mixbook.springmvc.Models.Authority;
 import com.mixbook.springmvc.Models.AuthorityName;
-import com.mixbook.springmvc.Models.PasswordResetToken;
 import com.mixbook.springmvc.Models.User;
 
 @Service("userService")
@@ -144,6 +141,15 @@ public class UserServiceImpl implements UserService {
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		try {
 			dao.changePassword(user);
+		} catch (Exception e) {
+			throw new UnknownServerErrorException("Unknown server error!");
+		}
+	}
+	
+	@Override
+	public void lockAccount(User user) throws UnknownServerErrorException {
+		try {
+			dao.lockAccount(user);
 		} catch (Exception e) {
 			throw new UnknownServerErrorException("Unknown server error!");
 		}

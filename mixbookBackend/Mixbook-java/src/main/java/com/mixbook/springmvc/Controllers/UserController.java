@@ -266,6 +266,21 @@ public class UserController {
 	public String requestReset() {
 		return "requestResetPassword";
 	}
+	
+	@RequestMapping(value = "/lockAccount", method = RequestMethod.POST)
+	@ResponseBody
+	public ResponseEntity<JsonResponse> lockAccount(HttpServletRequest request) {
+		try {
+			String token = request.getHeader(tokenHeader);
+			String username = jwtTokenUtil.getUsernameFromToken(token);
+			User user = new User();
+			user.setUsername(username);
+			userService.lockAccount(user);
+			return new ResponseEntity<JsonResponse>(new JsonResponse("OK",""), HttpStatus.OK);
+		} catch (UnknownServerErrorException e) {
+			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","Unknown server error"), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
 
 	@RequestMapping(value = "/getUserInfo", method = RequestMethod.GET)
 	@ResponseBody
