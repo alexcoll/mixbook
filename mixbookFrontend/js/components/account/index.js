@@ -749,6 +749,14 @@ class Account extends Component {
                 >
                   Logout
                 </Button>
+                <Button
+                  block
+                  danger
+                  style={styles.logoutButton}
+                  onPress={() => this.onLock()}
+                >
+                  Lock Account
+                </Button>
               </View>
             </ListItem>
           </List>
