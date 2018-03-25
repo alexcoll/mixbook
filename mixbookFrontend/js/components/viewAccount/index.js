@@ -73,7 +73,17 @@ class ViewAccount extends Component {
   }
 
 
+  getProfRating(sumOfRatings: number, numberOfRatings: number) {
+    var result = 0;
 
+    if(numberOfRatings > 0)
+    {
+      result = sumOfRatings / numberOfRatings;
+    }
+
+    return result;
+    
+  }
 
 
   render() {
@@ -88,6 +98,7 @@ class ViewAccount extends Component {
         </Header>
 
         <Content>
+        <Text style={styles.rating}> Profile Rating: {this.getProfRating(global.viewSumRecipeRatings, global.viewNumRecipeRatings)}</Text>
           <List>
             <ListItem>
               <InputGroup disabled={this.state.isGuest}>

@@ -285,6 +285,8 @@ class Reviews extends Component {
           global.viewEmail = json.email;
           global.viewFirstName = json.firstName;
           global.viewLastName = json.lastName;
+          global.viewSumRecipeRatings = json.sumOfPersonalRecipeRatings;
+          global.viewNumRecipeRatings = json.numberOfPersonalRecipeRatings;
 
           this.navigateTo('viewAccount');
 
