@@ -25,5 +25,11 @@ module.exports = StyleSheet.create({
 
   icons: {
     color: '#0A69FE'
+  },
+
+  rating: {
+    textAlign: 'center',
+    marginBottom: 10,
+    fontWeight: 'bold',
   }
 });
