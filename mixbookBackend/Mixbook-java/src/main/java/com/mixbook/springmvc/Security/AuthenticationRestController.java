@@ -63,6 +63,9 @@ public class AuthenticationRestController {
 		if (user.equals(null)) {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
+		if (!user.isEnabled()) {
+			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+		}
 
 		if (jwtTokenUtil.canTokenBeRefreshed(token, user.getLastPasswordResetDate())) {
 			String refreshedToken = jwtTokenUtil.refreshToken(token);

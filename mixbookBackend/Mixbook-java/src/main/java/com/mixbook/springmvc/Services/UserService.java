@@ -28,6 +28,10 @@ public interface UserService {
 	
 	void changePassword(User user) throws UnknownServerErrorException;
 	
+	void lockAccount(User user) throws UnknownServerErrorException;
+	
+	void unlockAccount(User user) throws UnknownServerErrorException;
+	
 	boolean isUserInfoValid(User user) throws UnknownServerErrorException;
 	
 	boolean isUserEmailValid(String email) throws UnknownServerErrorException;

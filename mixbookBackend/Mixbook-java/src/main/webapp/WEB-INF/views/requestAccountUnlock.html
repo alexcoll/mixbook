@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css"/>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title th:text="#{message.unlockAccount}">unlock</title>
+</head>
+<body>
+<div class="container">
+    <h1 th:text="#{message.unlockAccount}">unlock</h1>
+    <br/>
+    <div id="feedback"></div>
+    <div class="row">
+      <form action="#">
+        <label class="col-sm-1" th:text="#{label.user.email}">email</label>
+        <span class="col-sm-5"><input class="form-control" id="email" name="email" type="email" value="" required="required" /></span>
+        <button class="btn btn-primary" type="submit" th:text="#{message.unlockAccount}">unlock</button>
+      </form>
+    </div>
+
+<br/>
+
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script th:inline="javascript">
+/*<![CDATA[*/           
+var serverContext = [[@{/}]];
+
+$(document).ready(function () {
+	$('form').submit(function(event) {
+		requestUnlock(event);
+    });
+});
+
+function requestUnlock(event){
+    event.preventDefault();	
+    var email = $("#email").val();
+    $.post(serverContext + "user/requestAccountUnlock",{email: email} ,function(data){
+    	var message = "<h4>Account Unlock Request Has Been Received!</h4>";
+        $('#feedback').html(message);
+    })
+    .fail(function(data) {
+    	var json = JSON.parse(data.responseText);
+    	var message = "<h4>Error: </h4><pre>"
+            + json["errorMessage"] + "</pre>";
+        $('#feedback').html(message);
+    });
+}
+
+$(document).ajaxStart(function() {
+    $("title").html("LOADING ...");
+});
+/*]]>*/
+</script>
+</body>
+
+</html>

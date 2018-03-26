@@ -10,7 +10,6 @@ import org.apache.logging.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.SQLQuery;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -111,6 +110,22 @@ public class UserDaoImpl extends AbstractDao<Integer, User> implements UserDao {
 		q.setParameter("password", user.getPassword());
 		q.setParameter("lastpasswordresetdate", user.getLastPasswordResetDate());
 		q.setParameter("username", user.getUsername());
+		q.executeUpdate();
+	}
+
+	@Override
+	public void lockAccount(User user) throws Exception {
+		Query q = getSession().createQuery("update User set enabled = :enabled where username = :username");
+		q.setParameter("enabled", Boolean.FALSE);
+		q.setParameter("username", user.getUsername());
+		q.executeUpdate();
+	}
+	
+	@Override
+	public void unlockAccount(User user) throws Exception {
+		Query q = getSession().createQuery("update User set enabled = :enabled where user_id = :user_id");
+		q.setParameter("enabled", Boolean.TRUE);
+		q.setParameter("user_id", user.getUserId());
 		q.executeUpdate();
 	}
 }
