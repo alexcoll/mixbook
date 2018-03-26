@@ -109,6 +109,27 @@ class Account extends Component {
 
   onLock() {
     //TODO when tyler implements back end
+    store.get('account').then((data) => {
+      if (data.isGuest) {
+        ToastAndroid.show("Item removed", ToastAndroid.SHORT);
+        return;
+      }
+    fetch(GLOBAL.API.BASE_URL + '/mixbook/user/lockAccount', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': data.token,
+      }
+    }).then((response) => {
+      ToastAndroid.show("Account Locked", ToastAndroid.SHORT);
+      this.onLogout();
+    }).catch((error) => {
+      console.error(error);
+    });
+  }).catch((error) => {
+    console.warn("error getting user token from local store");
+    console.warn(error);
+  });
   }
 
   onSubmit() {
@@ -750,6 +771,7 @@ class Account extends Component {
                   Logout
                 </Button>
                 <Button
+                  disabled={this.state.isGuest}
                   block
                   danger
                   style={styles.logoutButton}
