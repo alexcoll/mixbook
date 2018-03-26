@@ -109,6 +109,20 @@ class Account extends Component {
 
   onLock() {
     //TODO when tyler implements back end
+    fetch(GLOBAL.API.BASE_URL + '/mixbook/user/lockAccount', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': data.token,
+      },
+      body: JSON.stringify({
+        brandName: item
+      })
+    }).then((response) => {
+      this.onLogout();
+    }).catch((error) => {
+      console.error(error);
+    });
   }
 
   onSubmit() {
