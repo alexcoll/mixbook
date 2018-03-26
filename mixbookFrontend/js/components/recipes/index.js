@@ -33,6 +33,8 @@ class Recipes extends Component {
       isLoading: false,
       empty: false,
       rawData: [],
+      pagedDataSource: ds.cloneWithRows([]),
+      page: 1,
     };
   }
 
@@ -118,6 +120,7 @@ class Recipes extends Component {
           empty: false,
           rawData: json,
         });
+        this.getPagedData();
         return json;
         } else {
           this.showServerErrorAlert(response);
@@ -135,14 +138,51 @@ class Recipes extends Component {
     });
   }
 
+  getPagedData(){
+    console.log("Getting paged data");
+    var list = this.state.rawData;
+
+    var length = this.state.page * 14;
+    console.log("Length: " + length);
+
+    if(list.length > length)
+    {
+      list = list.slice(0, length);
+    }
+    
+    console.log(list);
+
+    this.setState({
+      pagedDataSource: this.state.dataSource.cloneWithRows(list),
+    });
+  }
+
+  fetchMoreData() {
+    
+    var currPage = this.state.page;
+
+    this.setState({
+      page: this.state.page + 1,
+    });
+
+    console.log("Getting more data for page " + this.state.page);
+
+    if(this.state.sortDirection != "")
+      this._recipeSortOnSelect(this.state.sortDirection, 0)
+
+    else  
+      this.filterOnSearchText(this.state.searchText, this.state.rawData);
+
+
+    this.getPagedData();
+    
+  }
 
   setSearchText(event) {
     let searchText = event.nativeEvent.text;
     this.setState({searchText});
 
     this.filterOnSearchText(searchText, this.state.rawData);
-
-  
   }
 
   filterOnSearchText(searchText, data) {
@@ -152,6 +192,7 @@ class Recipes extends Component {
     
     this.setState({
         dataSource: this.state.dataSource.cloneWithRows(filteredData),
+        rawData: filteredData,
     });
 
 
@@ -185,6 +226,10 @@ class Recipes extends Component {
   }
 
   sortRecipes(items, idx) {
+
+    this.setState({
+      sortDirection: idx,
+    })
     if(idx === '0')
     {
       return items.sort(function (a,b) {
@@ -366,7 +411,7 @@ class Recipes extends Component {
               onRefresh={this._onRefresh.bind(this)}
             />
           }
-          dataSource={this.state.dataSource}
+          dataSource={this.state.pagedDataSource}
           renderRow={(rowData: string, sectionID: number, rowID: number, highlightRow: (sectionID: number, rowID: number) => void) =>
             <TouchableHighlight onPress={() => {
               this._pressRow(rowData);
@@ -383,6 +428,10 @@ class Recipes extends Component {
           }
           renderSeparator={this._renderSeparator}
         />
+        <Button 
+                  block
+                  style={styles.button}
+                  onPress={() => this.fetchMoreData()}>Load More</Button>
         {this._renderFAB()}
       </View>
     );

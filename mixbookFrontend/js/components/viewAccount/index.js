@@ -63,9 +63,7 @@ class ViewAccount extends Component {
         ratings: data.userInfo.numOfRatings,
         recipes: data.userInfo.numOfRecipes,
       });
-      console.log(this.state.badges);
-      console.log(this.state.ratings);
-      console.log(this.state.recipes);
+
     })
     .catch((error) => {
       console.warn("error getting settings from local store");

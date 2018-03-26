@@ -24,10 +24,12 @@ class MyDrinks extends Component {
       isGuest: false,
       refreshing: false,
       dataSource: ds.cloneWithRows([]),
+      pagedDataSource: ds.cloneWithRows([]),
       searchText: "",
       isLoading: false,
       empty: false,
       rawData: [],
+      page: 1,
     };
 
     store.get('account')
@@ -68,7 +70,43 @@ class MyDrinks extends Component {
     // console.warn("didMount");
   }
 
+  getPagedData(){
+    console.log("Getting paged data");
+    var list = this.state.rawData;
 
+    var length = this.state.page * 14;
+    console.log("Length: " + length);
+
+    if(list.length > length)
+    {
+      list = list.slice(0, length);
+    }
+    
+    console.log(list);
+
+    this.setState({
+      pagedDataSource: this.state.dataSource.cloneWithRows(list),
+    });
+
+    
+
+  }
+
+  fetchMoreData() {
+    
+    var currPage = this.state.page;
+    
+    
+    
+    this.setState({
+      page: this.state.page + 1,
+    });
+
+    console.log("Getting more data for page " + this.state.page);
+
+    this.getPagedData();
+    
+  }
 
   showServerErrorAlert(response) {
     Alert.alert(
@@ -132,6 +170,7 @@ class MyDrinks extends Component {
         empty: false,
         rawData: json,
       });
+      this.getPagedData();
       return json;
       } else {
         this.showServerErrorAlert(response);
@@ -365,7 +404,7 @@ class MyDrinks extends Component {
               onRefresh={this._onRefresh.bind(this)}
             />
           }
-          dataSource={this.state.dataSource}
+          dataSource={this.state.pagedDataSource}
           renderRow={(rowData: string, sectionID: number, rowID: number, highlightRow: (sectionID: number, rowID: number) => void) =>
             <TouchableHighlight onPress={() => {
               this._pressRow(rowData);
@@ -382,6 +421,10 @@ class MyDrinks extends Component {
           }
           renderSeparator={this._renderSeparator}
         />
+        <Button 
+                  block
+                  style={styles.button}
+                  onPress={() => this.fetchMoreData()}>Load More</Button>
       </View>
     );
   }
