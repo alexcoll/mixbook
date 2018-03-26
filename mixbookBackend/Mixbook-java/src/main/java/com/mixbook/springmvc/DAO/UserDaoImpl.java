@@ -120,4 +120,12 @@ public class UserDaoImpl extends AbstractDao<Integer, User> implements UserDao {
 		q.setParameter("username", user.getUsername());
 		q.executeUpdate();
 	}
+	
+	@Override
+	public void unlockAccount(User user) throws Exception {
+		Query q = getSession().createQuery("update User set enabled = :enabled where user_id = :user_id");
+		q.setParameter("enabled", Boolean.TRUE);
+		q.setParameter("user_id", user.getUserId());
+		q.executeUpdate();
+	}
 }

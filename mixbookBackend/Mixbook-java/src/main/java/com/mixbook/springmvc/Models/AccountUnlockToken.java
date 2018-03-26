@@ -16,8 +16,8 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "unlock_account_token")
-public class UnlockAccountToken {
+@Table(name = "account_unlock_token")
+public class AccountUnlockToken {
 
 	private static final int EXPIRATION = 60 * 24;
 
@@ -37,18 +37,18 @@ public class UnlockAccountToken {
 	@NotNull
 	private Date expiryDate;
 
-	public UnlockAccountToken() {
+	public AccountUnlockToken() {
 		super();
 	}
 
-	public UnlockAccountToken(final String token) {
+	public AccountUnlockToken(final String token) {
 		super();
 
 		this.token = token;
 		this.expiryDate = calculateExpiryDate(EXPIRATION);
 	}
 
-	public UnlockAccountToken(final String token, final User user) {
+	public AccountUnlockToken(final String token, final User user) {
 		super();
 
 		this.token = token;
@@ -121,7 +121,7 @@ public class UnlockAccountToken {
 		if (getClass() != obj.getClass()) {
 			return false;
 		}
-		final UnlockAccountToken other = (UnlockAccountToken) obj;
+		final AccountUnlockToken other = (AccountUnlockToken) obj;
 		if (expiryDate == null) {
 			if (other.expiryDate != null) {
 				return false;

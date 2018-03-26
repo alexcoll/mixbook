@@ -28,4 +28,6 @@ public interface UserDao {
 	
 	void lockAccount(User user) throws Exception;
 	
+	void unlockAccount(User user) throws Exception;
+	
 }

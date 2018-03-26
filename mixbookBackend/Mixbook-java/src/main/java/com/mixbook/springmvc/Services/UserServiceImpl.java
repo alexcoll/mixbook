@@ -154,6 +154,15 @@ public class UserServiceImpl implements UserService {
 			throw new UnknownServerErrorException("Unknown server error!");
 		}
 	}
+	
+	@Override
+	public void unlockAccount(User user) throws UnknownServerErrorException {
+		try {
+			dao.unlockAccount(user);
+		} catch (Exception e) {
+			throw new UnknownServerErrorException("Unknown server error!");
+		}
+	}
 
 	public boolean isUserInfoValid(User user) throws UnknownServerErrorException {
 		try {

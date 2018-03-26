@@ -28,11 +28,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mixbook.springmvc.Exceptions.UnknownServerErrorException;
+import com.mixbook.springmvc.Models.AccountUnlockToken;
 import com.mixbook.springmvc.Models.JsonResponse;
 import com.mixbook.springmvc.Models.PasswordDto;
 import com.mixbook.springmvc.Models.PasswordResetToken;
 import com.mixbook.springmvc.Models.User;
 import com.mixbook.springmvc.Security.JwtTokenUtil;
+import com.mixbook.springmvc.Services.AccountUnlockTokenService;
 import com.mixbook.springmvc.Services.EmailService;
 import com.mixbook.springmvc.Services.PasswordResetTokenService;
 import com.mixbook.springmvc.Services.UserService;
@@ -49,6 +51,9 @@ public class UserController {
 	
 	@Autowired
 	EmailService emailService;
+	
+	@Autowired
+	AccountUnlockTokenService accountUnlockTokenService;
 
 	private String tokenHeader = "Authorization";
 
@@ -280,6 +285,58 @@ public class UserController {
 		} catch (UnknownServerErrorException e) {
 			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","Unknown server error"), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
+	}
+	
+	@RequestMapping(value = "/unlockAccount", method = RequestMethod.GET)
+	public String unlockAccount(HttpServletRequest request, HttpServletResponse response, @RequestParam("id") Integer id, @RequestParam("token") String token) {
+		try {
+			User result = accountUnlockTokenService.validateAccountUnlockToken(id, token);
+			if (result == null) {
+				response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+				return "redirect:https://mymixbook.com";
+			}
+			userService.unlockAccount(result);
+			AccountUnlockToken accountUnlockToken = new AccountUnlockToken();
+			accountUnlockToken.setUser(result);
+			accountUnlockTokenService.deleteToken(accountUnlockToken);
+			return "redirect:/user/loadUnlockAccountSuccessPage";
+		} catch (UnknownServerErrorException e) {
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			return "redirect:https://mymixbook.com";
+		}
+	}
+	
+	@RequestMapping(value = "/requestAccountUnlock",
+			method = RequestMethod.POST)
+	@ResponseBody
+	public ResponseEntity<JsonResponse> requestAccountUnlock(HttpServletRequest request, @RequestParam("email") String email) {
+		try {
+			User user = userService.findByEntityEmail(email);
+			if (user == null) {
+				return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","No user found with that email"), HttpStatus.UNAUTHORIZED);
+			}
+			if (user.getEnabled()) {
+				return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","No locked user found with that email"), HttpStatus.UNAUTHORIZED);
+			}
+			String token = accountUnlockTokenService.generateAccountUnlockToken(user);
+			String url = "https://" + request.getServerName() + request.getContextPath() + "/user/unlockAccount?id=" + user.getUserId() + "&token=" + token;
+			emailService.generateAccountUnlockEmail(user.getEmail(), url);
+		} catch (PersistenceException e) {
+			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","Account unlock request has already been requested in the last 24 hours"), HttpStatus.BAD_REQUEST);
+		} catch (UnknownServerErrorException e) {
+			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","Unknown server error"), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return new ResponseEntity<JsonResponse>(new JsonResponse("OK",""), HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/requestUnlock", method = RequestMethod.GET)
+	public String loadUnlockAccountPage() {
+		return "requestAccountUnlock";
+	}
+	
+	@RequestMapping(value = "/loadUnlockAccountSuccessPage", method = RequestMethod.GET)
+	public String loadUnlockAccountSuccessPage() {
+		return "unlockAccountSuccess";
 	}
 
 	@RequestMapping(value = "/getUserInfo", method = RequestMethod.GET)
