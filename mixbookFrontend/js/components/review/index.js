@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ToastAndroid, TouchableOpacity, Alert, FlatList, ListView, View, TouchableHighlight, RefreshControl } from 'react-native';
+import { ToastAndroid, TouchableOpacity, Alert, ListView, View, TouchableHighlight, RefreshControl } from 'react-native';
 import { connect } from 'react-redux';
 
 import * as GLOBAL from '../../globals';
@@ -16,6 +16,7 @@ import '../login/index.js';
 
 import styles from './styles';
 import store from 'react-native-simple-store';
+import ModalDropdown from 'react-native-modal-dropdown';
 
 const Item = Picker.Item;
 
@@ -52,6 +53,7 @@ class Reviews extends Component {
       inputReviewText: "",
       isOwnRecipe: false,
       hasUserReviewed: false,
+      sortDirection: '0',
     };
 
     this.current_user = "";
@@ -97,7 +99,7 @@ class Reviews extends Component {
         });
       }
     }).catch((error) => {
-      console.warn("error getting user token from local store");
+      console.warn("store.get(account): error getting user token from local store");
     });
   }
 
@@ -366,150 +368,198 @@ class Reviews extends Component {
     });
   }
 
+
+  _recipeSortOnSelect(idx, value) {
+    console.log("sorting to idx: " + idx + ", value: " + value);
+
+    this.setState({
+      sortDirection: idx,
+    })
+
+    if (idx == '0') {
+      this.getRemoteData();
+      return;
+    } else {
+      let sortedData = this.sortRecipes(this.state.theList, idx.toString());
+
+      this.setState({
+        theList: sortedData,
+      });
+    }
+  }
+
+  sortRecipes(items, idx) {
+    switch (idx) {
+      case '1':
+        return items.sort(function (a, b) {
+          if (a[4] > b[4]) return -1;
+          if (b[4] < a[4]) return 1;
+          return 0;
+        })
+        break;
+      case '2':
+        return items.sort(function (a, b) {
+          if (a[5] > b[5]) return -1;
+          if (b[5] < a[5]) return 1;
+          return 0;
+        })
+        break;
+    }
+  }
+
   navigateTo(route) {
     this.props.navigateTo(route, 'review');
   }
 
   render() {
     return (
-      <Container style={styles.container}>
+      <View style={styles.container}>
         <Header>
           <Title>{this.state.name}</Title>
         </Header>
         <Content>
-          <View>
-          <List>
-            <ListItem onPress={() => this.visitProfile(this.state.reviewOwner)}>
-            <Text>By {this.state.reviewOwner}</Text>
-            </ListItem>
-            <ListItem>
-              <Text style={styles.headers}>Ingredients</Text>
-                 <List dataArray={this.state.ingredientsList}
-                  renderRow={(data) =>
-                    <ListItem>
-                      <Grid>
-                        <Col>
-                          <Text style={styles.listTest}>{data}</Text>
-                        </Col>
-                       </Grid>
-                    </ListItem>
-                  }>
-                </List>
-            </ListItem>
-            <ListItem>
-              <Text>Difficulty: {this.state.difficulty}</Text>
+        <View>
+            <List>
+              <ListItem onPress={() => this.visitProfile(this.state.reviewOwner)}>
+              <Text>By {this.state.reviewOwner}</Text>
               </ListItem>
-            <ListItem>
-              <Text>
-                {"Directions:\n" + this.state.directions}
-              </Text>
-            </ListItem>
-            <ListItem>
-              <Text>
-                {this.getReviewSectionHeaderText()}
-              </Text>
-            </ListItem>
-          </List>
-          </View>
-          <List>
-            <ListItem>
-              <InputGroup disabled={this.state.isGuest || this.state.isOwnRecipe}>
-                <Input
-                  inlineLabel label="Rating"
-                  placeholder="0-5"
-                  value={String(this.state.inputRating)}
-                  onChangeText={(inputRating) => this.setState({ inputRating })}
-                />
-              </InputGroup>
-            </ListItem>
-            <ListItem>
-              <InputGroup disabled={this.state.isGuest || this.state.isOwnRecipe}>
-                <Input
-                  inlineLabel label="Review"
-                  placeholder="Review text"
-                  value={this.state.inputReviewText}
-                  onChangeText={(inputReviewText) => this.setState({ inputReviewText })}
-                />
-              </InputGroup>
-            </ListItem>
-          </List>
-          <Button
-            disabled={this.state.isGuest || this.state.isOwnRecipe}
-            style={{ alignSelf: 'center', marginTop: 20, marginBottom: 20 }}
-            onPress={() => this.onSubmit()}
-          >
-            {this.getReviewSubmitButtonText()}
-          </Button>
-
-          <View>
-          <List>
-            <ListItem>
-              <Text>Reviews</Text>
-            </ListItem>
-            <ListItem>
-             <List dataArray={this.state.theList}
-              renderRow={(data) =>
-                <ListItem>
-                  <View style={{flex: 1, flexDirection: 'row'}}>
-                    <View style={{flex: 1, flexDirection: 'column'}}>
-                      <View>
-                        <Text style={styles.reviewUsernameText}>{data[3]}</Text>
-                      </View>
-                      <View>
-                        <Text style={styles.reviewStarsText}>{data[2]} stars</Text>
-                      </View>
-                      <View>
-                        <Text style={styles.reviewCommentaryText}>{data[1]}</Text>
-                      </View>
-                      <View style={{
-                        flex: 1,
-                        flexDirection: 'row',
-                      }}>
+              <ListItem>
+                <Text style={styles.headers}>Ingredients</Text>
+                   <List dataArray={this.state.ingredientsList}
+                    renderRow={(data) =>
+                      <ListItem>
+                        <Grid>
+                          <Col>
+                            <Text style={styles.listTest}>{data}</Text>
+                          </Col>
+                         </Grid>
+                      </ListItem>
+                    }>
+                  </List>
+              </ListItem>
+              <ListItem>
+                <Text>Difficulty: {this.state.difficulty}</Text>
+                </ListItem>
+              <ListItem>
+                <Text>
+                  {"Directions:\n" + this.state.directions}
+                </Text>
+              </ListItem>
+              <ListItem>
+                <Text style={styles.headers}>
+                  {this.getReviewSectionHeaderText()}
+                </Text>
+              </ListItem>
+            </List>
+            </View>
+            <List>
+              <ListItem>
+                <InputGroup disabled={this.state.isGuest || this.state.isOwnRecipe}>
+                  <Input
+                    inlineLabel label="Rating"
+                    placeholder="0-5"
+                    value={String(this.state.inputRating)}
+                    onChangeText={(inputRating) => this.setState({ inputRating })}
+                  />
+                </InputGroup>
+              </ListItem>
+              <ListItem>
+                <InputGroup disabled={this.state.isGuest || this.state.isOwnRecipe}>
+                  <Input
+                    inlineLabel label="Review"
+                    placeholder="Review text"
+                    value={this.state.inputReviewText}
+                    onChangeText={(inputReviewText) => this.setState({ inputReviewText })}
+                  />
+                </InputGroup>
+              </ListItem>
+            </List>
+            <Button
+              disabled={this.state.isGuest || this.state.isOwnRecipe}
+              style={styles.reviewSubmitButton}
+              onPress={() => this.onSubmit()}
+            >
+              {this.getReviewSubmitButtonText()}
+            </Button>
+            <View>
+            <List>
+              <ListItem>
+                <Text style={styles.reviewsSectionHeaderText}>Reviews</Text>
+                <View style={{flex: 1, flexDirection: 'row'}}>
+                </View>
+                <Button>
+                  <ModalDropdown
+                    options={["Default", "Helpful", "Unhelpful"]}
+                    defaultValue="Sort"
+                    style={styles.sortButtonStyle}
+                    textStyle={styles.sortButtonTextStyle}
+                    dropdownTextStyle={styles.sortDropdownTextStyle}
+                    onSelect={(idx, value) => this._recipeSortOnSelect(idx, value)}
+                  />
+                </Button>
+              </ListItem>
+              <ListItem>
+                <List dataArray={this.state.theList}
+                  renderRow={(data) =>
+                  <ListItem>
+                    <View style={{flex: 1, flexDirection: 'row'}}>
+                      <View style={{flex: 1, flexDirection: 'column'}}>
+                        <View>
+                          <Text style={styles.reviewUsernameText}>{data[3]}</Text>
+                        </View>
+                        <View>
+                          <Text style={styles.reviewStarsText}>{data[2]} stars</Text>
+                        </View>
+                        <View>
+                          <Text style={styles.reviewCommentaryText}>{data[1]}</Text>
+                        </View>
                         <View style={{
                           flex: 1,
                           flexDirection: 'row',
                         }}>
-                          <View style={{justifyContent: 'center'}}>
-                            <Button
-                              disabled={this.state.isGuest || (this.current_user == data[3])}
-                              style={{ alignSelf: 'center', marginTop: 20, marginBottom: 20 }}
-                              onPress={() => this.submitUpvote(data[0])}
-                            >
-                              <MaterialIcons name="thumb-up" />
-                            </Button>
+                          <View style={{
+                            flex: 1,
+                            flexDirection: 'row',
+                          }}>
+                            <View style={{justifyContent: 'center'}}>
+                              <Button
+                                disabled={this.state.isGuest || (this.current_user == data[3])}
+                                style={{ alignSelf: 'center', marginTop: 20, marginBottom: 20 }}
+                                onPress={() => this.submitUpvote(data[0])}
+                              >
+                                <MaterialIcons name="thumb-up" />
+                              </Button>
+                            </View>
+                            <View style={{justifyContent: 'center'}}>
+                              <Button
+                                disabled={this.state.isGuest || (this.current_user == data[3])}
+                                style={{ alignSelf: 'center', marginTop: 20, marginBottom: 20 }}
+                                onPress={() => this.submitDownvote(data[0])}
+                              >
+                                <MaterialIcons name="thumb-down" />
+                              </Button>
+                            </View>
                           </View>
                           <View style={{justifyContent: 'center'}}>
-                            <Button
-                              disabled={this.state.isGuest || (this.current_user == data[3])}
-                              style={{ alignSelf: 'center', marginTop: 20, marginBottom: 20 }}
-                              onPress={() => this.submitDownvote(data[0])}
-                            >
-                              <MaterialIcons name="thumb-down" />
-                            </Button>
+                            <Text style={styles.upCountText}>{data[4]}</Text>
                           </View>
-                        </View>
-                        <View style={{justifyContent: 'center'}}>
-                          <Text style={styles.upCountText}>{data[4]}</Text>
-                        </View>
-                        <View style={{justifyContent: 'center'}}>
-                          <Text style={styles.listTest}>:</Text>
-                        </View>
-                        <View style={{justifyContent: 'center'}}>
-                          <Text style={styles.downCountText}>{data[5]}</Text>
+                          <View style={{justifyContent: 'center'}}>
+                            <Text style={styles.listTest}>:</Text>
+                          </View>
+                          <View style={{justifyContent: 'center'}}>
+                            <Text style={styles.downCountText}>{data[5]}</Text>
+                          </View>
                         </View>
                       </View>
                     </View>
-                  </View>
-                </ListItem>
-                }>
-              </List>
-            </ListItem>
-          </List>
-
-
-          </View>
+                  </ListItem>
+                  }>
+                </List>
+              </ListItem>
+            </List>
+        </View>
         </Content>
-      </Container>
+      </View>
     );
   }
 }

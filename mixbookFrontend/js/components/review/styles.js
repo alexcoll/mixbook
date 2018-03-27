@@ -16,6 +16,18 @@ module.exports = StyleSheet.create({
     color: 'black',
   },
 
+  sectionHeaderText: {
+    fontSize: 16,
+    color: 'black',
+    paddingLeft: 20,
+  },
+
+  reviewsSectionHeaderText: {
+    fontSize: 17,
+    color: 'black',
+    paddingTop: 8,
+  },
+
   row: {
     flexDirection: 'row',
     justifyContent: 'center',
@@ -34,7 +46,8 @@ module.exports = StyleSheet.create({
 
   header:{
     fontSize: 16,
-    paddingLeft:20,
+    paddingLeft: 20,
+    color: 'black',
   },
 
   upCountText: {
@@ -59,4 +72,30 @@ module.exports = StyleSheet.create({
     fontSize: 16,
     color: 'black',
   },
+
+  sortButtonStyle: {
+  },
+
+  sortButtonTextStyle: {
+    fontSize: 16,
+    textAlign: 'center',
+    textAlignVertical: 'center',
+    color: 'white'
+  },
+
+  sortDropdownTextStyle: {
+    fontSize: 14,
+    color: 'black',
+  },
+
+  button: {
+    alignSelf: 'center',
+  },
+
+  reviewSubmitButton: {
+    alignSelf: 'center',
+    marginTop: 20,
+    marginBottom: 20
+  },
+
 });

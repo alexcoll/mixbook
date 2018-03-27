@@ -35,6 +35,7 @@ class Recipes extends Component {
       rawData: [],
       pagedDataSource: ds.cloneWithRows([]),
       page: 1,
+      outOfData: false,
     };
   }
 
@@ -148,6 +149,14 @@ class Recipes extends Component {
     if(list.length > length)
     {
       list = list.slice(0, length);
+    }
+    else
+    {
+      this.setState({
+        outOfData: true,
+      });
+      console.log(this.state.outOfData);
+
     }
     
     console.log(list);
@@ -429,6 +438,7 @@ class Recipes extends Component {
           renderSeparator={this._renderSeparator}
         />
         <Button 
+                  disabled={this.state.outOfData}
                   block
                   style={styles.button}
                   onPress={() => this.fetchMoreData()}>Load More</Button>
