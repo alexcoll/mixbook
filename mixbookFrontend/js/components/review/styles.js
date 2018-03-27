@@ -35,5 +35,28 @@ module.exports = StyleSheet.create({
   header:{
     fontSize: 16,
     paddingLeft:20,
-  }
+  },
+
+  upCountText: {
+    color: 'green',
+  },
+
+  downCountText: {
+    color: 'red',
+  },
+
+  reviewUsernameText: {
+    fontSize: 18,
+    color: 'black',
+  },
+
+  reviewStarsText: {
+    fontSize: 16,
+    color: 'gray',
+  },
+
+  reviewCommentaryText: {
+    fontSize: 16,
+    color: 'black',
+  },
 });
