@@ -31,4 +31,8 @@ module.exports = StyleSheet.create({
     borderWidth: 9,
     borderColor: '#E4E4E4',
   },
+
+  button: {
+    alignSelf: 'center',
+  }
 });

@@ -17,11 +17,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mixbook.springmvc.Exceptions.NoDataWasChangedException;
+import com.mixbook.springmvc.Exceptions.RateOwnReviewException;
 import com.mixbook.springmvc.Exceptions.ReviewOwnRecipeException;
 import com.mixbook.springmvc.Exceptions.UnknownServerErrorException;
 import com.mixbook.springmvc.Models.JsonResponse;
 import com.mixbook.springmvc.Models.Recipe;
 import com.mixbook.springmvc.Models.User;
+import com.mixbook.springmvc.Models.UserRatingReview;
 import com.mixbook.springmvc.Models.UserRecipeHasReview;
 import com.mixbook.springmvc.Security.JwtTokenUtil;
 import com.mixbook.springmvc.Services.BadgeService;
@@ -57,8 +59,8 @@ public class ReviewController {
 		String username = jwtTokenUtil.getUsernameFromToken(token);
 		User user = new User();
 		user.setUsername(username);
-		review.getPk().setUser(user);
-		if (review.getPk().getRecipe().getRecipeId() < 1) {
+		review.setUser(user);
+		if (review.getRecipe().getRecipeId() < 1) {
 			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED", "Invalid request, missing recipe"), HttpStatus.BAD_REQUEST);
 		}
 		try {
@@ -107,7 +109,10 @@ public class ReviewController {
 		String username = jwtTokenUtil.getUsernameFromToken(token);
 		User user = new User();
 		user.setUsername(username);
-		review.getPk().setUser(user);
+		review.setUser(user);
+		if (review.getRecipe().getRecipeId() < 1) {
+			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED", "Invalid request, missing recipe"), HttpStatus.BAD_REQUEST);
+		}
 		try {
 			reviewService.editReview(review);
 		} catch (NoDataWasChangedException e) {
@@ -126,14 +131,70 @@ public class ReviewController {
 		String username = jwtTokenUtil.getUsernameFromToken(token);
 		User user = new User();
 		user.setUsername(username);
-		review.getPk().setUser(user);
-		if (review.getPk().getRecipe().getRecipeId() < 1) {
+		review.setUser(user);
+		if (review.getRecipe().getRecipeId() < 1) {
 			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED", "Invalid request, missing recipe"), HttpStatus.BAD_REQUEST);
 		}
 		try {
 			reviewService.deleteReview(review);
 		} catch (NoDataWasChangedException e) {
 			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","No data was changed. Info may have been invalid."), HttpStatus.BAD_REQUEST);
+		} catch (UnknownServerErrorException e) {
+			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","Unknown server error"), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return new ResponseEntity<JsonResponse>(new JsonResponse("OK",""), HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/upVoteReview",
+			method = RequestMethod.POST)
+	@ResponseBody
+	public ResponseEntity<JsonResponse> upVoteReview(HttpServletRequest request, @RequestBody UserRatingReview rating) {
+		String token = request.getHeader(tokenHeader);
+		String username = jwtTokenUtil.getUsernameFromToken(token);
+		User user = new User();
+		user.setUsername(username);
+		rating.setUser(user);
+		if (rating.getVote() != true) {
+			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED", "Invalid request, wrong vote flag"), HttpStatus.BAD_REQUEST);
+		}
+		if (rating.getUserRecipeHasReview().getUsersRecipeHasReviewId() < 1) {
+			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED", "Invalid request, missing review"), HttpStatus.BAD_REQUEST);
+		}
+		if (rating.getVote() == null) {
+			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED", "Invalid request, missing rating"), HttpStatus.BAD_REQUEST);
+		}
+		try {
+			reviewService.upVoteReview(rating);
+		} catch (RateOwnReviewException e) {
+			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","Attempted to up vote own review!"), HttpStatus.BAD_REQUEST);
+		} catch (UnknownServerErrorException e) {
+			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","Unknown server error"), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return new ResponseEntity<JsonResponse>(new JsonResponse("OK",""), HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/downVoteReview",
+			method = RequestMethod.POST)
+	@ResponseBody
+	public ResponseEntity<JsonResponse> downVoteReview(HttpServletRequest request, @RequestBody UserRatingReview rating) {
+		String token = request.getHeader(tokenHeader);
+		String username = jwtTokenUtil.getUsernameFromToken(token);
+		User user = new User();
+		user.setUsername(username);
+		rating.setUser(user);
+		if (rating.getVote() != false) {
+			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED", "Invalid request, wrong vote flag"), HttpStatus.BAD_REQUEST);
+		}
+		if (rating.getUserRecipeHasReview().getUsersRecipeHasReviewId() < 1) {
+			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED", "Invalid request, missing review"), HttpStatus.BAD_REQUEST);
+		}
+		if (rating.getVote() == null) {
+			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED", "Invalid request, missing rating"), HttpStatus.BAD_REQUEST);
+		}
+		try {
+			reviewService.downVoteReview(rating);
+		} catch (RateOwnReviewException e) {
+			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","Attempted to down vote own review!"), HttpStatus.BAD_REQUEST);
 		} catch (UnknownServerErrorException e) {
 			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","Unknown server error"), HttpStatus.INTERNAL_SERVER_ERROR);
 		}

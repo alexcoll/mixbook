@@ -27,44 +27,50 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 @Entity
-@Table(name="users")
+@Table(name = "users")
 @JsonInclude(Include.NON_EMPTY)
 public class User implements Serializable {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)	
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer user_id;
 
 	@NotNull
-	@Size(max=255)   
+	@Size(max = 255)
 	@Column(name = "username", nullable = false)
 	private String username;
 
 	@NotNull
-	@Size(max=255)
+	@Size(max = 255)
 	@Column(name = "password", nullable = false)
 	private String password;
 
 	@NotNull
-	@Size(max=255)
+	@Size(max = 255)
 	@Column(name = "first_name", nullable = false)
 	private String first_name;
 
 	@NotNull
-	@Size(max=255)
+	@Size(max = 255)
 	@Column(name = "last_name", nullable = false)
 	private String last_name;
 
 	@NotNull
-	@Size(max=255)
+	@Size(max = 255)
 	@Column(name = "email", nullable = false)
 	private String email;
-	
+
 	@Column(name = "number_of_recipes", nullable = false)
 	private int number_of_recipes;
-	
+
 	@Column(name = "number_of_ratings", nullable = false)
 	private int number_of_ratings;
+
+	@Column(name = "sum_of_personal_recipe_ratings", nullable = false)
+	private int sumOfPersonalRecipeRatings;
+
+	@Column(name = "number_of_personal_recipe_ratings", nullable = false)
+	private int numberOfPersonalRecipeRatings;
 
 	@Column(name = "ENABLED")
 	@NotNull
@@ -76,47 +82,58 @@ public class User implements Serializable {
 	private Date lastPasswordResetDate;
 
 	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(
-			name = "USER_AUTHORITY",
-			joinColumns = {@JoinColumn(name = "USER_ID", referencedColumnName = "user_id")},
-			inverseJoinColumns = {@JoinColumn(name = "AUTHORITY_ID", referencedColumnName = "ID")})
+	@JoinTable(name = "USER_AUTHORITY", joinColumns = {
+			@JoinColumn(name = "USER_ID", referencedColumnName = "user_id") }, inverseJoinColumns = {
+					@JoinColumn(name = "AUTHORITY_ID", referencedColumnName = "ID") })
 	private List<Authority> authorities;
 
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinTable(name = "user_has_brand", joinColumns = {
-			@JoinColumn(name = "user_user_id", nullable = false, updatable = false) },
-	inverseJoinColumns = { @JoinColumn(name = "brand_brand_id",
-	nullable = false, updatable = false) })
+			@JoinColumn(name = "user_user_id", nullable = false, updatable = false) }, inverseJoinColumns = {
+					@JoinColumn(name = "brand_brand_id", nullable = false, updatable = false) })
 	private Set<Brand> brands = new HashSet<Brand>(0);
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
 	private Set<Recipe> recipes = new HashSet<Recipe>(0);
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.user", cascade=CascadeType.ALL)
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
 	private Set<UserRecipeHasReview> userRecipeHasReviews = new HashSet<UserRecipeHasReview>(0);
-	
+
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinTable(name = "user_has_badges", joinColumns = {
-			@JoinColumn(name = "user_id", nullable = false, updatable = false) },
-	inverseJoinColumns = { @JoinColumn(name = "badge_id",
-	nullable = false, updatable = false) })
+			@JoinColumn(name = "user_id", nullable = false, updatable = false) }, inverseJoinColumns = {
+					@JoinColumn(name = "badge_id", nullable = false, updatable = false) })
 	private Set<Badge> badges = new HashSet<Badge>(0);
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.user")
+	private Set<UserRatingReview> userRatingReviews = new HashSet<UserRatingReview>(0);
 
 	public User() {
 
 	}
-
-	public User(Integer user_id, String username, String password, String first_name, String last_name,
-			String email, int number_of_recipes, int number_of_ratings, Boolean enabled, Date lastPasswordResetDate, List<Authority> authorities, 
-			Set<Brand> brands, Set<Recipe> recipes, Set<UserRecipeHasReview> userRecipeHasReviews, Set<Badge> badges) {
+	
+	public User(Integer user_id, String username, int sumOfPersonalRecipeRatings, int numberOfPersonalRecipeRatings) {
 		this.user_id = user_id;
-		this.username = username;	
+		this.username = username;
+		this.sumOfPersonalRecipeRatings = sumOfPersonalRecipeRatings;
+		this.numberOfPersonalRecipeRatings = numberOfPersonalRecipeRatings;
+	}
+
+	public User(Integer user_id, String username, String password, String first_name, String last_name, String email,
+			int number_of_recipes, int number_of_ratings, Boolean enabled, Date lastPasswordResetDate,
+			List<Authority> authorities, Set<Brand> brands, Set<Recipe> recipes,
+			Set<UserRecipeHasReview> userRecipeHasReviews, Set<Badge> badges, Set<UserRatingReview> userRatingReviews,
+			int sumOfPersonalRecipeRatings, int numberOfPersonalRecipeRatings) {
+		this.user_id = user_id;
+		this.username = username;
 		this.password = password;
 		this.first_name = first_name;
 		this.last_name = last_name;
 		this.email = email;
 		this.number_of_recipes = number_of_recipes;
 		this.number_of_ratings = number_of_ratings;
+		this.sumOfPersonalRecipeRatings = sumOfPersonalRecipeRatings;
+		this.numberOfPersonalRecipeRatings = numberOfPersonalRecipeRatings;
 		this.enabled = enabled;
 		this.lastPasswordResetDate = lastPasswordResetDate;
 		this.authorities = authorities;
@@ -124,11 +141,13 @@ public class User implements Serializable {
 		this.recipes = recipes;
 		this.userRecipeHasReviews = userRecipeHasReviews;
 		this.badges = badges;
+		this.userRatingReviews = userRatingReviews;
 	}
 
 	public Integer getUserId() {
 		return user_id;
 	}
+
 	public void setUserId(Integer user_id) {
 		this.user_id = user_id;
 	}
@@ -189,6 +208,22 @@ public class User implements Serializable {
 		this.number_of_ratings = number_of_ratings;
 	}
 
+	public int getSumOfPersonalRecipeRatings() {
+		return sumOfPersonalRecipeRatings;
+	}
+
+	public void setSumOfPersonalRecipeRatings(int sumOfPersonalRecipeRatings) {
+		this.sumOfPersonalRecipeRatings = sumOfPersonalRecipeRatings;
+	}
+
+	public int getNumberOfPersonalRecipeRatings() {
+		return numberOfPersonalRecipeRatings;
+	}
+
+	public void setNumberOfPersonalRecipeRatings(int numberOfPersonalRecipeRatings) {
+		this.numberOfPersonalRecipeRatings = numberOfPersonalRecipeRatings;
+	}
+
 	public Boolean getEnabled() {
 		return enabled;
 	}
@@ -245,6 +280,14 @@ public class User implements Serializable {
 		this.badges = badges;
 	}
 
+	public Set<UserRatingReview> getUserRatingReviews() {
+		return userRatingReviews;
+	}
+
+	public void setUserRatingReviews(Set<UserRatingReview> userRatingReviews) {
+		this.userRatingReviews = userRatingReviews;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -278,8 +321,8 @@ public class User implements Serializable {
 
 	@Override
 	public String toString() {
-		return "User [user_id=" + user_id + ", first_name=" + first_name + ", last_name=" + last_name
-				+ ", email=" + email + "]";
+		return "User [user_id=" + user_id + ", first_name=" + first_name + ", last_name=" + last_name + ", email="
+				+ email + "]";
 	}
 
 }

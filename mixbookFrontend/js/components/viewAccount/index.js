@@ -63,9 +63,7 @@ class ViewAccount extends Component {
         ratings: data.userInfo.numOfRatings,
         recipes: data.userInfo.numOfRecipes,
       });
-      console.log(this.state.badges);
-      console.log(this.state.ratings);
-      console.log(this.state.recipes);
+
     })
     .catch((error) => {
       console.warn("error getting settings from local store");
@@ -73,7 +71,17 @@ class ViewAccount extends Component {
   }
 
 
+  getProfRating(sumOfRatings: number, numberOfRatings: number) {
+    var result = 0;
 
+    if(numberOfRatings > 0)
+    {
+      result = sumOfRatings / numberOfRatings;
+    }
+
+    return result;
+    
+  }
 
 
   render() {
@@ -88,6 +96,7 @@ class ViewAccount extends Component {
         </Header>
 
         <Content>
+        <Text style={styles.rating}> Profile Rating: {this.getProfRating(global.viewSumRecipeRatings, global.viewNumRecipeRatings)}</Text>
           <List>
             <ListItem>
               <InputGroup disabled={this.state.isGuest}>

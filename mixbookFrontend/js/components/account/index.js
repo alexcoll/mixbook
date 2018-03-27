@@ -8,6 +8,7 @@ import { openDrawer } from '../../actions/drawer';
 import { actions } from 'react-native-navigation-redux-helpers';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import * as GLOBAL from '../../globals';
+//import StarRating from 'react-native-star-rating';
 
 import styles from './styles';
 
@@ -45,6 +46,7 @@ class Account extends Component {
       badges: [],
       ratings: 0,
       recipes: 0,
+      profRating: 0,
     };
   }
 
@@ -64,13 +66,13 @@ class Account extends Component {
         inputFirstName: data.userInfo.firstName,
         inputLastName: data.userInfo.lastName,
         inputEmail: data.userInfo.email,
-        badges: data.userInfo.badges,
         ratings: data.userInfo.numOfRatings,
         recipes: data.userInfo.numOfRecipes,
+        sumOfPersonalRecipeRatings: data.userInfo.sumOfPersonalRecipeRatings,
+        numberOfPersonalRecipeRatings: data.userInfo.numberOfPersonalRecipeRatings,
+        profRating: this.getProfRating(data.userInfo.sumOfPersonalRecipeRatings, data.userInfo.numberOfPersonalRecipeRatings),
       });
-      console.log(this.state.badges);
-      console.log(this.state.ratings);
-      console.log(this.state.recipes);
+      console.log("PROF: " + this.state.profRating);
     })
     .catch((error) => {
       console.warn("error getting settings from local store");
@@ -91,6 +93,7 @@ class Account extends Component {
         badges: [],
         numOfRatings: 0,
         numOfRecipes: 0,
+        profRating: 0,
       }
     })
     .then(() => {
@@ -102,6 +105,31 @@ class Account extends Component {
     });
 
     store.save('inventory', []);
+  }
+
+  onLock() {
+    //TODO when tyler implements back end
+    store.get('account').then((data) => {
+      if (data.isGuest) {
+        ToastAndroid.show("Item removed", ToastAndroid.SHORT);
+        return;
+      }
+    fetch(GLOBAL.API.BASE_URL + '/mixbook/user/lockAccount', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': data.token,
+      }
+    }).then((response) => {
+      ToastAndroid.show("Account Locked", ToastAndroid.SHORT);
+      this.onLogout();
+    }).catch((error) => {
+      console.error(error);
+    });
+  }).catch((error) => {
+    console.warn("error getting user token from local store");
+    console.warn(error);
+  });
   }
 
   onSubmit() {
@@ -356,6 +384,13 @@ class Account extends Component {
 
   fillReviewBadges(goal : number) {
 
+    if(this.state.badges == null)
+    {
+      return {
+        color: "#e6e6e6"
+      }
+    }
+
     if(goal == 1 && this.state.badges.some(b => b.badgeId === 2)) {
       return {
         color: "#4F8EF7"
@@ -511,6 +546,18 @@ class Account extends Component {
 
       }
 
+  getProfRating(sumOfRatings: number, numberOfRatings: number) {
+    var result = 0;
+
+    if(numberOfRatings > 0)
+    {
+      result = sumOfRatings / numberOfRatings;
+    }
+
+    return result;
+    
+  }
+
   render() {
     return (
       <Container style={styles.container}>
@@ -523,6 +570,7 @@ class Account extends Component {
         </Header>
 
         <Content>
+          <Text style={styles.rating}> Profile Rating: {this.state.profRating}</Text>
           <List>
             <ListItem>
               <InputGroup disabled={this.state.isGuest}>
@@ -721,6 +769,15 @@ class Account extends Component {
                   onPress={() => this.onLogout()}
                 >
                   Logout
+                </Button>
+                <Button
+                  disabled={this.state.isGuest}
+                  block
+                  danger
+                  style={styles.logoutButton}
+                  onPress={() => this.onLock()}
+                >
+                  Lock Account
                 </Button>
               </View>
             </ListItem>

@@ -5,10 +5,12 @@ import java.util.List;
 import javax.persistence.PersistenceException;
 
 import com.mixbook.springmvc.Exceptions.NoDataWasChangedException;
+import com.mixbook.springmvc.Exceptions.RateOwnReviewException;
 import com.mixbook.springmvc.Exceptions.ReviewOwnRecipeException;
 import com.mixbook.springmvc.Exceptions.UnknownServerErrorException;
 import com.mixbook.springmvc.Models.Recipe;
 import com.mixbook.springmvc.Models.User;
+import com.mixbook.springmvc.Models.UserRatingReview;
 import com.mixbook.springmvc.Models.UserRecipeHasReview;
 
 public interface ReviewService {
@@ -18,6 +20,10 @@ public interface ReviewService {
 	void editReview(UserRecipeHasReview review) throws NoDataWasChangedException, UnknownServerErrorException;
 
 	void deleteReview(UserRecipeHasReview review) throws NoDataWasChangedException, UnknownServerErrorException;
+	
+	void upVoteReview(UserRatingReview rating) throws RateOwnReviewException, UnknownServerErrorException;
+	
+	void downVoteReview(UserRatingReview rating) throws RateOwnReviewException, UnknownServerErrorException;
 
 	List<UserRecipeHasReview> viewAllReviewsByUser(User user) throws UnknownServerErrorException;
 

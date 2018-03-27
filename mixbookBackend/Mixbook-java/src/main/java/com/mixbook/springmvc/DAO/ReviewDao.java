@@ -5,9 +5,11 @@ import java.util.List;
 import javax.persistence.PersistenceException;
 
 import com.mixbook.springmvc.Exceptions.NoDataWasChangedException;
+import com.mixbook.springmvc.Exceptions.RateOwnReviewException;
 import com.mixbook.springmvc.Exceptions.ReviewOwnRecipeException;
 import com.mixbook.springmvc.Models.Recipe;
 import com.mixbook.springmvc.Models.User;
+import com.mixbook.springmvc.Models.UserRatingReview;
 import com.mixbook.springmvc.Models.UserRecipeHasReview;
 
 public interface ReviewDao {
@@ -17,6 +19,10 @@ public interface ReviewDao {
 	void editReview(UserRecipeHasReview review) throws NoDataWasChangedException, Exception;
 
 	void deleteReview(UserRecipeHasReview review) throws NoDataWasChangedException, Exception;
+	
+	void upVoteReview(UserRatingReview rating) throws RateOwnReviewException, Exception;
+	
+	void downVoteReview(UserRatingReview rating) throws RateOwnReviewException, Exception;
 
 	List<UserRecipeHasReview> viewAllReviewsByUser(User user) throws Exception;
 

@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { ToastAndroid, TextInput, Alert, View, StyleSheet, ListView, Text, TouchableHighlight, RefreshControl} from 'react-native';
+import { ToastAndroid, TextInput, Alert, View, StyleSheet, ListView, Text, TouchableHighlight, RefreshControl, ActivityIndicator, ScrollView} from 'react-native';
 import { connect } from 'react-redux';
 
 import * as GLOBAL from '../../globals';
@@ -28,10 +28,15 @@ class Ingredients extends Component {
       isGuest: true,
       refreshing: false,
       dataSource: ds.cloneWithRows([]),
+      pagedDataSource: ds.cloneWithRows([]),
       searchText: "",
-      isLoading: false,
+      isLoading: true,
       empty: false,
       rawData: [],
+      isLoadingMore: false,
+      _data: null,
+      _dataAfter: "",
+      page: 1,
     };
   }
 
@@ -98,6 +103,44 @@ class Ingredients extends Component {
     });
   }
 
+  getPagedData(){
+    console.log("Getting paged data");
+    var list = this.state.rawData;
+
+    var length = this.state.page * 14;
+    console.log("Length: " + length);
+
+    if(list.length > length)
+    {
+      list = list.slice(0, length);
+    }
+    
+    console.log(list);
+
+    this.setState({
+      pagedDataSource: this.state.dataSource.cloneWithRows(list),
+    });
+
+    
+
+  }
+
+  fetchMoreData() {
+    
+    var currPage = this.state.page;
+    
+    
+    
+    this.setState({
+      page: this.state.page + 1,
+    });
+
+    console.log("Getting more data for page " + this.state.page);
+
+    this.getPagedData();
+    
+  }
+
   getRemoteData() {
     store.get('account').then((data) => {
       if (data.isGuest) {
@@ -125,6 +168,7 @@ class Ingredients extends Component {
             empty: false,
             rawData: json,
           });
+          this.getPagedData();
           return json;
         } else {
           var json = await response.json();
@@ -179,7 +223,6 @@ class Ingredients extends Component {
         isLoading: false,
         rawData: list,
       });
-
       store.save('inventory', list)
       .then(() => {
         // Delete the ingredient from the server
@@ -273,65 +316,80 @@ class Ingredients extends Component {
 
 
   render() { // eslint-disable-line
-    return (
+    if (this.state.isLoading) {
+      return (
+        <View style={styles.container}>
+          <ActivityIndicator size="large" />
+        </View>
+      );
+    } else {
+      return (
+        
+              <View style={styles.container}>
+        
+                <Header>
+                  <Button transparent onPress={this.props.openDrawer}>
+                    <Icon name="ios-menu" />
+                  </Button>
+        
+                  <Title>Ingredients</Title>
+        
+                  <Button transparent onPress={() => this._onRefresh()}>
+                    <Icon name="ios-refresh" />
+                  </Button>
+                </Header>
+        
+                <TextInput
+                  style={styles.searchBar}
+                  placeholder="Search inventory"
+                  value={this.state.searchText}
+                  onChange={this.setSearchText.bind(this)}
+                  multiline={false}
+                  autoFocus={false}
+                  returnKeyType='done'
+                  autoCorrect={false}
+                />
+                <ListView
+                  enableEmptySections={true}
+                  refreshControl={
+                    <RefreshControl
+                      refreshing={this.state.refreshing}
+                      onRefresh={this._onRefresh.bind(this)}
+                    />
+                  }
+                  dataSource={this.state.pagedDataSource}
+                  renderRow={(rowData: string, sectionID: number, rowID: number, highlightRow: (sectionID: number, rowID: number) => void) =>
+                    <TouchableHighlight onPress={() => {
+                      this._pressRow(rowData);
+                      // highlightRow(sectionID, rowID);
+                    }}>
+                      <View>
+                        <View style={styles.row}>
+                          <Text style={styles.rowText}>
+                            {rowData}
+                          </Text>
+                        </View>
+                      </View>
+                    </TouchableHighlight>
+                  }
+                  renderSeparator={this._renderSeparator}
+                  //onEndReached={this.fetchMoreData()}
+                  //onEndReachedThreshold={0}
+                />
 
-      <View style={styles.container}>
+                <Button 
+                  block
+                  style={styles.button}
+                  onPress={() => this.fetchMoreData()}>Load More</Button>
 
-        <Header>
-          <Button transparent onPress={this.props.openDrawer}>
-            <Icon name="ios-menu" />
-          </Button>
-
-          <Title>Ingredients</Title>
-
-          <Button transparent onPress={() => this._onRefresh()}>
-            <Icon name="ios-refresh" />
-          </Button>
-        </Header>
-
-        <TextInput
-          style={styles.searchBar}
-          placeholder="Search inventory"
-          value={this.state.searchText}
-          onChange={this.setSearchText.bind(this)}
-          multiline={false}
-          autoFocus={false}
-          returnKeyType='done'
-          autoCorrect={false}
-        />
-
-
-        <ListView
-          enableEmptySections={true}
-          refreshControl={
-            <RefreshControl
-              refreshing={this.state.refreshing}
-              onRefresh={this._onRefresh.bind(this)}
-            />
-          }
-          dataSource={this.state.dataSource}
-          renderRow={(rowData: string, sectionID: number, rowID: number, highlightRow: (sectionID: number, rowID: number) => void) =>
-            <TouchableHighlight onPress={() => {
-              this._pressRow(rowData);
-              // highlightRow(sectionID, rowID);
-            }}>
-              <View>
-                <View style={styles.row}>
-                  <Text style={styles.rowText}>
-                    {rowData}
-                  </Text>
-                </View>
+                <ActionButton
+                  buttonColor="rgba(231,76,60,1)"
+                  onPress={() => this.navigateTo('addIngredient')}
+                />
               </View>
-            </TouchableHighlight>
-          }
-          renderSeparator={this._renderSeparator}
-        />
-        <ActionButton
-          buttonColor="rgba(231,76,60,1)"
-          onPress={() => this.navigateTo('addIngredient')}
-        />
-      </View>
-    );
+            );
+    }
+
   }
 }
 

@@ -1,5 +1,7 @@
 package com.mixbook.springmvc.Services;
 
+import java.util.List;
+
 import javax.persistence.PersistenceException;
 
 import com.mixbook.springmvc.Exceptions.UnknownServerErrorException;
@@ -13,6 +15,8 @@ public interface UserService {
 	User findByEntityEmail(String email) throws UnknownServerErrorException;
 	
 	User loadUserProfile(String username) throws PersistenceException, UnknownServerErrorException;
+	
+	List<User> loadAllUsers() throws UnknownServerErrorException;
 
 	void createUser(User user) throws PersistenceException, UnknownServerErrorException;
 
@@ -23,6 +27,10 @@ public interface UserService {
 	void changeEmail(User user) throws PersistenceException, UnknownServerErrorException;
 	
 	void changePassword(User user) throws UnknownServerErrorException;
+	
+	void lockAccount(User user) throws UnknownServerErrorException;
+	
+	void unlockAccount(User user) throws UnknownServerErrorException;
 	
 	boolean isUserInfoValid(User user) throws UnknownServerErrorException;
 	

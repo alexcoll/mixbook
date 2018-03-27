@@ -3,13 +3,14 @@ package com.mixbook.springmvc.Services;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
 import javax.persistence.PersistenceException;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -19,7 +20,6 @@ import com.mixbook.springmvc.DAO.UserDao;
 import com.mixbook.springmvc.Exceptions.UnknownServerErrorException;
 import com.mixbook.springmvc.Models.Authority;
 import com.mixbook.springmvc.Models.AuthorityName;
-import com.mixbook.springmvc.Models.PasswordResetToken;
 import com.mixbook.springmvc.Models.User;
 
 @Service("userService")
@@ -39,6 +39,8 @@ public class UserServiceImpl implements UserService {
 	private static final String EMAIL_PATTERN =
 			"^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
 					+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+	
+	private static final Logger logger = LogManager.getLogger(UserServiceImpl.class);
 
 	public User findByEntityUsername(String username) throws UnknownServerErrorException {
 		try {
@@ -68,6 +70,15 @@ public class UserServiceImpl implements UserService {
 			throw new UnknownServerErrorException("Unknown server error!");
 		}
 	}
+	
+	@Override
+	public List<User> loadAllUsers() throws UnknownServerErrorException {
+		try {
+			return dao.loadAllUsers();
+		} catch (Exception e) {
+			throw new UnknownServerErrorException("Unknown server error!");
+		}
+	}
 
 	public void createUser(User user) throws PersistenceException, UnknownServerErrorException {
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -76,12 +87,19 @@ public class UserServiceImpl implements UserService {
 		user.setLastPasswordResetDate(currentTimestamp);
 		user.setNumberOfRecipes(0);
 		user.setNumberOfRatings(0);
+		user.setSumOfPersonalRecipeRatings(0);
+		user.setNumberOfPersonalRecipeRatings(0);
 		List<Authority> authorities = new ArrayList<Authority>();
 		Authority authority = new Authority();
 		authority.setId(1);
 		authority.setName(AuthorityName.ROLE_USER);
 		authorities.add(authority);
 		user.setAuthorities(authorities);
+		user.getBadges().clear();
+		user.getBrands().clear();
+		user.getRecipes().clear();
+		user.getUserRecipeHasReviews().clear();
+		user.getUserRatingReviews().clear();
 		try {
 			dao.createUser(user);
 		} catch (PersistenceException e) {
@@ -123,6 +141,24 @@ public class UserServiceImpl implements UserService {
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		try {
 			dao.changePassword(user);
+		} catch (Exception e) {
+			throw new UnknownServerErrorException("Unknown server error!");
+		}
+	}
+	
+	@Override
+	public void lockAccount(User user) throws UnknownServerErrorException {
+		try {
+			dao.lockAccount(user);
+		} catch (Exception e) {
+			throw new UnknownServerErrorException("Unknown server error!");
+		}
+	}
+	
+	@Override
+	public void unlockAccount(User user) throws UnknownServerErrorException {
+		try {
+			dao.unlockAccount(user);
 		} catch (Exception e) {
 			throw new UnknownServerErrorException("Unknown server error!");
 		}
@@ -245,5 +281,4 @@ public class UserServiceImpl implements UserService {
 		}
 		return true;
 	}
-
 }

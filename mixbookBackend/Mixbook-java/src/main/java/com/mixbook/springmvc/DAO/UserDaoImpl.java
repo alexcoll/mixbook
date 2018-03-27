@@ -1,5 +1,7 @@
 package com.mixbook.springmvc.DAO;
 
+import java.util.List;
+
 import javax.persistence.PersistenceException;
 
 import org.apache.logging.log4j.LogManager;
@@ -43,6 +45,13 @@ public class UserDaoImpl extends AbstractDao<Integer, User> implements UserDao {
 		query.setParameter("username", username);
 		User user = (User) query.getSingleResult();
 		return user;
+	}
+	
+	@Override
+	public List<User> loadAllUsers() throws Exception {
+		Query query = getSession().createQuery("select new User(user_id, username, sumOfPersonalRecipeRatings, numberOfPersonalRecipeRatings) from User");
+		List<User> users = (List<User>) query.getResultList();
+		return users;
 	}
 
 	public void createUser(User user) throws PersistenceException, Exception {
@@ -101,6 +110,22 @@ public class UserDaoImpl extends AbstractDao<Integer, User> implements UserDao {
 		q.setParameter("password", user.getPassword());
 		q.setParameter("lastpasswordresetdate", user.getLastPasswordResetDate());
 		q.setParameter("username", user.getUsername());
+		q.executeUpdate();
+	}
+
+	@Override
+	public void lockAccount(User user) throws Exception {
+		Query q = getSession().createQuery("update User set enabled = :enabled where username = :username");
+		q.setParameter("enabled", Boolean.FALSE);
+		q.setParameter("username", user.getUsername());
+		q.executeUpdate();
+	}
+	
+	@Override
+	public void unlockAccount(User user) throws Exception {
+		Query q = getSession().createQuery("update User set enabled = :enabled where user_id = :user_id");
+		q.setParameter("enabled", Boolean.TRUE);
+		q.setParameter("user_id", user.getUserId());
 		q.executeUpdate();
 	}
 }

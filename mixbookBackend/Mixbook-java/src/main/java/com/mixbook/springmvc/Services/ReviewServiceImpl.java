@@ -4,16 +4,21 @@ import java.util.List;
 
 import javax.persistence.PersistenceException;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mixbook.springmvc.DAO.ReviewDao;
+import com.mixbook.springmvc.DAO.ReviewDaoImpl;
 import com.mixbook.springmvc.Exceptions.NoDataWasChangedException;
+import com.mixbook.springmvc.Exceptions.RateOwnReviewException;
 import com.mixbook.springmvc.Exceptions.ReviewOwnRecipeException;
 import com.mixbook.springmvc.Exceptions.UnknownServerErrorException;
 import com.mixbook.springmvc.Models.Recipe;
 import com.mixbook.springmvc.Models.User;
+import com.mixbook.springmvc.Models.UserRatingReview;
 import com.mixbook.springmvc.Models.UserRecipeHasReview;
 
 @Service("reviewService")
@@ -22,9 +27,16 @@ public class ReviewServiceImpl implements ReviewService {
 
 	@Autowired
 	private ReviewDao dao;
+	
+	@Autowired
+	private UserService userService;
+	
+	private static final Logger logger = LogManager.getLogger(ReviewServiceImpl.class);
 
 	public void createReview(UserRecipeHasReview review) throws ReviewOwnRecipeException, PersistenceException, NoDataWasChangedException, UnknownServerErrorException {
 		try {
+			review.setNumberOfUpVotes(0);
+			review.setNumberOfDownVotes(0);
 			dao.createReview(review);
 		} catch (ReviewOwnRecipeException e) {
 			throw new ReviewOwnRecipeException("Attempted to review own recipe or recipe does not exist!");
@@ -52,6 +64,30 @@ public class ReviewServiceImpl implements ReviewService {
 			dao.deleteReview(review);
 		} catch (NoDataWasChangedException e) {
 			throw new NoDataWasChangedException("No data was changed! Info may have been invalid!");
+		} catch (Exception e) {
+			throw new UnknownServerErrorException("Unknown server error!");
+		}
+	}
+	
+	@Override
+	public void upVoteReview(UserRatingReview rating) throws RateOwnReviewException, UnknownServerErrorException {
+		try {
+			rating.setUser(userService.findByEntityUsername(rating.getUser().getUsername()));
+			dao.upVoteReview(rating);
+		} catch (RateOwnReviewException e) {
+			throw new RateOwnReviewException("Attempted to up vote own review!");
+		} catch (Exception e) {
+			throw new UnknownServerErrorException("Unknown server error!");
+		}
+	}
+
+	@Override
+	public void downVoteReview(UserRatingReview rating) throws RateOwnReviewException, UnknownServerErrorException {
+		try {
+			rating.setUser(userService.findByEntityUsername(rating.getUser().getUsername()));
+			dao.downVoteReview(rating);
+		} catch (RateOwnReviewException e) {
+			throw new RateOwnReviewException("Attempted to down vote own review!");
 		} catch (Exception e) {
 			throw new UnknownServerErrorException("Unknown server error!");
 		}

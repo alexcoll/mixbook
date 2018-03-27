@@ -44,6 +44,7 @@ public class RecipeServiceImpl implements RecipeService {
 			recipe.setTotalRating(0);
 			String after = recipe.getRecipeName().trim().replaceAll(" +", " ");
 			recipe.setRecipeName(after);
+			recipe.getUserRecipeHasReviews().clear();
 			dao.createRecipe(recipe, user);
 		} catch (NullPointerException e) {
 			throw new InvalidIngredientException("Invalid ingredient added!");
