@@ -104,6 +104,7 @@ class MyRecipes extends Component {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': data.token,
         }
       }).then(async (response) => {
         if (response.status == 200) {
