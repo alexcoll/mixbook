@@ -30,6 +30,7 @@ class MyDrinks extends Component {
       empty: false,
       rawData: [],
       page: 1,
+      outOfData: false,
     };
 
     store.get('account')
@@ -80,6 +81,14 @@ class MyDrinks extends Component {
     if(list.length > length)
     {
       list = list.slice(0, length);
+    }
+    else
+    {
+      this.setState({
+        outOfData: true,
+      });
+      console.log(this.state.outOfData);
+
     }
     
     console.log(list);
@@ -422,6 +431,7 @@ class MyDrinks extends Component {
           renderSeparator={this._renderSeparator}
         />
         <Button 
+                  disabled={this.state.outOfData}
                   block
                   style={styles.button}
                   onPress={() => this.fetchMoreData()}>Load More</Button>
