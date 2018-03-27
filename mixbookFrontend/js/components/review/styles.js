@@ -43,5 +43,20 @@ module.exports = StyleSheet.create({
 
   downCountText: {
     color: 'red',
-  }
+  },
+
+  reviewUsernameText: {
+    fontSize: 18,
+    color: 'black',
+  },
+
+  reviewStarsText: {
+    fontSize: 16,
+    color: 'gray',
+  },
+
+  reviewCommentaryText: {
+    fontSize: 16,
+    color: 'black',
+  },
 });

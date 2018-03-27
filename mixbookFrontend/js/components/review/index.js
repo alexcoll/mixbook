@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ToastAndroid, TouchableOpacity, Alert, ListView, View, TouchableHighlight, RefreshControl } from 'react-native';
+import { ToastAndroid, TouchableOpacity, Alert, FlatList, ListView, View, TouchableHighlight, RefreshControl } from 'react-native';
 import { connect } from 'react-redux';
 
 import * as GLOBAL from '../../globals';
@@ -35,7 +35,6 @@ class Reviews extends Component {
   constructor(props) {
     super(props);
     console.log(props.items);
-    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
       isGuest: true,
       name: global.recipeName,
@@ -53,7 +52,6 @@ class Reviews extends Component {
       inputReviewText: "",
       isOwnRecipe: false,
       hasUserReviewed: false,
-      dataSource: ds.cloneWithRows(['row 1', 'row 2']),
     };
 
     this.current_user = "";
@@ -123,8 +121,8 @@ class Reviews extends Component {
           if (json[i][3] == this.current_user) {
             this.setState({
               hasUserReviewed: true,
-              inputRating: String(json[i][1]),
-              inputReviewText: json[i][0],
+              inputRating: String(json[i][2]),
+              inputReviewText: json[i][1],
             })
           }
           break;
@@ -401,7 +399,7 @@ class Reviews extends Component {
               </ListItem>
             <ListItem>
               <Text>
-                Directions: {this.state.directions}
+                {"Directions:\n" + this.state.directions}
               </Text>
             </ListItem>
             <ListItem>
@@ -453,38 +451,40 @@ class Reviews extends Component {
                   <View style={{flex: 1, flexDirection: 'row'}}>
                     <View style={{flex: 1, flexDirection: 'column'}}>
                       <View>
-                        <Text style={styles.listTest}>id: {data[0]}</Text>
+                        <Text style={styles.reviewUsernameText}>{data[3]}</Text>
                       </View>
                       <View>
-                        <Text style={styles.listTest}>user: {data[3]}</Text>
+                        <Text style={styles.reviewStarsText}>{data[2]} stars</Text>
                       </View>
                       <View>
-                        <Text style={styles.listTest}>stars: {data[2]} stars</Text>
-                      </View>
-                      <View>
-                        <Text style={styles.listTest}>text: {data[1]}</Text>
+                        <Text style={styles.reviewCommentaryText}>{data[1]}</Text>
                       </View>
                       <View style={{
                         flex: 1,
                         flexDirection: 'row',
                       }}>
-                        <View style={{justifyContent: 'center'}}>
-                          <Button
-                            disabled={this.state.isGuest || (this.current_user == data[3])}
-                            style={{ alignSelf: 'center', marginTop: 20, marginBottom: 20 }}
-                            onPress={() => this.submitUpvote(data[0])}
-                          >
-                            <MaterialIcons name="thumb-up" />
-                          </Button>
-                        </View>
-                        <View style={{justifyContent: 'center'}}>
-                          <Button
-                            disabled={this.state.isGuest || (this.current_user == data[3])}
-                            style={{ alignSelf: 'center', marginTop: 20, marginBottom: 20 }}
-                            onPress={() => this.submitDownvote(data[0])}
-                          >
-                            <MaterialIcons name="thumb-down" />
-                          </Button>
+                        <View style={{
+                          flex: 1,
+                          flexDirection: 'row',
+                        }}>
+                          <View style={{justifyContent: 'center'}}>
+                            <Button
+                              disabled={this.state.isGuest || (this.current_user == data[3])}
+                              style={{ alignSelf: 'center', marginTop: 20, marginBottom: 20 }}
+                              onPress={() => this.submitUpvote(data[0])}
+                            >
+                              <MaterialIcons name="thumb-up" />
+                            </Button>
+                          </View>
+                          <View style={{justifyContent: 'center'}}>
+                            <Button
+                              disabled={this.state.isGuest || (this.current_user == data[3])}
+                              style={{ alignSelf: 'center', marginTop: 20, marginBottom: 20 }}
+                              onPress={() => this.submitDownvote(data[0])}
+                            >
+                              <MaterialIcons name="thumb-down" />
+                            </Button>
+                          </View>
                         </View>
                         <View style={{justifyContent: 'center'}}>
                           <Text style={styles.upCountText}>{data[4]}</Text>
@@ -503,6 +503,8 @@ class Reviews extends Component {
               </List>
             </ListItem>
           </List>
+
+
           </View>
         </Content>
       </Container>
