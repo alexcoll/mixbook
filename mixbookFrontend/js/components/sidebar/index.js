@@ -62,7 +62,7 @@ class SideBar extends Component {
               <View style={[styles.iconContainer, {}]}>
                 <MaterialIcons name="public" size={25} color="#4F8EF7" />
               </View>
-              <Text style={styles.text}>Recipes</Text>
+              <Text style={styles.text}>Browse Recipes</Text>
             </View>
           </ListItem>
           <ListItem button iconLeft onPress={() => this.navigateTo('myRecipes')} >

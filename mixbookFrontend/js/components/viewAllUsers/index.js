@@ -161,6 +161,33 @@ class ViewAllUsers extends Component {
   }
 
 
+  filterOnSearchText(searchText, data) {
+
+    let filteredData = this.filterItems(searchText, data);
+    
+    
+    this.setState({
+        dataSource: this.state.dataSource.cloneWithRows(filteredData),
+        rawData: filteredData,
+    });
+
+
+  }
+
+
+  filterItems(searchText, items) {
+    let text = searchText.toLowerCase();
+
+    if(text === "")
+      return items;
+
+    return filter(items, (n) => {
+      let item = n[1].toLowerCase();
+      return item.search(text) !== -1;
+    });
+  }
+
+
   _userSortOnSelect(idx, value) {
 
     let sortedData = this.sortUsers(this.state.rawData, idx.toString());
@@ -171,7 +198,7 @@ class ViewAllUsers extends Component {
     });
 
 
-    // this.filterOnSearchText(this.state.searchText, this.state.rawData);
+    this.filterOnSearchText(this.state.searchText, this.state.rawData);
 
 
   }
@@ -184,16 +211,16 @@ class ViewAllUsers extends Component {
     if(idx === '0')
     {
       return items.sort(function (a,b) {
-        if ((b[1]/b[2]) < (a[1]/a[2]) || b[1] == 0) return -1;
-        if ((b[1]/b[1]) > (a[1]/a[2])) return 1;
+        if ((b.sumOfPersonalRecipeRatings/b.numberOfPersonalRecipeRatings) < (a.sumOfPersonalRecipeRatings/a.numberOfPersonalRecipeRatings) || b.sumOfPersonalRecipeRatings == 0) return -1;
+        if ((b.sumOfPersonalRecipeRatings/b.numberOfPersonalRecipeRatings) > (a.sumOfPersonalRecipeRatings/a.numberOfPersonalRecipeRatings)) return 1;
         return 0;
       })
     }
 
     if(idx === '1') {
       return items.sort(function (a,b) {
-        if ((b[1]/b[2]) > (a[1]/a[2])  || a[1] == 0) return -1;
-        if ((b[1]/b[2]) < (a[1]/a[2])) return 1;
+        if ((b.sumOfPersonalRecipeRatings/b.numberOfPersonalRecipeRatings) > (a.sumOfPersonalRecipeRatings/a.numberOfPersonalRecipeRatings)  || a.sumOfPersonalRecipeRatings == 0) return -1;
+        if ((b.sumOfPersonalRecipeRatings/b.numberOfPersonalRecipeRatings) < (a.sumOfPersonalRecipeRatings/a.numberOfPersonalRecipeRatings)) return 1;
         return 0;
       })
     }

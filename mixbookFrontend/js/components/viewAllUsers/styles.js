@@ -43,7 +43,8 @@ module.exports = StyleSheet.create({
     fontSize: 16,
     textAlign: 'center',
     paddingTop: 10,
-    textAlignVertical: 'center'
+    textAlignVertical: 'center',
+
   },
 
   button: {
