@@ -160,6 +160,19 @@ class ViewAllUsers extends Component {
     
   }
 
+  setSearchText(event) {
+    let searchText = event.nativeEvent.text;
+    this.setState({searchText});
+
+    let filteredData = this.filterItems(searchText, this.state.rawData);
+    this.setState({
+      dataSource: this.state.dataSource.cloneWithRows(filteredData),
+    });
+  }
+
+
+
+
 
   filterOnSearchText(searchText, data) {
 
@@ -178,11 +191,10 @@ class ViewAllUsers extends Component {
   filterItems(searchText, items) {
     let text = searchText.toLowerCase();
 
-    if(text === "")
-      return items;
+
 
     return filter(items, (n) => {
-      let item = n[1].toLowerCase();
+      let item = n.username.toLowerCase();
       return item.search(text) !== -1;
     });
   }
@@ -320,6 +332,17 @@ class ViewAllUsers extends Component {
         </Header>
 
         <View style={{flexDirection: 'row'}}>
+
+         <TextInput
+          style={styles.searchBar}
+          placeholder="Search Users"
+          value={this.state.searchText}
+          onChange={this.setSearchText.bind(this)}
+          multiline={false}
+          autoFocus={false}
+          returnKeyType='done'
+          autoCorrect={false}
+        />
 
 
         <ModalDropdown 
