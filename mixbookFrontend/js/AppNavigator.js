@@ -24,6 +24,7 @@ import Review from './components/review/';
 import EditRecipe from './components/editRecipe/';
 import ViewAccount from './components/viewAccount/';
 import MyRecipes from './components/myrecipes';
+import ViewAllUsers from './components/viewAllUsers'
 
 const {
   popRoute,
@@ -136,6 +137,8 @@ class AppNavigator extends Component {
         return <ViewAccount />;
       case 'myRecipes':
         return <MyRecipes />;
+      case 'viewAllUsers':
+        return <ViewAllUsers />;
       default:
         return <MyDrinks />;
     }
