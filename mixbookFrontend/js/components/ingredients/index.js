@@ -105,7 +105,7 @@ class Ingredients extends Component {
   }
 
   getPagedData(){
-    console.log("Getting paged data");
+    console.log("Getting paged data for page: " + this.state.page);
     var list = this.state.rawData;
 
     var length = this.state.page * 14;
@@ -129,9 +129,9 @@ class Ingredients extends Component {
 
     this.setState({
       pagedDataSource: this.state.dataSource.cloneWithRows(list),
+      page: this.state.page + 1,
     });
 
-    
 
   }
 
@@ -141,9 +141,7 @@ class Ingredients extends Component {
     
     
     
-    this.setState({
-      page: this.state.page + 1,
-    });
+
 
     console.log("Getting more data for page " + this.state.page);
 
@@ -177,6 +175,7 @@ class Ingredients extends Component {
             isLoading: false,
             empty: false,
             rawData: json,
+            page: 1,
           });
           this.getPagedData();
           return json;

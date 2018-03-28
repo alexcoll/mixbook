@@ -120,6 +120,7 @@ class Recipes extends Component {
           isLoading: false,
           empty: false,
           rawData: json,
+          page: 1,
         });
         this.getPagedData();
         return json;
@@ -163,6 +164,7 @@ class Recipes extends Component {
 
     this.setState({
       pagedDataSource: this.state.dataSource.cloneWithRows(list),
+      page: this.state.page + 1,
     });
   }
 
@@ -170,9 +172,7 @@ class Recipes extends Component {
     
     var currPage = this.state.page;
 
-    this.setState({
-      page: this.state.page + 1,
-    });
+
 
     console.log("Getting more data for page " + this.state.page);
 
