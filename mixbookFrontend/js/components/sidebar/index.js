@@ -62,7 +62,7 @@ class SideBar extends Component {
               <View style={[styles.iconContainer, {}]}>
                 <MaterialIcons name="public" size={25} color="#4F8EF7" />
               </View>
-              <Text style={styles.text}>Recipes</Text>
+              <Text style={styles.text}>Browse Recipes</Text>
             </View>
           </ListItem>
           <ListItem button iconLeft onPress={() => this.navigateTo('myRecipes')} >
@@ -71,6 +71,14 @@ class SideBar extends Component {
                 <MaterialIcons name="public" size={25} color="#4F8EF7" />
               </View>
               <Text style={styles.text}>My Recipes</Text>
+            </View>
+          </ListItem>
+          <ListItem button iconLeft onPress={() => this.navigateTo('viewAllUsers')} >
+            <View style={styles.listItemContainer}>
+              <View style={[styles.iconContainer, {}]}>
+                <MaterialIcons name="public" size={25} color="#4F8EF7" />
+              </View>
+              <Text style={styles.text}>View All Users</Text>
             </View>
           </ListItem>
           {/*<ListItem button iconLeft onPress={() => this.navigateTo('settings')} >

@@ -30,6 +30,7 @@ class MyDrinks extends Component {
       empty: false,
       rawData: [],
       page: 1,
+      outOfData: false,
     };
 
     store.get('account')
@@ -81,11 +82,20 @@ class MyDrinks extends Component {
     {
       list = list.slice(0, length);
     }
+    else
+    {
+      this.setState({
+        outOfData: true,
+      });
+      console.log(this.state.outOfData);
+
+    }
     
     console.log(list);
 
     this.setState({
       pagedDataSource: this.state.dataSource.cloneWithRows(list),
+      page: this.state.page + 1,
     });
 
     
@@ -95,12 +105,7 @@ class MyDrinks extends Component {
   fetchMoreData() {
     
     var currPage = this.state.page;
-    
-    
-    
-    this.setState({
-      page: this.state.page + 1,
-    });
+
 
     console.log("Getting more data for page " + this.state.page);
 
@@ -169,6 +174,7 @@ class MyDrinks extends Component {
         isLoading: false,
         empty: false,
         rawData: json,
+        page: 1,
       });
       this.getPagedData();
       return json;
@@ -422,6 +428,7 @@ class MyDrinks extends Component {
           renderSeparator={this._renderSeparator}
         />
         <Button 
+                  disabled={this.state.outOfData}
                   block
                   style={styles.button}
                   onPress={() => this.fetchMoreData()}>Load More</Button>

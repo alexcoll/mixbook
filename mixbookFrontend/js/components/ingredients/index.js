@@ -33,10 +33,11 @@ class Ingredients extends Component {
       isLoading: true,
       empty: false,
       rawData: [],
-      isLoadingMore: false,
+      outOfData: false,
       _data: null,
       _dataAfter: "",
       page: 1,
+      
     };
   }
 
@@ -104,24 +105,33 @@ class Ingredients extends Component {
   }
 
   getPagedData(){
-    console.log("Getting paged data");
+    console.log("Getting paged data for page: " + this.state.page);
     var list = this.state.rawData;
 
     var length = this.state.page * 14;
+    console.log("List length: " + list.length);
     console.log("Length: " + length);
 
     if(list.length > length)
     {
       list = list.slice(0, length);
     }
+    else
+    {
+      this.setState({
+        outOfData: true,
+      });
+      console.log(this.state.outOfData);
+
+    }
     
     console.log(list);
 
     this.setState({
       pagedDataSource: this.state.dataSource.cloneWithRows(list),
+      page: this.state.page + 1,
     });
 
-    
 
   }
 
@@ -131,9 +141,7 @@ class Ingredients extends Component {
     
     
     
-    this.setState({
-      page: this.state.page + 1,
-    });
+
 
     console.log("Getting more data for page " + this.state.page);
 
@@ -167,6 +175,7 @@ class Ingredients extends Component {
             isLoading: false,
             empty: false,
             rawData: json,
+            page: 1,
           });
           this.getPagedData();
           return json;
@@ -378,6 +387,7 @@ class Ingredients extends Component {
                 />
 
                 <Button 
+                  disabled={this.state.outOfData}
                   block
                   style={styles.button}
                   onPress={() => this.fetchMoreData()}>Load More</Button>
