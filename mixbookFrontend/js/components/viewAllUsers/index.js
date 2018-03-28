@@ -95,7 +95,7 @@ class ViewAllUsers extends Component {
       }).then(async (response) => {
         if (response.status == 200) {
           var json = await response.json();
-        //Alert.alert(json[1].username);
+        // Alert.alert(json[1].username);
         this.setState({dataSource: this.state.dataSource.cloneWithRows(json),
           isLoading: false,
           empty: false,
@@ -150,7 +150,7 @@ class ViewAllUsers extends Component {
     console.log("Getting more data for page " + this.state.page);
 
     if(this.state.sortDirection != "")
-      this._recipeSortOnSelect(this.state.sortDirection, 0)
+      this._userSortOnSelect(this.state.sortDirection, 0)
 
     else  
       this.filterOnSearchText(this.state.searchText, this.state.rawData);
@@ -160,41 +160,10 @@ class ViewAllUsers extends Component {
     
   }
 
-  setSearchText(event) {
-    let searchText = event.nativeEvent.text;
-    this.setState({searchText});
 
-    this.filterOnSearchText(searchText, this.state.rawData);
-  }
+  _userSortOnSelect(idx, value) {
 
-  filterOnSearchText(searchText, data) {
-
-    let filteredData = this.filterItems(searchText, data);
-    
-    
-    this.setState({
-        dataSource: this.state.dataSource.cloneWithRows(filteredData),
-        rawData: filteredData,
-    });
-
-
-  }
-
-  filterItems(searchText, items) {
-    let text = searchText.toLowerCase();
-
-    if(text === "")
-      return items;
-
-    return filter(items, (n) => {
-      let item = n[1].toLowerCase();
-      return item.search(text) !== -1;
-    });
-  }
-
-  _recipeSortOnSelect(idx, value) {
-
-    let sortedData = this.sortRecipes(this.state.rawData, idx.toString());
+    let sortedData = this.sortUsers(this.state.rawData, idx.toString());
 
     this.setState({
       rawData: sortedData,
@@ -202,12 +171,12 @@ class ViewAllUsers extends Component {
     });
 
 
-    this.filterOnSearchText(this.state.searchText, this.state.rawData);
+    // this.filterOnSearchText(this.state.searchText, this.state.rawData);
 
 
   }
 
-  sortRecipes(items, idx) {
+  sortUsers(items, idx) {
 
     this.setState({
       sortDirection: idx,
@@ -215,16 +184,16 @@ class ViewAllUsers extends Component {
     if(idx === '0')
     {
       return items.sort(function (a,b) {
-        if ((b[6]/b[5]) < (a[6]/a[5]) || b[5] == 0) return -1;
-        if ((b[6]/b[5]) > (a[6]/a[5])) return 1;
+        if ((b[1]/b[2]) < (a[1]/a[2]) || b[1] == 0) return -1;
+        if ((b[1]/b[1]) > (a[1]/a[2])) return 1;
         return 0;
       })
     }
 
     if(idx === '1') {
       return items.sort(function (a,b) {
-        if ((b[6]/b[5]) > (a[6]/a[5])  || a[5] == 0) return -1;
-        if ((b[6]/b[5]) < (a[6]/a[5])) return 1;
+        if ((b[1]/b[2]) > (a[1]/a[2])  || a[1] == 0) return -1;
+        if ((b[1]/b[2]) < (a[1]/a[2])) return 1;
         return 0;
       })
     }
@@ -241,19 +210,19 @@ class ViewAllUsers extends Component {
   _pressRow(item: string) {
     if (this.state.isGuest || item[7] !== this.state.username) {
       Alert.alert(
-        "Edit " + item[1],
+        item.username,
         'What do you want to do?',
         [
-          {text: 'View Profile', onPress: () => this.goToReviewPage(item)},
+          {text: 'View Profile', onPress: () => this.visitProfile(item.username)},
         ],
         { cancelable: true }
       )
     } else {
       Alert.alert(
-        item[1],
+        item.username,
         'What do you want to do?',
         [
-          {text: 'View Profile', onPress: () => this.goToReviewPage(item)},
+          {text: 'View Profile', onPress: () => this.visitProfile(item.username)},
         ],
         { cancelable: true }
       )
@@ -306,17 +275,6 @@ class ViewAllUsers extends Component {
 
 
 
-  _renderFAB() {
-    if (!this.state.isGuest) {
-      return (
-        <ActionButton
-          buttonColor="rgba(231,76,60,1)"
-          onPress={() => this.navigateTo('addRecipe')}
-        />
-      );
-    }
-  }
-
 
   render() { // eslint-disable-line
     return (
@@ -342,7 +300,7 @@ class ViewAllUsers extends Component {
           defaultValue='Sort'
           style={styles.dropDownStyle}
           textStyle={styles.dropDownTextStyle}
-          onSelect={(idx, value) => this._recipeSortOnSelect(idx, value)}
+          onSelect={(idx, value) => this._userSortOnSelect(idx, value)}
           />
 
           
@@ -380,7 +338,7 @@ class ViewAllUsers extends Component {
             <View>
               <View style={styles.row}>
                 <Text style={styles.rowText}>
-                  {rowData[1]}
+                  {rowData.username}
                 </Text>
               </View>
             </View>
