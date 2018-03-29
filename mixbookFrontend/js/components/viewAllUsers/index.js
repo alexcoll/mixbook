@@ -173,6 +173,7 @@ class ViewAllUsers extends Component {
     this.setState({
       dataSource: this.state.dataSource.cloneWithRows(filteredData),
     });
+
   }
 
 
@@ -196,7 +197,8 @@ class ViewAllUsers extends Component {
   filterItems(searchText, items) {
     let text = searchText.toLowerCase();
 
-
+    if(text === "")
+    return items;
 
     return filter(items, (n) => {
       let item = n.username.toLowerCase();
@@ -317,6 +319,16 @@ class ViewAllUsers extends Component {
     );
   }
 
+  calculateUserScore(sumratings, numratings) {
+    if (numratings == 0 || sumratings == 0) {
+      return 0;
+    }
+    else {
+      rating = (sumratings / numratings);
+      return parseFloat(rating).toFixed(2);
+    }
+  }
+
 
 
 
@@ -393,7 +405,7 @@ class ViewAllUsers extends Component {
             <View>
               <View style={styles.row}>
                 <Text style={styles.rowText}>
-                  {rowData.username}
+                  {rowData.username + "            Profile Rating: " + this.calculateUserScore(rowData.sumOfPersonalRecipeRatings, rowData.numberOfPersonalRecipeRatings)}
                 </Text>
               </View>
             </View>
