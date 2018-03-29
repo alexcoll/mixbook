@@ -312,6 +312,15 @@ class ViewAllUsers extends Component {
     );
   }
 
+  calculateUserScore(sumratings, numratings) {
+    if (numratings == 0 || sumratings == 0) {
+      return 0;
+    }
+    else {
+      return sumratings / numratings;
+    }
+  }
+
 
 
 
@@ -388,7 +397,7 @@ class ViewAllUsers extends Component {
             <View>
               <View style={styles.row}>
                 <Text style={styles.rowText}>
-                  {rowData.username}
+                  {rowData.username + "            Profile Rating: " + this.calculateUserScore(rowData.sumOfPersonalRecipeRatings, rowData.numberOfPersonalRecipeRatings)}
                 </Text>
               </View>
             </View>
