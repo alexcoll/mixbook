@@ -103,6 +103,11 @@ class MyRecipes extends Component {
         isGuest: data.isGuest,
       });
 
+      if (data.isGuest) {
+        this.getLocalData();
+        return;
+      }
+
       fetch(GLOBAL.API.BASE_URL + '/mixbook/recipe/getAllRecipesCreatedByUser', {
         method: 'GET',
         headers: {
