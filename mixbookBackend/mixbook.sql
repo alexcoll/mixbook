@@ -1154,735 +1154,735 @@ VALUES (319, 18, 'Watermelon Liqueur');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
 VALUES (320, 18, 'X Rated Fusion Liqueur');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (321, 18, 'After Shock');
+VALUES (321, 19, 'After Shock');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (322, 18, 'After Shock (Blue)');
+VALUES (322, 19, 'After Shock (Blue)');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (323, 18, 'After Shock (Black)');
+VALUES (323, 19, 'After Shock (Black)');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (324, 18, 'After Shock (Green)');
+VALUES (324, 19, 'After Shock (Green)');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (325, 18, 'After Shock (Red)');
+VALUES (325, 19, 'After Shock (Red)');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (326, 18, 'After Shock (Silver)');
+VALUES (326, 19, 'After Shock (Silver)');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (327, 18, 'Amaro Averna');
+VALUES (327, 19, 'Amaro Averna');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (328, 18, 'Amaro Montenegro');
+VALUES (328, 19, 'Amaro Montenegro');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (329, 18, 'Amer Picon');
+VALUES (329, 19, 'Amer Picon');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (330, 18, 'Anisette');
+VALUES (330, 19, 'Anisette');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (331, 18, 'Cinnamon Liqueur');
+VALUES (331, 19, 'Cinnamon Liqueur');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (332, 18, 'Fernet Branca Liqueur');
+VALUES (332, 19, 'Fernet Branca Liqueur');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (333, 18, 'Jans Herbal Liqueur');
+VALUES (333, 19, 'Jans Herbal Liqueur');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (334, 18, 'Kummel');
+VALUES (334, 19, 'Kummel');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (335, 18, 'Mint Liqueur');
+VALUES (335, 19, 'Mint Liqueur');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (336, 18, 'Peppermint Liqueur');
+VALUES (336, 19, 'Peppermint Liqueur');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (337, 18, 'St. Germain Elderflower Liqueur');
+VALUES (337, 19, 'St. Germain Elderflower Liqueur');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (338, 18, 'Strega Liqueur');
+VALUES (338, 20, 'Strega Liqueur');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (339, 19, 'Amaretto');
+VALUES (339, 20, 'Amaretto');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (340, 19, 'Chestnut Liqueur');
+VALUES (340, 20, 'Chestnut Liqueur');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (341, 19, 'Disaronno Amaretto');
+VALUES (341, 20, 'Disaronno Amaretto');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (342, 19, 'Frangelico');
+VALUES (342, 20, 'Frangelico');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (343, 19, 'Walnut Liqueur');
+VALUES (343, 20, 'Walnut Liqueur');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (344, 20, 'Advocaat');
+VALUES (344, 21, 'Advocaat');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (345, 20, 'Cola Stiffies');
+VALUES (345, 21, 'Cola Stiffies');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (346, 20, 'Cynar');
+VALUES (346, 21, 'Cynar');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (347, 20, 'Dooleys');
+VALUES (347, 21, 'Dooleys');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (348, 20, 'Elderflower Liqueur');
+VALUES (348, 21, 'Elderflower Liqueur');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (349, 20, "Fulton's Harvest Pumpkin Pie Liqueur");
+VALUES (349, 21, "Fulton's Harvest Pumpkin Pie Liqueur");
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (350, 20, 'Ginger Liqueur');
+VALUES (350, 21, 'Ginger Liqueur');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (351, 20, 'Honey Liqueur');
+VALUES (351, 21, 'Honey Liqueur');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (352, 20, 'Natural Yoghurt Liqueur');
+VALUES (352, 21, 'Natural Yoghurt Liqueur');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (353, 20, 'Parfait Amour');
+VALUES (353, 21, 'Parfait Amour');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (354, 20, 'Tiramisu Liqueur');
+VALUES (354, 21, 'Tiramisu Liqueur');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (355, 21, 'Baileys');
+VALUES (355, 22, 'Baileys');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (356, 21, 'Baileys Glide');
+VALUES (356, 22, 'Baileys Glide');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (357, 21, 'Baileys Chocolate Mint');
+VALUES (357, 22, 'Baileys Chocolate Mint');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (358, 21, 'Baileys Irish Cream');
+VALUES (358, 22, 'Baileys Irish Cream');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (359, 22, 'Cava');
+VALUES (359, 23, 'Cava');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (360, 22, 'Champagne');
+VALUES (360, 23, 'Champagne');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (361, 22, 'Pink Champagne');
+VALUES (361, 23, 'Pink Champagne');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (362, 23, 'Cherry Lambrini');
+VALUES (362, 24, 'Cherry Lambrini');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (363, 23, 'Dubonnet');
+VALUES (363, 24, 'Dubonnet');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (364, 23, 'Ginger Wine');
+VALUES (364, 24, 'Ginger Wine');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (365, 23, 'Lillet Blanc');
+VALUES (365, 24, 'Lillet Blanc');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (366, 23, 'Rose Wine');
+VALUES (366, 24, 'Rose Wine');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (367, 23, 'Stones Ginger Wine');
+VALUES (367, 24, 'Stones Ginger Wine');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (368, 24, 'Muscat Wine');
+VALUES (368, 25, 'Muscat Wine');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (369, 24, 'Port');
+VALUES (369, 25, 'Port');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (370, 24, 'Red Port');
+VALUES (370, 25, 'Red Port');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (371, 24, 'Ruby Port');
+VALUES (371, 25, 'Ruby Port');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (372, 25, 'Madeira');
+VALUES (372, 26, 'Madeira');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (373, 25, 'Red Wine');
+VALUES (373, 26, 'Red Wine');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (374, 26, 'Sherry Dry');
+VALUES (374, 27, 'Sherry Dry');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (375, 26, 'Sherry Sweet');
+VALUES (375, 27, 'Sherry Sweet');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (376, 27, 'Cocchi Di Torino');
+VALUES (376, 28, 'Cocchi Di Torino');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (377, 27, 'Dry Vermouth');
+VALUES (377, 28, 'Dry Vermouth');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (378, 27, 'Dubonnet Rouge');
+VALUES (378, 28, 'Dubonnet Rouge');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (379, 27, 'French Vermouth');
+VALUES (379, 28, 'French Vermouth');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (380, 27, 'Martini');
+VALUES (380, 28, 'Martini');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (381, 27, 'Martini Bianco Vermouth');
+VALUES (381, 28, 'Martini Bianco Vermouth');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (382, 27, 'Martini Dry');
+VALUES (382, 28, 'Martini Dry');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (383, 27, 'Martini Gold');
+VALUES (383, 28, 'Martini Gold');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (384, 27, 'Martini Rosso');
+VALUES (384, 28, 'Martini Rosso');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (385, 27, 'Martini Vermouth');
+VALUES (385, 28, 'Martini Vermouth');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (386, 27, 'Noily Prat');
+VALUES (386, 28, 'Noily Prat');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (387, 27, 'Red Vermouth');
+VALUES (387, 28, 'Red Vermouth');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (388, 27, 'Sweet Red Vermouth');
+VALUES (388, 28, 'Sweet Red Vermouth');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (389, 27, 'Sweet Vermouth');
+VALUES (389, 28, 'Sweet Vermouth');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (390, 27, 'Vermouth');
+VALUES (390, 28, 'Vermouth');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (391, 27, 'White Vermouth');
+VALUES (391, 28, 'White Vermouth');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (392, 28, 'Chardonnay');
+VALUES (392, 29, 'Chardonnay');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (393, 28, 'Dry White Wine');
+VALUES (393, 29, 'Dry White Wine');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (394, 28, 'Prosecco');
+VALUES (394, 29, 'Prosecco');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (395, 28, 'Sparkling White Wine');
+VALUES (395, 29, 'Sparkling White Wine');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (396, 28, 'White Whine');
+VALUES (396, 29, 'White Whine');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (397, 29, 'Beer');
+VALUES (397, 30, 'Beer');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (398, 29, "Coor's Light");
+VALUES (398, 30, "Coor's Light");
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (399, 29, 'Guiness');
+VALUES (399, 30, 'Guiness');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (400, 29, 'Lager');
+VALUES (400, 30, 'Lager');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (401, 29, 'Lemongrass and Chili Beer');
+VALUES (401, 30, 'Lemongrass and Chili Beer');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (402, 29, 'Light Beer');
+VALUES (402, 30, 'Light Beer');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (403, 29, 'Newcastle Brown Ale');
+VALUES (403, 30, 'Newcastle Brown Ale');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (404, 29, 'Saison Beer');
+VALUES (404, 30, 'Saison Beer');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (405, 29, 'Special Brew');
+VALUES (405, 30, 'Special Brew');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (406, 29, 'Stout');
+VALUES (406, 30, 'Stout');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (407, 29, 'Tennants Beer');
+VALUES (407, 30, 'Tennants Beer');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (408, 30, 'Apple Cider');
+VALUES (408, 31, 'Apple Cider');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (409, 30, 'Babycham');
+VALUES (409, 31, 'Babycham');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (410, 30, 'Bulmers Pear Cider');
+VALUES (410, 31, 'Bulmers Pear Cider');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (411, 30, 'Cider');
+VALUES (411, 31, 'Cider');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (412, 30, 'Dry Cider');
+VALUES (412, 31, 'Dry Cider');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (413, 30, "Frosty Jack's White Cider");
+VALUES (413, 31, "Frosty Jack's White Cider");
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (414, 30, 'Magners Cider');
+VALUES (414, 31, 'Magners Cider');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (415, 30, 'Pear Cider');
+VALUES (415, 31, 'Pear Cider');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (416, 30, 'Strongbow Cider');
+VALUES (416, 31, 'Strongbow Cider');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (417, 30, 'White Cider');
+VALUES (417, 31, 'White Cider');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (418, 31, 'Half and Half');
+VALUES (418, 32, 'Half and Half');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (419, 31, 'Lemon Bitters');
+VALUES (419, 32, 'Lemon Bitters');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (420, 31, 'Lime Bitters');
+VALUES (420, 32, 'Lime Bitters');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (421, 31, 'Lime Margarita Mix');
+VALUES (421, 32, 'Lime Margarita Mix');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (422, 31, 'Margarita Mix');
+VALUES (422, 32, 'Margarita Mix');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (423, 31, 'Orange Bitters');
+VALUES (423, 32, 'Orange Bitters');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (424, 31, 'Peach Bitters');
+VALUES (424, 32, 'Peach Bitters');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (425, 31, "Peychaud's Aromatic Bitters");
+VALUES (425, 32, "Peychaud's Aromatic Bitters");
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (426, 31, 'Piña Colada Mix');
+VALUES (426, 32, 'Piña Colada Mix');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (427, 31, 'Plum Bitters');
+VALUES (427, 32, 'Plum Bitters');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (428, 31, 'Rhubarb Bitters');
+VALUES (428, 32, 'Rhubarb Bitters');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (429, 31, 'Sour Mix');
+VALUES (429, 32, 'Sour Mix');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (430, 31, 'Sugar Syrup');
+VALUES (430, 32, 'Sugar Syrup');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (431, 31, "Velvet Falernum");
+VALUES (431, 32, "Velvet Falernum");
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (432, 31, 'Yohimbe Extract');
+VALUES (432, 32, 'Yohimbe Extract');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (433, 32, 'Apple and Blackcurrant Juice');
+VALUES (433, 33, 'Apple and Blackcurrant Juice');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (434, 32, 'Apple and Mango Juice');
+VALUES (434, 33, 'Apple and Mango Juice');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (435, 32, 'Apple Juice');
+VALUES (435, 33, 'Apple Juice');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (436, 32, 'Apricot Juice');
+VALUES (436, 33, 'Apricot Juice');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (437, 32, 'Banana Juice');
+VALUES (437, 33, 'Banana Juice');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (438, 32, 'Beetroot Juice');
+VALUES (438, 33, 'Beetroot Juice');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (439, 32, 'Blackcurrant Juice');
+VALUES (439, 33, 'Blackcurrant Juice');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (440, 32, 'Blueberry Juice');
+VALUES (440, 33, 'Blueberry Juice');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (441, 32, 'Carrot Juice');
+VALUES (441, 33, 'Carrot Juice');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (442, 32, 'Cherry Juice');
+VALUES (442, 33, 'Cherry Juice');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (443, 32, 'Clementine Juice');
+VALUES (443, 33, 'Clementine Juice');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (444, 32, 'Cranberry Juice');
+VALUES (444, 33, 'Cranberry Juice');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (445, 32, 'Grape Juice');
+VALUES (445, 33, 'Grape Juice');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (446, 32, 'Guava Juice');
+VALUES (446, 33, 'Guava Juice');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (447, 32, 'Lemon Juice');
+VALUES (447, 33, 'Lemon Juice');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (448, 32, 'Lime Juice');
+VALUES (448, 33, 'Lime Juice');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (449, 32, 'Lychee Juice');
+VALUES (449, 33, 'Lychee Juice');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (450, 32, 'Mango Juice');
+VALUES (450, 33, 'Mango Juice');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (451, 32, 'Maraschino Cherry Juice');
+VALUES (451, 33, 'Maraschino Cherry Juice');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (452, 32, "Mike's Hard Berry");
+VALUES (452, 33, "Mike's Hard Berry");
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (453, 32, 'Olive Juice');
+VALUES (453, 33, 'Olive Juice');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (454, 32, 'Orange Juice');
+VALUES (454, 33, 'Orange Juice');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (455, 32, 'Papaya Juice');
+VALUES (455, 33, 'Papaya Juice');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (456, 32, 'Passionfruit Juice');
+VALUES (456, 33, 'Passionfruit Juice');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (457, 32, 'Peach Juice');
+VALUES (457, 33, 'Peach Juice');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (458, 32, 'Peach Nectar');
+VALUES (458, 33, 'Peach Nectar');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (459, 32, 'Pear Juice');
+VALUES (459, 33, 'Pear Juice');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (460, 32, 'Pear Nectar');
+VALUES (460, 33, 'Pear Nectar');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (461, 32, 'Pineapple Juice');
+VALUES (461, 33, 'Pineapple Juice');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (462, 32, 'Pink Grapefruit');
+VALUES (462, 33, 'Pink Grapefruit');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (463, 32, 'Pomegranate Juice');
+VALUES (463, 33, 'Pomegranate Juice');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (464, 32, "Raspberry Juice");
+VALUES (464, 33, "Raspberry Juice");
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (465, 32, 'Red Grape Juice');
+VALUES (465, 33, 'Red Grape Juice');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (466, 32, "Rose's Lime Juice");
+VALUES (466, 33, "Rose's Lime Juice");
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (467, 32, 'Strawberry Juice');
+VALUES (467, 33, 'Strawberry Juice');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (468, 32, 'Tangerine Juice');
+VALUES (468, 33, 'Tangerine Juice');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (469, 32, 'Tomato Juice');
+VALUES (469, 33, 'Tomato Juice');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (470, 32, 'Tropical Juice');
+VALUES (470, 33, 'Tropical Juice');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (471, 32, 'Ugli Fruit Juice');
+VALUES (471, 33, 'Ugli Fruit Juice');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (472, 32, 'Watermelon Juice');
+VALUES (472, 33, 'Watermelon Juice');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (473, 32, 'Wheatgrass Juice');
+VALUES (473, 33, 'Wheatgrass Juice');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (474, 32, 'White Cranberry and Apple Juice');
+VALUES (474, 33, 'White Cranberry and Apple Juice');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (475, 32, 'White Cranberry Juice');
+VALUES (475, 33, 'White Cranberry Juice');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (476, 32, 'White Grape Juice');
+VALUES (476, 33, 'White Grape Juice');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (477, 33, '7Up');
+VALUES (477, 34, '7Up');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (478, 33, 'Arizona Iced Tea');
+VALUES (478, 34, 'Arizona Iced Tea');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (479, 33, 'Bitter Lemon');
+VALUES (479, 34, 'Bitter Lemon');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (480, 33, 'Blackcurrant Cordial');
+VALUES (480, 34, 'Blackcurrant Cordial');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (481, 33, 'Canada Dry');
+VALUES (481, 34, 'Canada Dry');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (482, 33, 'Cherryade');
+VALUES (482, 34, 'Cherryade');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (483, 33, 'Clamato');
+VALUES (483, 34, 'Clamato');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (484, 33, 'Club Soda');
+VALUES (484, 34, 'Club Soda');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (485, 33, 'Coke');
+VALUES (485, 34, 'Coke');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (486, 33, 'Cream Soda');
+VALUES (486, 34, 'Cream Soda');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (487, 33, 'Diet Coke');
+VALUES (487, 34, 'Diet Coke');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (488, 33, 'Dr. Pepper');
+VALUES (488, 34, 'Dr. Pepper');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (489, 33, 'Elderflower Cordial');
+VALUES (489, 34, 'Elderflower Cordial');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (490, 33, 'Energy Drink');
+VALUES (490, 34, 'Energy Drink');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (491, 33, 'Fanta Fruit Twist');
+VALUES (491, 34, 'Fanta Fruit Twist');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (492, 33, "Fentiman's Victorian Rose Lemonada Soda");
+VALUES (492, 34, "Fentiman's Victorian Rose Lemonada Soda");
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (493, 33, 'Fizzy Orange Drink');
+VALUES (493, 34, 'Fizzy Orange Drink');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (494, 33, 'Ginger Ale');
+VALUES (494, 34, 'Ginger Ale');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (495, 33, 'Ginger Beer');
+VALUES (495, 34, 'Ginger Beer');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (496, 33, 'Grape Sodapop');
+VALUES (496, 34, 'Grape Sodapop');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (497, 33, 'Ice Tea');
+VALUES (497, 34, 'Ice Tea');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (498, 33, 'Irn Bru');
+VALUES (498, 34, 'Irn Bru');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (499, 33, 'Lemon Cordial');
+VALUES (499, 34, 'Lemon Cordial');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (500, 33, 'Lemon Lime Soda');
+VALUES (500, 34, 'Lemon Lime Soda');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (501, 33, "Lemon Squash");
+VALUES (501, 34, "Lemon Squash");
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (502, 33, 'Lemonade');
+VALUES (502, 34, 'Lemonade');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (503, 33, 'Lime Coke');
+VALUES (503, 34, 'Lime Coke');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (504, 33, 'Lime Cordial');
+VALUES (504, 34, 'Lime Cordial');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (505, 33, 'Limeade');
+VALUES (505, 34, 'Limeade');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (506, 33, 'Lucozade');
+VALUES (506, 34, 'Lucozade');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (507, 33, 'Mountain Dew');
+VALUES (507, 34, 'Mountain Dew');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (508, 33, 'Non-alcoholic Apple Cider');
+VALUES (508, 34, 'Non-alcoholic Apple Cider');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (509, 33, "Orange + Cranberry J20");
+VALUES (509, 34, "Orange + Cranberry J20");
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (510, 33, 'Orange Blossom Water');
+VALUES (510, 34, 'Orange Blossom Water');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (511, 33, 'Pink Lemonade');
+VALUES (511, 34, 'Pink Lemonade');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (512, 33, 'Powerade');
+VALUES (512, 34, 'Powerade');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (513, 33, 'Raspberry Cordial');
+VALUES (513, 34, 'Raspberry Cordial');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (514, 33, 'Red Bull');
+VALUES (514, 34, 'Red Bull');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (515, 33, 'Ribena');
+VALUES (515, 34, 'Ribena');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (516, 33, 'Rootbeer');
+VALUES (516, 34, 'Root Beer');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (517, 33, 'Rose Water');
+VALUES (517, 34, 'Rose Water');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (518, 33, 'Schweppes Bitter Lemon');
+VALUES (518, 34, 'Schweppes Bitter Lemon');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (519, 33, 'Soda Water');
+VALUES (519, 34, 'Soda Water');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (520, 33, 'Sparkling Water');
+VALUES (520, 34, 'Sparkling Water');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (521, 33, 'Sprite');
+VALUES (521, 34, 'Sprite');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (522, 33, 'Strawberry Milkshake');
+VALUES (522, 34, 'Strawberry Milkshake');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (523, 33, 'Tizer');
+VALUES (523, 34, 'Tizer');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (524, 33, 'Tonic Water');
+VALUES (524, 34, 'Tonic Water');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (525, 33, 'Vanilla Coke');
+VALUES (525, 34, 'Vanilla Coke');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (526, 33, 'Vimto');
+VALUES (526, 34, 'Vimto');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (527, 34, 'Agave Syrup');
+VALUES (527, 35, 'Agave Syrup');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (528, 34, 'Caramel Syrup');
+VALUES (528, 35, 'Caramel Syrup');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (529, 34, 'Cardamom Syrup');
+VALUES (529, 35, 'Cardamom Syrup');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (530, 34, 'Cherry Syrup');
+VALUES (530, 35, 'Cherry Syrup');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (531, 34, 'Chocolate Chip Cookie Syrup');
+VALUES (531, 35, 'Chocolate Chip Cookie Syrup');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (532, 34, 'Chocolate Syrup');
+VALUES (532, 35, 'Chocolate Syrup');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (533, 34, 'Cinnamon Syrup');
+VALUES (533, 35, 'Cinnamon Syrup');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (534, 34, 'Citrus Agave');
+VALUES (534, 35, 'Citrus Agave');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (535, 34, 'Coconut Syrup');
+VALUES (535, 35, 'Coconut Syrup');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (536, 34, 'Coconut Water Syrup');
+VALUES (536, 35, 'Coconut Water Syrup');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (537, 34, 'Elderflower Syrup');
+VALUES (537, 35, 'Elderflower Syrup');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (538, 34, 'Falernum');
+VALUES (538, 35, 'Falernum');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (539, 34, 'Ginger Bread Syrup');
+VALUES (539, 35, 'Ginger Bread Syrup');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (540, 34, 'Ginger Syrup');
+VALUES (540, 35, 'Ginger Syrup');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (541, 34, 'Honey Syrup');
+VALUES (541, 35, 'Honey Syrup');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (542, 34, 'Lavender Syrup');
+VALUES (542, 35, 'Lavender Syrup');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (543, 34, 'Lemon Syrup');
+VALUES (543, 35, 'Lemon Syrup');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (544, 34, 'Maple Syrup');
+VALUES (544, 35, 'Maple Syrup');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (545, 34, 'Mint Syrup');
+VALUES (545, 35, 'Mint Syrup');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (546, 34, 'Orange Syrup');
+VALUES (546, 35, 'Orange Syrup');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (547, 34, 'Orgeat Syrup');
+VALUES (547, 35, 'Orgeat Syrup');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (548, 34, 'Passionfruit');
+VALUES (548, 35, 'Passionfruit');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (549, 34, 'Pisachio Syrup');
+VALUES (549, 35, 'Pisachio Syrup');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (550, 34, 'Pomegranate Syrup');
+VALUES (550, 35, 'Pomegranate Syrup');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (551, 34, 'Raspberry Syrup');
+VALUES (551, 35, 'Raspberry Syrup');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (552, 34, 'Rose Syrup');
+VALUES (552, 35, 'Rose Syrup');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (553, 34, 'Rosemary Syrup');
+VALUES (553, 35, 'Rosemary Syrup');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (554, 34, 'Spiced Pumpkin Syrup');
+VALUES (554, 35, 'Spiced Pumpkin Syrup');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (555, 34, 'Strawberry Syrup');
+VALUES (555, 35, 'Strawberry Syrup');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (556, 34, 'Vanilla Syrup');
+VALUES (556, 35, 'Vanilla Syrup');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (557, 34, 'Violet Syrup');
+VALUES (557, 35, 'Violet Syrup');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (558, 35, 'Bacardi Breezer Orange');
+VALUES (558, 36, 'Bacardi Breezer Orange');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (559, 35, 'Bacardi Breezer Watermelon');
+VALUES (559, 36, 'Bacardi Breezer Watermelon');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (560, 35, 'Orange Reef');
+VALUES (560, 36, 'Orange Reef');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (561, 35, 'Smirnoff Ice');
+VALUES (561, 36, 'Smirnoff Ice');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (562, 35, 'Smirnoff Ice (Black)');
+VALUES (562, 36, 'Smirnoff Ice (Black)');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (563, 35, 'Smirnoff Ice Raspberry');
+VALUES (563, 36, 'Smirnoff Ice Raspberry');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (564, 35, 'WKD');
+VALUES (564, 36, 'WKD');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (565, 35, 'WKD Blue');
+VALUES (565, 36, 'WKD Blue');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (566, 35, 'WKD Clear');
+VALUES (566, 36, 'WKD Clear');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (567, 35, 'WKD Original');
+VALUES (567, 36, 'WKD Original');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (568, 35, 'WKD Red');
+VALUES (568, 36, 'WKD Red');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (569, 36, 'Apple');
+VALUES (569, 37, 'Apple');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (570, 36, 'Banana');
+VALUES (570, 37, 'Banana');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (571, 36, 'Blackberries');
+VALUES (571, 37, 'Blackberries');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (572, 36, 'Blueberries');
+VALUES (572, 37, 'Blueberries');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (573, 36, 'Cherry');
+VALUES (573, 37, 'Cherry');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (574, 36, 'Coconut');
+VALUES (574, 37, 'Coconut');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (575, 36, 'Cucumber');
+VALUES (575, 37, 'Cucumber');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (576, 36, 'Frozen Peaches');
+VALUES (576, 37, 'Frozen Peaches');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (577, 36, 'Green Olives');
+VALUES (577, 37, 'Green Olives');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (578, 36, 'Kiwi');
+VALUES (578, 37, 'Kiwi');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (579, 36, 'Lemon');
+VALUES (579, 37, 'Lemon');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (580, 36, 'Lemon Balm');
+VALUES (580, 37, 'Lemon Balm');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (581, 36, 'Lime');
+VALUES (581, 37, 'Lime');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (582, 36, 'Mango');
+VALUES (582, 37, 'Mango');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (583, 36, 'Mango Puree');
+VALUES (583, 37, 'Mango Puree');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (584, 36, 'Maraschino Cherry');
+VALUES (584, 37, 'Maraschino Cherry');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (585, 36, 'Melon');
+VALUES (585, 37, 'Melon');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (586, 36, 'Olives');
+VALUES (586, 37, 'Olives');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (587, 36, 'Orange');
+VALUES (587, 37, 'Orange');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (588, 36, 'Passionfruit Puree');
+VALUES (588, 37, 'Passionfruit Puree');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (589, 36, 'Peach');
+VALUES (589, 37, 'Peach');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (590, 36, 'Peach Puree');
+VALUES (590, 37, 'Peach Puree');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (591, 36, 'Pear');
+VALUES (591, 37, 'Pear');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (592, 36, 'Pineapple');
+VALUES (592, 37, 'Pineapple');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (593, 36, 'Pomegranate');
+VALUES (593, 37, 'Pomegranate');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (594, 36, 'Raspberry');
+VALUES (594, 37, 'Raspberry');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (595, 36, 'Raspberry Puree');
+VALUES (595, 37, 'Raspberry Puree');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (596, 36, 'Strawberry Puree');
+VALUES (596, 37, 'Strawberry Puree');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (597, 36, 'Tomatoes');
+VALUES (597, 37, 'Tomatoes');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (598, 36, 'Watermelon');
+VALUES (598, 37, 'Watermelon');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (599, 37, 'Allspice');
+VALUES (599, 38, 'Allspice');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (600, 37, 'Almond Extract');
+VALUES (600, 38, 'Almond Extract');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (601, 37, 'Almond Milk');
+VALUES (601, 38, 'Almond Milk');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (602, 37, 'Apricot Jam');
+VALUES (602, 38, 'Apricot Jam');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (603, 37, 'Basil Leaves');
+VALUES (603, 38, 'Basil Leaves');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (604, 37, 'Black Tea');
+VALUES (604, 38, 'Black Tea');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (605, 37, 'Brown Sugar');
+VALUES (605, 38, 'Brown Sugar');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (606, 37, 'Brown Toast');
+VALUES (606, 38, 'Brown Toast');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (607, 37, 'Butter');
+VALUES (607, 38, 'Butter');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (608, 37, 'Camomile Tea');
+VALUES (608, 38, 'Camomile Tea');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (609, 37, 'Cardamom');
+VALUES (609, 38, 'Cardamom');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (610, 37, 'Cardamom Pods');
+VALUES (610, 38, 'Cardamom Pods');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (611, 37, 'Cayenne Pepper');
+VALUES (611, 38, 'Cayenne Pepper');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (612, 37, 'Celery');
+VALUES (612, 38, 'Celery');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (613, 37, 'Celery Salt');
+VALUES (613, 38, 'Celery Salt');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (614, 37, 'Chili Peppers');
+VALUES (614, 38, 'Chili Peppers');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (615, 37, 'Chocolate');
+VALUES (615, 38, 'Chocolate');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (616, 37, 'Chocolate Ice Cream');
+VALUES (616, 38, 'Chocolate Ice Cream');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (617, 37, 'Chocolate Milk');
+VALUES (617, 38, 'Chocolate Milk');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (618, 37, 'Chocolate Sauce');
+VALUES (618, 38, 'Chocolate Sauce');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (619, 37, 'Cinnamon');
+VALUES (619, 38, 'Cinnamon');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (620, 37, 'Cloves');
+VALUES (620, 38, 'Cloves');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (621, 37, 'Cocoa Powder');
+VALUES (621, 38, 'Cocoa Powder');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (622, 37, 'Coconut Cream');
+VALUES (622, 38, 'Coconut Cream');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (623, 37, 'Coconut Milk');
+VALUES (623, 38, 'Coconut Milk');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (624, 37, 'Coffee');
+VALUES (624, 38, 'Coffee');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (625, 37, 'Coffee Beans');
+VALUES (625, 38, 'Coffee Beans');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (626, 37, 'Coffee Ice Cream');
+VALUES (626, 38, 'Coffee Ice Cream');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (627, 37, 'Cream');
+VALUES (627, 38, 'Cream');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (628, 37, 'Dark Chocolate Powder');
+VALUES (628, 38, 'Dark Chocolate Powder');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (629, 37, 'Demerara Sugar');
+VALUES (629, 38, 'Demerara Sugar');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (630, 37, 'Desiccated Coconut');
+VALUES (630, 38, 'Desiccated Coconut');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (631, 37, 'Double Cream');
+VALUES (631, 38, 'Double Cream');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (632, 37, 'Earl Grey Tea');
+VALUES (632, 38, 'Earl Grey Tea');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (633, 37, 'Egg White');
+VALUES (633, 38, 'Egg White');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (634, 37, 'Egg Yolk');
+VALUES (634, 38, 'Egg Yolk');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (635, 37, 'Eggnog');
+VALUES (635, 38, 'Eggnog');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (636, 37, 'Espresso Coffee');
+VALUES (636, 38, 'Espresso Coffee');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (637, 37, 'Friji Chocolate Milkshake');
+VALUES (637, 38, 'Friji Chocolate Milkshake');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (638, 37, 'Ginger');
+VALUES (638, 38, 'Ginger');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (639, 37, 'Gingerbread');
+VALUES (639, 38, 'Gingerbread');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (640, 37, 'Green Food Colouring');
+VALUES (640, 38, 'Green Food Colouring');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (641, 37, 'Green Tea');
+VALUES (641, 38, 'Green Tea');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (642, 37, 'Ground Coffee Beans');
+VALUES (642, 38, 'Ground Coffee Beans');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (643, 37, 'Honey');
+VALUES (643, 38, 'Honey');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (644, 37, 'Hot Chocolate');
+VALUES (644, 38, 'Hot Chocolate');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (645, 37, 'Icing Sugar');
+VALUES (645, 38, 'Icing Sugar');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (646, 37, 'Jasmine Tea');
+VALUES (646, 38, 'Jasmine Tea');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (647, 37, 'Jelly');
+VALUES (647, 38, 'Jelly');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (648, 37, 'Lemon Ice Cream');
+VALUES (648, 38, 'Lemon Ice Cream');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (649, 37, 'Lemon Sorbet');
+VALUES (649, 38, 'Lemon Sorbet');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (650, 37, 'Lime Popsicle');
+VALUES (650, 38, 'Lime Popsicle');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (651, 37, 'Mango Sorbet');
+VALUES (651, 38, 'Mango Sorbet');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (652, 37, 'Marmalade');
+VALUES (652, 38, 'Marmalade');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (653, 37, 'Mascarpone');
+VALUES (653, 38, 'Mascarpone');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (654, 37, 'Milk');
+VALUES (654, 38, 'Milk');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (655, 37, 'Milk Chocolate Powder');
+VALUES (655, 38, 'Milk Chocolate Powder');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (656, 37, 'Mincemeat');
+VALUES (656, 38, 'Mincemeat');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (657, 37, 'Mint Leaves');
+VALUES (657, 38, 'Mint Leaves');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (658, 37, 'Natural Yoghurt');
+VALUES (658, 38, 'Natural Yoghurt');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (659, 37, 'Nutella');
+VALUES (659, 38, 'Nutella');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (660, 37, 'Nutmeg');
+VALUES (660, 38, 'Nutmeg');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (661, 37, 'Onion');
+VALUES (661, 38, 'Onion');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (662, 37, 'Oreo Cookie');
+VALUES (662, 38, 'Oreo Cookie');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (663, 37, 'Pepper');
+VALUES (663, 38, 'Pepper');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (664, 37, 'Peppermint');
+VALUES (664, 38, 'Peppermint');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (665, 37, 'Pink Peppercorn');
+VALUES (665, 38, 'Pink Peppercorn');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (666, 37, 'Popcorn');
+VALUES (666, 38, 'Popcorn');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (667, 37, 'Pumpkin Puree');
+VALUES (667, 38, 'Pumpkin Puree');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (668, 37, 'Rosemary');
+VALUES (668, 38, 'Rosemary');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (669, 37, 'Rum and Raisin Ice Cream');
+VALUES (669, 38, 'Rum and Raisin Ice Cream');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (670, 37, 'Salt');
+VALUES (670, 38, 'Salt');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (671, 37, 'Single Cream');
+VALUES (671, 38, 'Single Cream');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (672, 37, 'Skittles');
+VALUES (672, 38, 'Skittles');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (673, 37, 'Soy Sauce');
+VALUES (673, 38, 'Soy Sauce');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (674, 37, 'Steamed Milk');
+VALUES (674, 38, 'Steamed Milk');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (675, 37, 'Strawberry Vanilla Ice Cream');
+VALUES (675, 38, 'Strawberry Vanilla Ice Cream');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (676, 37, 'Sugar');
+VALUES (676, 38, 'Sugar');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (677, 37, 'Sweetened Condensed Milk');
+VALUES (677, 38, 'Sweetened Condensed Milk');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (678, 37, 'Tabasco Sauce');
+VALUES (678, 38, 'Tabasco Sauce');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (679, 37, 'Vanilla Essence');
+VALUES (679, 38, 'Vanilla Essence');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (680, 37, 'Vanilla Ice Cream');
+VALUES (680, 38, 'Vanilla Ice Cream');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (681, 37, 'Vanilla Pod');
+VALUES (681, 38, 'Vanilla Pod');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (682, 37, 'Wasabi');
+VALUES (682, 38, 'Wasabi');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (683, 37, 'Whipped Cream');
+VALUES (683, 38, 'Whipped Cream');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (684, 37, 'White Balsamic Vinegar');
+VALUES (684, 38, 'White Balsamic Vinegar');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (685, 37, 'Worcestershire Sauce');
+VALUES (685, 38, 'Worcestershire Sauce');
 
 
 INSERT INTO badges(badge_id, badge_name, badge_description)
