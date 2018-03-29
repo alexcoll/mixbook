@@ -44,5 +44,9 @@ module.exports = StyleSheet.create({
     textAlign: 'center',
     paddingTop: 10,
     textAlignVertical: 'center'
+  },
+
+  button: {
+    alignSelf: 'center',
   }
 });

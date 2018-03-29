@@ -36,6 +36,7 @@ class Recipes extends Component {
       pagedDataSource: ds.cloneWithRows([]),
       page: 1,
       outOfData: false,
+      pagedData: [],
     };
   }
 
@@ -120,6 +121,7 @@ class Recipes extends Component {
           isLoading: false,
           empty: false,
           rawData: json,
+          pagedData: json,
           page: 1,
         });
         this.getPagedData();
@@ -142,7 +144,7 @@ class Recipes extends Component {
 
   getPagedData(){
     console.log("Getting paged data");
-    var list = this.state.rawData;
+    var list = this.state.pagedData;
 
     var length = this.state.page * 14;
     console.log("Length: " + length);
@@ -160,7 +162,7 @@ class Recipes extends Component {
 
     }
     
-    console.log(list);
+
 
     this.setState({
       pagedDataSource: this.state.dataSource.cloneWithRows(list),
@@ -201,8 +203,11 @@ class Recipes extends Component {
     
     this.setState({
         dataSource: this.state.dataSource.cloneWithRows(filteredData),
-        rawData: filteredData,
+        pagedData: filteredData,
     });
+
+
+    this.getPagedData();
 
 
   }

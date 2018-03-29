@@ -28,11 +28,14 @@ class MyRecipes extends Component {
       isGuest: true,
       refreshing: false,
       dataSource: ds.cloneWithRows([]),
+      pagedDataSource: ds.cloneWithRows([]),
       searchText: "",
       sortDirection: "",
       isLoading: false,
       empty: false,
       rawData: [],
+      outOfData: false,
+      page: 1,
     };
   }
 
@@ -118,7 +121,9 @@ class MyRecipes extends Component {
           isLoading: false,
           empty: false,
           rawData: json,
+          page: 1,
         });
+        this.getPagedData();
         return json;
         } else {
           this.showServerErrorAlert(response);
@@ -168,6 +173,47 @@ class MyRecipes extends Component {
       let item = n[1].toLowerCase();
       return item.search(text) !== -1;
     });
+  }
+
+  getPagedData(){
+    console.log("Getting paged data for page: " + this.state.page);
+    var list = this.state.rawData;
+
+    var length = this.state.page * 14;
+    console.log("List length: " + list.length);
+    console.log("Length: " + length);
+
+    if(list.length > length)
+    {
+      list = list.slice(0, length);
+    }
+    else
+    {
+      this.setState({
+        outOfData: true,
+      });
+      console.log(this.state.outOfData);
+
+    }
+    
+    console.log(list);
+
+    this.setState({
+      pagedDataSource: this.state.dataSource.cloneWithRows(list),
+      page: this.state.page + 1,
+    });
+
+
+  }
+
+  fetchMoreData() {
+    
+    var currPage = this.state.page;
+
+    console.log("Getting more data for page " + this.state.page);
+
+    this.getPagedData();
+    
   }
 
   _recipeSortOnSelect(idx, value) {
@@ -367,7 +413,7 @@ class MyRecipes extends Component {
               onRefresh={this._onRefresh.bind(this)}
             />
           }
-          dataSource={this.state.dataSource}
+          dataSource={this.state.pagedDataSource}
           renderRow={(rowData: string, sectionID: number, rowID: number, highlightRow: (sectionID: number, rowID: number) => void) =>
             <TouchableHighlight onPress={() => {
               this._pressRow(rowData);
@@ -384,6 +430,11 @@ class MyRecipes extends Component {
           }
           renderSeparator={this._renderSeparator}
         />
+        <Button 
+                  disabled={this.state.outOfData}
+                  block
+                  style={styles.button}
+                  onPress={() => this.fetchMoreData()}>Load More</Button>
         {this._renderFAB()}
       </View>
     );

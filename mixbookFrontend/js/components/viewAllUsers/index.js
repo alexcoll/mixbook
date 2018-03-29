@@ -35,7 +35,8 @@ class ViewAllUsers extends Component {
       rawData: [],
       pagedDataSource: ds.cloneWithRows([]),
       page: 1,
-      users: []
+      users: [],
+      outOfData: false,
     };
   }
 
@@ -100,6 +101,7 @@ class ViewAllUsers extends Component {
           isLoading: false,
           empty: false,
           rawData: json,
+          page: 1,
         });
         // Alert.alert(users[0].username);
         this.getPagedData();
@@ -131,21 +133,24 @@ class ViewAllUsers extends Component {
     {
       list = list.slice(0, length);
     }
+    else
+    {
+      this.setState({
+        outOfData: true,
+      });
+    }
     
     console.log(list);
 
     this.setState({
       pagedDataSource: this.state.dataSource.cloneWithRows(list),
+      page: this.state.page + 1,
     });
   }
 
   fetchMoreData() {
     
     var currPage = this.state.page;
-
-    this.setState({
-      page: this.state.page + 1,
-    });
 
     console.log("Getting more data for page " + this.state.page);
 
@@ -396,6 +401,7 @@ class ViewAllUsers extends Component {
           renderSeparator={this._renderSeparator}
         />
         <Button 
+                  disabled={this.state.outOfData}
                   block
                   style={styles.button}
                   onPress={() => this.fetchMoreData()}>Load More</Button>
