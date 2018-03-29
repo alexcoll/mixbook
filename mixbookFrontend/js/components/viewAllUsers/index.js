@@ -168,6 +168,7 @@ class ViewAllUsers extends Component {
     this.setState({
       dataSource: this.state.dataSource.cloneWithRows(filteredData),
     });
+
   }
 
 
@@ -191,7 +192,8 @@ class ViewAllUsers extends Component {
   filterItems(searchText, items) {
     let text = searchText.toLowerCase();
 
-
+    if(text === "")
+    return items;
 
     return filter(items, (n) => {
       let item = n.username.toLowerCase();
@@ -317,7 +319,8 @@ class ViewAllUsers extends Component {
       return 0;
     }
     else {
-      return sumratings / numratings;
+      rating = (sumratings / numratings);
+      return parseFloat(rating).toFixed(2);
     }
   }
 
