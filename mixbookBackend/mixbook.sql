@@ -1016,7 +1016,7 @@ VALUES (250, 15, 'Godiva White Chocolate Liqueur');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
 VALUES (251, 16, 'Coffee Liqueur');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (252, 16, 'Kahlua');
+VALUES (252, 16, 'Kahlúa');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
 VALUES (253, 16, 'Tia Maria');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
