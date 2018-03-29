@@ -391,49 +391,49 @@ class Account extends Component {
       }
     }
 
-    if(goal == 1 && this.state.badges.some(b => b.badgeId === 2)) {
+    if(goal == 1 && this.state.ratings >= goal) {
       return {
         color: "#4F8EF7"
       }
     }
 
-    if(goal == 5 && this.state.badges.some(b => b.badgeId === 4)) {
+    if(goal == 5 && this.state.ratings >= goal) {
       return {
         color: "#cc9900"
       }
     }
 
-    if(goal == 25 && this.state.badges.some(b => b.badgeId === 6)) {
+    if(goal == 25 && this.state.ratings >= goal) {
       return {
         color: "#808080"
       }
     }
 
-    if(goal == 50 && this.state.badges.some(b => b.badgeId === 8)) {
+    if(goal == 50 && this.state.ratings >= goal) {
       return {
         color: "#ffff00"
       }
     }
 
-    if(goal == 100 && this.state.badges.some(b => b.badgeId === 10)) {
+    if(goal == 100 && this.state.ratings >= goal) {
       return {
         color: "#4d4d4d"
       }
     }
 
-    if(goal == 250 && this.state.badges.some(b => b.badgeId === 12)) {
+    if(goal == 250 && this.state.ratings >= goal) {
       return {
         color: "#b9f2ff"
       }
     }
 
-    if(goal == 500 && this.state.badges.some(b => b.badgeId === 14)) {
+    if(goal == 500 && this.state.ratings >= goal) {
       return {
         color: "#b36b00"
       }
     }
 
-    if(goal == 1000 && this.state.badges.some(b => b.badgeId === 16)) {
+    if(goal == 1000 && this.state.ratings >= goal) {
       return {
         color: "#cc0000"
       }
@@ -448,49 +448,49 @@ class Account extends Component {
 
   fillRecipeBadges(goal : number) {
     
-        if(goal == 1 && this.state.badges.some(b => b.badgeId === 1)) {
+        if(goal == 1 && this.state.recipes >= goal) {
           return {
             color: "#4F8EF7"
           }
         }
     
-        if(goal == 5 && this.state.badges.some(b => b.badgeId === 3)) {
+        if(goal == 5 && this.state.recipes >= goal) {
           return {
             color: "#cc9900"
           }
         }
     
-        if(goal == 25 && this.state.badges.some(b => b.badgeId === 5)) {
+        if(goal == 25 && this.state.recipes >= goal) {
           return {
             color: "#808080"
           }
         }
     
-        if(goal == 50 && this.state.badges.some(b => b.badgeId === 7)) {
+        if(goal == 50 && this.state.recipes >= goal) {
           return {
             color: "#ffff00"
           }
         }
     
-        if(goal == 100 && this.state.badges.some(b => b.badgeId === 9)) {
+        if(goal == 100 && this.state.recipes >= goal) {
           return {
             color: "#4d4d4d"
           }
         }
     
-        if(goal == 250 && this.state.badges.some(b => b.badgeId === 11)) {
+        if(goal == 250 && this.state.recipes >= goal) {
           return {
             color: "#b9f2ff"
           }
         }
     
-        if(goal == 500 && this.state.badges.some(b => b.badgeId === 13)) {
+        if(goal == 500 && this.state.recipes >= goal) {
           return {
             color: "#b36b00"
           }
         }
     
-        if(goal == 1000 && this.state.badges.some(b => b.badgeId === 15)) {
+        if(goal == 1000 && this.state.recipes >= goal) {
           return {
             color: "#cc0000"
           }
