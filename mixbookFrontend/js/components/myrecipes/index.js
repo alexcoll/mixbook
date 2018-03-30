@@ -103,6 +103,11 @@ class MyRecipes extends Component {
         isGuest: data.isGuest,
       });
 
+      if (data.isGuest) {
+        this.getLocalData();
+        return;
+      }
+
       fetch(GLOBAL.API.BASE_URL + '/mixbook/recipe/getAllRecipesCreatedByUser', {
         method: 'GET',
         headers: {
@@ -296,7 +301,7 @@ class MyRecipes extends Component {
         "Edit " + item[1],
         'What do you want to do?',
         [
-          {text: 'Review', onPress: () => this.goToReviewPage(item)},
+          {text: 'Edit', onPress: () => this.goToEditPage(item)},
           {text: 'Cancel', style: 'cancel'},
         ],
         { cancelable: true }
