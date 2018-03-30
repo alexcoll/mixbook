@@ -559,232 +559,457 @@ class Account extends Component {
   }
 
   render() {
-    return (
-      <Container style={styles.container}>
-        <Header>
-          <Button transparent onPress={this.props.openDrawer}>
-            <Icon name="ios-menu" />
-          </Button>
-
-          <Title>My Profile</Title>
-        </Header>
-
-        <Content>
-          <Text style={styles.rating}> Profile Rating: {this.state.profRating}</Text>
-          <List>
-            <ListItem>
-              <InputGroup disabled={this.state.isGuest}>
-                <Input
-                  disabled
-                  inlineLabel label="Username"
-                  placeholder="user"
-                  value={this.state.inputUsername}
-                  onChangeText={(inputUsername) => this.setState({ inputUsername })}
-                />
-              </InputGroup>
-            </ListItem>
-            <ListItem>
-              <InputGroup disabled={this.state.isGuest}>
-                <Input
-                  inlineLabel label="First Name"
-                  placeholder="John"
-                  value={this.state.inputFirstName}
-                  onChangeText={(inputFirstName) => this.setState({ inputFirstName })}
-                />
-              </InputGroup>
-            </ListItem>
-            <ListItem>
-              <InputGroup disabled={this.state.isGuest}>
-                <Input
-                  inlineLabel label="Last Name"
-                  placeholder="Doe"
-                  value={this.state.inputLastName}
-                  onChangeText={(inputLastName) => this.setState({ inputLastName })}
-                />
-              </InputGroup>
-            </ListItem>
-            <ListItem>
-              <InputGroup disabled={this.state.isGuest}>
-                <Input
-                  inlineLabel label="Email"
-                  placeholder="name@example.com"
-                  value={this.state.inputEmail}
-                  onChangeText={(inputEmail) => this.setState({ inputEmail })}
-                />
-              </InputGroup>
-            </ListItem>
-            <ListItem>
-              <View>
-                <Text>{`Badges\n`} </Text>
-                
-                <View style={{flexDirection: 'row'}}>
-                  <Text>{`      `}</Text>
-                  <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("review", "First Review", 1)}}>
-                    <MaterialIcons name="border-color" size={25} style={this.fillReviewBadges(1)} />
-                  </TouchableOpacity>
-                  <Text>{`    `}</Text>
-
-                  <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("reviews", "Bronze", 5)}}>
-                    <MaterialIcons name="border-color" size={25} style={this.fillReviewBadges(5)}/>
-                  </TouchableOpacity>
-                  <Text>{`    `}</Text>
-
-                  <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("reviews", "Silver", 25)}}>
-                    <MaterialIcons name="border-color" size={25} style={this.fillReviewBadges(25)}/>
-                  </TouchableOpacity>
-                  <Text>{`    `}</Text>
-
-
-                  <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("reviews", "Gold", 50)}}>
-                    <MaterialIcons name="border-color" size={25} style={this.fillReviewBadges(50)}/>
-                  </TouchableOpacity>
-                  <Text>{`    `}</Text>
-
-
-                  <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("reviews", "Platinum", 100)}}>
-                    <MaterialIcons name="border-color" size={25} style={this.fillReviewBadges(100)}/>
-                  </TouchableOpacity>
-                  <Text>{`    `}</Text>
-
-
-                  <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("reviews", "Diamond", 250)}}>
-                    <MaterialIcons name="border-color" size={25} style={this.fillReviewBadges(250)}/>
-                  </TouchableOpacity>
-                  <Text>{`    `}</Text>
-
-
-                  <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("reviews", "Centurion", 500)}}>
-                    <MaterialIcons name="border-color" size={25} style={this.fillReviewBadges(500)}/>
-                  </TouchableOpacity>
-                  <Text>{`    `}</Text>
-
-
-                  <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("reviews", "Mixologist", 1000)}}>
-                    <MaterialIcons name="border-color" size={25} style={this.fillReviewBadges(1000)}/>
-                  </TouchableOpacity>
-                  <Text>{`    `}</Text>
-                
+    if(!this.state.isGuest)
+    {
+      return (
+        <Container style={styles.container}>
+          <Header>
+            <Button transparent onPress={this.props.openDrawer}>
+              <Icon name="ios-menu" />
+            </Button>
+  
+            <Title>My Profile</Title>
+          </Header>
+  
+          <Content>
+            <Text style={styles.rating}> Profile Rating: {this.state.profRating}</Text>
+            <List>
+              <ListItem>
+                <InputGroup disabled={this.state.isGuest}>
+                  <Input
+                    disabled
+                    inlineLabel label="Username"
+                    placeholder="user"
+                    value={this.state.inputUsername}
+                    onChangeText={(inputUsername) => this.setState({ inputUsername })}
+                  />
+                </InputGroup>
+              </ListItem>
+              <ListItem>
+                <InputGroup disabled={this.state.isGuest}>
+                  <Input
+                    inlineLabel label="First Name"
+                    placeholder="John"
+                    value={this.state.inputFirstName}
+                    onChangeText={(inputFirstName) => this.setState({ inputFirstName })}
+                  />
+                </InputGroup>
+              </ListItem>
+              <ListItem>
+                <InputGroup disabled={this.state.isGuest}>
+                  <Input
+                    inlineLabel label="Last Name"
+                    placeholder="Doe"
+                    value={this.state.inputLastName}
+                    onChangeText={(inputLastName) => this.setState({ inputLastName })}
+                  />
+                </InputGroup>
+              </ListItem>
+              <ListItem>
+                <InputGroup disabled={this.state.isGuest}>
+                  <Input
+                    inlineLabel label="Email"
+                    placeholder="name@example.com"
+                    value={this.state.inputEmail}
+                    onChangeText={(inputEmail) => this.setState({ inputEmail })}
+                  />
+                </InputGroup>
+              </ListItem>
+              <ListItem>
+                <View>
+                  <Text>{`Badges\n`} </Text>
+                  
+                  <View style={{flexDirection: 'row'}}>
+                    <Text>{`      `}</Text>
+                    <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("review", "First Review", 1)}}>
+                      <MaterialIcons name="border-color" size={25} style={this.fillReviewBadges(1)} />
+                    </TouchableOpacity>
+                    <Text>{`    `}</Text>
+  
+                    <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("reviews", "Bronze", 5)}}>
+                      <MaterialIcons name="border-color" size={25} style={this.fillReviewBadges(5)}/>
+                    </TouchableOpacity>
+                    <Text>{`    `}</Text>
+  
+                    <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("reviews", "Silver", 25)}}>
+                      <MaterialIcons name="border-color" size={25} style={this.fillReviewBadges(25)}/>
+                    </TouchableOpacity>
+                    <Text>{`    `}</Text>
+  
+  
+                    <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("reviews", "Gold", 50)}}>
+                      <MaterialIcons name="border-color" size={25} style={this.fillReviewBadges(50)}/>
+                    </TouchableOpacity>
+                    <Text>{`    `}</Text>
+  
+  
+                    <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("reviews", "Platinum", 100)}}>
+                      <MaterialIcons name="border-color" size={25} style={this.fillReviewBadges(100)}/>
+                    </TouchableOpacity>
+                    <Text>{`    `}</Text>
+  
+  
+                    <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("reviews", "Diamond", 250)}}>
+                      <MaterialIcons name="border-color" size={25} style={this.fillReviewBadges(250)}/>
+                    </TouchableOpacity>
+                    <Text>{`    `}</Text>
+  
+  
+                    <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("reviews", "Centurion", 500)}}>
+                      <MaterialIcons name="border-color" size={25} style={this.fillReviewBadges(500)}/>
+                    </TouchableOpacity>
+                    <Text>{`    `}</Text>
+  
+  
+                    <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("reviews", "Mixologist", 1000)}}>
+                      <MaterialIcons name="border-color" size={25} style={this.fillReviewBadges(1000)}/>
+                    </TouchableOpacity>
+                    <Text>{`    `}</Text>
+                  
+                </View>
+  
+                <Text>{`\n`}</Text>
+              
+              <View style={{flexDirection: 'row'}}>
+                <Text>{`      `}</Text>
+                <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("recipe", "First Review", 1)}}>
+                <MaterialIcons name="local-drink" size={25} style={this.fillRecipeBadges(1)} />
+              </TouchableOpacity>
+              <Text>{`    `}</Text>
+  
+              <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("recipes", "Bronze", 5)}}>
+                <MaterialIcons name="local-drink" size={25} style={this.fillRecipeBadges(5)}/>
+              </TouchableOpacity>
+              <Text>{`    `}</Text>
+  
+              <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("recipes", "Silver", 25)}}>
+                <MaterialIcons name="local-drink" size={25} style={this.fillRecipeBadges(25)}/>
+              </TouchableOpacity>
+              <Text>{`    `}</Text>
+  
+  
+              <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("recipes", "Gold", 50)}}>
+                <MaterialIcons name="local-drink" size={25} style={this.fillRecipeBadges(50)}/>
+              </TouchableOpacity>
+              <Text>{`    `}</Text>
+  
+  
+              <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("recipes", "Platinum", 100)}}>
+                <MaterialIcons name="local-drink" size={25} style={this.fillRecipeBadges(100)}/>
+              </TouchableOpacity>
+              <Text>{`    `}</Text>
+  
+  
+              <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("recipes", "Diamond", 250)}}>
+                <MaterialIcons name="local-drink" size={25} style={this.fillRecipeBadges(250)}/>
+              </TouchableOpacity>
+              <Text>{`    `}</Text>
+  
+  
+              <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("recipes", "Centurion", 500)}}>
+                <MaterialIcons name="local-drink" size={25} style={this.fillRecipeBadges(500)}/>
+              </TouchableOpacity>
+              <Text>{`    `}</Text>
+  
+  
+              <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("recipes", "Mixologist", 1000)}}>
+                <MaterialIcons name="local-drink" size={25} style={this.fillRecipeBadges(1000)}/>
+              </TouchableOpacity>
               </View>
-
-              <Text>{`\n`}</Text>
-            
-            <View style={{flexDirection: 'row'}}>
-              <Text>{`      `}</Text>
-              <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("recipe", "First Review", 1)}}>
-              <MaterialIcons name="local-drink" size={25} style={this.fillRecipeBadges(1)} />
-            </TouchableOpacity>
-            <Text>{`    `}</Text>
-
-            <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("recipes", "Bronze", 5)}}>
-              <MaterialIcons name="local-drink" size={25} style={this.fillRecipeBadges(5)}/>
-            </TouchableOpacity>
-            <Text>{`    `}</Text>
-
-            <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("recipes", "Silver", 25)}}>
-              <MaterialIcons name="local-drink" size={25} style={this.fillRecipeBadges(25)}/>
-            </TouchableOpacity>
-            <Text>{`    `}</Text>
-
-
-            <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("recipes", "Gold", 50)}}>
-              <MaterialIcons name="local-drink" size={25} style={this.fillRecipeBadges(50)}/>
-            </TouchableOpacity>
-            <Text>{`    `}</Text>
-
-
-            <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("recipes", "Platinum", 100)}}>
-              <MaterialIcons name="local-drink" size={25} style={this.fillRecipeBadges(100)}/>
-            </TouchableOpacity>
-            <Text>{`    `}</Text>
-
-
-            <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("recipes", "Diamond", 250)}}>
-              <MaterialIcons name="local-drink" size={25} style={this.fillRecipeBadges(250)}/>
-            </TouchableOpacity>
-            <Text>{`    `}</Text>
-
-
-            <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("recipes", "Centurion", 500)}}>
-              <MaterialIcons name="local-drink" size={25} style={this.fillRecipeBadges(500)}/>
-            </TouchableOpacity>
-            <Text>{`    `}</Text>
-
-
-            <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("recipes", "Mixologist", 1000)}}>
-              <MaterialIcons name="local-drink" size={25} style={this.fillRecipeBadges(1000)}/>
-            </TouchableOpacity>
-            </View>
-            </View>
-            </ListItem>
-            <ListItem>
-              <Text>Change Password</Text>
-            </ListItem>
-            <ListItem>
-              <InputGroup disabled={this.state.isGuest}>
-                <Icon name="ios-unlock" style={styles.icons} />
-                <Input
-                  secureTextEntry
-                  placeholder="Old password"
-                  value={this.state.inputOldPassword}
-                  onChangeText={(inputOldPassword) => this.setState({ inputOldPassword })}
-                />
-              </InputGroup>
-            </ListItem>
-            <ListItem>
-              <InputGroup disabled={this.state.isGuest}>
-                <Icon name="ios-unlock" style={styles.icons} />
-                <Input
-                  secureTextEntry
-                  placeholder="New password"
-                  value={this.state.inputNewPassword1}
-                  onChangeText={(inputNewPassword1) => this.setState({ inputNewPassword1 })}
-                />
-              </InputGroup>
-            </ListItem>
-            <ListItem>
-              <InputGroup disabled={this.state.isGuest}>
-                <Icon name="ios-unlock" style={styles.icons} />
-                <Input
-                  secureTextEntry
-                  placeholder="New password again"
-                  value={this.state.inputNewPassword2}
-                  onChangeText={(inputNewPassword2) => this.setState({ inputNewPassword2 })}
-                />
-              </InputGroup>
-            </ListItem>
-            <ListItem>
-              <View>
-                <Button
-                  disabled={this.state.isGuest}
-                  block
-                  style={styles.saveButton}
-                  onPress={() => this.onSubmit()}
-                >
-                  Save
-                </Button>
-                <Button
-                  block
-                  danger
-                  style={styles.logoutButton}
-                  onPress={() => this.onLogout()}
-                >
-                  Logout
-                </Button>
-                <Button
-                  disabled={this.state.isGuest}
-                  block
-                  danger
-                  style={styles.logoutButton}
-                  onPress={() => this.onLock()}
-                >
-                  Lock Account
-                </Button>
               </View>
-            </ListItem>
-          </List>
-        </Content>
-      </Container>
-    );
+              </ListItem>
+              <ListItem>
+                <Text>Change Password</Text>
+              </ListItem>
+              <ListItem>
+                <InputGroup disabled={this.state.isGuest}>
+                  <Icon name="ios-unlock" style={styles.icons} />
+                  <Input
+                    secureTextEntry
+                    placeholder="Old password"
+                    value={this.state.inputOldPassword}
+                    onChangeText={(inputOldPassword) => this.setState({ inputOldPassword })}
+                  />
+                </InputGroup>
+              </ListItem>
+              <ListItem>
+                <InputGroup disabled={this.state.isGuest}>
+                  <Icon name="ios-unlock" style={styles.icons} />
+                  <Input
+                    secureTextEntry
+                    placeholder="New password"
+                    value={this.state.inputNewPassword1}
+                    onChangeText={(inputNewPassword1) => this.setState({ inputNewPassword1 })}
+                  />
+                </InputGroup>
+              </ListItem>
+              <ListItem>
+                <InputGroup disabled={this.state.isGuest}>
+                  <Icon name="ios-unlock" style={styles.icons} />
+                  <Input
+                    secureTextEntry
+                    placeholder="New password again"
+                    value={this.state.inputNewPassword2}
+                    onChangeText={(inputNewPassword2) => this.setState({ inputNewPassword2 })}
+                  />
+                </InputGroup>
+              </ListItem>
+              <ListItem>
+                <View>
+                  <Button
+                    disabled={this.state.isGuest}
+                    block
+                    style={styles.saveButton}
+                    onPress={() => this.onSubmit()}
+                  >
+                    Save
+                  </Button>
+                  <Button
+                    block
+                    danger
+                    style={styles.logoutButton}
+                    onPress={() => this.onLogout()}
+                  >
+                    Logout
+                  </Button>
+                  <Button
+                    disabled={this.state.isGuest}
+                    block
+                    danger
+                    style={styles.logoutButton}
+                    onPress={() => this.onLock()}
+                  >
+                    Lock Account
+                  </Button>
+                </View>
+              </ListItem>
+            </List>
+          </Content>
+        </Container>
+      );
+    }
+    else
+    {
+      return (
+        <Container style={styles.container}>
+          <Header>
+            <Button transparent onPress={this.props.openDrawer}>
+              <Icon name="ios-menu" />
+            </Button>
+  
+            <Title>My Profile</Title>
+          </Header>
+  
+          <Content>
+            <Text style={styles.rating}> Profile Rating: {this.state.profRating}</Text>
+            <List>
+              <ListItem>
+                <InputGroup disabled={this.state.isGuest}>
+                  <Input
+                    disabled
+                    inlineLabel label="Username"
+                    placeholder="user"
+                    value={this.state.inputUsername}
+                    onChangeText={(inputUsername) => this.setState({ inputUsername })}
+                  />
+                </InputGroup>
+              </ListItem>
+              <ListItem>
+                <InputGroup disabled={this.state.isGuest}>
+                  <Input
+                    inlineLabel label="First Name"
+                    placeholder="John"
+                    value={this.state.inputFirstName}
+                    onChangeText={(inputFirstName) => this.setState({ inputFirstName })}
+                  />
+                </InputGroup>
+              </ListItem>
+              <ListItem>
+                <InputGroup disabled={this.state.isGuest}>
+                  <Input
+                    inlineLabel label="Last Name"
+                    placeholder="Doe"
+                    value={this.state.inputLastName}
+                    onChangeText={(inputLastName) => this.setState({ inputLastName })}
+                  />
+                </InputGroup>
+              </ListItem>
+              <ListItem>
+                <InputGroup disabled={this.state.isGuest}>
+                  <Input
+                    inlineLabel label="Email"
+                    placeholder="name@example.com"
+                    value={this.state.inputEmail}
+                    onChangeText={(inputEmail) => this.setState({ inputEmail })}
+                  />
+                </InputGroup>
+              </ListItem>
+              <ListItem>
+                <View>
+                  <Text>{`Badges\n`} </Text>
+                  
+                  <View style={{flexDirection: 'row'}}>
+                    <Text>{`      `}</Text>
+                    <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("review", "First Review", 1)}}>
+                      <MaterialIcons name="border-color" size={25} style={this.fillReviewBadges(1)} />
+                    </TouchableOpacity>
+                    <Text>{`    `}</Text>
+  
+                    <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("reviews", "Bronze", 5)}}>
+                      <MaterialIcons name="border-color" size={25} style={this.fillReviewBadges(5)}/>
+                    </TouchableOpacity>
+                    <Text>{`    `}</Text>
+  
+                    <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("reviews", "Silver", 25)}}>
+                      <MaterialIcons name="border-color" size={25} style={this.fillReviewBadges(25)}/>
+                    </TouchableOpacity>
+                    <Text>{`    `}</Text>
+  
+  
+                    <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("reviews", "Gold", 50)}}>
+                      <MaterialIcons name="border-color" size={25} style={this.fillReviewBadges(50)}/>
+                    </TouchableOpacity>
+                    <Text>{`    `}</Text>
+  
+  
+                    <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("reviews", "Platinum", 100)}}>
+                      <MaterialIcons name="border-color" size={25} style={this.fillReviewBadges(100)}/>
+                    </TouchableOpacity>
+                    <Text>{`    `}</Text>
+  
+  
+                    <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("reviews", "Diamond", 250)}}>
+                      <MaterialIcons name="border-color" size={25} style={this.fillReviewBadges(250)}/>
+                    </TouchableOpacity>
+                    <Text>{`    `}</Text>
+  
+  
+                    <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("reviews", "Centurion", 500)}}>
+                      <MaterialIcons name="border-color" size={25} style={this.fillReviewBadges(500)}/>
+                    </TouchableOpacity>
+                    <Text>{`    `}</Text>
+  
+  
+                    <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("reviews", "Mixologist", 1000)}}>
+                      <MaterialIcons name="border-color" size={25} style={this.fillReviewBadges(1000)}/>
+                    </TouchableOpacity>
+                    <Text>{`    `}</Text>
+                  
+                </View>
+  
+                <Text>{`\n`}</Text>
+              
+              <View style={{flexDirection: 'row'}}>
+                <Text>{`      `}</Text>
+                <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("recipe", "First Review", 1)}}>
+                <MaterialIcons name="local-drink" size={25} style={this.fillRecipeBadges(1)} />
+              </TouchableOpacity>
+              <Text>{`    `}</Text>
+  
+              <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("recipes", "Bronze", 5)}}>
+                <MaterialIcons name="local-drink" size={25} style={this.fillRecipeBadges(5)}/>
+              </TouchableOpacity>
+              <Text>{`    `}</Text>
+  
+              <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("recipes", "Silver", 25)}}>
+                <MaterialIcons name="local-drink" size={25} style={this.fillRecipeBadges(25)}/>
+              </TouchableOpacity>
+              <Text>{`    `}</Text>
+  
+  
+              <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("recipes", "Gold", 50)}}>
+                <MaterialIcons name="local-drink" size={25} style={this.fillRecipeBadges(50)}/>
+              </TouchableOpacity>
+              <Text>{`    `}</Text>
+  
+  
+              <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("recipes", "Platinum", 100)}}>
+                <MaterialIcons name="local-drink" size={25} style={this.fillRecipeBadges(100)}/>
+              </TouchableOpacity>
+              <Text>{`    `}</Text>
+  
+  
+              <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("recipes", "Diamond", 250)}}>
+                <MaterialIcons name="local-drink" size={25} style={this.fillRecipeBadges(250)}/>
+              </TouchableOpacity>
+              <Text>{`    `}</Text>
+  
+  
+              <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("recipes", "Centurion", 500)}}>
+                <MaterialIcons name="local-drink" size={25} style={this.fillRecipeBadges(500)}/>
+              </TouchableOpacity>
+              <Text>{`    `}</Text>
+  
+  
+              <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("recipes", "Mixologist", 1000)}}>
+                <MaterialIcons name="local-drink" size={25} style={this.fillRecipeBadges(1000)}/>
+              </TouchableOpacity>
+              </View>
+              </View>
+              </ListItem>
+              <ListItem>
+                <Text>Change Password</Text>
+              </ListItem>
+              <ListItem>
+                <InputGroup disabled={this.state.isGuest}>
+                  <Icon name="ios-unlock" style={styles.icons} />
+                  <Input
+                    secureTextEntry
+                    placeholder="Old password"
+                    value={this.state.inputOldPassword}
+                    onChangeText={(inputOldPassword) => this.setState({ inputOldPassword })}
+                  />
+                </InputGroup>
+              </ListItem>
+              <ListItem>
+                <InputGroup disabled={this.state.isGuest}>
+                  <Icon name="ios-unlock" style={styles.icons} />
+                  <Input
+                    secureTextEntry
+                    placeholder="New password"
+                    value={this.state.inputNewPassword1}
+                    onChangeText={(inputNewPassword1) => this.setState({ inputNewPassword1 })}
+                  />
+                </InputGroup>
+              </ListItem>
+              <ListItem>
+                <InputGroup disabled={this.state.isGuest}>
+                  <Icon name="ios-unlock" style={styles.icons} />
+                  <Input
+                    secureTextEntry
+                    placeholder="New password again"
+                    value={this.state.inputNewPassword2}
+                    onChangeText={(inputNewPassword2) => this.setState({ inputNewPassword2 })}
+                  />
+                </InputGroup>
+              </ListItem>
+              <ListItem>
+                <View>
+                  <Button
+                    disabled={this.state.isGuest}
+                    block
+                    style={styles.saveButton}
+                    onPress={() => this.onSubmit()}
+                  >
+                    Save
+                  </Button>
+                  <Button
+                    block
+                    danger
+                    style={styles.logoutButton}
+                    onPress={() => this.onLogout()}
+                  >
+                    Logout
+                  </Button>
+
+                </View>
+              </ListItem>
+            </List>
+          </Content>
+        </Container>
+      );
+    }
+    
   }
 }
 

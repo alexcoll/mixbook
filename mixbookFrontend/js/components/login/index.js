@@ -164,6 +164,9 @@ class Login extends Component {
           }
         })
         .then(() => {
+          
+          global.isGuest = false;
+          console.log("IsGuest:"+global.isGuest);
           this.replaceAt('mydrinks');
         })
         .catch((error) => {
@@ -190,6 +193,8 @@ class Login extends Component {
 
 
   onSubmitNoAccount() {
+    global.isGuest = true;
+    console.log("IsGuest:"+global.isGuest);
     store.save('account', {
       isLoggedIn: true,
       isGuest: true,
@@ -199,10 +204,13 @@ class Login extends Component {
         email: "guest@mymixbook.com",
         firstName: "Guest",
         lastName: "User",
-      }
+      },
+      
     }).then(() => {
       store.save('inventory', []);
       store.save('recipes', []);
+      
+      
       this.replaceAt('mydrinks');
     }).catch((error) => {
       console.warn("error updating account local store");

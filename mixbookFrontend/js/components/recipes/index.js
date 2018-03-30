@@ -158,7 +158,7 @@ class Recipes extends Component {
       this.setState({
         outOfData: true,
       });
-      console.log(this.state.outOfData);
+      console.log("Out of data: " + this.state.outOfData);
 
     }
     

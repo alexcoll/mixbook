@@ -132,6 +132,7 @@ class MyDrinks extends Component {
         empty: false,
         rawData: data,
       });
+      this.getPagedData();
     }).catch(error => {
       console.warn("error getting the recipe list from the local store");
       this.setState({
