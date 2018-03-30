@@ -1961,6 +1961,850 @@ INSERT INTO badges(badge_id, badge_name, badge_description)
 VALUES(16, 'Mixologist Review Creation', 'The user has reviewed 1000 total recipes!');
 
 
+INSERT INTO users(user_id, username, password, first_name, last_name, email, number_of_recipes, number_of_ratings, sum_of_personal_recipe_ratings, number_of_personal_recipe_ratings, ENABLED, LASTPASSWORDRESETDATE)
+VALUES (1, 'the_mixologist', '$2a$10$6ZC5L1q/BwqM4E70GNabc.0/xvk61HzpURdbqxKCwjhS98vMpE94a', 'The', 'Mixologist', 'mixbookhelp@gmail.com', 100, 0, 0, 0, 1, '2018-03-28 22:59:33');
+
+INSERT INTO USER_AUTHORITY(USER_ID, AUTHORITY_ID)
+VALUES (1, 1);
+
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (1, 1, 'Mint Julep', 'Place 10 mint leaves in the bottom of an old-fashioned glass and top with 1.5 teaspoons of sugar. Muddle these together until the leaves begin to break down. Add a splash of seltzer water, fill the glass 3/4 full with crushed ice, and add 2.5 ounces of bourbon. Top with another splash of seltzer, stir, and garnish with a sprig of mint. Serve immediately.', 4, 3, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (2, 1, 'Gin and Tonic', 'Pour 2 ounces of gin and 3 ounces of tonic water into a highball glass with ice cubes. Stir well. Garnish with the lime wedge.', 3, 2, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (3, 1, 'Jack and Coke', 'Pour 2 ounces of Jack Daniels into large glass filled with ice. Pour 10 ounces of Coke into the glass. Stir lightly.', 3, 2, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (4, 1, 'Rum and Coke', 'Pour 1 part rum into glass with ice. Add 3 parts Coke. Squeeze the lime and drop into as garnish.', 3, 2, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (5, 1, 'Whiskey and Coke', 'Pour 2 ounces of whiskey into large glass filled with ice. Pour 10 ounces of Coke into the glass. Stir lightly.', 3, 2, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (6, 1, 'Whiskey Ginger', 'Fill a highball glass with ice. Pour 2-3 ounces of whiskey into glass. Top with ginger ale. Squeeze and float a lime wedge in the glass.', 3, 2, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (7, 1, 'Malibu and Coke', 'Fill a chilled highball glass with ice cubes. Add 1 part Malibu and top up with cola. Garnish with a lime wheel.', 3, 2, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (8, 1, 'Black Russian', 'Add 2 ounces of vodka and 1 ounce of Kahlúa to a mixing glass with ice and stir. Strain into an Old Fashioned glass over fresh ice.', 2, 2, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (9, 1, 'White Russian', 'Add 2 ounces of vodka and 1 ounce of Kahlúa to an Old Fashioned glass filled with ice. Top with a large splash of heavy cream and stir.', 3, 2, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (10, 1, 'Gimlet', 'Add 2.5 ounces of gin and 1 ounce of Rose\'s Lime Juice to a shaker and fill with ice. Shake, and strain into a chilled cocktail glass or an Old Fashioned glass filled with fresh ice. Garnish with a lime wheel.', 3, 2, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (11, 1, 'A DeMink', 'Chill 2 ounces of vodka, 1 ounce of Baileys Irish Cream, and 2 ounces of Coke. Pour over ice in a cocktail glass.', 3, 3, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (12, 1, 'Apple Coke', 'Mix together 1/3 ounces of Apple Pucker and 2/3 ounces of Coke and serve over ice in highball glass.', 2, 2, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (13, 1, 'Vodka Water Lime', 'Combine 1.5 ounces of vodka and 4 ounces of water in a cocktail glass with ice. Stir and garnish.', 2, 2, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (14, 1, 'Barbarosa', 'Mix 1/2 parts vodka and 1/2 parts Coke and serve chilled in a old fashioned glass. Do not use ice but a drop of lemon juice or a slice of lemon may be added.', 2, 2, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (15, 1, 'Margarita', 'Rim a high ball glass with salt. Put two big handfuls of ice cubes into a cocktail shaker. Add 2 ounces of tequila silver, 2 ounces of Rose\'s Lime Juice, and a 1/2 ounce of triple sec. Shake for a good 10 seconds. Fill high ball glass half full of ice cubes. Pour contents of shaker over top.', 4, 4, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (16, 1, 'Cherry Coke', 'Pour 1 ounce of Stroh Rum (80% Alcohol) and 4 ounces of Coke into an old fashioned glass.', 2, 2, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (17, 1, 'Fuzzy Bear', 'Mix in a cocktail glass over ice. Add 1 ounce of Kahlúa, pour Coke and milk at same time until full. Adding the Coke and milk at the same time will reduce the head on the Coke.', 3, 3, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (18, 1, 'Fuzzy Cola', 'Add 1 ounce of peach schnapps and top with Coke. Stir over ice and enjoy.', 2, 2, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (19, 1, 'Hennessy New York', 'Pour about 3.5 ounces of Coke in an ice filled Hennessy VS glass (about 1.5 ounces of Hennessy VS), stir a few seconds with a bar spoon and serve. Garnish with a lemon wedge.', 3, 2, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (20, 1, 'Linux', 'Pour 1 1/3 ounces of vodka and 3/4 ounces of lime juice into a highball glass almost filled with ice cubes. Fill with Coke, garnish with lime peel, and serve.', 4, 3, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (21, 1, 'Tom Collins', 'Fill a Collins glass with 1 1/2 cups ice, set aside in the freezer. Combine 2 ounces of gin, 3/4 ounces of lemon juice, and 1/2 ounce of sugar syrup in a cocktail shaker. Add 1 cup ice, cover and shake until chilled. Strain into the chilled Collins glass. Top with club soda and garnish with a lemon wedge.', 5, 3, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (22, 1, 'Mad Bomber', 'Pour 4 ounces of gin and 1 can of Coke over ice cubes into a highball glass.', 2, 2, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (23, 1, 'Mexican Riptide', 'Mix 1 ounce of Kahlúa, 1 ounce of Malibu Rum, and 4 ounces of Coke with ice in a Collins glass.', 3, 2, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (24, 1, 'Morgan Coke', 'Fill a 16 ounce glass with ice. Add 4 ounces of Captain Morgan\'s Spiced Rum and fill with Coke.', 2, 2, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (25, 1, 'Tequila Paralyzer', 'Pour 1 ounce of Tequila, 1 ounce of Kahlúa, and a splash of milk in a highball glass and add cream. Fill with Coke.', 5, 3, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (26, 1, 'Moscow Mule', 'Squeeze half lime into a glass and drop in peel. Fill glass with ice and add 2 ounces vodka. Top with 4 ounces of ginger beer.', 3, 1, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (27, 1, 'Vodka Cranberry', 'Fill old-fashioned glass halfway with ice. Add vodka, cranberry, and orange juice.', 3, 2, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (28, 1, 'The Kalimotxo', 'Pour equal parts red wine and Coke over ice.', 2, 1, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (29, 1, 'The Greyhound', 'Fill rocks glass with ice, pour in 2 ounces of vodka and 5 ounces of grapefruit juice. Stir well.', 2, 1, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (30, 1, 'Dark and Stormy', 'Add 2 ounces dark rum and 4 ounces ginger beer over ices. Stir and enjoy.', 2, 1, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (31, 1, 'Bourbon Buck', 'Add 2 ounces Bourbon and 5 ounces Ginger Ale over ices. Stir and enjoy.', 2, 2, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (32, 1, 'London Lemonade', 'Add 2 ounces gin and 4 ounces lemonade over ices. Stir and enjoy.', 2, 2, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (33, 1, 'Garibaldi', 'Add 1.5 ounces Campari and 3 ounces orange juice over ice. Stir and enjoy.', 2, 2, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (34, 1, 'Pimm\'s Cup', 'Add 2 ounces Pimm\'s and 6 ounces ginger ale over ice. Stir and enjoy.', 2, 2, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (35, 1, 'Americano', 'Add 1.5 ounces Campari and 1.5 ounces sweet red vermouth into glass. Add ice and top with soda water. Stir and enjoy.', 3, 2, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (36, 1, 'Boulevardier', 'Stir with ice, Strain 1 ounce Campari, 1.5 ounces sweet red vermouth, and 1.5 ounces bourbon into glass.', 3, 2, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (37, 1, 'Corpse Reviver #2', 'Shake and strain .75 oz gin, .75 oz Cointreau, .75 oz Lillet Blanc, .75 oz Lemon Juice, and .5 tsp Absinthe into chilled cocktail glass.', 5, 3, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (38, 1, 'Cosmopolitan', 'Shake and strain 1.5 oz vodka, .75 oz Cointreau, 1 oz cranberry juice, and .25 oz lime juice, into chilled cocktail glass.', 4, 3, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (39, 1, 'Cuba Libre', 'Build 4 oz coke, .33 oz lime juice, and 1.66 oz white rum in highball glass filled with ice.', 3, 3, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (40, 1, 'Daiquiri', 'Shake 2.5 oz rum, .75 oz lime juice, and .5 oz sugar syrup. Strain into chilled cocktail glass.', 3, 3, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (41, 1, 'Mimosa', 'Mix 2.5 oz orange juice and 2.5 oz champagne into glass. serve cold.', 2, 3, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (42, 1, 'Negroni', 'Stir and strain 1 oz gin, 1 oz Campari, and 1 oz sweet vermouth into glass with ice.', 3, 2, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (43, 1, 'Pisco Sour', 'Dry shake, shake with ice, and strain 2 oz Pisco, .5 oz lime juice, .5 oz lemon juice, .75 oz sugar syrup, and .5 oz egg white into chilled highball glass.', 5, 3, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (44, 1, 'Sea Breeze', 'Fill old-fashioned glass halfway with ice. Add .5 oz vodka, 4 oz cranberry, .5 oz orange juice, and 1 oz grapefruit juice.', 4, 2, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (45, 1, 'Bay Breeze', 'Fill old-fashioned glass halfway with ice. Add .5 oz vodka, 4 oz cranberry, .5 oz orange juice, and 1 oz pineapple juice.', 4, 2, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (46, 1, 'Lounge Lizard', 'Build 4 oz coke, .33 oz lime juice, .5 oz Amaretto and 1.66 oz dark rum in highball glass filled with ice.', 4, 3, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (47, 1, 'Woo Woo', 'Fill old-fashioned glass halfway with ice. Add .5 oz vodka, 4 oz cranberry, .5 oz orange juice, and 1 oz peach schnapps.', 4, 2, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (48, 1, 'Strawberry Daiquiri', 'Shake 2.5 oz rum, .75 oz strawberry juice, and .5 oz sugar syrup. Strain into chilled cocktail glass.', 3, 3, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (49, 1, 'Raspberry Daiquiri', 'Shake 2.5 oz rum, .75 oz raspberry juice, and .5 oz sugar syrup. Strain into chilled cocktail glass.', 3, 3, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (50, 1, 'Passionfruit Daiquiri', 'Shake 2.5 oz rum, .75 oz passionfruit juice, and .5 oz sugar syrup. Strain into chilled cocktail glass.', 3, 3, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (51, 1, 'Grapefruit Daiquiri', 'Shake 2.5 oz rum, .75 oz grapefruit juice, and .5 oz sugar syrup. Strain into chilled cocktail glass.', 3, 3, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (52, 1, 'Cherry Daiquiri', 'Shake 2.5 oz rum, .75 oz cherry juice, and .5 oz sugar syrup. Strain into chilled cocktail glass.', 3, 3, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (53, 1, 'Manhattan', 'Stir 2 ounces of the rye whiskey, 1 ounce of sweet vermouth, 2 dashes of Peychaud\'s Aromatic Bitters over ice until chilled, about 30 seconds. Strain into chilled coupe glass. Garnish with cherry.', 4, 3, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (54, 1, 'Bacardi El Presidente', 'Pour 2 parts rum, one part vermouth and a dash of bitters into a glass and mix.', 3, 3, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (55, 1, 'Bourbon Manhattan', 'Add all of the ingredients to a mixing glass and fill with ice.', 3, 3, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (56, 1, 'Traditional Elderfashion', 'Add all of the ingredients to an old fashion glass and fill with ice.', 3, 3, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (57, 1, 'Double Eagle', 'In a shaker, muddle the lemon and basil. Add the remaining ingredients and fill with ice. Shake, and double strain into a Martini glass.', 4, 3, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (58, 1, 'Red Hook', 'Add all the ingredients to a mixing glass and fill with ice. Stir, and strain into a cocktail glass.', 2, 3, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (59, 1, 'Crime and Punishment', 'Add all the ingredients to a mixing glass and fill with ice. Stir, and strain into a cocktail glass.', 3, 4, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (60, 1, 'Euro', 'Add all the ingredients to a mixing glass and fill with ice. Stir, and strain into a cocktail glass.', 3, 4, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (61, 1, 'Figgly Wiggly', 'Add all the ingredients to a mixing glass and fill with ice. Stir, and strain into a Yarai glass.', 2, 2, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (62, 1, 'Stone and Co', 'Add all of the ingredients to a blender, and blend until smooth.', 3, 3, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (63, 1, 'Beermosa', 'Fill a chilled beer glass with the lager, and top with the orange juice.', 2, 3, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (64, 1, 'Bloody Bulldog', 'In a shaker, stir together the lemon juice and sugar. Add the tequila and Grand Marnier, and fill with ice. Shake well and strain into a chilled cocktail glass.', 3, 3, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (65, 1, 'Spicy Grand Margarita', 'Coat the rim of a rocks glass with salt, fill with ice and set aside. In a shaker, muddle the agave nectar or simple syrup, red pepper flakes and chile powder. Add the remaining ingredients, fill with ice and shake vigorously. Strain through a tea strainer into the prepared glass.', 3, 5, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (66, 1, 'Breakfast Margarita', 'Add all the ingredients to a shaker and fill with ice. Shake, and strain into a rocks glass filled with fresh ice.', 4, 3, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (67, 1, 'Tequila Daisy', 'In a shaker, stir together the lemon juice and sugar. Add the tequila and Grand Marnier, and fill with ice. Shake well and strain into a chilled cocktail glass.', 3, 3, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (68, 1, 'Tegroni', 'Add all the ingredients to a mixing glass and fill with ice. Stir, and strain into a rocks glass filled with fresh ice or a chilled cocktail glass.', 3, 3, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (69, 1, 'Partida Paloma', 'Fill a highball glass with ice and add the tequila and salt. Squeeze the lime half into the glass and drop into the drink.', 2, 3, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (70, 1, 'Herradura Tequila Mojito', 'In a shaker, muddle the mint leaves. Add the tequila, lime juice and agave nectar, and fill with ice. Shake, and strain into a Collins glass filled with fresh ice. Top with club soda.', 4, 4, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (71, 1, '99 Hospital Trips', 'Mix them together, sip sparingly.', 2, 1, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (72, 1, '99 Disgusting', 'Another signature 99 drink.', 4, 1, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (73, 1, 'Blue Hawaiian', 'Mix them with a splash of pineapple juice.', 3, 2, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (74, 1, 'Gulfstream', 'Mix them with a splash of pineapple juice.', 4, 2, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (75, 1, 'Alabama Slammer', 'Mix them, splash of Sour.', 5, 2, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (76, 1, 'Baltimore Zoo', 'Mix all the liqours, then a splash of coke and sour.', 9, 2, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (77, 1, 'Bloody Mary', 'Heavy on the Vodka and tomato, sprinkle of Cayenne pepper spice.', 3, 3, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (78, 1, 'Colorado Root Beer', 'Splash of Half and Half. Can subsitite root beer with a root beer flavored liqour..', 4, 3, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (79, 1, 'Cape Cod', 'Splash of Half and Half. Can subsitite root beer with a root beer flavored liqour', 2, 3, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (80, 1, 'Dirty Shirley', 'Splash of Grenadine (pomegranate syrup).', 3, 2, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (81, 1, 'Electric Lemonade', 'Splash of Sour and Sprite for a classic Harry\'s style drink.', 6, 2, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (82, 1, 'Fuzzy Navel', 'Twist on fizzy navel by making it Harry\'s style with vodka.', 3, 1, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (83, 1, 'Gin Lemonade', 'Equal parts gin and lemonade.', 2, 1, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (84, 1, 'Grasshopper', 'Lots of ice. Lots of cream. Light on the half and half.', 3, 3, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (85, 1, 'Mai Tai', 'Mix them all together, light on the grenadine.', 6, 3, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (86, 1, 'Sex on the Beach', 'Light on the brandy and grenadine.', 6, 3, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (87, 1, 'Stinger, Tia Maria', 'Lots of ice and cream.', 2, 1, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (88, 1, 'Vodka Collins', 'Easy to make drink, nothing fancy here!', 2, 1, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (89, 1, 'Vodka Press', 'Easy to make drink, nothing fancy here!', 2, 1, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (90, 1, 'Vodka Lemonade', 'Put 2 shots vodka in a cup and fill with lemonade. Best enjoyed cold.', 2, 1, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (91, 1, 'Watermelon Margarita', 'Blend watermelon into juice. Add lime juice to water melon. Add two shots tequila. Line glass glass with sea salt and your done.', 4, 1, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (92, 1, 'Grapefruit Mimosa', 'Line rims of cups with sugar, add 1/2 cup grapefruit juice. Then fill cup with champagne', 3, 1, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (93, 1, 'Pear Mimosa', 'Add 3/4 cup of pear juice to a cup. Then top with champagne.', 2, 1, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (94, 1, 'Cherry Bomb Mimosa', 'Add 1 cup of pineapple juice, and 1/4 cup of cherry juice. Top with champagne.', 3, 2, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (95, 1, 'Sidecar', 'Shake 2 oz Cognac, 1 oz. Cointreau, and 3/4 oz lemon juice with ice and strain into a chilled glass.', 3, 3, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (96, 1, 'Oaxaca Mule', 'Place ice cubes in a copper mug or highball glass. Add 1.5 oz mezcal and .5 oz lime juice, then top with 2 oz ginger beer.', 3, 3, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (97, 1, 'Bob Roy', 'Combine 2.5 oz spiced rum, .5 oz sweet vermouth, and 2 dashes of orange bitters in a mixing glass with ice and stir to chill. Strain into a chilled glass and garnish with cherry.', 3, 3, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (98, 1, 'Bee\'s Knees', 'Combine 1.5 oz gin, 1 tsp honey, and 1 tsp lemon juice in a shaker. Shake, strain into a chilled glass and garnish.', 3, 3, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (99, 1, 'Cognac Stinger', 'Shake 2 oz Cognac, 1 oz. crème de menthe, and 2 dashes sparkling water well and strain into a chilled glass.', 3, 2, 0, 0);
+INSERT INTO recipe(recipe_id, user_recipe_id, recipe_name, directions, number_of_ingredients, difficulty, number_of_ratings, total_rating)
+VALUES (100, 1, 'Gibson Cocktail', 'Stir 2 ½ oz. gin and 1 oz. dry vermouth with ice to chill, then strain into a chilled cocktail glass. Garnish with the pickled pearl onion.', 2, 2, 0, 0);
+
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (37, 2);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (85, 6);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (86, 7);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (99, 10);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (19, 14);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (43, 16);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (2, 29);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (10, 29);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (21, 29);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (22, 29);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (32, 29);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (37, 29);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (42, 29);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (62, 29);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (76, 29);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (81, 29);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (83, 29);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (98, 29);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (100, 29);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (75, 37);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (60, 41);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (5, 43);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (6, 43);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (3, 50);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (1, 52);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (53, 53);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (58, 53);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (54, 63);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (24, 71);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (30, 75);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (73, 81);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (74, 81);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (7, 84);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (23, 84);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (4, 88);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (76, 88);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (81, 88);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (85, 88);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (97, 92);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (16, 93);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (39, 94);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (40, 94);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (46, 94);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (48, 94);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (49, 94);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (50, 94);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (51, 94);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (52, 94);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (71, 101);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (72, 101);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (12, 102);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (18, 117);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (47, 117);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (31, 132);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (36, 132);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (55, 132);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (56, 132);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (57, 132);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (59, 132);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (61, 132);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (75, 139);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (76, 139);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (57, 144);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (59, 144);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (33, 149);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (35, 149);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (36, 149);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (42, 149);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (68, 149);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (71, 153);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (34, 162);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (96, 177);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (25, 179);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (64, 179);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (65, 179);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (66, 179);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (67, 179);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (68, 179);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (69, 179);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (70, 179);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (85, 179);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (91, 179);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (72, 183);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (15, 186);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (72, 238);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (8, 245);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (9, 245);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (11, 245);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (13, 245);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (14, 245);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (20, 245);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (26, 245);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (27, 245);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (29, 245);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (38, 245);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (44, 245);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (45, 245);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (47, 245);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (74, 245);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (76, 245);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (77, 245);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (78, 245);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (79, 245);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (80, 245);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (81, 245);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (82, 245);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (86, 245);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (88, 245);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (89, 245);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (90, 245);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (78, 251);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (8, 252);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (9, 252);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (17, 252);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (23, 252);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (25, 252);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (87, 253);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (84, 259);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (84, 263);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (87, 263);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (99, 263);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (73, 279);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (74, 279);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (81, 279);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (37, 291);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (38, 291);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (58, 301);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (15, 316);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (76, 316);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (46, 339);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (75, 339);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (76, 339);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (86, 339);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (11, 358);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (41, 360);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (92, 360);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (93, 360);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (94, 360);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (95, 360);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (37, 365);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (28, 373);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (60, 374);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (60, 377);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (100, 377);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (54, 385);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (55, 385);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (35, 388);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (36, 388);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (68, 388);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (42, 389);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (53, 389);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (97, 389);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (63, 400);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (78, 439);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (84, 439);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (54, 440);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (55, 440);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (56, 440);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (59, 444);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (61, 444);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (97, 444);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (53, 446);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (75, 450);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (76, 450);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (81, 450);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (88, 450);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (21, 451);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (43, 451);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (72, 462);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (52, 463);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (27, 465);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (38, 465);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (44, 465);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (45, 465);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (47, 465);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (79, 465);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (21, 468);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (37, 468);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (43, 468);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (64, 468);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (67, 468);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (98, 468);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (20, 469);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (38, 469);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (39, 469);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (40, 469);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (43, 469);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (46, 469);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (62, 469);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (65, 469);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (66, 469);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (70, 469);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (91, 469);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (96, 469);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (94, 472);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (95, 472);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (27, 475);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (33, 475);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (41, 475);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (44, 475);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (45, 475);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (47, 475);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (63, 475);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (82, 475);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (85, 475);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (86, 475);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (93, 480);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (45, 482);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (73, 482);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (74, 482);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (85, 482);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (94, 482);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (95, 482);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (29, 483);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (44, 483);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (51, 483);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (92, 483);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (49, 485);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (10, 487);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (15, 487);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (48, 488);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (77, 490);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (21, 505);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (56, 505);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (64, 505);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (67, 505);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (70, 505);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (3, 506);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (4, 506);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (5, 506);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (7, 506);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (11, 506);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (12, 506);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (14, 506);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (16, 506);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (17, 506);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (18, 506);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (19, 506);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (20, 506);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (22, 506);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (23, 506);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (24, 506);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (25, 506);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (28, 506);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (39, 506);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (40, 506);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (46, 506);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (48, 506);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (49, 506);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (50, 506);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (51, 506);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (52, 506);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (76, 506);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (78, 506);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (6, 515);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (31, 515);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (34, 515);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (26, 516);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (30, 516);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (96, 516);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (32, 523);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (83, 523);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (90, 523);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (1, 540);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (35, 540);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (89, 540);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (99, 541);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (75, 542);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (80, 542);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (81, 542);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (2, 545);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (66, 548);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (50, 569);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (76, 571);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (80, 571);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (85, 571);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (86, 571);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (62, 596);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (19, 600);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (21, 600);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (57, 600);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (2, 602);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (3, 602);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (4, 602);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (5, 602);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (6, 602);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (7, 602);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (10, 602);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (13, 602);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (20, 602);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (26, 602);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (53, 605);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (82, 610);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (86, 610);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (91, 619);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (57, 624);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (77, 632);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (65, 635);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (25, 648);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (9, 652);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (43, 654);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (98, 664);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (66, 673);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (17, 675);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (25, 675);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (1, 678);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (70, 678);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (15, 691);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (69, 691);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (91, 691);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (1, 697);
+INSERT INTO recipe_has_brand(recipe_recipe_id, brand_brand_id)
+VALUES (92, 697);
+
+INSERT INTO user_has_badges(user_id, badge_id)
+VALUES (1, 1);
+INSERT INTO user_has_badges(user_id, badge_id)
+VALUES (1, 3);
+INSERT INTO user_has_badges(user_id, badge_id)
+VALUES (1, 5);
+INSERT INTO user_has_badges(user_id, badge_id)
+VALUES (1, 7);
+INSERT INTO user_has_badges(user_id, badge_id)
+VALUES (1, 9);
+
+
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
