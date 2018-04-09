@@ -15,6 +15,7 @@ TRUNCATE `mixbookdb`.`users`;
 TRUNCATE `mixbookdb`.`user_has_badges`;
 TRUNCATE `mixbookdb`.`password_reset_token`;
 TRUNCATE `mixbookdb`.`account_unlock_token`;
+TRUNCATE `mixbookdb`.`recommendation`;
 TRUNCATE `mixbookdb`.`USER_AUTHORITY`;
 TRUNCATE `mixbookdb`.`user_has_brand`;
 TRUNCATE `mixbookdb`.`recipe`;

@@ -119,6 +119,40 @@ ROW_FORMAT = DYNAMIC;
 
 
 -- -----------------------------------------------------
+-- Table `mixbookdb`.`recommendation`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mixbookdb`.`recommendation` (
+  `recommendation_id` BIGINT NOT NULL AUTO_INCREMENT,
+  `recipient_id` BIGINT NOT NULL UNIQUE,
+  `recommender_id` BIGINT NOT NULL UNIQUE,
+  `recommended_recipe_id` BIGINT NOT NULL UNIQUE,
+  `status` TINYINT(1) NOT NULL,
+  PRIMARY KEY (`recommendation_id`),
+  INDEX `fk_recipient_idx` (`recipient_id` ASC),
+  INDEX `fk_recommender_idx` (`recommender_id` ASC),
+  INDEX `fk_recommended_recipe_idx` (`recommended_recipe_id` ASC),
+  CONSTRAINT `fk_recipient1`
+    FOREIGN KEY (`recipient_id`)
+    REFERENCES `mixbookdb`.`users` (`user_id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_recommender1`
+    FOREIGN KEY (`recommender_id`)
+    REFERENCES `mixbookdb`.`users` (`user_id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_recommended_recipe1`
+    FOREIGN KEY (`recommended_recipe_id`)
+    REFERENCES `mixbookdb`.`recipe` (`recipe_id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE utf8mb4_unicode_ci
+ROW_FORMAT = DYNAMIC;
+
+
+-- -----------------------------------------------------
 -- Table `mixbookdb`.`AUTHORITY`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mixbookdb`.`AUTHORITY` (
