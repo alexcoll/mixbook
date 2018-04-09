@@ -107,6 +107,12 @@ public class User implements Serializable {
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.user")
 	private Set<UserRatingReview> userRatingReviews = new HashSet<UserRatingReview>(0);
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "recipient")
+	private Set<Recommendation> recommendationsReceived = new HashSet<Recommendation>(0);
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "recommender")
+	private Set<Recommendation> recommendationsMade = new HashSet<Recommendation>(0);
 
 	public User() {
 
@@ -123,7 +129,8 @@ public class User implements Serializable {
 			int number_of_recipes, int number_of_ratings, Boolean enabled, Date lastPasswordResetDate,
 			List<Authority> authorities, Set<Brand> brands, Set<Recipe> recipes,
 			Set<UserRecipeHasReview> userRecipeHasReviews, Set<Badge> badges, Set<UserRatingReview> userRatingReviews,
-			int sumOfPersonalRecipeRatings, int numberOfPersonalRecipeRatings) {
+			int sumOfPersonalRecipeRatings, int numberOfPersonalRecipeRatings, Set<Recommendation> recommendationsReceived,
+			Set<Recommendation> recommendationsMade) {
 		this.user_id = user_id;
 		this.username = username;
 		this.password = password;
@@ -142,6 +149,8 @@ public class User implements Serializable {
 		this.userRecipeHasReviews = userRecipeHasReviews;
 		this.badges = badges;
 		this.userRatingReviews = userRatingReviews;
+		this.recommendationsReceived = recommendationsReceived;
+		this.recommendationsMade = recommendationsMade;
 	}
 
 	public Integer getUserId() {
@@ -286,6 +295,22 @@ public class User implements Serializable {
 
 	public void setUserRatingReviews(Set<UserRatingReview> userRatingReviews) {
 		this.userRatingReviews = userRatingReviews;
+	}
+
+	public Set<Recommendation> getRecommendationsReceived() {
+		return recommendationsReceived;
+	}
+
+	public void setRecommendationsReceived(Set<Recommendation> recommendationsReceived) {
+		this.recommendationsReceived = recommendationsReceived;
+	}
+
+	public Set<Recommendation> getRecommendationsMade() {
+		return recommendationsMade;
+	}
+
+	public void setRecommendationsMade(Set<Recommendation> recommendationsMade) {
+		this.recommendationsMade = recommendationsMade;
 	}
 
 	@Override

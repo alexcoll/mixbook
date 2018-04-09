@@ -61,6 +61,9 @@ public class Recipe implements Serializable {
 	
 	@OneToMany(mappedBy = "recipe", fetch = FetchType.LAZY)
 	private Set<UserRecipeHasReview> userRecipeHasReviews = new HashSet<UserRecipeHasReview>(0);
+	
+	@OneToMany(mappedBy = "recommendedRecipe", fetch = FetchType.LAZY)
+	private Set<Recommendation> recommendations = new HashSet<Recommendation>(0);
 
 	public Recipe() {
 
@@ -76,7 +79,8 @@ public class Recipe implements Serializable {
 
 	public Recipe(Integer recipe_id, String recipe_name, String directions,
 			int number_of_ingredients, int difficulty, int number_of_ratings,
-			int	total_rating, User user, Set<Brand> brands, Set<UserRecipeHasReview> userRecipeHasReviews) {
+			int	total_rating, User user, Set<Brand> brands, Set<UserRecipeHasReview> userRecipeHasReviews,
+			Set<Recommendation> recommendations) {
 		this.recipe_id = recipe_id;
 		this.recipe_name = recipe_name;
 		this.directions = directions;
@@ -87,6 +91,7 @@ public class Recipe implements Serializable {
 		this.user = user;
 		this.brands = brands;
 		this.userRecipeHasReviews = userRecipeHasReviews;
+		this.recommendations = recommendations;
 	}
 
 	public Integer getRecipeId() {
@@ -167,6 +172,14 @@ public class Recipe implements Serializable {
 
 	public void setUserRecipeHasReviews(Set<UserRecipeHasReview> userRecipeHasReviews) {
 		this.userRecipeHasReviews = userRecipeHasReviews;
+	}
+
+	public Set<Recommendation> getRecommendations() {
+		return recommendations;
+	}
+
+	public void setRecommendations(Set<Recommendation> recommendations) {
+		this.recommendations = recommendations;
 	}
 
 	@Override
