@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 @Entity
@@ -24,6 +25,9 @@ public class Recommendation implements Serializable {
 	@Column(name = "status")
 	@NotNull
 	private Boolean status;
+	
+	@Transient
+	private String description;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "recipient_id", nullable = false)
@@ -42,9 +46,10 @@ public class Recommendation implements Serializable {
 	}
 
 	public Recommendation(Integer recommendationId, Boolean status, User recipient, User recommender,
-			Recipe recommendedRecipe) {
+			Recipe recommendedRecipe, String description) {
 		this.recommendationId = recommendationId;
 		this.status = status;
+		this.description = description;
 		this.recipient = recipient;
 		this.recommender = recommender;
 		this.recommendedRecipe = recommendedRecipe;
@@ -64,6 +69,14 @@ public class Recommendation implements Serializable {
 
 	public void setStatus(Boolean status) {
 		this.status = status;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public User getRecipient() {
