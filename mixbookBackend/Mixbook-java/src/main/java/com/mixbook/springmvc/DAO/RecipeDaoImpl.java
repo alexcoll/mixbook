@@ -220,16 +220,4 @@ public class RecipeDaoImpl extends AbstractDao<Integer, Recipe> implements Recip
 		return result;
 	}
 
-	@Override
-	public Recipe loadRecipe(Integer recipeId) throws Exception {
-		NativeQuery query = getSession().createNativeQuery("SELECT * FROM recipe AS r INNER JOIN recipe_has_brand AS rb ON r.recipe_id = rb.recipe_recipe_id INNER JOIN brand AS b ON rb.brand_brand_id = b.brand_id INNER JOIN users AS u ON r.user_recipe_id = u.user_id WHERE recipe_id = :recipe_id", Recipe.class);
-		query.setParameter("recipe_id", recipeId);
-		Recipe recipe = (Recipe) query.getSingleResult();
-		User user = new User();
-		user.setUserId(recipe.getUser().getUserId());
-		user.setUsername(recipe.getUser().getUsername());
-		recipe.setUser(user);
-		return recipe;
-	}
-
 }

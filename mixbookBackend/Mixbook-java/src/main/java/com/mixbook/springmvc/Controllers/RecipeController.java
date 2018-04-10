@@ -300,19 +300,5 @@ public class RecipeController {
 		}
 		return new ResponseEntity<List<Brand>>(tempList, HttpStatus.OK);
 	}
-	
-	@RequestMapping(value = "/loadRecipe", method = RequestMethod.GET)
-	@ResponseBody
-	public ResponseEntity<Recipe> loadRecipe(@RequestParam("id") Integer id) {
-		if (id == null || id < 0) {
-			return new ResponseEntity<Recipe>(new Recipe(), HttpStatus.BAD_REQUEST);
-		}
-		try {
-			Recipe recipe = recipeService.loadRecipe(id);
-			return new ResponseEntity<Recipe>(recipe, HttpStatus.OK);
-		} catch (UnknownServerErrorException e) {
-			return new ResponseEntity<Recipe>(new Recipe(), HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-	}
 
 }

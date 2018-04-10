@@ -166,14 +166,6 @@ public class RecipeServiceImpl implements RecipeService {
 			throw new UnknownServerErrorException("Unknown server error!");
 		}
 	}
-	
-	public Recipe loadRecipe(Integer recipeId) throws UnknownServerErrorException {
-		try {
-			return dao.loadRecipe(recipeId);
-		} catch (Exception e) {
-			throw new UnknownServerErrorException("Unknown server error!");
-		}
-	}
 
 	public boolean isRecipeInfoValid(Recipe recipe) throws UnknownServerErrorException {
 		try {

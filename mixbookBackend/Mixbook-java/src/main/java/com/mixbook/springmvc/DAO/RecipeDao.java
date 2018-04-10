@@ -35,7 +35,5 @@ public interface RecipeDao {
 	List<Recipe> getAllRecipesAnonymousUserCanMake(List<String> brands) throws Exception;
 
 	List<Brand> getBrandsForRecipe(Recipe recipe) throws Exception;
-	
-	Recipe loadRecipe(Integer recipeId) throws Exception;
 
 }

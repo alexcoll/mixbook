@@ -38,8 +38,6 @@ public interface RecipeService {
 	List<Recipe> getAllRecipesAnonymousUserCanMake(List<String> brands) throws UnknownServerErrorException;
 
 	List<Brand> getBrandsForRecipe(Recipe recipe) throws UnknownServerErrorException;
-	
-	Recipe loadRecipe(Integer recipeId) throws UnknownServerErrorException;
 
 	boolean isRecipeInfoValid(Recipe recipe) throws UnknownServerErrorException;
 
