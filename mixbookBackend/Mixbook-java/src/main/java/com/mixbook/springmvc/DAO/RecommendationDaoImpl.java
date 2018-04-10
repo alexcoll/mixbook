@@ -27,13 +27,10 @@ public class RecommendationDaoImpl extends AbstractDao<Integer, Recommendation> 
 
 	@Override
 	public Set<Recommendation> loadRecommendations(User user) throws Exception {
-		Query query = getSession().createQuery("select u.recommendationsReceived from User u inner join fetch u.recommendationsReceived r inner join fetch r.recommender where u.username = :username");
+		Query query = getSession().createQuery("select u from User u inner join fetch u.recommendationsReceived r inner join fetch r.recommender inner join fetch r.recommendedRecipe where u.username = :username");
 		query.setParameter("username", user.getUsername());
-		Set<Recommendation> recommendations = (Set<Recommendation>) query.getResultList();
-		for (Recommendation recommendation : recommendations) {
-			recommendation.setDescription(recommendation.getRecommender().getUsername() + " has recommended a recipe to you!");
-			recommendation.setRecommender(null);
-		}
+		User loadedUser = (User) query.getSingleResult();
+		Set<Recommendation> recommendations = loadedUser.getRecommendationsReceived();
 		return recommendations;
 	}
 

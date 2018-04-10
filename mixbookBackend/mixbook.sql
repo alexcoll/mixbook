@@ -123,9 +123,9 @@ ROW_FORMAT = DYNAMIC;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mixbookdb`.`recommendation` (
   `recommendation_id` BIGINT NOT NULL AUTO_INCREMENT,
-  `recipient_id` BIGINT NOT NULL UNIQUE,
-  `recommender_id` BIGINT NOT NULL UNIQUE,
-  `recommended_recipe_id` BIGINT NOT NULL UNIQUE,
+  `recipient_id` BIGINT NOT NULL,
+  `recommender_id` BIGINT NOT NULL,
+  `recommended_recipe_id` BIGINT NOT NULL,
   `status` TINYINT(1) NOT NULL,
   PRIMARY KEY (`recommendation_id`),
   INDEX `fk_recipient_idx` (`recipient_id` ASC),

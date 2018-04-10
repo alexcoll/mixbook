@@ -20,8 +20,12 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
 @Entity
 @Table(name="recipe")
+@JsonInclude(Include.NON_EMPTY)
 public class Recipe implements Serializable {
 
 	@Id

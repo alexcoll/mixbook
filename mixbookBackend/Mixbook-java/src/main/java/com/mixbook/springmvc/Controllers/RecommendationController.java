@@ -1,7 +1,6 @@
 package com.mixbook.springmvc.Controllers;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
@@ -86,6 +85,10 @@ public class RecommendationController {
 		user.setUsername(username);
 		try {
 			Set<Recommendation> recommendations = recommendationService.loadRecommendations(user);
+			for (Recommendation recommendation : recommendations) {
+				recommendation.setDescription(recommendation.getRecommender().getUsername() + " has recommended a recipe to you!");
+				recommendation.setRecommender(null);
+			}
 			return new ResponseEntity<Set<Recommendation>>(recommendations, HttpStatus.OK);
 		} catch (UnknownServerErrorException e) {
 			Set<Recommendation> emptyRecommendations = new HashSet<>();

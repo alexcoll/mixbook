@@ -14,12 +14,21 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 @Entity
 @Table(name="recommendation")
+@JsonInclude(Include.NON_EMPTY)
 public class Recommendation implements Serializable {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)	
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name = "recommendation_id", nullable = false)
 	private Integer recommendationId;
 	
 	@Column(name = "status")
@@ -27,10 +36,13 @@ public class Recommendation implements Serializable {
 	private Boolean status;
 	
 	@Transient
+	@JsonSerialize
+	@JsonDeserialize
 	private String description;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "recipient_id", nullable = false)
+	@JsonProperty(access = Access.WRITE_ONLY)
 	private User recipient;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -45,8 +57,8 @@ public class Recommendation implements Serializable {
 		
 	}
 
-	public Recommendation(Integer recommendationId, Boolean status, User recipient, User recommender,
-			Recipe recommendedRecipe, String description) {
+	public Recommendation(Integer recommendationId, Boolean status, String description, User recipient,
+			User recommender, Recipe recommendedRecipe) {
 		this.recommendationId = recommendationId;
 		this.status = status;
 		this.description = description;
