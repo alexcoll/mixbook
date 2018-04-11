@@ -4,8 +4,6 @@ import java.util.Date;
 
 import javax.persistence.PersistenceException;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.hibernate.query.NativeQuery;
 import org.springframework.stereotype.Repository;
 
@@ -14,8 +12,6 @@ import com.mixbook.springmvc.Models.PasswordResetToken;
 @Repository("passwordResetTokenDao")
 public class PasswordResetTokenDaoImpl extends AbstractDao<Integer, PasswordResetToken> implements PasswordResetTokenDao {
 
-	private static final Logger logger = LogManager.getLogger(PasswordResetTokenDaoImpl.class);
-	
 	@Override
 	public PasswordResetToken validatePasswordResetToken(String token) throws Exception {
 		NativeQuery q = getSession().createNativeQuery("SELECT * FROM password_reset_token WHERE token = :token", PasswordResetToken.class);

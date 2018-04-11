@@ -19,7 +19,6 @@ import org.springframework.stereotype.Repository;
 import com.mixbook.springmvc.Exceptions.NoDataWasChangedException;
 import com.mixbook.springmvc.Exceptions.RateOwnReviewException;
 import com.mixbook.springmvc.Exceptions.ReviewOwnRecipeException;
-import com.mixbook.springmvc.Models.PasswordResetToken;
 import com.mixbook.springmvc.Models.Recipe;
 import com.mixbook.springmvc.Models.User;
 import com.mixbook.springmvc.Models.UserRatingReview;
