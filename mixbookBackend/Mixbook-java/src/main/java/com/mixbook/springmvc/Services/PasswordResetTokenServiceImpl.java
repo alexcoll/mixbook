@@ -1,21 +1,14 @@
 package com.mixbook.springmvc.Services;
 
 import java.time.Instant;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
 
 import javax.persistence.PersistenceException;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,8 +24,6 @@ public class PasswordResetTokenServiceImpl implements PasswordResetTokenService 
 	@Autowired
 	private PasswordResetTokenDao dao;
 	
-	private static final Logger logger = LogManager.getLogger(PasswordResetTokenServiceImpl.class);
-
 	@Override
 	public User validatePasswordResetToken(Integer userId, String token) throws UnknownServerErrorException {
 		try {

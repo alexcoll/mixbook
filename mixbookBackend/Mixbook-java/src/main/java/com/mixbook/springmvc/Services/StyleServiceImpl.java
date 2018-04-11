@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.mixbook.springmvc.DAO.StyleDao;
 import com.mixbook.springmvc.Exceptions.UnknownServerErrorException;
-import com.mixbook.springmvc.Models.Style;
 
 @Service("styleService")
 @Transactional

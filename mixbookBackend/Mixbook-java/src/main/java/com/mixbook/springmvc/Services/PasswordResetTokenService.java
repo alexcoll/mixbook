@@ -1,7 +1,5 @@
 package com.mixbook.springmvc.Services;
 
-import java.util.Date;
-
 import javax.persistence.PersistenceException;
 
 import com.mixbook.springmvc.Exceptions.UnknownServerErrorException;

@@ -5,7 +5,6 @@ import java.util.List;
 import javax.persistence.PersistenceException;
 
 import com.mixbook.springmvc.Exceptions.UnknownServerErrorException;
-import com.mixbook.springmvc.Models.PasswordResetToken;
 import com.mixbook.springmvc.Models.User;
 
 public interface UserService {

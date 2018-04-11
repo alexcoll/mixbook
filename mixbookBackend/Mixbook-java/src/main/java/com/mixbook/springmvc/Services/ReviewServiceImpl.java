@@ -4,14 +4,11 @@ import java.util.List;
 
 import javax.persistence.PersistenceException;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mixbook.springmvc.DAO.ReviewDao;
-import com.mixbook.springmvc.DAO.ReviewDaoImpl;
 import com.mixbook.springmvc.Exceptions.NoDataWasChangedException;
 import com.mixbook.springmvc.Exceptions.RateOwnReviewException;
 import com.mixbook.springmvc.Exceptions.ReviewOwnRecipeException;
@@ -31,8 +28,6 @@ public class ReviewServiceImpl implements ReviewService {
 	@Autowired
 	private UserService userService;
 	
-	private static final Logger logger = LogManager.getLogger(ReviewServiceImpl.class);
-
 	public void createReview(UserRecipeHasReview review) throws ReviewOwnRecipeException, PersistenceException, NoDataWasChangedException, UnknownServerErrorException {
 		try {
 			review.setNumberOfUpVotes(0);

@@ -9,8 +9,6 @@ import java.util.regex.PatternSyntaxException;
 
 import javax.persistence.PersistenceException;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -40,8 +38,6 @@ public class UserServiceImpl implements UserService {
 			"^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
 					+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 	
-	private static final Logger logger = LogManager.getLogger(UserServiceImpl.class);
-
 	public User findByEntityUsername(String username) throws UnknownServerErrorException {
 		try {
 			User user = dao.findByEntityUsername(username);

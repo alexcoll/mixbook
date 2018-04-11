@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.mixbook.springmvc.DAO.TypeDao;
 import com.mixbook.springmvc.Exceptions.UnknownServerErrorException;
-import com.mixbook.springmvc.Models.Type;
 
 @Service("typeService")
 @Transactional
