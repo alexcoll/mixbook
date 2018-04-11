@@ -1,5 +1,7 @@
 package com.mixbook.springmvc.DAO;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import org.hibernate.query.NativeQuery;
@@ -31,6 +33,18 @@ public class RecommendationDaoImpl extends AbstractDao<Integer, Recommendation> 
 		query.setParameter("username", user.getUsername());
 		User loadedUser = (User) query.getSingleResult();
 		Set<Recommendation> recommendations = loadedUser.getRecommendationsReceived();
+		List<Integer> recommendationIds = new ArrayList<>();
+		for (Recommendation recommendation : recommendations) {
+			if (!recommendation.getStatus()) {
+				recommendationIds.add(recommendation.getRecommendationId());
+			}
+		}
+		if (!recommendationIds.isEmpty()) {
+			query = getSession().createQuery("update Recommendation set status = :status where recommendationId in (:recommendationIds)");
+			query.setParameter("status", Boolean.TRUE);
+			query.setParameterList("recommendationIds", recommendationIds);
+			query.executeUpdate();
+		}
 		return recommendations;
 	}
 
