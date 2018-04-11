@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mixbook.springmvc.Exceptions.UnknownServerErrorException;
-import com.mixbook.springmvc.Models.Style;
 import com.mixbook.springmvc.Services.StyleService;
 
 @Controller

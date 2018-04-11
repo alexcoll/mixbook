@@ -9,8 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -60,8 +58,6 @@ public class UserController {
 	@Autowired
 	private JwtTokenUtil jwtTokenUtil;
 	
-	private static final Logger logger = LogManager.getLogger(UserController.class);
-
 	@RequestMapping(value = "/createUser", 
 			method = RequestMethod.POST,
 			headers = {"Content-type=application/json"})

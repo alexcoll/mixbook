@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mixbook.springmvc.Exceptions.UnknownServerErrorException;
 import com.mixbook.springmvc.Models.Badge;
-import com.mixbook.springmvc.Security.JwtTokenUtil;
 import com.mixbook.springmvc.Services.BadgeService;
 
 @Controller
@@ -22,11 +21,6 @@ public class BadgeController {
 
 	@Autowired
 	private BadgeService badgeService;
-	
-	private String tokenHeader = "Authorization";
-
-	@Autowired
-	private JwtTokenUtil jwtTokenUtil;
 	
 	@RequestMapping(value = "/getBadges", method = RequestMethod.GET)
 	@ResponseBody
