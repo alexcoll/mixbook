@@ -5,7 +5,8 @@ import java.util.List;
 
 import javax.persistence.PersistenceException;
 
-import org.hibernate.SQLQuery;
+import org.hibernate.query.NativeQuery;
+import org.hibernate.query.Query;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -24,18 +25,19 @@ public class InventoryDaoImpl extends AbstractDao<Integer, Brand> implements Inv
 
 	public void addIngredientToInventory(Brand brand, User user) throws MaxInventoryItemsException, NullPointerException, PersistenceException, NoDataWasChangedException, Exception {
 		user = this.userService.findByEntityUsername(user.getUsername());
-		SQLQuery countQuery = getSession().createSQLQuery("SELECT COUNT(*) FROM user_has_brand WHERE user_user_id = ?").setParameter(0, user.getUserId());
-		Integer count = ((BigInteger) countQuery.uniqueResult()).intValue();
+		NativeQuery countQuery = getSession().createNativeQuery("SELECT COUNT(*) FROM user_has_brand WHERE user_user_id = :user_user_id");
+		countQuery.setParameter("user_user_id", user.getUserId());
+		Integer count = ((BigInteger) countQuery.getSingleResult()).intValue();
 		if (count == 20) {
 			throw new MaxInventoryItemsException("Maximum number of ingredients in inventory exceeded!");
 		}
-		SQLQuery searchQuery = getSession().createSQLQuery("SELECT brand_id FROM brand WHERE brand_name = ?");
-		searchQuery.setParameter(0, brand.getBrandName());
-		Integer brand_id = ((BigInteger) searchQuery.uniqueResult()).intValue();
-		brand.setBrandId(brand_id);
-		SQLQuery insertQuery = getSession().createSQLQuery("" + "INSERT INTO user_has_brand(user_user_id,brand_brand_id)VALUES(?,?)");
-		insertQuery.setParameter(0, user.getUserId());
-		insertQuery.setParameter(1, brand.getBrandId());
+		NativeQuery searchQuery = getSession().createNativeQuery("SELECT brand_id FROM brand WHERE brand_name = :brand_name");
+		searchQuery.setParameter("brand_name", brand.getBrandName());
+		Integer brandId = ((BigInteger) searchQuery.getSingleResult()).intValue();
+		brand.setBrandId(brandId);
+		NativeQuery insertQuery = getSession().createNativeQuery("INSERT INTO user_has_brand (user_user_id, brand_brand_id) VALUES (:user_id, :brand_id)");
+		insertQuery.setParameter("user_id", user.getUserId());
+		insertQuery.setParameter("brand_id", brand.getBrandId());
 		int numRowsAffected = insertQuery.executeUpdate();
 		if (numRowsAffected < 1) {
 			throw new NoDataWasChangedException("No data was changed! Info may have been invalid!");
@@ -44,11 +46,13 @@ public class InventoryDaoImpl extends AbstractDao<Integer, Brand> implements Inv
 
 	public void deleteIngredientFromInventory(Brand brand, User user) throws NullPointerException, NoDataWasChangedException, Exception {
 		user = this.userService.findByEntityUsername(user.getUsername());
-		SQLQuery searchQuery = getSession().createSQLQuery("SELECT brand_id FROM brand WHERE brand_name = ?");
-		searchQuery.setParameter(0, brand.getBrandName());
-		Integer brand_id = ((BigInteger) searchQuery.uniqueResult()).intValue();
-		brand.setBrandId(brand_id);
-		SQLQuery deleteQuery = getSession().createSQLQuery("DELETE FROM user_has_brand WHERE user_user_id=:user_user_id AND brand_brand_id=:brand_brand_id").setParameter("user_user_id", user.getUserId()).setParameter("brand_brand_id", brand.getBrandId());
+		NativeQuery searchQuery = getSession().createNativeQuery("SELECT brand_id FROM brand WHERE brand_name = :brand_name");
+		searchQuery.setParameter("brand_name", brand.getBrandName());
+		Integer brandId = ((BigInteger) searchQuery.getSingleResult()).intValue();
+		brand.setBrandId(brandId);
+		NativeQuery deleteQuery = getSession().createNativeQuery("DELETE FROM user_has_brand WHERE user_user_id = :user_user_id AND brand_brand_id = :brand_brand_id");
+		deleteQuery.setParameter("user_user_id", user.getUserId());
+		deleteQuery.setParameter("brand_brand_id", brand.getBrandId());
 		int numRowsAffected = deleteQuery.executeUpdate();
 		if (numRowsAffected < 1) {
 			throw new NoDataWasChangedException("No data was changed! Info may have been invalid!");
@@ -57,8 +61,9 @@ public class InventoryDaoImpl extends AbstractDao<Integer, Brand> implements Inv
 
 	public List<Brand> getUserInventory(User user) throws Exception {
 		user = this.userService.findByEntityUsername(user.getUsername());
-		SQLQuery query = getSession().createSQLQuery("SELECT brand_name FROM brand INNER JOIN user_has_brand ON brand.brand_id = user_has_brand.brand_brand_id WHERE user_has_brand.user_user_id = ?").setParameter(0, user.getUserId());
-		List result = query.list();
+		Query query = getSession().createQuery("select b from Brand b inner join b.users u where u.userId = :userId");
+		query.setParameter("userId", user.getUserId());
+		List<Brand> result = (List<Brand>) query.getResultList();
 		return result;
 	}
 

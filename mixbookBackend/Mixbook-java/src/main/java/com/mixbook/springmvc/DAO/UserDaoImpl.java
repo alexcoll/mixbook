@@ -47,7 +47,7 @@ public class UserDaoImpl extends AbstractDao<Integer, User> implements UserDao {
 	
 	@Override
 	public List<User> loadAllUsers() throws Exception {
-		Query query = getSession().createQuery("select new User(user_id, username, sumOfPersonalRecipeRatings, numberOfPersonalRecipeRatings) from User");
+		Query query = getSession().createQuery("select new User(userId, username, sumOfPersonalRecipeRatings, numberOfPersonalRecipeRatings) from User");
 		List<User> users = (List<User>) query.getResultList();
 		return users;
 	}
@@ -69,23 +69,23 @@ public class UserDaoImpl extends AbstractDao<Integer, User> implements UserDao {
 	public void editUser(User user) throws Exception {
 		//Updating both first name and last name
 		if (user.getFirstName() != null && user.getLastName() != null ) {
-			Query q = getSession().createQuery("update User set first_name = :first_name, last_name = :last_name where username = :username");
-			q.setParameter("first_name", user.getFirstName());
-			q.setParameter("last_name", user.getLastName());
+			Query q = getSession().createQuery("update User set firstName = :firstName, lastName = :lastName where username = :username");
+			q.setParameter("firstName", user.getFirstName());
+			q.setParameter("lastName", user.getLastName());
 			q.setParameter("username", user.getUsername());
 			q.executeUpdate();
 		}
 		//Updating last name
 		else if (user.getLastName() != null) {
-			Query q = getSession().createQuery("update User set last_name = :last_name where username = :username");
-			q.setParameter("last_name", user.getLastName());
+			Query q = getSession().createQuery("update User set lastName = :lastName where username = :username");
+			q.setParameter("lastName", user.getLastName());
 			q.setParameter("username", user.getUsername());
 			q.executeUpdate();
 		}
 		//Updating first name
 		else if (user.getFirstName() != null) {
-			Query q = getSession().createQuery("update User set first_name = :first_name where username = :username");
-			q.setParameter("first_name", user.getFirstName());
+			Query q = getSession().createQuery("update User set firstName = :firstName where username = :username");
+			q.setParameter("firstName", user.getFirstName());
 			q.setParameter("username", user.getUsername());
 			q.executeUpdate();
 		}
@@ -104,9 +104,9 @@ public class UserDaoImpl extends AbstractDao<Integer, User> implements UserDao {
 	}
 
 	public void changePassword(User user) throws Exception {
-		Query q = getSession().createQuery("update User set password = :password, lastpasswordresetdate = :lastpasswordresetdate where username = :username");
+		Query q = getSession().createQuery("update User set password = :password, lastPasswordResetDate = :lastPasswordResetDate where username = :username");
 		q.setParameter("password", user.getPassword());
-		q.setParameter("lastpasswordresetdate", user.getLastPasswordResetDate());
+		q.setParameter("lastPasswordResetDate", user.getLastPasswordResetDate());
 		q.setParameter("username", user.getUsername());
 		q.executeUpdate();
 	}
@@ -121,9 +121,9 @@ public class UserDaoImpl extends AbstractDao<Integer, User> implements UserDao {
 	
 	@Override
 	public void unlockAccount(User user) throws Exception {
-		Query q = getSession().createQuery("update User set enabled = :enabled where user_id = :user_id");
+		Query q = getSession().createQuery("update User set enabled = :enabled where userId = :userId");
 		q.setParameter("enabled", Boolean.TRUE);
-		q.setParameter("user_id", user.getUserId());
+		q.setParameter("userId", user.getUserId());
 		q.executeUpdate();
 	}
 }

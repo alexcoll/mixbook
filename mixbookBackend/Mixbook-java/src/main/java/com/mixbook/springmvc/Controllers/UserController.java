@@ -237,6 +237,7 @@ public class UserController {
 		session.invalidate();
 		return new ResponseEntity<JsonResponse>(new JsonResponse("OK",""), HttpStatus.OK);
 	}
+	
 	@RequestMapping(value = "/updatePassword", method = RequestMethod.GET)
 	public String showChangePasswordPage(HttpServletRequest request, HttpServletResponse response, @RequestParam("id") Integer id, @RequestParam("token") String token) {
 		try {

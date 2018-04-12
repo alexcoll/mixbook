@@ -39,8 +39,8 @@ public interface UserService {
 	
 	boolean isUserUsernameValid(String username) throws UnknownServerErrorException;
 	
-	boolean isUserFirstNameValid(String first_name) throws UnknownServerErrorException;
+	boolean isUserFirstNameValid(String firstName) throws UnknownServerErrorException;
 	
-	boolean isUserLastNameValid(String last_name) throws UnknownServerErrorException;
+	boolean isUserLastNameValid(String lastName) throws UnknownServerErrorException;
 	
 }

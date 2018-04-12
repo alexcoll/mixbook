@@ -33,7 +33,8 @@ public class User implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer user_id;
+	@Column(name = "user_id", nullable = false)
+	private Integer userId;
 
 	@NotNull
 	@Size(max = 255)
@@ -48,12 +49,12 @@ public class User implements Serializable {
 	@NotNull
 	@Size(max = 255)
 	@Column(name = "first_name", nullable = false)
-	private String first_name;
+	private String firstName;
 
 	@NotNull
 	@Size(max = 255)
 	@Column(name = "last_name", nullable = false)
-	private String last_name;
+	private String lastName;
 
 	@NotNull
 	@Size(max = 255)
@@ -61,10 +62,10 @@ public class User implements Serializable {
 	private String email;
 
 	@Column(name = "number_of_recipes", nullable = false)
-	private int number_of_recipes;
+	private int numberOfRecipes;
 
 	@Column(name = "number_of_ratings", nullable = false)
-	private int number_of_ratings;
+	private int numberOfRatings;
 
 	@Column(name = "sum_of_personal_recipe_ratings", nullable = false)
 	private int sumOfPersonalRecipeRatings;
@@ -118,27 +119,27 @@ public class User implements Serializable {
 
 	}
 	
-	public User(Integer user_id, String username, int sumOfPersonalRecipeRatings, int numberOfPersonalRecipeRatings) {
-		this.user_id = user_id;
+	public User(Integer userId, String username, int sumOfPersonalRecipeRatings, int numberOfPersonalRecipeRatings) {
+		this.userId = userId;
 		this.username = username;
 		this.sumOfPersonalRecipeRatings = sumOfPersonalRecipeRatings;
 		this.numberOfPersonalRecipeRatings = numberOfPersonalRecipeRatings;
 	}
 
-	public User(Integer user_id, String username, String password, String first_name, String last_name, String email,
-			int number_of_recipes, int number_of_ratings, Boolean enabled, Date lastPasswordResetDate,
+	public User(Integer userId, String username, String password, String firstName, String lastName, String email,
+			int numberOfRecipes, int numberOfRatings, Boolean enabled, Date lastPasswordResetDate,
 			List<Authority> authorities, Set<Brand> brands, Set<Recipe> recipes,
 			Set<UserRecipeHasReview> userRecipeHasReviews, Set<Badge> badges, Set<UserRatingReview> userRatingReviews,
 			int sumOfPersonalRecipeRatings, int numberOfPersonalRecipeRatings, Set<Recommendation> recommendationsReceived,
 			Set<Recommendation> recommendationsMade) {
-		this.user_id = user_id;
+		this.userId = userId;
 		this.username = username;
 		this.password = password;
-		this.first_name = first_name;
-		this.last_name = last_name;
+		this.firstName = firstName;
+		this.lastName = lastName;
 		this.email = email;
-		this.number_of_recipes = number_of_recipes;
-		this.number_of_ratings = number_of_ratings;
+		this.numberOfRecipes = numberOfRecipes;
+		this.numberOfRatings = numberOfRatings;
 		this.sumOfPersonalRecipeRatings = sumOfPersonalRecipeRatings;
 		this.numberOfPersonalRecipeRatings = numberOfPersonalRecipeRatings;
 		this.enabled = enabled;
@@ -154,11 +155,11 @@ public class User implements Serializable {
 	}
 
 	public Integer getUserId() {
-		return user_id;
+		return userId;
 	}
 
-	public void setUserId(Integer user_id) {
-		this.user_id = user_id;
+	public void setUserId(Integer userId) {
+		this.userId = userId;
 	}
 
 	public String getUsername() {
@@ -178,19 +179,19 @@ public class User implements Serializable {
 	}
 
 	public String getFirstName() {
-		return first_name;
+		return firstName;
 	}
 
-	public void setFirstName(String first_name) {
-		this.first_name = first_name;
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
 	}
 
 	public String getLastName() {
-		return last_name;
+		return lastName;
 	}
 
-	public void setLastName(String last_name) {
-		this.last_name = last_name;
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
 
 	public String getEmail() {
@@ -202,19 +203,19 @@ public class User implements Serializable {
 	}
 
 	public int getNumberOfRecipes() {
-		return number_of_recipes;
+		return numberOfRecipes;
 	}
 
-	public void setNumberOfRecipes(int number_of_recipes) {
-		this.number_of_recipes = number_of_recipes;
+	public void setNumberOfRecipes(int numberOfRecipes) {
+		this.numberOfRecipes = numberOfRecipes;
 	}
 
 	public int getNumberOfRatings() {
-		return number_of_ratings;
+		return numberOfRatings;
 	}
 
-	public void setNumberOfRatings(int number_of_ratings) {
-		this.number_of_ratings = number_of_ratings;
+	public void setNumberOfRatings(int numberOfRatings) {
+		this.numberOfRatings = numberOfRatings;
 	}
 
 	public int getSumOfPersonalRecipeRatings() {
@@ -317,7 +318,7 @@ public class User implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((user_id == null) ? 0 : user_id.hashCode());
+		result = prime * result + ((userId == null) ? 0 : userId.hashCode());
 		result = prime * result + ((username == null) ? 0 : username.hashCode());
 		return result;
 	}
@@ -331,10 +332,10 @@ public class User implements Serializable {
 		if (!(obj instanceof User))
 			return false;
 		User other = (User) obj;
-		if (user_id == null) {
-			if (other.user_id != null)
+		if (userId == null) {
+			if (other.userId != null)
 				return false;
-		} else if (!user_id.equals(other.user_id))
+		} else if (!userId.equals(other.userId))
 			return false;
 		if (username == null) {
 			if (other.username != null)
@@ -346,7 +347,7 @@ public class User implements Serializable {
 
 	@Override
 	public String toString() {
-		return "User [user_id=" + user_id + ", first_name=" + first_name + ", last_name=" + last_name + ", email="
+		return "User [userId=" + userId + ", firstName=" + firstName + ", lastName=" + lastName + ", email="
 				+ email + "]";
 	}
 

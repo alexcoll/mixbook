@@ -240,17 +240,17 @@ public class UserServiceImpl implements UserService {
 		return true;
 	}
 
-	public boolean isUserFirstNameValid(String first_name) throws UnknownServerErrorException {
-		if (first_name == null) {
+	public boolean isUserFirstNameValid(String firstName) throws UnknownServerErrorException {
+		if (firstName == null) {
 			return false;
 		}
-		if (first_name.isEmpty()) {
+		if (firstName.isEmpty()) {
 			return false;
 		}
 		try {
 			Pattern pattern = Pattern.compile(FIRSTLASTNAME_PATTERN, Pattern.UNICODE_CHARACTER_CLASS);
-			Matcher matcher = pattern.matcher(first_name);
-			if (first_name.length() > 63 || !matcher.matches()) {
+			Matcher matcher = pattern.matcher(firstName);
+			if (firstName.length() > 63 || !matcher.matches()) {
 				return false;
 			}
 		} catch (PatternSyntaxException e) {
@@ -259,17 +259,17 @@ public class UserServiceImpl implements UserService {
 		return true;
 	}
 
-	public boolean isUserLastNameValid(String last_name) throws UnknownServerErrorException {
-		if (last_name == null) {
+	public boolean isUserLastNameValid(String lastName) throws UnknownServerErrorException {
+		if (lastName == null) {
 			return false;
 		}
-		if (last_name.isEmpty()) {
+		if (lastName.isEmpty()) {
 			return false;
 		}
 		try {
 			Pattern pattern = Pattern.compile(FIRSTLASTNAME_PATTERN, Pattern.UNICODE_CHARACTER_CLASS);
-			Matcher matcher = pattern.matcher(last_name);
-			if (last_name.length() > 63 || !matcher.matches()) {
+			Matcher matcher = pattern.matcher(lastName);
+			if (lastName.length() > 63 || !matcher.matches()) {
 				return false;
 			}
 		} catch (PatternSyntaxException e) {
