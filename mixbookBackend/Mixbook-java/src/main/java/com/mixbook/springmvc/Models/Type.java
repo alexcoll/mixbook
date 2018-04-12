@@ -15,18 +15,23 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
 @Entity
 @Table(name="type")
+@JsonInclude(Include.NON_EMPTY)
 public class Type implements Serializable {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)	
-	private Integer type_id;
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name = "type_id", nullable = false)
+	private Integer typeId;
 
 	@NotNull
 	@Size(max=255)   
 	@Column(name = "type_name", nullable = false)
-	private String type_name;
+	private String typeName;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "type")
 	private Set<Style> styles = new HashSet<Style>(0);
@@ -35,26 +40,26 @@ public class Type implements Serializable {
 
 	}
 
-	public Type(Integer type_id, String type_name, Set<Style> styles) {
-		this.type_id = type_id;
-		this.type_name = type_name;
+	public Type(Integer typeId, String typeName, Set<Style> styles) {
+		this.typeId = typeId;
+		this.typeName = typeName;
 		this.styles = styles;
 	}
 
 	public Integer getTypeId() {
-		return type_id;
+		return typeId;
 	}
 
-	public void setTypeId(Integer type_id) {
-		this.type_id = type_id;
+	public void setTypeId(Integer typeId) {
+		this.typeId = typeId;
 	}
 
 	public String getTypeName() {
-		return type_name;
+		return typeName;
 	}
 
-	public void setTypeName(String type_name) {
-		this.type_name = type_name;
+	public void setTypeName(String typeName) {
+		this.typeName = typeName;
 	}
 
 	public Set<Style> getStyles() {
@@ -69,8 +74,8 @@ public class Type implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((type_id == null) ? 0 : type_id.hashCode());
-		result = prime * result + ((type_name == null) ? 0 : type_name.hashCode());
+		result = prime * result + ((typeId == null) ? 0 : typeId.hashCode());
+		result = prime * result + ((typeName == null) ? 0 : typeName.hashCode());
 		return result;
 	}
 
@@ -83,15 +88,15 @@ public class Type implements Serializable {
 		if (!(obj instanceof Type))
 			return false;
 		Type other = (Type) obj;
-		if (type_id == null) {
-			if (other.type_id != null)
+		if (typeId == null) {
+			if (other.typeId != null)
 				return false;
-		} else if (!type_id.equals(other.type_id))
+		} else if (!typeId.equals(other.typeId))
 			return false;
-		if (type_name == null) {
-			if (other.type_name != null)
+		if (typeName == null) {
+			if (other.typeName != null)
 				return false;
-		} else if (!type_name.equals(other.type_name))
+		} else if (!typeName.equals(other.typeName))
 			return false;
 		return true;
 	}

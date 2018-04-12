@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.mixbook.springmvc.DAO.TypeDao;
 import com.mixbook.springmvc.Exceptions.UnknownServerErrorException;
+import com.mixbook.springmvc.Models.Type;
 
 @Service("typeService")
 @Transactional
@@ -17,8 +18,8 @@ public class TypeServiceImpl implements TypeService {
 	@Autowired
 	private TypeDao dao;
 
-	public List<String> getTypes() throws UnknownServerErrorException {
-		List<String> tempList = new ArrayList<String>();
+	public List<Type> getTypes() throws UnknownServerErrorException {
+		List<Type> tempList = new ArrayList<Type>();
 		try {
 			tempList = dao.getTypes();
 		} catch (Exception e) {
