@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mixbook.springmvc.Exceptions.UnknownServerErrorException;
+import com.mixbook.springmvc.Models.Style;
 import com.mixbook.springmvc.Services.StyleService;
 
 @Controller
@@ -23,15 +24,15 @@ public class StyleController {
 
 	@RequestMapping(value = "/getStyles", method = RequestMethod.GET)
 	@ResponseBody
-	public ResponseEntity<List<String>> getStyles() {
-		List<String> tempList = new ArrayList<String>();
+	public ResponseEntity<List<Style>> getStyles() {
+		List<Style> tempList = new ArrayList<Style>();
 		try {
 			tempList = styleService.getStyles();
 		} catch (UnknownServerErrorException e) {
-			List<String> emptyList = new ArrayList<String>();
-			return new ResponseEntity<List<String>>(emptyList, HttpStatus.INTERNAL_SERVER_ERROR);
+			List<Style> emptyList = new ArrayList<Style>();
+			return new ResponseEntity<List<Style>>(emptyList, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		return new ResponseEntity<List<String>>(tempList, HttpStatus.OK);
+		return new ResponseEntity<List<Style>>(tempList, HttpStatus.OK);
 	}
 
 }

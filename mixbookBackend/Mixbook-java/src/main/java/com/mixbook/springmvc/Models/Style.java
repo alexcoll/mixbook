@@ -17,18 +17,23 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
 @Entity
 @Table(name="style")
+@JsonInclude(Include.NON_EMPTY)
 public class Style implements Serializable {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)	
-	private Integer style_id;
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name = "style_id", nullable = false)
+	private Integer styleId;
 
 	@NotNull
 	@Size(max=255)   
 	@Column(name = "style_name", nullable = false)
-	private String style_name;
+	private String styleName;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "type_style_id", nullable = false)
@@ -41,27 +46,27 @@ public class Style implements Serializable {
 
 	}
 
-	public Style(Integer style_id, String style_name, Type type, Set<Brand> brands) {
-		this.style_id = style_id;
-		this.style_name = style_name;
+	public Style(Integer styleId, String styleName, Type type, Set<Brand> brands) {
+		this.styleId = styleId;
+		this.styleName = styleName;
 		this.type = type;
 		this.brands = brands;
 	}
 
 	public Integer getStyleId() {
-		return style_id;
+		return styleId;
 	}
 
-	public void setStyleId(Integer style_id) {
-		this.style_id = style_id;
+	public void setStyleId(Integer styleId) {
+		this.styleId = styleId;
 	}
 
 	public String getStyleName() {
-		return style_name;
+		return styleName;
 	}
 
-	public void setStyleName(String style_name) {
-		this.style_name = style_name;
+	public void setStyleName(String styleName) {
+		this.styleName = styleName;
 	}
 
 	public Type getType() {
@@ -84,8 +89,8 @@ public class Style implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((style_id == null) ? 0 : style_id.hashCode());
-		result = prime * result + ((style_name == null) ? 0 : style_name.hashCode());
+		result = prime * result + ((styleId == null) ? 0 : styleId.hashCode());
+		result = prime * result + ((styleName == null) ? 0 : styleName.hashCode());
 		return result;
 	}
 
@@ -98,15 +103,15 @@ public class Style implements Serializable {
 		if (!(obj instanceof Style))
 			return false;
 		Style other = (Style) obj;
-		if (style_id == null) {
-			if (other.style_id != null)
+		if (styleId == null) {
+			if (other.styleId != null)
 				return false;
-		} else if (!style_id.equals(other.style_id))
+		} else if (!styleId.equals(other.styleId))
 			return false;
-		if (style_name == null) {
-			if (other.style_name != null)
+		if (styleName == null) {
+			if (other.styleName != null)
 				return false;
-		} else if (!style_name.equals(other.style_name))
+		} else if (!styleName.equals(other.styleName))
 			return false;
 		return true;
 	}
