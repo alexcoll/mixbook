@@ -115,11 +115,11 @@ public class RecipeDaoImpl extends AbstractDao<Integer, Recipe> implements Recip
 		SQLQuery countQuery = getSession().createSQLQuery("SELECT number_of_ingredients as result FROM recipe WHERE recipe_id = :recipe_id AND user_recipe_id = :user_recipe_id").setParameter("recipe_id", recipe.getRecipeId()).setParameter("user_recipe_id", user.getUserId());
 		countQuery.addScalar("result", new IntegerType());
 		Integer tempNum = (Integer) countQuery.uniqueResult();
-		int number_of_ingredients = tempNum.intValue();
-		if (number_of_ingredients == 0) {
+		int numberOfIngredients = tempNum.intValue();
+		if (numberOfIngredients == 0) {
 			throw new InvalidPermissionsException("Invalid permissions!");
 		}
-		if (number_of_ingredients == 10) {
+		if (numberOfIngredients == 10) {
 			throw new MaxRecipeIngredientsException("Maximum number of ingredients in recipe exceeded!");
 		}
 		Set<Brand> brands = recipe.getBrands();
@@ -130,8 +130,8 @@ public class RecipeDaoImpl extends AbstractDao<Integer, Recipe> implements Recip
 		}
 		SQLQuery searchQuery = getSession().createSQLQuery("SELECT brand_id FROM brand WHERE brand_name = ?");
 		searchQuery.setParameter(0, tempBrand.getBrandName());
-		Integer brand_id = ((BigInteger) searchQuery.uniqueResult()).intValue();
-		tempBrand.setBrandId(brand_id);
+		Integer brandId = ((BigInteger) searchQuery.uniqueResult()).intValue();
+		tempBrand.setBrandId(brandId);
 		SQLQuery insertQuery = getSession().createSQLQuery("" + "INSERT INTO recipe_has_brand(recipe_recipe_id,brand_brand_id)VALUES(?,?)");
 		insertQuery.setParameter(0, recipe.getRecipeId());
 		insertQuery.setParameter(1, tempBrand.getBrandId());
@@ -151,11 +151,11 @@ public class RecipeDaoImpl extends AbstractDao<Integer, Recipe> implements Recip
 		SQLQuery countQuery = getSession().createSQLQuery("SELECT number_of_ingredients as result FROM recipe WHERE recipe_id = :recipe_id AND user_recipe_id = :user_recipe_id").setParameter("recipe_id", recipe.getRecipeId()).setParameter("user_recipe_id", user.getUserId());
 		countQuery.addScalar("result", new IntegerType());
 		Integer tempNum = (Integer) countQuery.uniqueResult();
-		int number_of_ingredients = tempNum.intValue();
-		if (number_of_ingredients == 0) {
+		int numberOfIngredients = tempNum.intValue();
+		if (numberOfIngredients == 0) {
 			throw new InvalidPermissionsException("Invalid permissions!");
 		}
-		if (number_of_ingredients == 1) {
+		if (numberOfIngredients == 1) {
 			throw new NotEnoughRecipeIngredientsException("Not enough ingredients in recipe!");
 		}
 		Set<Brand> brands = recipe.getBrands();
@@ -166,8 +166,8 @@ public class RecipeDaoImpl extends AbstractDao<Integer, Recipe> implements Recip
 		}
 		SQLQuery searchQuery = getSession().createSQLQuery("SELECT brand_id FROM brand WHERE brand_name = ?");
 		searchQuery.setParameter(0, tempBrand.getBrandName());
-		Integer brand_id = ((BigInteger) searchQuery.uniqueResult()).intValue();
-		tempBrand.setBrandId(brand_id);
+		Integer brandId = ((BigInteger) searchQuery.uniqueResult()).intValue();
+		tempBrand.setBrandId(brandId);
 		SQLQuery deleteQuery = getSession().createSQLQuery("DELETE FROM recipe_has_brand WHERE recipe_recipe_id=:recipe_recipe_id AND brand_brand_id=:brand_brand_id").setParameter("recipe_recipe_id", recipe.getRecipeId()).setParameter("brand_brand_id", tempBrand.getBrandId());
 		int numRowsAffected = deleteQuery.executeUpdate();
 		if (numRowsAffected > 0) {

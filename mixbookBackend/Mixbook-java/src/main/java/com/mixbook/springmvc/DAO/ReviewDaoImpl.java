@@ -38,8 +38,8 @@ public class ReviewDaoImpl extends AbstractDao<Integer, UserRecipeHasReview> imp
 		SQLQuery query = getSession().createSQLQuery("SELECT COUNT(*) FROM recipe WHERE recipe_id = ? AND user_recipe_id != ?");
 		query.setParameter(0, review.getRecipe().getRecipeId());
 		query.setParameter(1, user.getUserId());
-		Object countobj = query.list().get(0);
-		int count = ((Number) countobj).intValue();
+		Object countObj = query.list().get(0);
+		int count = ((Number) countObj).intValue();
 		if (count < 1) {
 			throw new ReviewOwnRecipeException("Attempted to review own recipe or recipe does not exist!");
 		}
@@ -79,16 +79,16 @@ public class ReviewDaoImpl extends AbstractDao<Integer, UserRecipeHasReview> imp
 			lookupQuery.setParameter(1, review.getRecipe().getRecipeId());
 			lookupQuery.addScalar("result", new IntegerType());
 			Integer tempNum = (Integer) lookupQuery.uniqueResult();
-			int previous_rating = tempNum.intValue();
+			int previousRating = tempNum.intValue();
 			SQLQuery updateQuery = getSession().createSQLQuery("UPDATE users_recipe_has_review SET review_commentary = ?, rating = ? WHERE users_user_id = ? AND recipe_recipe_id = ?");
 			updateQuery.setParameter(0, review.getReviewCommentary());
 			updateQuery.setParameter(1, review.getRating());
 			updateQuery.setParameter(2, user.getUserId());
 			updateQuery.setParameter(3, review.getRecipe().getRecipeId());
 			int numRowsAffected = updateQuery.executeUpdate();
-			if (previous_rating > review.getRating() && numRowsAffected > 0) {
+			if (previousRating > review.getRating() && numRowsAffected > 0) {
 				updateQuery = getSession().createSQLQuery("UPDATE recipe SET total_rating = total_rating - ? WHERE recipe_id = ?");
-				int resultantRating = previous_rating - review.getRating();
+				int resultantRating = previousRating - review.getRating();
 				updateQuery.setParameter(0, resultantRating);
 				updateQuery.setParameter(1, review.getRecipe().getRecipeId());
 				updateQuery.executeUpdate();
@@ -100,9 +100,9 @@ public class ReviewDaoImpl extends AbstractDao<Integer, UserRecipeHasReview> imp
 				q.setParameter("user_id", userId);
 				q.executeUpdate();
 			}
-			else if (previous_rating < review.getRating() && numRowsAffected > 0) {
+			else if (previousRating < review.getRating() && numRowsAffected > 0) {
 				updateQuery = getSession().createSQLQuery("UPDATE recipe SET total_rating = total_rating + ? WHERE recipe_id = ?");
-				int resultantRating = review.getRating() - previous_rating;
+				int resultantRating = review.getRating() - previousRating;
 				updateQuery.setParameter(0, resultantRating);
 				updateQuery.setParameter(1, review.getRecipe().getRecipeId());
 				updateQuery.executeUpdate();
@@ -136,15 +136,15 @@ public class ReviewDaoImpl extends AbstractDao<Integer, UserRecipeHasReview> imp
 			lookupQuery.setParameter(1, review.getRecipe().getRecipeId());
 			lookupQuery.addScalar("result", new IntegerType());
 			Integer tempNum = (Integer) lookupQuery.uniqueResult();
-			int previous_rating = tempNum.intValue();
+			int previousRating = tempNum.intValue();
 			SQLQuery updateQuery = getSession().createSQLQuery("UPDATE users_recipe_has_review SET rating = ? WHERE users_user_id = ? AND recipe_recipe_id = ?");
 			updateQuery.setParameter(0, review.getRating());
 			updateQuery.setParameter(1, user.getUserId());
 			updateQuery.setParameter(2, review.getRecipe().getRecipeId());
 			int numRowsAffected = updateQuery.executeUpdate();
-			if (previous_rating > review.getRating() && numRowsAffected > 0) {
+			if (previousRating > review.getRating() && numRowsAffected > 0) {
 				updateQuery = getSession().createSQLQuery("UPDATE recipe SET total_rating = total_rating - ? WHERE recipe_id = ?");
-				int resultantRating = previous_rating - review.getRating();
+				int resultantRating = previousRating - review.getRating();
 				updateQuery.setParameter(0, resultantRating);
 				updateQuery.setParameter(1, review.getRecipe().getRecipeId());
 				updateQuery.executeUpdate();
@@ -156,9 +156,9 @@ public class ReviewDaoImpl extends AbstractDao<Integer, UserRecipeHasReview> imp
 				q.setParameter("user_id", userId);
 				q.executeUpdate();
 			}
-			else if (previous_rating < review.getRating() && numRowsAffected > 0) {
+			else if (previousRating < review.getRating() && numRowsAffected > 0) {
 				updateQuery = getSession().createSQLQuery("UPDATE recipe SET total_rating = total_rating + ? WHERE recipe_id = ?");
-				int resultantRating = review.getRating() - previous_rating;
+				int resultantRating = review.getRating() - previousRating;
 				updateQuery.setParameter(0, resultantRating);
 				updateQuery.setParameter(1, review.getRecipe().getRecipeId());
 				updateQuery.executeUpdate();
@@ -188,21 +188,21 @@ public class ReviewDaoImpl extends AbstractDao<Integer, UserRecipeHasReview> imp
 		lookupQuery.setParameter(1, review.getRecipe().getRecipeId());
 		lookupQuery.addScalar("result", new IntegerType());
 		Integer tempNum = (Integer) lookupQuery.uniqueResult();
-		int previous_rating = tempNum.intValue();
+		int previousRating = tempNum.intValue();
 		Query q = getSession().createSQLQuery("DELETE FROM users_recipe_has_review WHERE users_user_id = ? AND recipe_recipe_id = ?");
 		q.setParameter(0, user.getUserId());
 		q.setParameter(1, review.getRecipe().getRecipeId());
 		int numRowsAffected = q.executeUpdate();
 		if (numRowsAffected > 0) {
 			SQLQuery updateQuery = getSession().createSQLQuery("UPDATE recipe SET number_of_ratings = number_of_ratings - 1, total_rating = total_rating - ? WHERE recipe_id = ?");
-			updateQuery.setParameter(0, previous_rating);
+			updateQuery.setParameter(0, previousRating);
 			updateQuery.setParameter(1, review.getRecipe().getRecipeId());
 			updateQuery.executeUpdate();
 			NativeQuery query = getSession().createNativeQuery("SELECT user_recipe_id FROM recipe WHERE recipe_id = :recipe_id");
 			query.setParameter("recipe_id", review.getRecipe().getRecipeId());
 			Integer userId = ((BigInteger) q.getSingleResult()).intValue();
 			query = getSession().createNativeQuery("UPDATE users SET sum_of_personal_recipe_ratings = sum_of_personal_recipe_ratings - :rating, number_of_personal_recipe_ratings = number_of_personal_recipe_ratings - 1 WHERE user_id = :user_id");
-			query.setParameter("rating", previous_rating);
+			query.setParameter("rating", previousRating);
 			query.setParameter("user_id", userId);
 			query.executeUpdate();
 		}
