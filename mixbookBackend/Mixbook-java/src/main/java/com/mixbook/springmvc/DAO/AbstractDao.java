@@ -3,7 +3,6 @@ package com.mixbook.springmvc.DAO;
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
  
-import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
@@ -40,10 +39,6 @@ public abstract class AbstractDao<PK extends Serializable, T> {
 
 	public void delete(T entity) {
 		getSession().delete(entity);
-	}
-
-	protected Criteria createEntityCriteria(){
-		return getSession().createCriteria(persistentClass);
 	}
  
 }

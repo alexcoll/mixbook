@@ -7,9 +7,7 @@ import javax.persistence.PersistenceException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import org.hibernate.Criteria;
 import org.hibernate.SQLQuery;
-import org.hibernate.criterion.Restrictions;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -26,16 +24,16 @@ public class UserDaoImpl extends AbstractDao<Integer, User> implements UserDao {
 	private static final Logger logger = LogManager.getLogger(UserDaoImpl.class);
 
 	public User findByEntityUsername(String username) throws Exception {
-		Criteria crit = createEntityCriteria();
-		crit.add(Restrictions.eq("username", username));
-		User user = (User)crit.uniqueResult();
+		Query query = getSession().createQuery("select u from User u where u.username = :username");
+		query.setParameter("username", username);
+		User user = (User) query.getSingleResult();
 		return user;
 	}
 	
 	public User findByEntityEmail(String email) throws Exception {
-		Criteria crit = createEntityCriteria();
-		crit.add(Restrictions.eq("email", email));
-		User user = (User)crit.uniqueResult();
+		Query query = getSession().createQuery("select u from User u where u.email = :email");
+		query.setParameter("email", email);
+		User user = (User) query.getSingleResult();
 		return user;
 	}
 
