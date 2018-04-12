@@ -17,18 +17,23 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
 @Entity
 @Table(name="brand")
+@JsonInclude(Include.NON_EMPTY)
 public class Brand implements Serializable {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)	
-	private Integer brand_id;
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name = "brand_id", nullable = false)
+	private Integer brandId;
 
 	@NotNull
 	@Size(max=255)   
 	@Column(name = "brand_name", nullable = false)
-	private String brand_name;
+	private String brandName;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "style_brand_id", nullable = false)
@@ -44,29 +49,29 @@ public class Brand implements Serializable {
 
 	}
 
-	public Brand(Integer brand_id, String brand_name, Style style, 
+	public Brand(Integer brandId, String brandName, Style style, 
 			Set<User> users, Set<Recipe> recipes) {
-		this.brand_id = brand_id;
-		this.brand_name = brand_name;
+		this.brandId = brandId;
+		this.brandName = brandName;
 		this.style = style;
 		this.users = users;
 		this.recipes = recipes;
 	}
 
 	public Integer getBrandId() {
-		return brand_id;
+		return brandId;
 	}
 
-	public void setBrandId(Integer brand_id) {
-		this.brand_id = brand_id;
+	public void setBrandId(Integer brandId) {
+		this.brandId = brandId;
 	}
 
 	public String getBrandName() {
-		return brand_name;
+		return brandName;
 	}
 
-	public void setBrandName(String brand_name) {
-		this.brand_name = brand_name;
+	public void setBrandName(String brandName) {
+		this.brandName = brandName;
 	}
 
 	public Style getStyle() {
@@ -97,8 +102,8 @@ public class Brand implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((brand_id == null) ? 0 : brand_id.hashCode());
-		result = prime * result + ((brand_name == null) ? 0 : brand_name.hashCode());
+		result = prime * result + ((brandId == null) ? 0 : brandId.hashCode());
+		result = prime * result + ((brandName == null) ? 0 : brandName.hashCode());
 		return result;
 	}
 
@@ -111,15 +116,15 @@ public class Brand implements Serializable {
 		if (!(obj instanceof Brand))
 			return false;
 		Brand other = (Brand) obj;
-		if (brand_id == null) {
-			if (other.brand_id != null)
+		if (brandId == null) {
+			if (other.brandId != null)
 				return false;
-		} else if (!brand_id.equals(other.brand_id))
+		} else if (!brandId.equals(other.brandId))
 			return false;
-		if (brand_name == null) {
-			if (other.brand_name != null)
+		if (brandName == null) {
+			if (other.brandName != null)
 				return false;
-		} else if (!brand_name.equals(other.brand_name))
+		} else if (!brandName.equals(other.brandName))
 			return false;
 		return true;
 	}

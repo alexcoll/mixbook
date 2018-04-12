@@ -42,7 +42,7 @@ public class RecipeDaoImpl extends AbstractDao<Integer, Recipe> implements Recip
 		for (Brand brand : temp) {
 			brandName.add(brand.getBrandName());
 		}
-		Query searchQuery = getSession().createQuery("FROM Brand brand WHERE brand.brand_name IN (:brandNames)");
+		Query searchQuery = getSession().createQuery("FROM Brand brand WHERE brand.brandName IN (:brandNames)");
 		searchQuery.setParameterList("brandNames", brandName);
 		List<Brand> brandList = searchQuery.getResultList();
 		if (brandList.size() != recipe.getBrands().size()) {
