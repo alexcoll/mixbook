@@ -14,15 +14,12 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 @Entity
 @Table(name = "badges")
 @JsonInclude(Include.NON_EMPTY)
-@JsonAutoDetect(fieldVisibility = Visibility.ANY, getterVisibility = Visibility.NONE, setterVisibility = Visibility.NONE, creatorVisibility = Visibility.NONE)
 public class Badge implements Serializable {
 
 	@Id
@@ -45,19 +42,19 @@ public class Badge implements Serializable {
 
 	}
 	
-	public Badge(Integer badge_id, String badgeName) {
-		this.badgeId = badge_id;
+	public Badge(Integer badgeId, String badgeName) {
+		this.badgeId = badgeId;
 		this.badgeName = badgeName;
 	}
 	
-	public Badge(Integer badge_id, String badgeName, String badgeDescription) {
-		this.badgeId = badge_id;
+	public Badge(Integer badgeId, String badgeName, String badgeDescription) {
+		this.badgeId = badgeId;
 		this.badgeName = badgeName;
 		this.badgeDescription = badgeDescription;
 	}
 
-	public Badge(Integer badge_id, String badgeName, String badgeDescription, Set<User> users) {
-		this.badgeId = badge_id;
+	public Badge(Integer badgeId, String badgeName, String badgeDescription, Set<User> users) {
+		this.badgeId = badgeId;
 		this.badgeName = badgeName;
 		this.badgeDescription = badgeDescription;
 		this.users = users;
