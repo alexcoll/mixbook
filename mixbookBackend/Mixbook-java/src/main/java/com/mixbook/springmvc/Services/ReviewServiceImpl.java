@@ -118,14 +118,14 @@ public class ReviewServiceImpl implements ReviewService {
 		return true;
 	}
 
-	public boolean isReviewCommentaryValid(String review_commentary) throws UnknownServerErrorException {
-		if (review_commentary == null) {
+	public boolean isReviewCommentaryValid(String reviewCommentary) throws UnknownServerErrorException {
+		if (reviewCommentary == null) {
 			return false;
 		}
-		if (review_commentary.isEmpty()) {
+		if (reviewCommentary.isEmpty()) {
 			return false;
 		}
-		if (review_commentary.length() > 16383 || review_commentary.length() < 2) {
+		if (reviewCommentary.length() > 16383 || reviewCommentary.length() < 2) {
 			return false;
 		}
 		return true;

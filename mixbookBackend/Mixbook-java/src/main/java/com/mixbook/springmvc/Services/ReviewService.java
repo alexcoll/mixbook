@@ -31,7 +31,7 @@ public interface ReviewService {
 
 	boolean isReviewInfoValid(UserRecipeHasReview review) throws UnknownServerErrorException;
 
-	boolean isReviewCommentaryValid(String review_commentary) throws UnknownServerErrorException;
+	boolean isReviewCommentaryValid(String reviewCommentary) throws UnknownServerErrorException;
 
 	boolean isReviewRatingValid(int rating) throws UnknownServerErrorException;
 

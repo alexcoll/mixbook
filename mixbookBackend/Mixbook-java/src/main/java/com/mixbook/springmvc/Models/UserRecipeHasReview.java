@@ -33,7 +33,7 @@ public class UserRecipeHasReview implements Serializable {
 	private Recipe recipe;
 
 	@Column(name = "review_commentary", nullable = false)
-	private String review_commentary;
+	private String reviewCommentary;
 
 	@Column(name = "rating", nullable = false)
 	private int rating;
@@ -51,11 +51,11 @@ public class UserRecipeHasReview implements Serializable {
 
 	}
 
-	public UserRecipeHasReview(Integer usersRecipeHasReviewId, User user, Recipe recipe, String review_commentary, int rating, int numberOfUpVotes, int numberOfDownVotes, Set<UserRatingReview> userRatingReviews) {
+	public UserRecipeHasReview(Integer usersRecipeHasReviewId, User user, Recipe recipe, String reviewCommentary, int rating, int numberOfUpVotes, int numberOfDownVotes, Set<UserRatingReview> userRatingReviews) {
 		this.usersRecipeHasReviewId = usersRecipeHasReviewId;
 		this.user = user;
 		this.recipe = recipe;
-		this.review_commentary = review_commentary;
+		this.reviewCommentary = reviewCommentary;
 		this.rating = rating;
 		this.numberOfUpVotes = numberOfUpVotes;
 		this.numberOfDownVotes = numberOfDownVotes;
@@ -87,11 +87,11 @@ public class UserRecipeHasReview implements Serializable {
 	}
 
 	public String getReviewCommentary() {
-		return review_commentary;
+		return reviewCommentary;
 	}
 
-	public void setReviewCommentary(String review_commentary) {
-		this.review_commentary = review_commentary;
+	public void setReviewCommentary(String reviewCommentary) {
+		this.reviewCommentary = reviewCommentary;
 	}
 
 	public int getRating() {
