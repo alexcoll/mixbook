@@ -7,7 +7,7 @@ import javax.persistence.PersistenceException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import org.hibernate.SQLQuery;
+import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -58,8 +58,8 @@ public class UserDaoImpl extends AbstractDao<Integer, User> implements UserDao {
 
 	public void deleteUser(User user) throws Exception {
 		user = this.userService.findByEntityUsername(user.getUsername());
-		SQLQuery updateQuery = getSession().createSQLQuery("UPDATE recipe r1 INNER JOIN users_recipe_has_review r2 ON r1.recipe_id = r2.recipe_recipe_id SET r1.number_of_ratings = r1.number_of_ratings - 1, r1.total_rating = r1.total_rating - r2.rating WHERE r2.users_user_id = ?");
-		updateQuery.setParameter(0, user.getUserId());
+		NativeQuery updateQuery = getSession().createNativeQuery("UPDATE recipe r1 INNER JOIN users_recipe_has_review r2 ON r1.recipe_id = r2.recipe_recipe_id SET r1.number_of_ratings = r1.number_of_ratings - 1, r1.total_rating = r1.total_rating - r2.rating WHERE r2.users_user_id = :users_user_id");
+		updateQuery.setParameter("users_user_id", user.getUserId());
 		updateQuery.executeUpdate();
 		Query query = getSession().createQuery("delete User where username = :username");
 		query.setParameter("username", user.getUsername());
