@@ -61,11 +61,11 @@ public class RecipeDaoImpl extends AbstractDao<Integer, Recipe> implements Recip
 		user = this.userService.findByEntityUsername(user.getUsername());
 		//Updating both recipe directions and recipe difficulty
 		if (recipe.getDirections() != null && recipe.getDifficulty() != 0) {
-			Query q = getSession().createQuery("update Recipe set directions = :directions, difficulty = :difficulty where recipe_id = :recipe_id AND user_recipe_id = :user_recipe_id");
+			Query q = getSession().createQuery("update Recipe r set r.directions = :directions, r.difficulty = :difficulty where r.recipeId = :recipeId AND r.user.userId = :userRecipeId");
 			q.setParameter("directions", recipe.getDirections());
 			q.setParameter("difficulty", recipe.getDifficulty());
-			q.setParameter("recipe_id", recipe.getRecipeId());
-			q.setParameter("user_recipe_id", user.getUserId());
+			q.setParameter("recipeId", recipe.getRecipeId());
+			q.setParameter("userRecipeId", user.getUserId());
 			int numRowsAffected = q.executeUpdate();
 			if (numRowsAffected < 1) {
 				throw new NoDataWasChangedException("No data was changed! Info may have been invalid!");
@@ -73,10 +73,10 @@ public class RecipeDaoImpl extends AbstractDao<Integer, Recipe> implements Recip
 		}
 		//Updating recipe directions
 		else if (recipe.getDirections() != null) {
-			Query q = getSession().createQuery("update Recipe set directions = :directions where recipe_id = :recipe_id AND user_recipe_id = :user_recipe_id");
+			Query q = getSession().createQuery("update Recipe r set r.directions = :directions where r.recipeId = :recipeId AND r.user.userId = :userRecipeId");
 			q.setParameter("directions", recipe.getDirections());
-			q.setParameter("recipe_id", recipe.getRecipeId());
-			q.setParameter("user_recipe_id", user.getUserId());
+			q.setParameter("recipeId", recipe.getRecipeId());
+			q.setParameter("userRecipeId", user.getUserId());
 			int numRowsAffected = q.executeUpdate();
 			if (numRowsAffected < 1) {
 				throw new NoDataWasChangedException("No data was changed! Info may have been invalid!");
@@ -84,10 +84,10 @@ public class RecipeDaoImpl extends AbstractDao<Integer, Recipe> implements Recip
 		}
 		//Updating recipe difficulty
 		else if (recipe.getDifficulty() != 0) {
-			Query q = getSession().createQuery("update Recipe set difficulty = :difficulty where recipe_id = :recipe_id AND user_recipe_id = :user_recipe_id");
+			Query q = getSession().createQuery("update Recipe r set r.difficulty = :difficulty where r.recipeId = :recipeId AND r.user.userId = :userRecipeId");
 			q.setParameter("difficulty", recipe.getDifficulty());
-			q.setParameter("recipe_id", recipe.getRecipeId());
-			q.setParameter("user_recipe_id", user.getUserId());
+			q.setParameter("recipeId", recipe.getRecipeId());
+			q.setParameter("userRecipeId", user.getUserId());
 			int numRowsAffected = q.executeUpdate();
 			if (numRowsAffected < 1) {
 				throw new NoDataWasChangedException("No data was changed! Info may have been invalid!");
@@ -101,9 +101,9 @@ public class RecipeDaoImpl extends AbstractDao<Integer, Recipe> implements Recip
 
 	public void deleteRecipe(Recipe recipe, User user) throws NoDataWasChangedException, Exception {
 		user = this.userService.findByEntityUsername(user.getUsername());
-		Query query = getSession().createQuery("delete Recipe where recipe_id = :recipe_id AND user_recipe_id = :user_recipe_id");
-		query.setParameter("recipe_id", recipe.getRecipeId());
-		query.setParameter("user_recipe_id", user.getUserId());
+		Query query = getSession().createQuery("delete Recipe r where r.recipeId = :recipeId AND r.user.userId = :userRecipeId");
+		query.setParameter("recipeId", recipe.getRecipeId());
+		query.setParameter("userRecipeId", user.getUserId());
 		int numRowsAffected = query.executeUpdate();
 		if (numRowsAffected < 1) {
 			throw new NoDataWasChangedException("No data was changed! Info may have been invalid!");

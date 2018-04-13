@@ -29,28 +29,29 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 public class Recipe implements Serializable {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)	
-	private Integer recipe_id;
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name = "recipe_id", nullable = false)
+	private Integer recipeId;
 
 	@NotNull
 	@Size(max=255)   
 	@Column(name = "recipe_name", nullable = false)
-	private String recipe_name;
+	private String recipeName;
 
 	@Column(name = "directions", nullable = false)
 	private String directions;
 
 	@Column(name = "number_of_ingredients", nullable = false)
-	private int number_of_ingredients;
+	private int numberOfIngredients;
 
 	@Column(name = "difficulty", nullable = false)
 	private int difficulty;
 
 	@Column(name = "number_of_ratings", nullable = false)
-	private int number_of_ratings;
+	private int numberOfRatings;
 
 	@Column(name = "total_rating", nullable = false)
-	private int total_rating;
+	private int totalRating;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_recipe_id", nullable = false)
@@ -73,25 +74,25 @@ public class Recipe implements Serializable {
 
 	}
 
-	public Recipe(Integer recipe_id) {
-		this.recipe_id = recipe_id;
+	public Recipe(Integer recipeId) {
+		this.recipeId = recipeId;
 	}
 
-	public Recipe(String recipe_name) {
-		this.recipe_name = recipe_name;
+	public Recipe(String recipeName) {
+		this.recipeName = recipeName;
 	}
 
-	public Recipe(Integer recipe_id, String recipe_name, String directions,
-			int number_of_ingredients, int difficulty, int number_of_ratings,
-			int	total_rating, User user, Set<Brand> brands, Set<UserRecipeHasReview> userRecipeHasReviews,
+	public Recipe(Integer recipeId, String recipeName, String directions,
+			int numberOfIngredients, int difficulty, int numberOfRatings,
+			int	totalRating, User user, Set<Brand> brands, Set<UserRecipeHasReview> userRecipeHasReviews,
 			Set<Recommendation> recommendations) {
-		this.recipe_id = recipe_id;
-		this.recipe_name = recipe_name;
+		this.recipeId = recipeId;
+		this.recipeName = recipeName;
 		this.directions = directions;
-		this.number_of_ingredients = number_of_ingredients;
+		this.numberOfIngredients = numberOfIngredients;
 		this.difficulty = difficulty;
-		this.number_of_ratings = number_of_ratings;
-		this.total_rating = total_rating;
+		this.numberOfRatings = numberOfRatings;
+		this.totalRating = totalRating;
 		this.user = user;
 		this.brands = brands;
 		this.userRecipeHasReviews = userRecipeHasReviews;
@@ -99,19 +100,19 @@ public class Recipe implements Serializable {
 	}
 
 	public Integer getRecipeId() {
-		return recipe_id;
+		return recipeId;
 	}
 
-	public void setRecipeId(Integer recipe_id) {
-		this.recipe_id = recipe_id;
+	public void setRecipeId(Integer recipeId) {
+		this.recipeId = recipeId;
 	}
 
 	public String getRecipeName() {
-		return recipe_name;
+		return recipeName;
 	}
 
-	public void setRecipeName(String recipe_name) {
-		this.recipe_name = recipe_name;
+	public void setRecipeName(String recipeName) {
+		this.recipeName = recipeName;
 	}
 
 	public String getDirections() {
@@ -123,11 +124,11 @@ public class Recipe implements Serializable {
 	}
 
 	public int getNumberOfIngredients() {
-		return number_of_ingredients;
+		return numberOfIngredients;
 	}
 
-	public void setNumberOfIngredients(int number_of_ingredients) {
-		this.number_of_ingredients = number_of_ingredients;
+	public void setNumberOfIngredients(int numberOfIngredients) {
+		this.numberOfIngredients = numberOfIngredients;
 	}
 
 	public int getDifficulty() {
@@ -139,19 +140,19 @@ public class Recipe implements Serializable {
 	}
 
 	public int getNumberOfRatings() {
-		return number_of_ratings;
+		return numberOfRatings;
 	}
 
-	public void setNumberOfRatings(int number_of_ratings) {
-		this.number_of_ratings = number_of_ratings;
+	public void setNumberOfRatings(int numberOfRatings) {
+		this.numberOfRatings = numberOfRatings;
 	}
 
 	public int getTotalRating() {
-		return total_rating;
+		return totalRating;
 	}
 
-	public void setTotalRating(int total_rating) {
-		this.total_rating = total_rating;
+	public void setTotalRating(int totalRating) {
+		this.totalRating = totalRating;
 	}
 
 	public User getUser() {
@@ -190,8 +191,8 @@ public class Recipe implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((recipe_id == null) ? 0 : recipe_id.hashCode());
-		result = prime * result + ((recipe_name == null) ? 0 : recipe_name.hashCode());
+		result = prime * result + ((recipeId == null) ? 0 : recipeId.hashCode());
+		result = prime * result + ((recipeName == null) ? 0 : recipeName.hashCode());
 		return result;
 	}
 
@@ -204,15 +205,15 @@ public class Recipe implements Serializable {
 		if (!(obj instanceof Recipe))
 			return false;
 		Recipe other = (Recipe) obj;
-		if (recipe_id == null) {
-			if (other.recipe_id != null)
+		if (recipeId == null) {
+			if (other.recipeId != null)
 				return false;
-		} else if (!recipe_id.equals(other.recipe_id))
+		} else if (!recipeId.equals(other.recipeId))
 			return false;
-		if (recipe_name == null) {
-			if (other.recipe_name != null)
+		if (recipeName == null) {
+			if (other.recipeName != null)
 				return false;
-		} else if (!recipe_name.equals(other.recipe_name))
+		} else if (!recipeName.equals(other.recipeName))
 			return false;
 		return true;
 	}

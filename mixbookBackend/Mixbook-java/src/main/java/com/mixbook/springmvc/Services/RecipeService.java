@@ -41,7 +41,7 @@ public interface RecipeService {
 
 	boolean isRecipeInfoValid(Recipe recipe) throws UnknownServerErrorException;
 
-	boolean isRecipeNameValid(String recipe_name) throws UnknownServerErrorException;
+	boolean isRecipeNameValid(String recipeName) throws UnknownServerErrorException;
 
 	boolean areRecipeDirectionsValid(String directions) throws UnknownServerErrorException;
 

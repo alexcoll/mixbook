@@ -183,17 +183,17 @@ public class RecipeServiceImpl implements RecipeService {
 		return true;
 	}
 
-	public boolean isRecipeNameValid(String recipe_name) throws UnknownServerErrorException {
-		if (recipe_name == null) {
+	public boolean isRecipeNameValid(String recipeName) throws UnknownServerErrorException {
+		if (recipeName == null) {
 			return false;
 		}
-		if (recipe_name.isEmpty()) {
+		if (recipeName.isEmpty()) {
 			return false;
 		}
 		try {
 			Pattern pattern = Pattern.compile(RECIPE_PATTERN, Pattern.UNICODE_CHARACTER_CLASS);
-			Matcher matcher = pattern.matcher(recipe_name);
-			if (recipe_name.length() > 63 || recipe_name.length() < 2 || !matcher.matches()) {
+			Matcher matcher = pattern.matcher(recipeName);
+			if (recipeName.length() > 63 || recipeName.length() < 2 || !matcher.matches()) {
 				return false;
 			}
 		} catch (PatternSyntaxException e) {
