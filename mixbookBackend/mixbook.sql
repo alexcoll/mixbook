@@ -1084,7 +1084,7 @@ VALUES (267, 17, 'Creme De Pomme');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
 VALUES (268, 17, 'Creme De Violette');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
-VALUES (269, 17, 'Rumchata');
+VALUES (269, 17, 'RumChata');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
 VALUES (270, 18, 'Apple Liqueur');
 INSERT INTO brand(brand_id, style_brand_id, brand_name)
