@@ -1,6 +1,7 @@
 package com.mixbook.springmvc.DAO;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.PersistenceException;
@@ -8,11 +9,8 @@ import javax.persistence.PersistenceException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import org.hibernate.SQLQuery;
 import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
-import org.hibernate.type.IntegerType;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -35,24 +33,24 @@ public class ReviewDaoImpl extends AbstractDao<Integer, UserRecipeHasReview> imp
 
 	public void createReview(UserRecipeHasReview review) throws ReviewOwnRecipeException, PersistenceException, NoDataWasChangedException, Exception {
 		User user = this.userService.findByEntityUsername(review.getUser().getUsername());
-		SQLQuery query = getSession().createSQLQuery("SELECT COUNT(*) FROM recipe WHERE recipe_id = ? AND user_recipe_id != ?");
-		query.setParameter(0, review.getRecipe().getRecipeId());
-		query.setParameter(1, user.getUserId());
-		Object countObj = query.list().get(0);
+		NativeQuery query = getSession().createNativeQuery("SELECT COUNT(*) FROM recipe WHERE recipe_id = :recipe_id AND user_recipe_id != :user_recipe_id");
+		query.setParameter("recipe_id", review.getRecipe().getRecipeId());
+		query.setParameter("user_recipe_id", user.getUserId());
+		Object countObj = query.getResultList().get(0);
 		int count = ((Number) countObj).intValue();
 		if (count < 1) {
 			throw new ReviewOwnRecipeException("Attempted to review own recipe or recipe does not exist!");
 		}
-		SQLQuery insertQuery = getSession().createSQLQuery("" + "INSERT INTO users_recipe_has_review(users_user_id,recipe_recipe_id,review_commentary,rating,number_of_up_votes,number_of_down_votes)VALUES(?,?,?,?,0,0)");
-		insertQuery.setParameter(0, user.getUserId());
-		insertQuery.setParameter(1, review.getRecipe().getRecipeId());
-		insertQuery.setParameter(2, review.getReviewCommentary());
-		insertQuery.setParameter(3, review.getRating());
+		NativeQuery insertQuery = getSession().createNativeQuery("INSERT INTO users_recipe_has_review (users_user_id, recipe_recipe_id, review_commentary, rating, number_of_up_votes, number_of_down_votes) VALUES (:users_user_id, :recipe_recipe_id, :review_commentary, :rating, 0, 0)");
+		insertQuery.setParameter("users_user_id", user.getUserId());
+		insertQuery.setParameter("recipe_recipe_id", review.getRecipe().getRecipeId());
+		insertQuery.setParameter("review_commentary", review.getReviewCommentary());
+		insertQuery.setParameter("rating", review.getRating());
 		int numRowsAffected = insertQuery.executeUpdate();
 		if (numRowsAffected > 0) {
-			SQLQuery updateQuery = getSession().createSQLQuery("UPDATE recipe SET number_of_ratings = number_of_ratings + 1, total_rating = total_rating + ? WHERE recipe_id = ?");
-			updateQuery.setParameter(0, review.getRating());
-			updateQuery.setParameter(1, review.getRecipe().getRecipeId());
+			NativeQuery updateQuery = getSession().createNativeQuery("UPDATE recipe SET number_of_ratings = number_of_ratings + 1, total_rating = total_rating + :rating WHERE recipe_id = :recipe_id");
+			updateQuery.setParameter("rating", review.getRating());
+			updateQuery.setParameter("recipe_id", review.getRecipe().getRecipeId());
 			updateQuery.executeUpdate();
 			NativeQuery q = getSession().createNativeQuery("UPDATE users SET number_of_ratings = number_of_ratings + 1 WHERE user_id = :user_id");
 			q.setParameter("user_id", user.getUserId());
@@ -74,23 +72,22 @@ public class ReviewDaoImpl extends AbstractDao<Integer, UserRecipeHasReview> imp
 		User user = this.userService.findByEntityUsername(review.getUser().getUsername());
 		//Updating both review commentary and review rating
 		if (review.getReviewCommentary() != null && review.getRating() != 0) {
-			SQLQuery lookupQuery = getSession().createSQLQuery("SELECT rating as result FROM users_recipe_has_review WHERE users_user_id = ? AND recipe_recipe_id = ?");
-			lookupQuery.setParameter(0, user.getUserId());
-			lookupQuery.setParameter(1, review.getRecipe().getRecipeId());
-			lookupQuery.addScalar("result", new IntegerType());
-			Integer tempNum = (Integer) lookupQuery.uniqueResult();
+			NativeQuery lookupQuery = getSession().createNativeQuery("SELECT rating AS result FROM users_recipe_has_review WHERE users_user_id = :users_user_id AND recipe_recipe_id = :recipe_recipe_id");
+			lookupQuery.setParameter("users_user_id", user.getUserId());
+			lookupQuery.setParameter("recipe_recipe_id", review.getRecipe().getRecipeId());
+			Integer tempNum = (Integer) lookupQuery.getSingleResult();
 			int previousRating = tempNum.intValue();
-			SQLQuery updateQuery = getSession().createSQLQuery("UPDATE users_recipe_has_review SET review_commentary = ?, rating = ? WHERE users_user_id = ? AND recipe_recipe_id = ?");
-			updateQuery.setParameter(0, review.getReviewCommentary());
-			updateQuery.setParameter(1, review.getRating());
-			updateQuery.setParameter(2, user.getUserId());
-			updateQuery.setParameter(3, review.getRecipe().getRecipeId());
+			NativeQuery updateQuery = getSession().createNativeQuery("UPDATE users_recipe_has_review SET review_commentary = :review_commentary, rating = :rating WHERE users_user_id = :users_user_id AND recipe_recipe_id = :recipe_recipe_id");
+			updateQuery.setParameter("review_commentary", review.getReviewCommentary());
+			updateQuery.setParameter("rating", review.getRating());
+			updateQuery.setParameter("users_user_id", user.getUserId());
+			updateQuery.setParameter("recipe_recipe_id", review.getRecipe().getRecipeId());
 			int numRowsAffected = updateQuery.executeUpdate();
 			if (previousRating > review.getRating() && numRowsAffected > 0) {
-				updateQuery = getSession().createSQLQuery("UPDATE recipe SET total_rating = total_rating - ? WHERE recipe_id = ?");
+				updateQuery = getSession().createNativeQuery("UPDATE recipe SET total_rating = total_rating - :rating WHERE recipe_id = :recipe_id");
 				int resultantRating = previousRating - review.getRating();
-				updateQuery.setParameter(0, resultantRating);
-				updateQuery.setParameter(1, review.getRecipe().getRecipeId());
+				updateQuery.setParameter("rating", resultantRating);
+				updateQuery.setParameter("recipe_id", review.getRecipe().getRecipeId());
 				updateQuery.executeUpdate();
 				NativeQuery q = getSession().createNativeQuery("SELECT user_recipe_id FROM recipe WHERE recipe_id = :recipe_id");
 				q.setParameter("recipe_id", review.getRecipe().getRecipeId());
@@ -101,10 +98,10 @@ public class ReviewDaoImpl extends AbstractDao<Integer, UserRecipeHasReview> imp
 				q.executeUpdate();
 			}
 			else if (previousRating < review.getRating() && numRowsAffected > 0) {
-				updateQuery = getSession().createSQLQuery("UPDATE recipe SET total_rating = total_rating + ? WHERE recipe_id = ?");
+				updateQuery = getSession().createNativeQuery("UPDATE recipe SET total_rating = total_rating + :rating WHERE recipe_id = :recipe_id");
 				int resultantRating = review.getRating() - previousRating;
-				updateQuery.setParameter(0, resultantRating);
-				updateQuery.setParameter(1, review.getRecipe().getRecipeId());
+				updateQuery.setParameter("rating", resultantRating);
+				updateQuery.setParameter("recipe_id", review.getRecipe().getRecipeId());
 				updateQuery.executeUpdate();
 				NativeQuery q = getSession().createNativeQuery("SELECT user_recipe_id FROM recipe WHERE recipe_id = :recipe_id");
 				q.setParameter("recipe_id", review.getRecipe().getRecipeId());
@@ -120,10 +117,10 @@ public class ReviewDaoImpl extends AbstractDao<Integer, UserRecipeHasReview> imp
 		}
 		//Updating review commentary
 		else if (review.getReviewCommentary() != null) {
-			SQLQuery updateQuery = getSession().createSQLQuery("UPDATE users_recipe_has_review SET review_commentary = ? WHERE users_user_id = ? AND recipe_recipe_id = ?");
-			updateQuery.setParameter(0, review.getReviewCommentary());
-			updateQuery.setParameter(1, user.getUserId());
-			updateQuery.setParameter(2, review.getRecipe().getRecipeId());
+			NativeQuery updateQuery = getSession().createNativeQuery("UPDATE users_recipe_has_review SET review_commentary = :review_commentary WHERE users_user_id = :users_user_id AND recipe_recipe_id = :recipe_recipe_id");
+			updateQuery.setParameter("review_commentary", review.getReviewCommentary());
+			updateQuery.setParameter("users_user_id", user.getUserId());
+			updateQuery.setParameter("recipe_recipe_id", review.getRecipe().getRecipeId());
 			int numRowsAffected = updateQuery.executeUpdate();
 			if (numRowsAffected < 0) {
 				throw new NoDataWasChangedException("No data was changed! Info may have been invalid!");
@@ -131,22 +128,21 @@ public class ReviewDaoImpl extends AbstractDao<Integer, UserRecipeHasReview> imp
 		}
 		//Updating review rating
 		else if (review.getRating() != 0) {
-			SQLQuery lookupQuery = getSession().createSQLQuery("SELECT rating as result FROM users_recipe_has_review WHERE users_user_id = ? AND recipe_recipe_id = ?");
-			lookupQuery.setParameter(0, user.getUserId());
-			lookupQuery.setParameter(1, review.getRecipe().getRecipeId());
-			lookupQuery.addScalar("result", new IntegerType());
-			Integer tempNum = (Integer) lookupQuery.uniqueResult();
+			NativeQuery lookupQuery = getSession().createNativeQuery("SELECT rating AS result FROM users_recipe_has_review WHERE users_user_id = :users_user_id AND recipe_recipe_id = :recipe_recipe_id");
+			lookupQuery.setParameter("users_user_id", user.getUserId());
+			lookupQuery.setParameter("recipe_recipe_id", review.getRecipe().getRecipeId());
+			Integer tempNum = (Integer) lookupQuery.getSingleResult();
 			int previousRating = tempNum.intValue();
-			SQLQuery updateQuery = getSession().createSQLQuery("UPDATE users_recipe_has_review SET rating = ? WHERE users_user_id = ? AND recipe_recipe_id = ?");
-			updateQuery.setParameter(0, review.getRating());
-			updateQuery.setParameter(1, user.getUserId());
-			updateQuery.setParameter(2, review.getRecipe().getRecipeId());
+			NativeQuery updateQuery = getSession().createSQLQuery("UPDATE users_recipe_has_review SET rating = :rating WHERE users_user_id = :users_user_id AND recipe_recipe_id = :recipe_recipe_id");
+			updateQuery.setParameter("rating", review.getRating());
+			updateQuery.setParameter("users_user_id", user.getUserId());
+			updateQuery.setParameter("recipe_recipe_id", review.getRecipe().getRecipeId());
 			int numRowsAffected = updateQuery.executeUpdate();
 			if (previousRating > review.getRating() && numRowsAffected > 0) {
-				updateQuery = getSession().createSQLQuery("UPDATE recipe SET total_rating = total_rating - ? WHERE recipe_id = ?");
+				updateQuery = getSession().createNativeQuery("UPDATE recipe SET total_rating = total_rating - :rating WHERE recipe_id = :recipe_id");
 				int resultantRating = previousRating - review.getRating();
-				updateQuery.setParameter(0, resultantRating);
-				updateQuery.setParameter(1, review.getRecipe().getRecipeId());
+				updateQuery.setParameter("rating", resultantRating);
+				updateQuery.setParameter("recipe_id", review.getRecipe().getRecipeId());
 				updateQuery.executeUpdate();
 				NativeQuery q = getSession().createNativeQuery("SELECT user_recipe_id FROM recipe WHERE recipe_id = :recipe_id");
 				q.setParameter("recipe_id", review.getRecipe().getRecipeId());
@@ -157,10 +153,10 @@ public class ReviewDaoImpl extends AbstractDao<Integer, UserRecipeHasReview> imp
 				q.executeUpdate();
 			}
 			else if (previousRating < review.getRating() && numRowsAffected > 0) {
-				updateQuery = getSession().createSQLQuery("UPDATE recipe SET total_rating = total_rating + ? WHERE recipe_id = ?");
+				updateQuery = getSession().createNativeQuery("UPDATE recipe SET total_rating = total_rating + :rating WHERE recipe_id = :recipe_id");
 				int resultantRating = review.getRating() - previousRating;
-				updateQuery.setParameter(0, resultantRating);
-				updateQuery.setParameter(1, review.getRecipe().getRecipeId());
+				updateQuery.setParameter("rating", resultantRating);
+				updateQuery.setParameter("recipe_id", review.getRecipe().getRecipeId());
 				updateQuery.executeUpdate();
 				NativeQuery q = getSession().createNativeQuery("SELECT user_recipe_id FROM recipe WHERE recipe_id = :recipe_id");
 				q.setParameter("recipe_id", review.getRecipe().getRecipeId());
@@ -183,20 +179,19 @@ public class ReviewDaoImpl extends AbstractDao<Integer, UserRecipeHasReview> imp
 
 	public void deleteReview(UserRecipeHasReview review) throws NoDataWasChangedException, Exception {
 		User user = this.userService.findByEntityUsername(review.getUser().getUsername());
-		SQLQuery lookupQuery = getSession().createSQLQuery("SELECT rating as result FROM users_recipe_has_review WHERE users_user_id = ? AND recipe_recipe_id = ?");
-		lookupQuery.setParameter(0, user.getUserId());
-		lookupQuery.setParameter(1, review.getRecipe().getRecipeId());
-		lookupQuery.addScalar("result", new IntegerType());
-		Integer tempNum = (Integer) lookupQuery.uniqueResult();
+		NativeQuery lookupQuery = getSession().createNativeQuery("SELECT rating AS result FROM users_recipe_has_review WHERE users_user_id = :users_user_id AND recipe_recipe_id = :recipe_recipe_id");
+		lookupQuery.setParameter("users_user_id", user.getUserId());
+		lookupQuery.setParameter("recipe_recipe_id", review.getRecipe().getRecipeId());
+		Integer tempNum = (Integer) lookupQuery.getSingleResult();
 		int previousRating = tempNum.intValue();
-		Query q = getSession().createSQLQuery("DELETE FROM users_recipe_has_review WHERE users_user_id = ? AND recipe_recipe_id = ?");
-		q.setParameter(0, user.getUserId());
-		q.setParameter(1, review.getRecipe().getRecipeId());
+		NativeQuery q = getSession().createNativeQuery("DELETE FROM users_recipe_has_review WHERE users_user_id = :users_user_id AND recipe_recipe_id = :recipe_recipe_id");
+		q.setParameter("users_user_id", user.getUserId());
+		q.setParameter("recipe_recipe_id", review.getRecipe().getRecipeId());
 		int numRowsAffected = q.executeUpdate();
 		if (numRowsAffected > 0) {
-			SQLQuery updateQuery = getSession().createSQLQuery("UPDATE recipe SET number_of_ratings = number_of_ratings - 1, total_rating = total_rating - ? WHERE recipe_id = ?");
-			updateQuery.setParameter(0, previousRating);
-			updateQuery.setParameter(1, review.getRecipe().getRecipeId());
+			NativeQuery updateQuery = getSession().createNativeQuery("UPDATE recipe SET number_of_ratings = number_of_ratings - 1, total_rating = total_rating - :rating WHERE recipe_id = :recipe_id");
+			updateQuery.setParameter("rating", previousRating);
+			updateQuery.setParameter("recipe_id", review.getRecipe().getRecipeId());
 			updateQuery.executeUpdate();
 			NativeQuery query = getSession().createNativeQuery("SELECT user_recipe_id FROM recipe WHERE recipe_id = :recipe_id");
 			query.setParameter("recipe_id", review.getRecipe().getRecipeId());
@@ -286,17 +281,17 @@ public class ReviewDaoImpl extends AbstractDao<Integer, UserRecipeHasReview> imp
 	}
 
 	public List<UserRecipeHasReview> viewAllReviewsByUser(User user) throws Exception {
-		Query q = getSession().createSQLQuery("SELECT users_recipe_has_review_id, recipe_recipe_id, review_commentary, rating, number_of_up_votes, number_of_down_votes FROM users_recipe_has_review WHERE users_user_id = ?");
+		Query q = getSession().createQuery("select r from UserRecipeHasReview r where r.user.userId = :userId");
 		user = this.userService.findByEntityUsername(user.getUsername());
-		q.setParameter(0, user.getUserId());
-		List result = q.list();
+		q.setParameter("userId", user.getUserId());
+		List<UserRecipeHasReview> result = (List<UserRecipeHasReview>) q.getResultList();
 		return result;
 	}
 
 	public List<UserRecipeHasReview> loadReviewsForRecipe(Recipe recipe) throws Exception {
-		Query q = getSession().createSQLQuery("SELECT r.users_recipe_has_review_id, r.review_commentary, r.rating, u.username, r.number_of_up_votes, r.number_of_down_votes FROM users_recipe_has_review AS r INNER JOIN users AS u ON r.users_user_id = u.user_id WHERE r.recipe_recipe_id = ?");
-		q.setParameter(0, recipe.getRecipeId());
-		List result = q.list();
+		Query q = getSession().createQuery("select r from UserRecipeHasReview r inner join fetch r.user where r.recipe.recipeId = :recipeId");
+		q.setParameter("recipeId", recipe.getRecipeId());
+		List<UserRecipeHasReview> result = (List<UserRecipeHasReview>) q.getResultList();
 		return result;
 	}
 

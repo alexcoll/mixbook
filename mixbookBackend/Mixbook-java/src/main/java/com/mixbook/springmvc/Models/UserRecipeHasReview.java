@@ -15,8 +15,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
 @Entity
 @Table(name="users_recipe_has_review")
+@JsonInclude(Include.NON_EMPTY)
 public class UserRecipeHasReview implements Serializable {
 	
 	@Id

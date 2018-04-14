@@ -211,6 +211,9 @@ public class ReviewController {
 		List<UserRecipeHasReview> tempList = new ArrayList<UserRecipeHasReview>();
 		try {
 			tempList = reviewService.viewAllReviewsByUser(user);
+			for (UserRecipeHasReview review : tempList) {
+				review.setUser(null);
+			}
 		} catch (UnknownServerErrorException e) {
 			List<UserRecipeHasReview> emptyList = new ArrayList<UserRecipeHasReview>();
 			return new ResponseEntity<List<UserRecipeHasReview>>(emptyList, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -229,6 +232,11 @@ public class ReviewController {
 		Recipe recipe = new Recipe(id);
 		try {
 			tempList = reviewService.loadReviewsForRecipe(recipe);
+			for (UserRecipeHasReview review : tempList) {
+				User user = new User();
+				user.setUsername(review.getUser().getUsername());
+				review.setUser(user);
+			}
 		} catch (UnknownServerErrorException e) {
 			return new ResponseEntity<List<UserRecipeHasReview>>(emptyList, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
