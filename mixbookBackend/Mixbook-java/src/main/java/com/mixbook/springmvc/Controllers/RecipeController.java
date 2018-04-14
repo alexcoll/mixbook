@@ -207,6 +207,11 @@ public class RecipeController {
 		List<Recipe> emptyList = new ArrayList<Recipe>();
 		try {
 			tempList = recipeService.getAllRecipes();
+			for (Recipe recipe : tempList) {
+				User user = new User();
+				user.setUsername(recipe.getUser().getUsername());
+				recipe.setUser(user);
+			}
 		} catch (UnknownServerErrorException e) {
 			return new ResponseEntity<List<Recipe>>(emptyList, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
@@ -228,6 +233,11 @@ public class RecipeController {
 		Recipe recipe = new Recipe(name);
 		try {
 			tempList = recipeService.searchForRecipeByName(recipe);
+			for (Recipe r : tempList) {
+				User user = new User();
+				user.setUsername(r.getUser().getUsername());
+				r.setUser(user);
+			}
 		} catch (UnknownServerErrorException e) {
 			return new ResponseEntity<List<Recipe>>(emptyList, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
@@ -244,6 +254,11 @@ public class RecipeController {
 		List<Recipe> tempList = new ArrayList<Recipe>();
 		try {
 			tempList = recipeService.getAllRecipesCreatedByUser(user);
+			for (Recipe recipe : tempList) {
+				User u = new User();
+				u.setUsername(recipe.getUser().getUsername());
+				recipe.setUser(u);
+			}
 		} catch (UnknownServerErrorException e) {
 			List<Recipe> emptyList = new ArrayList<Recipe>();
 			return new ResponseEntity<List<Recipe>>(emptyList, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -261,6 +276,11 @@ public class RecipeController {
 		List<Recipe> tempList = new ArrayList<Recipe>();
 		try {
 			tempList = recipeService.getAllRecipesUserCanMake(user);
+			for (Recipe recipe : tempList) {
+				User u = new User();
+				u.setUsername(recipe.getUser().getUsername());
+				recipe.setUser(u);
+			}
 		} catch (UnknownServerErrorException e) {
 			List<Recipe> emptyList = new ArrayList<Recipe>();
 			return new ResponseEntity<List<Recipe>>(emptyList, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -270,7 +290,7 @@ public class RecipeController {
 
 	@RequestMapping(value = "/getAllRecipesAnonymousUserCanMake", method = RequestMethod.GET)
 	@ResponseBody
-	public ResponseEntity<List<Recipe>> getAllRecipesAnonymousUserCanMake(@RequestParam("brands") List<String> brands) {
+	public ResponseEntity<List<Recipe>> getAllRecipesAnonymousUserCanMake(@RequestParam("brands") List<Integer> brands) {
 		List<Recipe> tempList = new ArrayList<Recipe>();
 		List<Recipe> emptyList = new ArrayList<Recipe>();
 		if (brands.size() < 1 || brands.size() > 20) {
@@ -278,6 +298,11 @@ public class RecipeController {
 		}
 		try {
 			tempList = recipeService.getAllRecipesAnonymousUserCanMake(brands);
+			for (Recipe recipe : tempList) {
+				User user = new User();
+				user.setUsername(recipe.getUser().getUsername());
+				recipe.setUser(user);
+			}
 		} catch (UnknownServerErrorException e) {
 			return new ResponseEntity<List<Recipe>>(emptyList, HttpStatus.INTERNAL_SERVER_ERROR);
 		}

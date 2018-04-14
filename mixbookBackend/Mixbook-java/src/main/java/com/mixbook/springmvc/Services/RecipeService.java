@@ -35,7 +35,7 @@ public interface RecipeService {
 
 	List<Recipe> getAllRecipesUserCanMake(User user) throws UnknownServerErrorException;
 
-	List<Recipe> getAllRecipesAnonymousUserCanMake(List<String> brands) throws UnknownServerErrorException;
+	List<Recipe> getAllRecipesAnonymousUserCanMake(List<Integer> brands) throws UnknownServerErrorException;
 
 	List<Brand> getBrandsForRecipe(Recipe recipe) throws UnknownServerErrorException;
 
