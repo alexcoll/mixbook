@@ -10,6 +10,7 @@ import com.mixbook.springmvc.Models.Style;
 @Repository("styleDao")
 public class StyleDaoImpl extends AbstractDao<Integer, Style> implements StyleDao {
 
+	@Override
 	public List<Style> getStyles() throws Exception {
 		Query query = getSession().createQuery("select s from Style s");
 		List<Style> result = (List<Style>) query.getResultList();

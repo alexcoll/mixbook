@@ -24,6 +24,7 @@ public class InventoryServiceImpl implements InventoryService {
 	@Autowired
 	private InventoryDao dao;
 
+	@Override
 	public void addIngredientToInventory(Brand brand, User user) throws MaxInventoryItemsException, InvalidIngredientException, PersistenceException, NoDataWasChangedException, UnknownServerErrorException {
 		try {
 			dao.addIngredientToInventory(brand, user);
@@ -40,6 +41,7 @@ public class InventoryServiceImpl implements InventoryService {
 		}
 	}
 
+	@Override
 	public void deleteIngredientFromInventory(Brand brand, User user) throws InvalidIngredientException, NoDataWasChangedException, UnknownServerErrorException {
 		try {
 			dao.deleteIngredientFromInventory(brand, user);
@@ -52,6 +54,7 @@ public class InventoryServiceImpl implements InventoryService {
 		}
 	}
 
+	@Override
 	public List<Brand> getUserInventory(User user) throws UnknownServerErrorException {
 		List<Brand> tempList = new ArrayList<Brand>();
 		try {

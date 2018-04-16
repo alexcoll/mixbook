@@ -32,6 +32,7 @@ public class RecipeDaoImpl extends AbstractDao<Integer, Recipe> implements Recip
 
 	private static final Logger logger = LogManager.getLogger(RecipeDaoImpl.class);
 
+	@Override
 	public void createRecipe(Recipe recipe, User user) throws NullPointerException, PersistenceException, Exception {
 		user = this.userService.findByEntityUsername(user.getUsername());
 		Set<String> brandName = new HashSet<String>(recipe.getBrands().size());
@@ -54,6 +55,7 @@ public class RecipeDaoImpl extends AbstractDao<Integer, Recipe> implements Recip
 		q.executeUpdate();
 	}
 
+	@Override
 	public void editRecipe(Recipe recipe, User user) throws NoDataWasChangedException, Exception {
 		user = this.userService.findByEntityUsername(user.getUsername());
 		//Updating both recipe directions and recipe difficulty
@@ -96,6 +98,7 @@ public class RecipeDaoImpl extends AbstractDao<Integer, Recipe> implements Recip
 		}
 	}
 
+	@Override
 	public void deleteRecipe(Recipe recipe, User user) throws NoDataWasChangedException, Exception {
 		user = this.userService.findByEntityUsername(user.getUsername());
 		Query query = getSession().createQuery("delete Recipe r where r.recipeId = :recipeId AND r.user.userId = :userRecipeId");
@@ -107,6 +110,7 @@ public class RecipeDaoImpl extends AbstractDao<Integer, Recipe> implements Recip
 		}
 	}
 
+	@Override
 	public void addIngredientToRecipe(Recipe recipe, User user) throws InvalidPermissionsException, MaxRecipeIngredientsException, NullPointerException, PersistenceException, NoDataWasChangedException, Exception {
 		user = this.userService.findByEntityUsername(user.getUsername());
 		NativeQuery countQuery = getSession().createNativeQuery("SELECT number_of_ingredients as result FROM recipe WHERE recipe_id = :recipe_id AND user_recipe_id = :user_recipe_id");
@@ -144,6 +148,7 @@ public class RecipeDaoImpl extends AbstractDao<Integer, Recipe> implements Recip
 		}
 	}
 
+	@Override
 	public void removeIngredientFromRecipe(Recipe recipe, User user) throws InvalidPermissionsException, NotEnoughRecipeIngredientsException, NullPointerException, NoDataWasChangedException, Exception {
 		user = this.userService.findByEntityUsername(user.getUsername());
 		NativeQuery countQuery = getSession().createNativeQuery("SELECT number_of_ingredients as result FROM recipe WHERE recipe_id = :recipe_id AND user_recipe_id = :user_recipe_id");
@@ -181,12 +186,14 @@ public class RecipeDaoImpl extends AbstractDao<Integer, Recipe> implements Recip
 		}
 	}
 
+	@Override
 	public List<Recipe> getAllRecipes() throws Exception {
 		Query q = getSession().createQuery("select r from Recipe r inner join fetch r.user");
 		List<Recipe> result = (List<Recipe>) q.getResultList();
 		return result;
 	}
 
+	@Override
 	public List<Recipe> searchForRecipeByName(Recipe recipe) throws Exception {
 		Query q = getSession().createQuery("select r from Recipe r inner join fetch r.user where r.recipeName like :recipeName");
 		q.setParameter("recipeName", recipe.getRecipeName());
@@ -194,6 +201,7 @@ public class RecipeDaoImpl extends AbstractDao<Integer, Recipe> implements Recip
 		return result;
 	}
 
+	@Override
 	public List<Recipe> getAllRecipesCreatedByUser(User user) throws Exception {
 		user = this.userService.findByEntityUsername(user.getUsername());
 		Query q = getSession().createQuery("select r from Recipe r where r.user.userId = :userId");
@@ -202,6 +210,7 @@ public class RecipeDaoImpl extends AbstractDao<Integer, Recipe> implements Recip
 		return result;
 	}
 
+	@Override
 	public List<Recipe> getAllRecipesUserCanMake(User user) throws Exception {
 		user = this.userService.findByEntityUsername(user.getUsername());
 		Query q = getSession().createQuery("select r from Recipe r inner join fetch r.user where r.recipeId not in (select rb.recipeId from Recipe rb join rb.brands b where b.brandId not in (select br.brandId from Brand br join br.users us where us.userId = :userId))");
@@ -210,6 +219,7 @@ public class RecipeDaoImpl extends AbstractDao<Integer, Recipe> implements Recip
 		return result;
 	}
 
+	@Override
 	public List<Recipe> getAllRecipesAnonymousUserCanMake(List<Integer> brands) throws Exception {
 		Query q = getSession().createQuery("select r from Recipe r inner join fetch r.user where r.recipeId not in (select rb.recipeId from Recipe rb join rb.brands b where b.brandId not in (:brands))");
 		q.setParameter("brands", brands);
@@ -217,6 +227,7 @@ public class RecipeDaoImpl extends AbstractDao<Integer, Recipe> implements Recip
 		return result;
 	}
 
+	@Override
 	public List<Brand> getBrandsForRecipe(Recipe recipe) throws Exception {
 		Query q = getSession().createQuery("select b from Brand b inner join b.recipes r where r.recipeId = :recipeId");
 		q.setParameter("recipeId", recipe.getRecipeId());

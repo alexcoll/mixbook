@@ -18,6 +18,7 @@ public class StyleServiceImpl implements StyleService {
 	@Autowired
 	private StyleDao dao;
 
+	@Override
 	public List<Style> getStyles() throws UnknownServerErrorException {
 		List<Style> tempList = new ArrayList<Style>();
 		try {

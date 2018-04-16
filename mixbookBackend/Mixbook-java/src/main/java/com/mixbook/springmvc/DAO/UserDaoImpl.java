@@ -23,13 +23,15 @@ public class UserDaoImpl extends AbstractDao<Integer, User> implements UserDao {
 
 	private static final Logger logger = LogManager.getLogger(UserDaoImpl.class);
 
+	@Override
 	public User findByEntityUsername(String username) throws Exception {
 		Query query = getSession().createQuery("select u from User u where u.username = :username");
 		query.setParameter("username", username);
 		User user = (User) query.getSingleResult();
 		return user;
 	}
-	
+
+	@Override
 	public User findByEntityEmail(String email) throws Exception {
 		Query query = getSession().createQuery("select u from User u where u.email = :email");
 		query.setParameter("email", email);
@@ -52,10 +54,12 @@ public class UserDaoImpl extends AbstractDao<Integer, User> implements UserDao {
 		return users;
 	}
 
+	@Override
 	public void createUser(User user) throws PersistenceException, Exception {
 		persist(user);
 	}
 
+	@Override
 	public void deleteUser(User user) throws Exception {
 		user = this.userService.findByEntityUsername(user.getUsername());
 		NativeQuery updateQuery = getSession().createNativeQuery("UPDATE recipe r1 INNER JOIN users_recipe_has_review r2 ON r1.recipe_id = r2.recipe_recipe_id SET r1.number_of_ratings = r1.number_of_ratings - 1, r1.total_rating = r1.total_rating - r2.rating WHERE r2.users_user_id = :users_user_id");
@@ -66,6 +70,7 @@ public class UserDaoImpl extends AbstractDao<Integer, User> implements UserDao {
 		query.executeUpdate();
 	}
 
+	@Override
 	public void editUser(User user) throws Exception {
 		//Updating both first name and last name
 		if (user.getFirstName() != null && user.getLastName() != null ) {
@@ -96,6 +101,7 @@ public class UserDaoImpl extends AbstractDao<Integer, User> implements UserDao {
 
 	}
 
+	@Override
 	public void changeEmail(User user) throws PersistenceException, Exception {
 		Query q = getSession().createQuery("update User set email = :email where username = :username");
 		q.setParameter("email", user.getEmail());
@@ -103,6 +109,7 @@ public class UserDaoImpl extends AbstractDao<Integer, User> implements UserDao {
 		q.executeUpdate();
 	}
 
+	@Override
 	public void changePassword(User user) throws Exception {
 		Query q = getSession().createQuery("update User set password = :password, lastPasswordResetDate = :lastPasswordResetDate where username = :username");
 		q.setParameter("password", user.getPassword());

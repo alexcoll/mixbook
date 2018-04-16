@@ -37,7 +37,8 @@ public class UserServiceImpl implements UserService {
 	private static final String EMAIL_PATTERN =
 			"^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
 					+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
-	
+
+	@Override
 	public User findByEntityUsername(String username) throws UnknownServerErrorException {
 		try {
 			User user = dao.findByEntityUsername(username);
@@ -46,7 +47,8 @@ public class UserServiceImpl implements UserService {
 			throw new UnknownServerErrorException("Unknown server error!");
 		}
 	}
-	
+
+	@Override
 	public User findByEntityEmail(String email) throws UnknownServerErrorException {
 		try {
 			User user = dao.findByEntityEmail(email);
@@ -55,7 +57,8 @@ public class UserServiceImpl implements UserService {
 			throw new UnknownServerErrorException("Unknown server error!");
 		}
 	}
-	
+
+	@Override
 	public User loadUserProfile(String username) throws PersistenceException, UnknownServerErrorException {
 		try {
 			User user = dao.loadUserProfile(username);
@@ -76,6 +79,7 @@ public class UserServiceImpl implements UserService {
 		}
 	}
 
+	@Override
 	public void createUser(User user) throws PersistenceException, UnknownServerErrorException {
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		user.setEnabled(true);
@@ -105,6 +109,7 @@ public class UserServiceImpl implements UserService {
 		}
 	}
 
+	@Override
 	public void deleteUser(User user) throws UnknownServerErrorException {
 		try {
 			dao.deleteUser(user);
@@ -113,6 +118,7 @@ public class UserServiceImpl implements UserService {
 		}
 	}
 
+	@Override
 	public void editUser(User user) throws UnknownServerErrorException {
 		try {
 			dao.editUser(user);
@@ -121,6 +127,7 @@ public class UserServiceImpl implements UserService {
 		}
 	}
 
+	@Override
 	public void changeEmail(User user) throws PersistenceException, UnknownServerErrorException {
 		try {
 			dao.changeEmail(user);
@@ -131,6 +138,7 @@ public class UserServiceImpl implements UserService {
 		}
 	}
 
+	@Override
 	public void changePassword(User user) throws UnknownServerErrorException {
 		Date currentTimestamp = new Date();
 		user.setLastPasswordResetDate(currentTimestamp);

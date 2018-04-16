@@ -18,6 +18,7 @@ public class BrandServiceImpl implements BrandService {
 	@Autowired
 	private BrandDao dao;
 
+	@Override
 	public List<Brand> getBrands() throws UnknownServerErrorException {
 		List<Brand> tempList = new ArrayList<Brand>();
 		try {

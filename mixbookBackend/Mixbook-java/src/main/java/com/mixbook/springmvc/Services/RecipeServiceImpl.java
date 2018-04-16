@@ -32,7 +32,8 @@ public class RecipeServiceImpl implements RecipeService {
 	private RecipeDao dao;
 
 	private static final String RECIPE_PATTERN = "^[\\p{L} .'-@&!#$%*_()]+$";
-	
+
+	@Override
 	public void createRecipe(Recipe recipe, User user) throws InvalidIngredientException, PersistenceException, UnknownServerErrorException {
 		try {
 			recipe.setNumberOfIngredients(recipe.getBrands().size());
@@ -51,6 +52,7 @@ public class RecipeServiceImpl implements RecipeService {
 		}
 	}
 
+	@Override
 	public void editRecipe(Recipe recipe, User user) throws NoDataWasChangedException, UnknownServerErrorException {
 		try {
 			dao.editRecipe(recipe, user);
@@ -61,6 +63,7 @@ public class RecipeServiceImpl implements RecipeService {
 		}
 	}
 
+	@Override
 	public void deleteRecipe(Recipe recipe, User user) throws NoDataWasChangedException, UnknownServerErrorException {
 		try {	
 			dao.deleteRecipe(recipe, user);
@@ -71,6 +74,7 @@ public class RecipeServiceImpl implements RecipeService {
 		}
 	}
 
+	@Override
 	public void addIngredientToRecipe(Recipe recipe, User user) throws InvalidPermissionsException, MaxRecipeIngredientsException, InvalidIngredientException, PersistenceException, NoDataWasChangedException, UnknownServerErrorException {
 		try {
 			dao.addIngredientToRecipe(recipe, user);
@@ -89,6 +93,7 @@ public class RecipeServiceImpl implements RecipeService {
 		}
 	}
 
+	@Override
 	public void removeIngredientFromRecipe(Recipe recipe, User user) throws InvalidPermissionsException, NotEnoughRecipeIngredientsException, InvalidIngredientException, NoDataWasChangedException, UnknownServerErrorException {
 		try {
 			dao.removeIngredientFromRecipe(recipe, user);
@@ -105,6 +110,7 @@ public class RecipeServiceImpl implements RecipeService {
 		}
 	}
 
+	@Override
 	public List<Recipe> getAllRecipes() throws UnknownServerErrorException {
 		try {
 			List<Recipe> tempList = dao.getAllRecipes();
@@ -114,6 +120,7 @@ public class RecipeServiceImpl implements RecipeService {
 		}
 	}
 
+	@Override
 	public List<Recipe> searchForRecipeByName(Recipe recipe) throws UnknownServerErrorException {
 		try {
 			List<Recipe> tempList = dao.searchForRecipeByName(recipe);
@@ -123,6 +130,7 @@ public class RecipeServiceImpl implements RecipeService {
 		}
 	}
 
+	@Override
 	public List<Recipe> getAllRecipesCreatedByUser(User user) throws UnknownServerErrorException {
 		List<Recipe> tempList = new ArrayList<Recipe>();
 		try {
@@ -133,6 +141,7 @@ public class RecipeServiceImpl implements RecipeService {
 		}	
 	}
 
+	@Override
 	public List<Recipe> getAllRecipesUserCanMake(User user) throws UnknownServerErrorException {
 		List<Recipe> tempList = new ArrayList<Recipe>();
 		try {
@@ -143,6 +152,7 @@ public class RecipeServiceImpl implements RecipeService {
 		}	
 	}
 
+	@Override
 	public List<Recipe> getAllRecipesAnonymousUserCanMake(List<Integer> brands) throws UnknownServerErrorException {
 		List<Recipe> tempList = new ArrayList<Recipe>();
 		try {
@@ -153,6 +163,7 @@ public class RecipeServiceImpl implements RecipeService {
 		}
 	}
 
+	@Override
 	public List<Brand> getBrandsForRecipe(Recipe recipe) throws UnknownServerErrorException {
 		List<Brand> tempList = new ArrayList<Brand>();
 		try {

@@ -27,7 +27,8 @@ public class ReviewServiceImpl implements ReviewService {
 	
 	@Autowired
 	private UserService userService;
-	
+
+	@Override
 	public void createReview(UserRecipeHasReview review) throws ReviewOwnRecipeException, PersistenceException, NoDataWasChangedException, UnknownServerErrorException {
 		try {
 			review.setNumberOfUpVotes(0);
@@ -44,6 +45,7 @@ public class ReviewServiceImpl implements ReviewService {
 		}
 	}
 
+	@Override
 	public void editReview(UserRecipeHasReview review) throws NoDataWasChangedException, UnknownServerErrorException {
 		try {
 			dao.editReview(review);
@@ -54,6 +56,7 @@ public class ReviewServiceImpl implements ReviewService {
 		}
 	}
 
+	@Override
 	public void deleteReview(UserRecipeHasReview review) throws NoDataWasChangedException, UnknownServerErrorException {
 		try {
 			dao.deleteReview(review);
@@ -88,6 +91,7 @@ public class ReviewServiceImpl implements ReviewService {
 		}
 	}
 
+	@Override
 	public List<UserRecipeHasReview> viewAllReviewsByUser(User user) throws UnknownServerErrorException {
 		try {
 			return dao.viewAllReviewsByUser(user);
@@ -96,6 +100,7 @@ public class ReviewServiceImpl implements ReviewService {
 		}
 	}
 
+	@Override
 	public List<UserRecipeHasReview> loadReviewsForRecipe(Recipe recipe) throws UnknownServerErrorException {
 		try {
 			return dao.loadReviewsForRecipe(recipe);

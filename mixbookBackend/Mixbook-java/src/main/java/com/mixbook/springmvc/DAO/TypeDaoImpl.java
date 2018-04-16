@@ -10,6 +10,7 @@ import com.mixbook.springmvc.Models.Type;
 @Repository("typeDao")
 public class TypeDaoImpl extends AbstractDao<Integer, Type> implements TypeDao {
 
+	@Override
 	public List<Type> getTypes() throws Exception {
 		Query query = getSession().createQuery("select t from Type t");
 		List<Type> result = (List<Type>) query.getResultList();

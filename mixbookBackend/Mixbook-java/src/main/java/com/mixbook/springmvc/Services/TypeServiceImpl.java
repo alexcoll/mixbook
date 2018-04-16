@@ -18,6 +18,7 @@ public class TypeServiceImpl implements TypeService {
 	@Autowired
 	private TypeDao dao;
 
+	@Override
 	public List<Type> getTypes() throws UnknownServerErrorException {
 		List<Type> tempList = new ArrayList<Type>();
 		try {
