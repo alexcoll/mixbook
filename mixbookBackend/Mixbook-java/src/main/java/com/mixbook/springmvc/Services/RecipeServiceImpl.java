@@ -24,13 +24,24 @@ import com.mixbook.springmvc.Models.Brand;
 import com.mixbook.springmvc.Models.Recipe;
 import com.mixbook.springmvc.Models.User;
 
+/**
+ * Provides the concrete implementation of the modular service layer functionality for recipe related tasks for the controller layer.
+ * @author John Tyler Preston
+ * @version 1.0
+ */
 @Service("recipeService")
 @Transactional
 public class RecipeServiceImpl implements RecipeService {
 
+	/**
+	 * Provides ability to access recipe data layer functions.
+	 */
 	@Autowired
 	private RecipeDao dao;
 
+	/**
+	 * REGEX pattern used to validate recipe name.
+	 */
 	private static final String RECIPE_PATTERN = "^[\\p{L} .'-@&!#$%*_()]+$";
 
 	@Override
