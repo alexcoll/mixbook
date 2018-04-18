@@ -11,10 +11,18 @@ import com.mixbook.springmvc.Exceptions.UnknownServerErrorException;
 import com.mixbook.springmvc.Models.Recommendation;
 import com.mixbook.springmvc.Models.User;
 
+/**
+ * Provides the concrete implementation of the modular service layer functionality for recommendation related tasks for the controller layer.
+ * @author John Tyler Preston
+ * @version 1.0
+ */
 @Service("recommendationService")
 @Transactional
 public class RecommendationServiceImpl implements RecommendationService {
-	
+
+	/**
+	 * Provides ability to access recommendation data layer functions.
+	 */
 	@Autowired
 	private RecommendationDao dao;
 
