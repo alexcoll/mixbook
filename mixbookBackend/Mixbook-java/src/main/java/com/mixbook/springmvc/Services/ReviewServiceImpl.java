@@ -109,6 +109,7 @@ public class ReviewServiceImpl implements ReviewService {
 		}
 	}
 
+	@Override
 	public boolean isReviewInfoValid(UserRecipeHasReview review) throws UnknownServerErrorException {
 		try {
 			if (!isReviewCommentaryValid(review.getReviewCommentary())) {
@@ -123,6 +124,7 @@ public class ReviewServiceImpl implements ReviewService {
 		return true;
 	}
 
+	@Override
 	public boolean isReviewCommentaryValid(String reviewCommentary) throws UnknownServerErrorException {
 		if (reviewCommentary == null) {
 			return false;
@@ -136,6 +138,7 @@ public class ReviewServiceImpl implements ReviewService {
 		return true;
 	}
 
+	@Override
 	public boolean isReviewRatingValid(int rating) throws UnknownServerErrorException {
 		if (rating < 1 || rating > 5) {
 			return false;

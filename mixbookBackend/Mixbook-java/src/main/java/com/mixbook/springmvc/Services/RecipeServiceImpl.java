@@ -174,6 +174,7 @@ public class RecipeServiceImpl implements RecipeService {
 		}
 	}
 
+	@Override
 	public boolean isRecipeInfoValid(Recipe recipe) throws UnknownServerErrorException {
 		try {
 			if (!isRecipeNameValid(recipe.getRecipeName())) {
@@ -194,6 +195,7 @@ public class RecipeServiceImpl implements RecipeService {
 		return true;
 	}
 
+	@Override
 	public boolean isRecipeNameValid(String recipeName) throws UnknownServerErrorException {
 		if (recipeName == null) {
 			return false;
@@ -213,6 +215,7 @@ public class RecipeServiceImpl implements RecipeService {
 		return true;
 	}
 
+	@Override
 	public boolean areRecipeDirectionsValid(String directions) throws UnknownServerErrorException {
 		if (directions == null) {
 			return false;
@@ -226,6 +229,7 @@ public class RecipeServiceImpl implements RecipeService {
 		return true;
 	}
 
+	@Override
 	public boolean isRecipeNumberOfIngredientsValid(Set<Brand> brands) {
 		if (brands.size() > 0 && brands.size() < 11) {
 			return true;
@@ -235,6 +239,7 @@ public class RecipeServiceImpl implements RecipeService {
 		}
 	}
 
+	@Override
 	public boolean isRecipeDifficultyValid(int difficulty) {
 		if (difficulty > 0 && difficulty < 6) {
 			return true;

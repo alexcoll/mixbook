@@ -168,6 +168,7 @@ public class UserServiceImpl implements UserService {
 		}
 	}
 
+	@Override
 	public boolean isUserInfoValid(User user) throws UnknownServerErrorException {
 		try {
 			if (!isUserEmailValid(user.getEmail())) {
@@ -191,6 +192,7 @@ public class UserServiceImpl implements UserService {
 		return true;
 	}
 
+	@Override
 	public boolean isUserEmailValid(String email) throws UnknownServerErrorException {
 		if (email == null) {
 			return false;
@@ -210,6 +212,7 @@ public class UserServiceImpl implements UserService {
 		return true;
 	}
 
+	@Override
 	public boolean isUserPasswordValid(String password) throws UnknownServerErrorException {
 		if (password == null) {
 			return false;
@@ -229,6 +232,7 @@ public class UserServiceImpl implements UserService {
 		return true;
 	}
 
+	@Override
 	public boolean isUserUsernameValid(String username) throws UnknownServerErrorException {
 		if (username == null) {
 			return false;
@@ -248,6 +252,7 @@ public class UserServiceImpl implements UserService {
 		return true;
 	}
 
+	@Override
 	public boolean isUserFirstNameValid(String firstName) throws UnknownServerErrorException {
 		if (firstName == null) {
 			return false;
@@ -267,6 +272,7 @@ public class UserServiceImpl implements UserService {
 		return true;
 	}
 
+	@Override
 	public boolean isUserLastNameValid(String lastName) throws UnknownServerErrorException {
 		if (lastName == null) {
 			return false;
