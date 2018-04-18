@@ -6,6 +6,11 @@ import com.mixbook.springmvc.Exceptions.UnknownServerErrorException;
 import com.mixbook.springmvc.Models.Recommendation;
 import com.mixbook.springmvc.Models.User;
 
+/**
+ * Interface to provide modular service layer functionality for recommendation related tasks for the controller layer.
+ * @author John Tyler Preston
+ * @version 1.0
+ */
 public interface RecommendationService {
 
 	/**
