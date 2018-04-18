@@ -15,13 +15,24 @@ import com.mixbook.springmvc.Exceptions.UnknownServerErrorException;
 import com.mixbook.springmvc.Models.Badge;
 import com.mixbook.springmvc.Models.User;
 
+/**
+ * Provides the concrete implementation of the modular service layer functionality for badge related tasks for the controller layer.
+ * @author John Tyler Preston
+ * @version 1.0
+ */
 @Service("badgeService")
 @Transactional
 public class BadgeServiceImpl implements BadgeService {
 
+	/**
+	 * Provides ability to access badge data layer functions.
+	 */
 	@Autowired
 	private BadgeDao dao;
-	
+
+	/**
+	 * Standard logger used to log the exceptions and do audit logging.
+	 */
 	private static final Logger logger = LogManager.getLogger(BadgeServiceImpl.class);
 
 	@Override
@@ -44,7 +55,13 @@ public class BadgeServiceImpl implements BadgeService {
 			logger.error("There was an error", e);
 		}
 	}
-	
+
+	/**
+	 * Determines what, if any, new badges should be granted to a user.
+	 * @param user the user for whom to check for new badges.
+	 * @throws PersistenceException the exception is thrown when an invalid badge is added or is added to a nonexistent user.
+	 * @throws Exception the exception is thrown when an unknown server error occurs.
+	 */
 	private void determineBadgesToAdd(User user) throws PersistenceException, Exception {
 		try {
 			determineRecipeBadgesToAdd(user);
@@ -56,7 +73,12 @@ public class BadgeServiceImpl implements BadgeService {
 			throw new Exception(e);
 		}
 	}
-	
+
+	/**
+	 * Determines what, if any, new recipe badges should be granted to a user.
+	 * @param user the user for whom to check for new recipe badges.
+	 * @throws Exception the exception is thrown when an unknown server error occurs.
+	 */
 	private void determineRecipeBadgesToAdd(User user) throws Exception {
 		int numberOfRecipes = user.getNumberOfRecipes();
 		Badge createdFirstRecipe = new Badge(1, "Created First Recipe", "The user has created their first recipe!");
@@ -85,7 +107,12 @@ public class BadgeServiceImpl implements BadgeService {
 			user.getBadges().add(createdFirstRecipe);
 		}
 	}
-	
+
+	/**
+	 * Determines what, if any, new review badges should be granted to a user.
+	 * @param user the user for whom to check for new review badges.
+	 * @throws Exception the exception is thrown when an unknown server error occurs.
+	 */
 	private void determineReviewBadgesToAdd(User user) throws Exception {
 		int numberOfRatings = user.getNumberOfRatings();
 		Badge createdFirstReview = new Badge(2, "Created First Review", "The user has reviewed their first recipe!");
