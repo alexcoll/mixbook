@@ -18,13 +18,24 @@ import com.mixbook.springmvc.Models.User;
 import com.mixbook.springmvc.Models.UserRatingReview;
 import com.mixbook.springmvc.Models.UserRecipeHasReview;
 
+/**
+ * Provides the concrete implementation of the modular service layer functionality for review related tasks for the controller layer.
+ * @author John Tyler Preston
+ * @version 1.0
+ */
 @Service("reviewService")
 @Transactional
 public class ReviewServiceImpl implements ReviewService {
 
+	/**
+	 * Provides ability to access review data layer functions.
+	 */
 	@Autowired
 	private ReviewDao dao;
-	
+
+	/**
+	 * Provides ability to access user service layer functions.
+	 */
 	@Autowired
 	private UserService userService;
 
