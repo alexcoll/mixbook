@@ -20,20 +20,40 @@ import com.mixbook.springmvc.Models.Authority;
 import com.mixbook.springmvc.Models.AuthorityName;
 import com.mixbook.springmvc.Models.User;
 
+/**
+ * Provides the concrete implementation of the modular service layer functionality for user related tasks for the controller layer.
+ * @author John Tyler Preston
+ * @version 1.0
+ */
 @Service("userService")
 @Transactional
 public class UserServiceImpl implements UserService {
 
+	/**
+	 * Provides ability to access user data layer functions.
+	 */
 	@Autowired
 	private UserDao dao;
 
+	/**
+	 * Provides ability to encrypt/decrypt data.
+	 */
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
+	/**
+	 * REGEX pattern used to validate first and last names.
+	 */
 	private static final String FIRSTLASTNAME_PATTERN = "^\\w+$";
 
+	/**
+	 * REGEX pattern used to validate passwords.
+	 */
 	private static final String PASSWORD_PATTERN = "^(?=.*[\\p{Ll}])(?=.*[\\p{Lu}])(?=.*[\\p{L}])(?=.*\\d)(?=.*[$@$!%*?&])[\\p{Ll}‌​\\p{Lu}\\p{L}\\d$@$!%*?&]{8,}";
 
+	/**
+	 * REGEX pattern used to validate email addresses.
+	 */
 	private static final String EMAIL_PATTERN =
 			"^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
 					+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
@@ -69,7 +89,7 @@ public class UserServiceImpl implements UserService {
 			throw new UnknownServerErrorException("Unknown server error!");
 		}
 	}
-	
+
 	@Override
 	public List<User> loadAllUsers() throws UnknownServerErrorException {
 		try {
@@ -149,7 +169,7 @@ public class UserServiceImpl implements UserService {
 			throw new UnknownServerErrorException("Unknown server error!");
 		}
 	}
-	
+
 	@Override
 	public void lockAccount(User user) throws UnknownServerErrorException {
 		try {
@@ -158,7 +178,7 @@ public class UserServiceImpl implements UserService {
 			throw new UnknownServerErrorException("Unknown server error!");
 		}
 	}
-	
+
 	@Override
 	public void unlockAccount(User user) throws UnknownServerErrorException {
 		try {
