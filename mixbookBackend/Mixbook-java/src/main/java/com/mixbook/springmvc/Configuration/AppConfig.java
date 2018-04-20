@@ -34,6 +34,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
 import com.mixbook.springmvc.Formatters.NameFormatter;
 
+/**
+ * Provides customization options for Spring MVC.
+ * @author John Tyler Preston
+ * @version 1.0
+ */
 @Configuration
 @EnableScheduling
 @EnableAsync
@@ -49,7 +54,11 @@ public class AppConfig extends WebMvcConfigurerAdapter {
 		viewResolver.setSuffix(".jsp");
 		registry.viewResolver(viewResolver);
 	}*/
-	
+
+	/**
+	 * Configures support for loading HTML/HTML5 templates/pages.
+	 * @return a new instance of a template resolver for Thymeleaf.
+	 */
 	@Bean
 	public ITemplateResolver templateResolver() {
 		SpringResourceTemplateResolver templateResolver = new SpringResourceTemplateResolver();
@@ -60,6 +69,10 @@ public class AppConfig extends WebMvcConfigurerAdapter {
 		return templateResolver;
 	}
 
+	/**
+	 * Configures the template engine.
+	 * @return a new instance of a template engine.
+	 */
 	@Bean
 	public SpringTemplateEngine templateEngine() {
 		SpringTemplateEngine templateEngine = new SpringTemplateEngine();
@@ -68,6 +81,10 @@ public class AppConfig extends WebMvcConfigurerAdapter {
 		return templateEngine;
 	}
 
+	/**
+	 * Configures the view resolver.
+	 * @return a new instance of a view resolver.
+	 */
 	@Bean
 	public ViewResolver viewResolver() {
 		ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();
@@ -91,11 +108,19 @@ public class AppConfig extends WebMvcConfigurerAdapter {
 		argumentResolvers.add(new ServletWebArgumentResolverAdapter(new DeviceWebArgumentResolver()));
 	}
 
+	/**
+	 * Configures device resolver (i.e. determines if device making request is a computer).
+	 * @return a new instance of a device resolver.
+	 */
 	@Bean
 	public DeviceResolverHandlerInterceptor deviceResolverHandlerInterceptor() {
 		return new DeviceResolverHandlerInterceptor();
 	}
 
+	/**
+	 * Configures device handler.
+	 * @return a new instance of a device handler.
+	 */
 	@Bean
 	public DeviceHandlerMethodArgumentResolver deviceHandlerMethodArgumentResolver() {
 		return new DeviceHandlerMethodArgumentResolver();
@@ -105,7 +130,11 @@ public class AppConfig extends WebMvcConfigurerAdapter {
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor(deviceResolverHandlerInterceptor());
 	}
-	
+
+	/**
+	 * Configures JavaMail support to enable server sent email.
+	 * @return a new instance of a mail sender.
+	 */
 	@Bean
 	public JavaMailSender getJavaMailSender() {
 		JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
@@ -123,7 +152,11 @@ public class AppConfig extends WebMvcConfigurerAdapter {
 
 		return mailSender;
 	}
-	
+
+	/**
+	 * Configures Jackson to work with Hibernate specific proxy objects when serializing/deserializing.
+	 * @return a new instance of a Jackson message converter.
+	 */
 	public MappingJackson2HttpMessageConverter jacksonMessageConverter() {
 		MappingJackson2HttpMessageConverter messageConverter = new MappingJackson2HttpMessageConverter();
 		ObjectMapper mapper = new ObjectMapper();
@@ -138,6 +171,10 @@ public class AppConfig extends WebMvcConfigurerAdapter {
 		super.configureMessageConverters(converters);
 	}
 
+	/**
+	 * Configures support for configuration preset messages such as error messages.
+	 * @return a new instance of a message source.
+	 */
 	@Bean
 	public MessageSource messageSource() {
 		ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
