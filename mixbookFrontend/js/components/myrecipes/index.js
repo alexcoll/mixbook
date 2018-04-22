@@ -174,7 +174,7 @@ class MyRecipes extends Component {
       return items;
 
     return filter(items, (n) => {
-      let item = n[1].toLowerCase();
+      let item = n.recipeName.toLowerCase();
       return item.search(text) !== -1;
     });
   }
@@ -239,16 +239,16 @@ class MyRecipes extends Component {
     if(idx === '0')
     {
       return items.sort(function (a,b) {
-        if ((b[6]/b[5]) < (a[6]/a[5]) || b[5] == 0) return -1;
-        if ((b[6]/b[5]) > (a[6]/a[5])) return 1;
+        if ((b.totalRating/b.numberOfRatings) < (a.totalRating/a.numberOfRatings) || b.numberOfRatings == 0) return -1;
+        if ((b.totalRating/b.numberOfRatings) > (a.totalRating/a.numberOfRatings)) return 1;
         return 0;
       })
     }
 
     if(idx === '1') {
       return items.sort(function (a,b) {
-        if ((b[6]/b[5]) > (a[6]/a[5])  || a[5] == 0) return -1;
-        if ((b[6]/b[5]) < (a[6]/a[5])) return 1;
+        if ((b.totalRating/b.numberOfRatings) > (a.totalRating/a.numberOfRatings)  || a.numberOfRatings == 0) return -1;
+        if ((b.totalRating/b.numberOfRatings) < (a.totalRating/a.numberOfRatings)) return 1;
         return 0;
       })
     }
@@ -268,7 +268,7 @@ class MyRecipes extends Component {
           'Authorization': data.token,
         },
         body: JSON.stringify({
-          recipeId: item[0]
+          recipeId: item.recipeId
         })
       }).then((response) => {
         if (response.status == 200) {
@@ -297,7 +297,7 @@ class MyRecipes extends Component {
   _pressRow(item: string) {
     if (this.state.isGuest || item[7] !== this.state.username) {
       Alert.alert(
-        "Edit " + item[1],
+        item.recipeName,
         'What do you want to do?',
         [
           {text: 'Edit', onPress: () => this.goToEditPage(item)},
@@ -321,11 +321,11 @@ class MyRecipes extends Component {
 
   goToReviewPage(item: string) {
     //this.props.navigator.push({name:'review', data:item});
-    global.recipeName = item[1];
-    global.recipeId = item[0];
-    global.directions = item[2];
-    global.difficulty = item[4];
-    global.reviewOwner = item[7];
+    global.recipeName = item.recipeName;
+    global.recipeId = item.recipeId;
+    global.directions = item.directions;
+    global.difficulty = item.difficulty;
+    global.reviewOwner = item.user.username;
 
     //console.warn(global.recipeName);
     this.navigateTo('review');
@@ -333,10 +333,10 @@ class MyRecipes extends Component {
 
   goToEditPage(item: string) {
 
-    global.recipeName = item[1];
-    global.recipeId = item[0];
-    global.directions = item[2];
-    global.reviewOwner = item[7];
+    global.recipeName = item.recipeName;
+    global.recipeId = item.recipeId;
+    global.directions = item.directions;
+    global.reviewOwner = item.user.username;
 
     //console.warn(global.recipeName);
     this.navigateTo('editRecipe');
@@ -426,7 +426,7 @@ class MyRecipes extends Component {
               <View>
                 <View style={styles.row}>
                   <Text style={styles.rowText}>
-                    {rowData[1]}
+                    {rowData.recipeName}
                   </Text>
                 </View>
               </View>

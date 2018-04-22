@@ -205,7 +205,7 @@ class MyDrinks extends Component {
       var baseURL = GLOBAL.API.BASE_URL + "/mixbook/recipe/getAllRecipesAnonymousUserCanMake?brands=";
       // Add each ingredient to the parameter
       for (i = 0; i < data.length; i++) {
-        baseURL = baseURL + data[i] + ',';
+        baseURL = baseURL + data.brandId + ',';
       }
       // Take off last comma from URL
       baseURL = baseURL.slice(0, -1);
@@ -320,10 +320,10 @@ class MyDrinks extends Component {
   }
 
   _pressRow(item: string) {
-    global.recipeName = item[1];
-    global.recipeId = item[0];
-    global.directions = item[2];
-    global.reviewOwner = item[7];
+    global.recipeName = item.recipeName;
+    global.recipeId = item.recipeId;
+    global.directions = item.directions;
+    global.reviewOwner = item.user.username;
 
     this.navigateTo('review');
     // Alert.alert(
@@ -420,7 +420,7 @@ class MyDrinks extends Component {
               <View>
                 <View style={styles.row}>
                   <Text style={styles.rowText}>
-                    {rowData[1]}
+                    {rowData.recipeName}
                   </Text>
                 </View>
               </View>

@@ -375,7 +375,7 @@ class Ingredients extends Component {
                       <View>
                         <View style={styles.row}>
                           <Text style={styles.rowText}>
-                            {rowData}
+                            {rowData.brandName}
                           </Text>
                         </View>
                       </View>
