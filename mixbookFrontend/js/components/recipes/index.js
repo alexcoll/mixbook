@@ -308,7 +308,8 @@ class Recipes extends Component {
         "Edit " + item[1],
         'What do you want to do?',
         [
-          {text: 'Review', onPress: () => this.goToReviewPage(item)},
+          {text: 'Details', onPress: () => this.goToReviewPage(item)},
+          {text: 'Recommend', onPress: () => this.goToRecommend(item)},
           {text: 'Cancel', style: 'cancel'},
         ],
         { cancelable: true }
@@ -337,6 +338,18 @@ class Recipes extends Component {
 
     //console.warn(global.recipeName);
     this.navigateTo('review');
+  }
+
+  goToRecommend(item: string) {
+        //this.props.navigator.push({name:'review', data:item});
+        global.recipeName = item[1];
+        global.recipeId = item[0];
+        global.directions = item[2];
+        global.difficulty = item[4];
+        global.reviewOwner = item[7];
+    
+        //console.warn(global.recipeName);
+        this.navigateTo('review');
   }
 
   goToEditPage(item: string) {
