@@ -305,7 +305,7 @@ class Recipes extends Component {
   _pressRow(item: string) {
     if (this.state.isGuest || item[7] !== this.state.username) {
       Alert.alert(
-        "Edit " + item[1],
+        item.recipeName,
         'What do you want to do?',
         [
           {text: 'Details', onPress: () => this.goToReviewPage(item)},
@@ -316,7 +316,7 @@ class Recipes extends Component {
       )
     } else {
       Alert.alert(
-        item[1],
+        item.recipeName,
         'What do you want to do?',
         [
           {text: 'Details', onPress: () => this.goToReviewPage(item)},
@@ -330,11 +330,11 @@ class Recipes extends Component {
 
   goToReviewPage(item: string) {
     //this.props.navigator.push({name:'review', data:item});
-    global.recipeName = item[1];
-    global.recipeId = item[0];
-    global.directions = item[2];
-    global.difficulty = item[4];
-    global.reviewOwner = item[7];
+    global.recipeName = item.recipeName;
+    global.recipeId = item.recipeId;
+    global.directions = item.directions;
+    global.difficulty = item.difficulty;
+    global.reviewOwner = item.user.username;
 
     //console.warn(global.recipeName);
     this.navigateTo('review');
@@ -354,10 +354,10 @@ class Recipes extends Component {
 
   goToEditPage(item: string) {
 
-    global.recipeName = item[1];
-    global.recipeId = item[0];
-    global.directions = item[2];
-    global.reviewOwner = item[7];
+    global.recipeName = item.recipeName;
+    global.recipeId = item.recipeId;
+    global.directions = item.directions;
+    global.reviewOwner = item.user.username;
 
     //console.warn(global.recipeName);
     this.navigateTo('editRecipe');
@@ -447,7 +447,7 @@ class Recipes extends Component {
               <View>
                 <View style={styles.row}>
                   <Text style={styles.rowText}>
-                    {rowData[1]}
+                    {rowData.recipeName}
                   </Text>
                 </View>
               </View>
