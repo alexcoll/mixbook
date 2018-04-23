@@ -15,32 +15,59 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
+/**
+ * Models a password reset token.
+ * @author John Tyler Preston
+ * @version 1.0
+ */
 @Entity
 @Table(name="password_reset_token")
 public class PasswordResetToken {
 
+	/**
+	 * Expiration time of a password reset token.
+	 */
 	private static final int EXPIRATION = 60 * 24;
 
+	/**
+	 * Primary key of the Password Reset Token table.
+	 */
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
+	/**
+	 * Token's UUID.
+	 */
 	@NotNull
 	@Column(name = "token", nullable = false)
 	private String token;
 
+	/**
+	 * User associated with the token.
+	 */
 	@OneToOne(targetEntity = User.class, fetch = FetchType.EAGER)
 	private User user;
 
+	/**
+	 * Expiration date of the token.
+	 */
 	@Column(name = "expiry_date")
 	@Temporal(TemporalType.TIMESTAMP)
 	@NotNull
 	private Date expiryDate;
 
+	/**
+	 * Default empty constructor of a password reset token to suit Jackson's requirement.
+	 */
 	public PasswordResetToken() {
 		super();
 	}
 
+	/**
+	 * Constructs an instance of a password reset token.
+	 * @param token the UUID to use with the token.
+	 */
 	public PasswordResetToken(final String token) {
 		super();
 
@@ -48,6 +75,11 @@ public class PasswordResetToken {
 		this.expiryDate = calculateExpiryDate(EXPIRATION);
 	}
 
+	/**
+	 * Constructs an instance of a password reset token.
+	 * @param token the UUID to use with the token.
+	 * @param user the user associated with the token.
+	 */
 	public PasswordResetToken(final String token, final User user) {
 		super();
 
@@ -56,38 +88,75 @@ public class PasswordResetToken {
 		this.expiryDate = calculateExpiryDate(EXPIRATION);
 	}
 
+	/**
+	 * Standard getter method that returns the primary key of the password reset token.
+	 * @return the primary key of the password reset token.
+	 */
 	public Integer getId() {
 		return id;
 	}
 
+	/**
+	 * Standard setter method that sets the primary key for the password reset token.
+	 * @param id the primary key to set for the password reset token.
+	 */
 	public void setId(Integer id) {
 		this.id = id;
 	}
 
+	/**
+	 * Standard getter method that returns the UUID of the password reset token.
+	 * @return the UUID of the password reset token.
+	 */
 	public String getToken() {
 		return token;
 	}
 
+	/**
+	 * Standard setter method that sets the UUID for the password reset token.
+	 * @param token the UUID to set for the password reset token.
+	 */
 	public void setToken(final String token) {
 		this.token = token;
 	}
 
+	/**
+	 * Standard getter method that returns the user of the password reset token.
+	 * @return the user of the password reset token.
+	 */
 	public User getUser() {
 		return user;
 	}
 
+	/**
+	 * Standard setter method that sets the user for the password reset token.
+	 * @param user the user to set for the password reset token.
+	 */
 	public void setUser(final User user) {
 		this.user = user;
 	}
 
+	/**
+	 * Standard getter method that returns the expiration date of the password reset token.
+	 * @return the expiration date of the password reset token.
+	 */
 	public Date getExpiryDate() {
 		return expiryDate;
 	}
 
+	/**
+	 * Standard setter method that sets the expiration date for the password reset token.
+	 * @param expiryDate the expiration date to set for the password reset token.
+	 */
 	public void setExpiryDate(final Date expiryDate) {
 		this.expiryDate = expiryDate;
 	}
 
+	/**
+	 * Calculates the expiration date of a token.
+	 * @param expiryTimeInMinutes the amount of time to allow before expiration in minutes.
+	 * @return the calculated expiration date for the token.
+	 */
 	private Date calculateExpiryDate(final int expiryTimeInMinutes) {
 		final Calendar calendar = Calendar.getInstance();
 		calendar.setTimeInMillis(new Date().getTime());
@@ -95,6 +164,10 @@ public class PasswordResetToken {
 		return new Date(calendar.getTime().getTime());
 	}
 
+	/**
+	 * Updates the token's UUID and expiration date.
+	 * @param token the UUID of the token.
+	 */
 	public void updateToken(final String token) {
 		this.token = token;
 		this.expiryDate = calculateExpiryDate(EXPIRATION);
