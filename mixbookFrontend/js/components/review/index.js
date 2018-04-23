@@ -430,7 +430,7 @@ class Reviews extends Component {
                       <ListItem>
                         <Grid>
                           <Col>
-                            <Text style={styles.listTest}>{data}</Text>
+                            <Text style={styles.listTest}>{data.recipeName}</Text>
                           </Col>
                          </Grid>
                       </ListItem>
@@ -505,13 +505,13 @@ class Reviews extends Component {
                     <View style={{flex: 1, flexDirection: 'row'}}>
                       <View style={{flex: 1, flexDirection: 'column'}}>
                         <View>
-                          <Text style={styles.reviewUsernameText}>{data[3]}</Text>
+                          <Text style={styles.reviewUsernameText}>{data.user.username}</Text>
                         </View>
                         <View>
-                          <Text style={styles.reviewStarsText}>{data[2]} stars</Text>
+                          <Text style={styles.reviewStarsText}>{data.rating} stars</Text>
                         </View>
                         <View>
-                          <Text style={styles.reviewCommentaryText}>{data[1]}</Text>
+                          <Text style={styles.reviewCommentaryText}>{data.reviewCommentary}</Text>
                         </View>
                         <View style={{
                           flex: 1,
