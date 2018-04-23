@@ -21,7 +21,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 /**
- * Models a brand.
+ * Models a brand of liquor.
  * @author John Tyler Preston
  * @version 1.0
  */
