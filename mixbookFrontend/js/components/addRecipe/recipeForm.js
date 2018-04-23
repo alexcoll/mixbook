@@ -21,13 +21,6 @@ export default  RecipeForm  = (props) => {
 				returnKeyType="next"
 				onChangeText = {props.directions}
 			/>
-			<TextInput
-				underlineColorAndroid={'transparent'}
-				placeholder="Difficulty 0-5"
-				style={styles.input}
-				returnKeyType="go"
-				onChangeText = {props.difficulty}
-			/>
 
 		</View>
 	);
