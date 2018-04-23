@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ToastAndroid, TouchableHighlight, Alert, View, Text, TextInput, ListView, RefreshControl, List, ListItem, TouchableOpacity} from 'react-native';
+import { ToastAndroid, TouchableHighlight, Alert, View, Text, TextInput, ListView, RefreshControl, List, ListItem, TouchableOpacity, Picker} from 'react-native';
 import { connect } from 'react-redux';
 import { Header, Title, Button, Icon } from 'native-base';
 
@@ -34,7 +34,8 @@ class AddRecipe extends Component {
       ingredients: [],
       drinkName: "",
       difficulty: 0,
-      directions: ""
+      directions: "",
+      currentIngriedents: "You have not selected any ingredients yet!",
     };
   }
 
@@ -130,21 +131,32 @@ class AddRecipe extends Component {
 
   onItemAdd(item) {
     store.get('recipeIngredients').then((data) => {
+      if(this.state.currentIngriedents == "You have not selected any ingredients yet!")
+      {
+        this.setState ({
+          currentIngriedents : "",
+        });
+      }
+
+      var currIng = "";
+
+      if(this.state.currentIngriedents == "")
+        currIng = item.brandName;
+      else
+        currIng = this.state.currentIngriedents + ", " + item.brandName;
+
+      this.setState ({
+        currentIngriedents : currIng,
+      })
+
       var list = this.state.ingredients;
       var key = "brandName";
       var obj = {};
-      obj[key] = item;
+      obj[key] = item.brandName;
       list.push(
         obj
       );
-      Alert.alert(
-        "Recipe now includes:",
-        "" +  item,
-        [
-        {text: 'Dismiss', style: 'cancel'}
-        ],
-        { cancelable: true }
-      );
+
       store.update('recipeIngredients', list).catch((error) => {
         console.warn("Could not add to recipe");
       });
@@ -227,14 +239,18 @@ class AddRecipe extends Component {
 
   _pressRow(item: string) {
     Alert.alert(
-      "Add " + item + "?",
-      "Are you sure you want to add " + item + " to your recipe?",
+      "Add " + item.brandName + "?",
+      "Are you sure you want to add " + item.brandName + " to your recipe?",
       [
         {text: 'Add', onPress: () => this.onItemAdd(item)},
         {text: 'Cancel', style: 'cancel'},
       ],
       { cancelable: true }
     )
+  }
+
+  updateDifficulty = (diff) => {
+    this.setState({difficulty: diff})
   }
 
   _renderSeparator(sectionID, rowID, adjacentRowHighlighted) {
@@ -271,7 +287,7 @@ class AddRecipe extends Component {
               autoCorrect={false}
             />
 
-            <View>
+          <View>
           <ListView
             dataSource={this.state.dataSource}
             renderRow={(rowData: string, sectionID: number, rowID: number, highlightRow: (sectionID: number, rowID: number) => void) =>
@@ -281,7 +297,7 @@ class AddRecipe extends Component {
               }}>
                 <View style={styles.row}>
                   <Text style={styles.rowText}>
-                    {rowData}
+                    {rowData.brandName}
                   </Text>
                 </View>
               </TouchableHighlight>
@@ -297,14 +313,31 @@ class AddRecipe extends Component {
           </View>
 
         </View>
+        
+        <View>
+            <Text>Current Ingredients</Text>
+            <Text>{this.state.currentIngriedents}</Text>
+        </View>
+
 
 
             <View style ={styles.formContainer}>
           <RecipeForm
             recipeName = {this.updateRecipeName}
             directions = {this.updateDirections}
-            difficulty = {this.updateDifficulty}
           />
+          <View>
+            <Text>Difficulty:</Text> 
+            <Picker selectedValue = {this.state.difficulty} onValueChange = {this.updateDifficulty}>
+               <Picker.Item label = "Beginner" value = "1" />
+               <Picker.Item label = "Easy" value = "2" />
+               <Picker.Item label = "Average" value = "3" />
+               <Picker.Item label = "Challenging" value = "4" />
+               <Picker.Item label = "Expert" value = "5" />
+            </Picker>
+
+         </View>
+
           <View style={styles.Bcontainer}>
             <TouchableOpacity
               style={styles.buttonContainer}
