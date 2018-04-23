@@ -19,7 +19,7 @@ import ModalDropdown from 'react-native-modal-dropdown';
 
 var filter = require('lodash/filter');
 var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => true});
-class Recipes extends Component {
+class Recommendation extends Component {
 
   constructor(props) {
     super(props);
@@ -35,8 +35,8 @@ class Recipes extends Component {
       rawData: [],
       pagedDataSource: ds.cloneWithRows([]),
       page: 1,
+      users: [],
       outOfData: false,
-      pagedData: [],
     };
   }
 
@@ -50,7 +50,7 @@ class Recipes extends Component {
   }
 
   navigateTo(route) {
-    this.props.navigateTo(route, 'recipes');
+    this.props.navigateTo(route, 'recommendation');
   }
 
   componentWillReceiveProps() {
@@ -80,23 +80,6 @@ class Recipes extends Component {
       );
   }
 
-  getData() {
-    store.get('recipes').then((data) => {
-      this.setState({
-        dataSource: this.state.dataSource.cloneWithRows(data),
-        isLoading: false,
-        empty: false,
-        rawData: data,
-      });
-    }).catch(error => {
-      console.warn("error getting the recipe list from the local store");
-      this.setState({
-        empty: true,
-        isLoading: false,
-      });
-    });
-  }
-
   fetchData() {
     store.get('account').then((data) => {
       this.setState({
@@ -104,26 +87,23 @@ class Recipes extends Component {
         isGuest: data.isGuest,
       });
 
-      fetch(GLOBAL.API.BASE_URL + '/mixbook/recipe/getAllRecipes', {
+      fetch(GLOBAL.API.BASE_URL + '/mixbook/user/loadAllUsers', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': data.token,
         }
       }).then(async (response) => {
         if (response.status == 200) {
           var json = await response.json();
-        // console.warn(json[0]);
-        store.save("recipe", json).catch(error => {
-          console.warn("error storing the recipe list into the local store");
-        });
-        this.setState({
-          dataSource: this.state.dataSource.cloneWithRows(json),
+        // Alert.alert(json[1].username);
+        this.setState({dataSource: this.state.dataSource.cloneWithRows(json),
           isLoading: false,
           empty: false,
           rawData: json,
-          pagedData: json,
           page: 1,
         });
+        // Alert.alert(users[0].username);
         this.getPagedData();
         return json;
         } else {
@@ -144,7 +124,7 @@ class Recipes extends Component {
 
   getPagedData(){
     console.log("Getting paged data");
-    var list = this.state.pagedData;
+    var list = this.state.rawData;
 
     var length = this.state.page * 14;
     console.log("Length: " + length);
@@ -158,11 +138,9 @@ class Recipes extends Component {
       this.setState({
         outOfData: true,
       });
-      console.log("Out of data: " + this.state.outOfData);
-
     }
     
-
+    console.log(list);
 
     this.setState({
       pagedDataSource: this.state.dataSource.cloneWithRows(list),
@@ -174,12 +152,10 @@ class Recipes extends Component {
     
     var currPage = this.state.page;
 
-
-
     console.log("Getting more data for page " + this.state.page);
 
     if(this.state.sortDirection != "")
-      this._recipeSortOnSelect(this.state.sortDirection, 0)
+      this._userSortOnSelect(this.state.sortDirection, 0)
 
     else  
       this.filterOnSearchText(this.state.searchText, this.state.rawData);
@@ -193,8 +169,16 @@ class Recipes extends Component {
     let searchText = event.nativeEvent.text;
     this.setState({searchText});
 
-    this.filterOnSearchText(searchText, this.state.rawData);
+    let filteredData = this.filterItems(searchText, this.state.rawData);
+    this.setState({
+      dataSource: this.state.dataSource.cloneWithRows(filteredData),
+    });
+
   }
+
+
+
+
 
   filterOnSearchText(searchText, data) {
 
@@ -203,30 +187,29 @@ class Recipes extends Component {
     
     this.setState({
         dataSource: this.state.dataSource.cloneWithRows(filteredData),
-        pagedData: filteredData,
+        rawData: filteredData,
     });
 
 
-    this.getPagedData();
-
-
   }
+
 
   filterItems(searchText, items) {
     let text = searchText.toLowerCase();
 
     if(text === "")
-      return items;
+    return items;
 
     return filter(items, (n) => {
-      let item = n[1].toLowerCase();
+      let item = n.username.toLowerCase();
       return item.search(text) !== -1;
     });
   }
 
-  _recipeSortOnSelect(idx, value) {
 
-    let sortedData = this.sortRecipes(this.state.rawData, idx.toString());
+  _userSortOnSelect(idx, value) {
+
+    let sortedData = this.sortUsers(this.state.rawData, idx.toString());
 
     this.setState({
       rawData: sortedData,
@@ -239,7 +222,7 @@ class Recipes extends Component {
 
   }
 
-  sortRecipes(items, idx) {
+  sortUsers(items, idx) {
 
     this.setState({
       sortDirection: idx,
@@ -247,16 +230,16 @@ class Recipes extends Component {
     if(idx === '0')
     {
       return items.sort(function (a,b) {
-        if ((b[6]/b[5]) < (a[6]/a[5]) || b[5] == 0) return -1;
-        if ((b[6]/b[5]) > (a[6]/a[5])) return 1;
+        if ((b.sumOfPersonalRecipeRatings/b.numberOfPersonalRecipeRatings) < (a.sumOfPersonalRecipeRatings/a.numberOfPersonalRecipeRatings) || b.sumOfPersonalRecipeRatings == 0) return -1;
+        if ((b.sumOfPersonalRecipeRatings/b.numberOfPersonalRecipeRatings) > (a.sumOfPersonalRecipeRatings/a.numberOfPersonalRecipeRatings)) return 1;
         return 0;
       })
     }
 
     if(idx === '1') {
       return items.sort(function (a,b) {
-        if ((b[6]/b[5]) > (a[6]/a[5])  || a[5] == 0) return -1;
-        if ((b[6]/b[5]) < (a[6]/a[5])) return 1;
+        if ((b.sumOfPersonalRecipeRatings/b.numberOfPersonalRecipeRatings) > (a.sumOfPersonalRecipeRatings/a.numberOfPersonalRecipeRatings)  || a.sumOfPersonalRecipeRatings == 0) return -1;
+        if ((b.sumOfPersonalRecipeRatings/b.numberOfPersonalRecipeRatings) < (a.sumOfPersonalRecipeRatings/a.numberOfPersonalRecipeRatings)) return 1;
         return 0;
       })
     }
@@ -264,25 +247,40 @@ class Recipes extends Component {
 
 
 
+  _onRefresh() {
+    this.setState({refreshing: true});
+    this.fetchData();
+    this.setState({refreshing: false});
+  }
 
+  _pressRow(item: string) {
 
-  onListItemRemove(item: string) {
-    // Delete the ingredient from the server
+    console.log("RECIPIENT: " + item.userId);
+    console.log("RECOMMENDED RECIPE: " + global.recipeId);
     store.get('account').then((data) => {
-      fetch(GLOBAL.API.BASE_URL + '/mixbook/recipe/deleteRecipe', {
+      fetch(GLOBAL.API.BASE_URL + '/mixbook/recommendation/recommendRecipe', {
         method: 'POST',
         headers: {
+          'Accept': 'application/json',
           'Content-Type': 'application/json',
           'Authorization': data.token,
         },
         body: JSON.stringify({
-          recipeId: item[0]
-        })
+          recipient: { userId: item.userId },
+          recommendedRecipe: { recipeId: global.recipeId },
+      })
       }).then((response) => {
         if (response.status == 200) {
-          ToastAndroid.show("Recipe removed", ToastAndroid.SHORT);
-          this.fetchData();
-          console.log("recipe list pushed successfully");
+          console.log("recipe added successfully");
+          Alert.alert(
+            "You have succesffuly recommended " + global.recipeName + " to " + item.username,
+            "",
+            [
+              {text: 'Dismiss', style: 'cancel'}
+            ],
+            { cancelable: true }
+          );
+
         } else {
           this.showServerErrorAlert(response);
           return;
@@ -296,68 +294,36 @@ class Recipes extends Component {
     });
   }
 
-  _onRefresh() {
-    this.setState({refreshing: true});
-    this.fetchData();
-    this.setState({refreshing: false});
-  }
 
-  _pressRow(item: string) {
-    if (this.state.isGuest || item[7] !== this.state.username) {
-      Alert.alert(
-        item.recipeName,
-        'What do you want to do?',
-        [
-          {text: 'Details', onPress: () => this.goToReviewPage(item)},
-          {text: 'Recommend', onPress: () => this.goToRecommend(item)},
-          {text: 'Cancel', style: 'cancel'},
-        ],
-        { cancelable: true }
-      )
-    } else {
-      Alert.alert(
-        item.recipeName,
-        'What do you want to do?',
-        [
-          {text: 'Details', onPress: () => this.goToReviewPage(item)},
-          {text: 'Edit', onPress: () => this.goToEditPage(item)},
-          {text: 'Delete', onPress: () => this.onListItemRemove(item)},
-        ],
-        { cancelable: true }
-      )
-    }
-  }
+  visitProfile(username: string)
+  {
+    fetch(`${GLOBAL.API.BASE_URL}/mixbook/user/getUserInfo?username=${username}`, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json'
+      }
+    })
+    .then(async (response) => {
+      if (response.status == 200) {
+        var json = await response.json();
 
-  goToReviewPage(item: string) {
-    //this.props.navigator.push({name:'review', data:item});
-    global.recipeName = item.recipeName;
-    global.recipeId = item.recipeId;
-    global.directions = item.directions;
-    global.difficulty = item.difficulty;
-    global.reviewOwner = item.user.username;
+          global.viewUsername = json.username;
+          global.viewEmail = json.email;
+          global.viewFirstName = json.firstName;
+          global.viewLastName = json.lastName;
+          global.viewSumRecipeRatings = json.sumOfPersonalRecipeRatings;
+          global.viewNumRecipeRatings = json.numberOfPersonalRecipeRatings;
 
-    //console.warn(global.recipeName);
-    this.navigateTo('review');
-  }
+          this.navigateTo('viewAccount');
 
-  goToRecommend(item: string) {
-
-        global.recipeId = item.recipeId;
-        global.recipeName = item.recipeName;
-
-        //console.warn(global.recipeName);
-        this.navigateTo('recommendation');
-  }
-
-  goToEditPage(item: string) {
-
-    global.recipeName = item.recipeName;
-    global.recipeId = item.recipeId;
-    global.directions = item.directions;
-    global.reviewOwner = item.user.username;
-
-    //console.warn(global.recipeName);
-    this.navigateTo('editRecipe');
+      } else {
+        this.showServerErrorAlert(response);
+        return;
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+    });
   }
 
   _renderSeparator(sectionID, rowID, adjacentRowHighlighted) {
@@ -374,17 +340,6 @@ class Recipes extends Component {
 
 
 
-  _renderFAB() {
-    if (!this.state.isGuest) {
-      return (
-        <ActionButton
-          buttonColor="rgba(231,76,60,1)"
-          onPress={() => this.navigateTo('addRecipe')}
-        />
-      );
-    }
-  }
-
 
   render() { // eslint-disable-line
     return (
@@ -395,7 +350,7 @@ class Recipes extends Component {
             <Icon name="ios-menu" />
           </Button>
 
-          <Title>Recipes</Title>
+          <Title>Recommend To A User</Title>
 
           <Button transparent onPress={() => this._onRefresh()}>
             <Icon name="ios-refresh" />
@@ -404,9 +359,9 @@ class Recipes extends Component {
 
         <View style={{flexDirection: 'row'}}>
 
-        <TextInput
+         <TextInput
           style={styles.searchBar}
-          placeholder="Search Recipes"
+          placeholder="Search Users"
           value={this.state.searchText}
           onChange={this.setSearchText.bind(this)}
           multiline={false}
@@ -415,12 +370,13 @@ class Recipes extends Component {
           autoCorrect={false}
         />
 
+
         <ModalDropdown 
           options={['Ranking ↑', 'Ranking ↓']}
           defaultValue='Sort'
           style={styles.dropDownStyle}
           textStyle={styles.dropDownTextStyle}
-          onSelect={(idx, value) => this._recipeSortOnSelect(idx, value)}
+          onSelect={(idx, value) => this._userSortOnSelect(idx, value)}
           />
 
           
@@ -436,20 +392,33 @@ class Recipes extends Component {
             />
           }
           dataSource={this.state.pagedDataSource}
-          renderRow={(rowData: string, sectionID: number, rowID: number, highlightRow: (sectionID: number, rowID: number) => void) =>
-            <TouchableHighlight onPress={() => {
-              this._pressRow(rowData);
-              // highlightRow(sectionID, rowID);
-            }}>
-              <View>
-                <View style={styles.row}>
-                  <Text style={styles.rowText}>
-                    {rowData.recipeName}
-                  </Text>
-                </View>
+          // renderRow={(rowData: string, sectionID: number, rowID: number, highlightRow: (sectionID: number, rowID: number) => void) =>
+          //   <TouchableHighlight onPress={() => {
+          //     this._pressRow(rowData);
+          //     // highlightRow(sectionID, rowID);
+          //   }}>
+          //     <View>
+          //       <View style={styles.row}>
+          //         <Text style={styles.rowText}>
+          //           {rowData[0]}
+          //         </Text>
+          //       </View>
+          //     </View>
+          //   </TouchableHighlight>
+          // }
+          renderRow={(rowData: string, sectionID: number, rowID: number, highlightRow: (sectionID: number, rowID: number) => void) =>        
+          <TouchableHighlight onPress={() => {
+            this._pressRow(rowData);
+            // highlightRow(sectionID, rowID);
+          }}>
+            <View>
+              <View style={styles.row}>
+                <Text style={styles.rowText}>
+                  {rowData.username}
+                </Text>
               </View>
-            </TouchableHighlight>
-          }
+            </View>
+          </TouchableHighlight> }
           renderSeparator={this._renderSeparator}
         />
         <Button 
@@ -457,7 +426,6 @@ class Recipes extends Component {
                   block
                   style={styles.button}
                   onPress={() => this.fetchMoreData()}>Load More</Button>
-        {this._renderFAB()}
       </View>
     );
   }
@@ -475,4 +443,4 @@ const mapStateToProps = state => ({
   navigation: state.cardNavigation,
 });
 
-export default connect(mapStateToProps, bindAction)(Recipes);
+export default connect(mapStateToProps, bindAction)(Recommendation);
