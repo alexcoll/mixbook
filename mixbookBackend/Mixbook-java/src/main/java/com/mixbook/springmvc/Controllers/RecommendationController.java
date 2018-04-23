@@ -88,6 +88,9 @@ public class RecommendationController {
 			for (Recommendation recommendation : recommendations) {
 				recommendation.setDescription(recommendation.getRecommender().getUsername() + " has recommended a recipe to you!");
 				recommendation.setRecommender(null);
+				User onlyUsername = new User();
+				onlyUsername.setUsername(recommendation.getRecommendedRecipe().getUser().getUsername());
+				recommendation.getRecommendedRecipe().setUser(onlyUsername);
 			}
 			return new ResponseEntity<Set<Recommendation>>(recommendations, HttpStatus.OK);
 		} catch (UnknownServerErrorException e) {
