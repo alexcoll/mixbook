@@ -50,7 +50,7 @@ public class AccountUnlockToken {
 	private User user;
 
 	/**
-	 * Expiration date of a token.
+	 * Expiration date of the token.
 	 */
 	@Column(name = "expiry_date")
 	@Temporal(TemporalType.TIMESTAMP)
