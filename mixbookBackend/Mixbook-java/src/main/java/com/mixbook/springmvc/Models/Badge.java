@@ -56,7 +56,7 @@ public class Badge implements Serializable {
 	private Set<User> users = new HashSet<User>(0);
 
 	/**
-	 * Default empty constructor of a board to suit Jackson's requirement.
+	 * Default empty constructor of a badge to suit Jackson's requirement.
 	 */
 	public Badge() {
 

@@ -58,7 +58,7 @@ public class AccountUnlockToken {
 	private Date expiryDate;
 
 	/**
-	 * Default empty constructor of a board to suit Jackson's requirement.
+	 * Default empty constructor of an account unlock token to suit Jackson's requirement.
 	 */
 	public AccountUnlockToken() {
 		super();
