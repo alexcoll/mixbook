@@ -55,6 +55,9 @@ class Reviews extends Component {
       hasUserReviewed: false,
       sortDirection: '0',
     };
+    console.log("STATE:");
+    console.log(this.state.name);
+    console.log(this.state.directions);
 
     this.current_user = "";
     this.auth_token = "";
@@ -430,7 +433,7 @@ class Reviews extends Component {
                       <ListItem>
                         <Grid>
                           <Col>
-                            <Text style={styles.listTest}>{data.recipeName}</Text>
+                            <Text style={styles.listTest}>{data.brandName}</Text>
                           </Col>
                          </Grid>
                       </ListItem>

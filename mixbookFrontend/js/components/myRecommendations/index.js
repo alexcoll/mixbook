@@ -36,6 +36,12 @@ class MyRecommendations extends Component {
       rawData: [],
       outOfData: false,
       page: 1,
+      selectedUserName: "",
+      recipeName: "",
+      recipeId: "",
+      directions: "",
+      difficulty: 0,
+      user: "",
     };
   }
 
@@ -196,11 +202,11 @@ class MyRecommendations extends Component {
       this.setState({
         outOfData: true,
       });
-      console.log(this.state.outOfData);
+      //console.log(this.state.outOfData);
 
     }
     
-    console.log(list);
+    //console.log(list);
 
     this.setState({
       pagedDataSource: this.state.dataSource.cloneWithRows(list),
@@ -262,12 +268,60 @@ class MyRecommendations extends Component {
   }
 
   _pressRow(item: string) {
+    var uri = encodeURI(GLOBAL.API.BASE_URL + '/mixbook/recipe/searchForRecipeByName?name=' + item.recommendedRecipe.recipeName.split(' ')[0])
+    
+    fetch(uri, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      }
+    }).then(async (response) => {
+      if (response.status == 200) {
+        var json = await response.json();
+        console.log("JSON: " + json);
+
+
+        for (var i = 0; i < json.length; i++)
+        {
+          console.log(json[i].recipeName);
+          //Found target recipe
+          if(json[i].recipeName == item.recommendedRecipe.recipeName)
+          {
+            console.log("Found it!");
+
+            global.recipeName = json[i].recipeName;
+            global.recipeId = json[i].recipeId;
+            global.directions = json[i].directions;
+            global.difficulty = json[i].difficulty;
+            global.reviewOwner = json[i].user.username;
+
+            //this.navigateTo('review');
+          }
+        }
+
+
+
+        
+      } else {
+        this.showServerErrorAlert(response);
+        return;
+      }
+    }).catch((error) => {
+      console.error(error);
+      this.setState({
+        empty: true,
+        isLoading: false,
+      });
+    });
+
+    
     if (this.state.isGuest || item[7] !== this.state.username) {
       Alert.alert(
         item.recipeName,
         'What do you want to do?',
         [
-          {text: 'Edit', onPress: () => this.goToEditPage(item)},
+          {text: 'Details', onPress: () => this.goToReviewPage(item)},
           {text: 'Cancel', style: 'cancel'},
         ],
         { cancelable: true }
@@ -286,24 +340,25 @@ class MyRecommendations extends Component {
     }
   }
 
+  
+
   goToReviewPage(item: string) {
-    //this.props.navigator.push({name:'review', data:item});
+
+      this.navigateTo('review');
+  }
+
+  goToEditPage(item: string) {
+    var uri = encodeURI(GLOBAL.API.BASE_URL + '/mixbook/recipe/searchForRecipeByName?name=' + item.recommendedRecipe.recipeName.split(' ')[0])
+    
+    console.log("ITEM: " + uri);
+    
+    
+
     global.recipeName = item.recipeName;
     global.recipeId = item.recipeId;
     global.directions = item.directions;
     global.difficulty = item.difficulty;
-    global.reviewOwner = item.user.username;
-
-    //console.warn(global.recipeName);
-    this.navigateTo('review');
-  }
-
-  goToEditPage(item: string) {
-
-    global.recipeName = item.recipeName;
-    global.recipeId = item.recipeId;
-    global.directions = item.directions;
-    global.reviewOwner = item.user.username;
+    global.reviewOwner = this.state.selectedUserName;
 
     //console.warn(global.recipeName);
     this.navigateTo('editRecipe');

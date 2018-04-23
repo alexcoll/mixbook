@@ -329,6 +329,7 @@ class Recipes extends Component {
   }
 
   goToReviewPage(item: string) {
+    console.log(item);
     //this.props.navigator.push({name:'review', data:item});
     global.recipeName = item.recipeName;
     global.recipeId = item.recipeId;
