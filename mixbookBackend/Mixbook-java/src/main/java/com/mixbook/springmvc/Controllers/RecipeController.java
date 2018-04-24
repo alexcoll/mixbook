@@ -30,21 +30,47 @@ import com.mixbook.springmvc.Security.JwtTokenUtil;
 import com.mixbook.springmvc.Services.BadgeService;
 import com.mixbook.springmvc.Services.RecipeService;
 
+/**
+ * Provides API endpoints for recipe functions.
+ * @author John Tyler Preston
+ * @version 1.0
+ */
 @Controller
 @RequestMapping("/recipe")
 public class RecipeController {
 
+	/**
+	 * Provides ability to access recipe service layer functions.
+	 */
 	@Autowired
 	RecipeService recipeService;
-	
+
+	/**
+	 * Provides ability to access badge service layer functions.
+	 */
 	@Autowired
 	private BadgeService badgeService;
 
+	/**
+	 * Used to extract authentication information from the token.
+	 */
 	private String tokenHeader = "Authorization";
 
+	/**
+	 * Allows access to JWT token utilities.
+	 */
 	@Autowired
 	private JwtTokenUtil jwtTokenUtil;
 
+	/**
+	 * Creates a recipe.
+	 * <p>
+	 * Request must include the name of a <code>Recipe</code>, the directions of a <code>Recipe</code>, the difficulty of a <code>Recipe</code>, as well as the names of brands (ingredients) of a <code>Recipe</code> to create a recipe.
+	 * @param request the request coming in to identify the user.
+	 * @param recipe the recipe object that will be persisted.
+	 * @return a <code>ResponseEntity</code> of type <code>JsonResponse</code> that contains information regarding the success or failure of request along
+	 * with an HTTP status code, 200 for success, 400 for bad request/failure, and 500 for an internal server error.
+	 */
 	@RequestMapping(value = "/createRecipe",
 			method = RequestMethod.POST)
 	@ResponseBody
@@ -73,6 +99,15 @@ public class RecipeController {
 		return new ResponseEntity<JsonResponse>(new JsonResponse("OK",""), HttpStatus.OK);
 	}
 
+	/**
+	 * Edits a recipe.
+	 * <p>
+	 * Request must include the primary key of a <code>Recipe</code> as well as the directions of a <code>Recipe</code> and/or the difficulty of a <code>Recipe</code> to edit a recipe.
+	 * @param request the request coming in to identify the user.
+	 * @param recipe the recipe object that will be edited.
+	 * @return a <code>ResponseEntity</code> of type <code>JsonResponse</code> that contains information regarding the success or failure of request along
+	 * with an HTTP status code, 200 for success, 400 for bad request/failure, and 500 for an internal server error.
+	 */
 	@RequestMapping(value = "/editRecipe",
 			method = RequestMethod.POST)
 	@ResponseBody
@@ -117,6 +152,15 @@ public class RecipeController {
 		return new ResponseEntity<JsonResponse>(new JsonResponse("OK",""), HttpStatus.OK);
 	}
 
+	/**
+	 * Deletes a recipe.
+	 * <p>
+	 * Request must include the primary key of a <code>Recipe</code> to delete a recipe.
+	 * @param request the request coming in to identify the user.
+	 * @param recipe the recipe object that will be deleted.
+	 * @return a <code>ResponseEntity</code> of type <code>JsonResponse</code> that contains information regarding the success or failure of request along
+	 * with an HTTP status code, 200 for success, 400 for bad request/failure, and 500 for an internal server error.
+	 */
 	@RequestMapping(value = "/deleteRecipe",
 			method = RequestMethod.POST)
 	@ResponseBody
@@ -138,6 +182,15 @@ public class RecipeController {
 		return new ResponseEntity<JsonResponse>(new JsonResponse("OK",""), HttpStatus.OK);
 	}
 
+	/**
+	 * Adds an ingredient to a recipe.
+	 * <p>
+	 * Request must include the primary key of a <code>Recipe</code> as well as the name of the <code>Brand</code> to add an ingredient to a recipe.
+	 * @param request the request coming in to identify the user.
+	 * @param recipe the recipe object that will have an ingredient added to it.
+	 * @return a <code>ResponseEntity</code> of type <code>JsonResponse</code> that contains information regarding the success or failure of request along
+	 * with an HTTP status code, 200 for success, 400 for bad request/failure, and 500 for an internal server error.
+	 */
 	@RequestMapping(value = "/addIngredientToRecipe",
 			method = RequestMethod.POST)
 	@ResponseBody
@@ -170,6 +223,15 @@ public class RecipeController {
 		return new ResponseEntity<JsonResponse>(new JsonResponse("OK",""), HttpStatus.OK);
 	}
 
+	/**
+	 * Removes an ingredient from a recipe.
+	 * <p>
+	 * Request must include the primary key of a <code>Recipe</code> as well as the name of the <code>Brand</code> to remove an ingredient from a recipe.
+	 * @param request the request coming in to identify the user.
+	 * @param recipe the recipe object that will have an ingredient removed from it.
+	 * @return a <code>ResponseEntity</code> of type <code>JsonResponse</code> that contains information regarding the success or failure of request along
+	 * with an HTTP status code, 200 for success, 400 for bad request/failure, and 500 for an internal server error.
+	 */
 	@RequestMapping(value = "/removeIngredientFromRecipe",
 			method = RequestMethod.POST)
 	@ResponseBody
@@ -200,6 +262,12 @@ public class RecipeController {
 		return new ResponseEntity<JsonResponse>(new JsonResponse("OK",""), HttpStatus.OK);
 	}
 
+	/**
+	 * Loads a complete list of recipes.
+	 * @return a <code>ResponseEntity</code> of type <code>List</code> of type <code>Recipe</code> of all recipes. It contains each recipe's
+	 * information, information regarding the success or failure of request, along with an HTTP status code, 200 for success and 500 for an internal
+	 * server error.
+	 */
 	@RequestMapping(value = "/getAllRecipes", method = RequestMethod.GET)
 	@ResponseBody
 	public ResponseEntity<List<Recipe>> getAllRecipes() {
@@ -218,6 +286,13 @@ public class RecipeController {
 		return new ResponseEntity<List<Recipe>>(tempList, HttpStatus.OK); 
 	}
 
+	/**
+	 * Loads a list of recipes with a similar name.
+	 * @param name the recipe name to search.
+	 * @return a <code>ResponseEntity</code> of type <code>List</code> of type <code>Recipe</code> of recipes with a similar name. It contains each recipe's
+	 * information, information regarding the success or failure of request, along with an HTTP status code, 200 for success and 500 for an internal
+	 * server error.
+	 */
 	@RequestMapping(value = "/searchForRecipeByName", method = RequestMethod.GET)
 	@ResponseBody
 	public ResponseEntity<List<Recipe>> searchForRecipeByName(@RequestParam("name") String name) {
@@ -244,6 +319,13 @@ public class RecipeController {
 		return new ResponseEntity<List<Recipe>>(tempList, HttpStatus.OK); 
 	}
 
+	/**
+	 * Loads a list of recipes created by a user.
+	 * @param request the request coming in to identify the user.
+	 * @return a <code>ResponseEntity</code> of type <code>List</code> of type <code>Recipe</code> of recipes created by a user. It contains each recipe's
+	 * information, information regarding the success or failure of request, along with an HTTP status code, 200 for success and 500 for an internal
+	 * server error.
+	 */
 	@RequestMapping(value = "/getAllRecipesCreatedByUser", method = RequestMethod.GET)
 	@ResponseBody
 	public ResponseEntity<List<Recipe>> getAllRecipesCreatedByUser(HttpServletRequest request) {
@@ -266,6 +348,13 @@ public class RecipeController {
 		return new ResponseEntity<List<Recipe>>(tempList, HttpStatus.OK);
 	}
 
+	/**
+	 * Loads a list of recipes that a user can make based solely on the ingredients that the user has in their inventory.
+	 * @param request the request coming in to identify the user.
+	 * @return a <code>ResponseEntity</code> of type <code>List</code> of type <code>Recipe</code> of recipes that a user can make based solely on the ingredients that the user has in their inventory. It contains each recipe's
+	 * information, information regarding the success or failure of request, along with an HTTP status code, 200 for success and 500 for an internal
+	 * server error.
+	 */
 	@RequestMapping(value = "/getAllRecipesUserCanMake", method = RequestMethod.GET)
 	@ResponseBody
 	public ResponseEntity<List<Recipe>> getAllRecipesUserCanMake(HttpServletRequest request) {
@@ -288,6 +377,13 @@ public class RecipeController {
 		return new ResponseEntity<List<Recipe>>(tempList, HttpStatus.OK);
 	}
 
+	/**
+	 * Loads a list of recipes that a guest user can make based solely on the ingredients that the guest user has in their inventory.
+	 * @param brands the brands (ingredients) in a guest user's inventory.
+	 * @return a <code>ResponseEntity</code> of type <code>List</code> of type <code>Recipe</code> of recipes that a guest user can make based solely on the ingredients that the guest user has in their inventory. It contains each recipe's
+	 * information, information regarding the success or failure of request, along with an HTTP status code, 200 for success and 500 for an internal
+	 * server error.
+	 */
 	@RequestMapping(value = "/getAllRecipesAnonymousUserCanMake", method = RequestMethod.GET)
 	@ResponseBody
 	public ResponseEntity<List<Recipe>> getAllRecipesAnonymousUserCanMake(@RequestParam("brands") List<Integer> brands) {
@@ -309,6 +405,13 @@ public class RecipeController {
 		return new ResponseEntity<List<Recipe>>(tempList, HttpStatus.OK);
 	}
 
+	/**
+	 * Loads a list of brands (ingredients) for a recipe.
+	 * @param id the primary key of a recipe.
+	 * @return a <code>ResponseEntity</code> of type <code>List</code> of type <code>Brand</code> of brands (ingredients) for a recipe. It contains each brand's
+	 * information, information regarding the success or failure of request, along with an HTTP status code, 200 for success and 500 for an internal
+	 * server error.
+	 */
 	@RequestMapping(value = "/getBrandsForRecipe", method = RequestMethod.GET)
 	@ResponseBody
 	public ResponseEntity<List<Brand>> getBrandsForRecipe(@RequestParam("id") Integer id) {
