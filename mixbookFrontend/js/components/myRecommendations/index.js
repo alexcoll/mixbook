@@ -308,7 +308,7 @@ class MyRecommendations extends Component {
   }
 
 
-
+  
   
 
   render() { // eslint-disable-line
@@ -362,7 +362,7 @@ class MyRecommendations extends Component {
               <View>
                 <View style={styles.row}>
                   <Text style={styles.rowText}>
-                    {rowData.recommendedRecipe.recipeName}
+                    {rowData.recommendedRecipe.recipeName + " by " + rowData.description.split(' ')[0]}
                   </Text>
                 </View>
               </View>
