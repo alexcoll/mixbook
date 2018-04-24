@@ -22,12 +22,23 @@ import com.mixbook.springmvc.Models.UserRatingReview;
 import com.mixbook.springmvc.Models.UserRecipeHasReview;
 import com.mixbook.springmvc.Services.UserService;
 
+/**
+ * Provides the concrete implementation of the modular data layer functionality for review related tasks for the service layer.
+ * @author John Tyler Preston
+ * @version 1.0
+ */
 @Repository("reviewDao")
 public class ReviewDaoImpl extends AbstractDao<Integer, UserRecipeHasReview> implements ReviewDao {
 
+	/**
+	 * Provides ability to access user service layer functions.
+	 */
 	@Autowired
 	UserService userService;
 
+	/**
+	 * Standard logger used to log the exceptions and do audit logging.
+	 */
 	private static final Logger logger = LogManager.getLogger(ReviewDaoImpl.class);
 
 	@Override
