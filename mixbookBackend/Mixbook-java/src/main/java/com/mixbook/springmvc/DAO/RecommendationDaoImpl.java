@@ -11,6 +11,11 @@ import org.springframework.stereotype.Repository;
 import com.mixbook.springmvc.Models.Recommendation;
 import com.mixbook.springmvc.Models.User;
 
+/**
+ * Provides the concrete implementation of the modular data layer functionality for recommendation related tasks for the service layer.
+ * @author John Tyler Preston
+ * @version 1.0
+ */
 @Repository("recommendationDao")
 public class RecommendationDaoImpl extends AbstractDao<Integer, Recommendation> implements RecommendationDao {
 
