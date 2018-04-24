@@ -8,9 +8,17 @@ import org.springframework.stereotype.Service;
 
 import com.mixbook.springmvc.Exceptions.UnknownServerErrorException;
 
+/**
+ * Provides the concrete implementation of the modular service layer functionality for email related tasks for the controller layer.
+ * @author John Tyler Preston
+ * @version 1.0
+ */
 @Service("emailService")
 public class EmailServiceImpl implements EmailService {
 
+	/**
+	 * Provides ability to access JavaMailSender library functions.
+	 */
 	@Autowired
 	private JavaMailSender mailSender;
 	

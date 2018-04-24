@@ -11,9 +11,17 @@ import com.mixbook.springmvc.Models.User;
 import com.mixbook.springmvc.Security.JwtUserFactory;
 import com.mixbook.springmvc.Services.UserService;
 
+/**
+ * Loads a user given a username from a JSON web token.
+ * @author John Tyler Preston
+ * @version 1.0
+ */
 @Service
 public class JwtUserDetailsServiceImpl implements UserDetailsService {
 
+	/**
+	 * Provides access to user function to load a user by username.
+	 */
 	@Autowired
 	UserService userService;
 

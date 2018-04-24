@@ -23,20 +23,45 @@ import com.mixbook.springmvc.Security.JwtAuthenticationResponse;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * Authenticates users and refreshes tokens.
+ * @author John Tyler Preston
+ * @version 1.0
+ */
 @RestController
 public class AuthenticationRestController {
 
+	/**
+	 * Used to extract authentication information from the token.
+	 */
 	private String tokenHeader = "Authorization";
 
+	/**
+	 * Used to access Spring Security's authentication manager.
+	 */
 	@Autowired
 	private AuthenticationManager authenticationManager;
 
+	/**
+	 * Allows access to JWT token utilities.
+	 */
 	@Autowired
 	private JwtTokenUtil jwtTokenUtil;
 
+	/**
+	 * Allows the use of Spring Security's <code>UserDetailsService</code> functionality.
+	 */
 	@Autowired
 	private UserDetailsService userDetailsService;
 
+	/**
+	 * Authenticates a user in terms of initial request with a username and password.
+	 * @param authenticationRequest the request coming in to be authenticated.
+	 * @param device the device used to make the request.
+	 * @return a <code>ResponseEntity</code> with a 200 response in the event of a successful authentication, a 401 for unauthorized, and 500 for an internal
+	 * server error.
+	 * @throws AuthenticationException thrown if authentication fails.
+	 */
 	@RequestMapping(value = "/auth", method = RequestMethod.POST)
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest, Device device) throws AuthenticationException {
 		final Authentication authentication = authenticationManager.authenticate(
@@ -55,6 +80,12 @@ public class AuthenticationRestController {
 		return ResponseEntity.ok(new JwtAuthenticationResponse(token));
 	}
 
+	/**
+	 * Refreshes an expired token.
+	 * @param request the request containing the token to be refreshed.
+	 * @return a <code>ResponseEntity</code> with a 200 response as well as a new token in the event of a successful refresh, a 401 for unauthorized, and 500 for an internal
+	 * server error.
+	 */
 	@RequestMapping(value = "/refresh", method = RequestMethod.GET)
 	public ResponseEntity<?> refreshAndGetAuthenticationToken(HttpServletRequest request) {
 		String token = request.getHeader(tokenHeader);

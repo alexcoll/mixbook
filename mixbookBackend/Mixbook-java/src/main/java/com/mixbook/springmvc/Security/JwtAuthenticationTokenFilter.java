@@ -18,11 +18,22 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+/**
+ * Filters out and conducts the authentication of each request.
+ * @author John Tyler Preston
+ * @version 1.0
+ */
 public class JwtAuthenticationTokenFilter extends UsernamePasswordAuthenticationFilter {
 
+	/**
+	 * Allows the use of Spring Security's <code>UserDetailsService</code> functionality.
+	 */
 	@Autowired
 	private UserDetailsService userDetailsService;
 
+	/**
+	 * Allows access to JWT token utility functions.
+	 */
 	@Autowired
 	private JwtTokenUtil jwtTokenUtil;
 

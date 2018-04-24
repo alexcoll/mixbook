@@ -29,21 +29,47 @@ import com.mixbook.springmvc.Security.JwtTokenUtil;
 import com.mixbook.springmvc.Services.BadgeService;
 import com.mixbook.springmvc.Services.ReviewService;
 
+/**
+ * Provides API endpoints for review functions.
+ * @author John Tyler Preston
+ * @version 1.0
+ */
 @Controller
 @RequestMapping("/review")
 public class ReviewController {
 
+	/**
+	 * Provides ability to access review service layer functions.
+	 */
 	@Autowired
 	ReviewService reviewService;
-	
+
+	/**
+	 * Provides ability to access badge service layer functions.
+	 */
 	@Autowired
 	private BadgeService badgeService;
 
+	/**
+	 * Used to extract authentication information from the token.
+	 */
 	private String tokenHeader = "Authorization";
 
+	/**
+	 * Allows access to JWT token utilities.
+	 */
 	@Autowired
 	private JwtTokenUtil jwtTokenUtil;
 
+	/**
+	 * Creates a review.
+	 * <p>
+	 * Request must include the primary key of a <code>Recipe</code> (i.e. the recipe to review), the text/commentary of a <code>UserRecipeHasReview</code>, as well as the rating of a <code>UserRecipeHasReview</code> to create a review.
+	 * @param request the request coming in to identify the user.
+	 * @param review the review object that will be persisted.
+	 * @return a <code>ResponseEntity</code> of type <code>JsonResponse</code> that contains information regarding the success or failure of request along
+	 * with an HTTP status code, 200 for success, 400 for bad request/failure, and 500 for an internal server error.
+	 */
 	@RequestMapping(value = "/createReview",
 			method = RequestMethod.POST)
 	@ResponseBody
@@ -78,6 +104,15 @@ public class ReviewController {
 		return new ResponseEntity<JsonResponse>(new JsonResponse("OK",""), HttpStatus.OK);
 	}
 
+	/**
+	 * Edits a review.
+	 * <p>
+	 * Request must include the primary key of a <code>Recipe</code> (i.e. the recipe that was reviewed) as well as the text/commentary of a <code>UserRecipeHasReview</code> and/or the rating of a <code>UserRecipeHasReview</code> to edit a review.
+	 * @param request the request coming in to identify the user.
+	 * @param review the review object that will be edited.
+	 * @return a <code>ResponseEntity</code> of type <code>JsonResponse</code> that contains information regarding the success or failure of request along
+	 * with an HTTP status code, 200 for success, 400 for bad request/failure, and 500 for an internal server error.
+	 */
 	@RequestMapping(value = "/editReview",
 			method = RequestMethod.POST)
 	@ResponseBody
@@ -123,6 +158,15 @@ public class ReviewController {
 		return new ResponseEntity<JsonResponse>(new JsonResponse("OK",""), HttpStatus.OK);
 	}
 
+	/**
+	 * Deletes a review.
+	 * <p>
+	 * Request must include the primary key of a <code>Recipe</code> (i.e. the recipe that was reviewed) to delete a review.
+	 * @param request the request coming in to identify the user.
+	 * @param review the review object that will be deleted.
+	 * @return a <code>ResponseEntity</code> of type <code>JsonResponse</code> that contains information regarding the success or failure of request along
+	 * with an HTTP status code, 200 for success, 400 for bad request/failure, and 500 for an internal server error.
+	 */
 	@RequestMapping(value = "/deleteReview",
 			method = RequestMethod.POST)
 	@ResponseBody
@@ -144,7 +188,16 @@ public class ReviewController {
 		}
 		return new ResponseEntity<JsonResponse>(new JsonResponse("OK",""), HttpStatus.OK);
 	}
-	
+
+	/**
+	 * Up votes a review.
+	 * <p>
+	 * Request must include the primary key of a <code>UserRecipeHasReview</code> (i.e. the review to up vote) as well as the vote flag of a <code>UserRatingReview</code> set to true to up vote a review.
+	 * @param request the request coming in to identify the user.
+	 * @param rating the rating object that will be persisted.
+	 * @return a <code>ResponseEntity</code> of type <code>JsonResponse</code> that contains information regarding the success or failure of request along
+	 * with an HTTP status code, 200 for success, 400 for bad request/failure, and 500 for an internal server error.
+	 */
 	@RequestMapping(value = "/upVoteReview",
 			method = RequestMethod.POST)
 	@ResponseBody
@@ -172,7 +225,16 @@ public class ReviewController {
 		}
 		return new ResponseEntity<JsonResponse>(new JsonResponse("OK",""), HttpStatus.OK);
 	}
-	
+
+	/**
+	 * Down votes a review.
+	 * <p>
+	 * Request must include the primary key of a <code>UserRecipeHasReview</code> (i.e. the review to down vote) as well as the vote flag of a <code>UserRatingReview</code> set to false to down vote a review.
+	 * @param request the request coming in to identify the user.
+	 * @param rating the rating object that will be persisted.
+	 * @return a <code>ResponseEntity</code> of type <code>JsonResponse</code> that contains information regarding the success or failure of request along
+	 * with an HTTP status code, 200 for success, 400 for bad request/failure, and 500 for an internal server error.
+	 */
 	@RequestMapping(value = "/downVoteReview",
 			method = RequestMethod.POST)
 	@ResponseBody
@@ -201,6 +263,13 @@ public class ReviewController {
 		return new ResponseEntity<JsonResponse>(new JsonResponse("OK",""), HttpStatus.OK);
 	}
 
+	/**
+	 * Loads a list of reviews that a user has created.
+	 * @param request the request coming in to identify the user.
+	 * @return a <code>ResponseEntity</code> of type <code>List</code> of type <code>UserRecipeHasReview</code> of all the reviews that a user has created. It contains each review's
+	 * information, information regarding the success or failure of request, along with an HTTP status code, 200 for success and 500 for an internal
+	 * server error.
+	 */
 	@RequestMapping(value = "/viewAllReviewsByUser", method = RequestMethod.GET)
 	@ResponseBody
 	public ResponseEntity<List<UserRecipeHasReview>> viewAllReviewsByUser(HttpServletRequest request) {
@@ -221,6 +290,13 @@ public class ReviewController {
 		return new ResponseEntity<List<UserRecipeHasReview>>(tempList, HttpStatus.OK);
 	}
 
+	/**
+	 * Loads a list of reviews for a recipe.
+	 * @param request the request coming in to identify the user.
+	 * @return a <code>ResponseEntity</code> of type <code>List</code> of type <code>UserRecipeHasReview</code> of all the reviews for a recipe. It contains each review's
+	 * information, information regarding the success or failure of request, along with an HTTP status code, 200 for success and 500 for an internal
+	 * server error.
+	 */
 	@RequestMapping(value = "/loadReviewsForRecipe", method = RequestMethod.GET)
 	@ResponseBody
 	public ResponseEntity<List<UserRecipeHasReview>> loadReviewsForRecipe(HttpServletRequest request, @RequestParam("id") Integer id) {

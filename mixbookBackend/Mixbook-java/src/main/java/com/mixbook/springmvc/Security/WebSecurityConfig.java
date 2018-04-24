@@ -16,18 +16,34 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+/**
+ * Configures Spring Security.
+ * @author John Tyler Preston
+ * @version 1.0
+ */
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @EnableTransactionManagement
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
+	/**
+	 * Allows configuring the unauthorized handler.
+	 */
 	@Autowired
 	private JwtAuthenticationEntryPoint unauthorizedHandler;
 
+	/**
+	 * Allows the use of Spring Security's <code>UserDetailsService</code> functionality.
+	 */
 	@Autowired
 	private UserDetailsService userDetailsService;
 
+	/**
+	 * Configures authentication for Spring Security.
+	 * @param authenticationManagerBuilder the Spring Security object used to construct the authentication manager.
+	 * @throws Exception thrown when an unknown configuration error occurs.
+	 */
 	@Autowired
 	public void configureAuthentication(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
 		authenticationManagerBuilder
@@ -35,11 +51,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		.passwordEncoder(passwordEncoder());
 	}
 
+	/**
+	 * Configures the encryption for passwords.
+	 * @return the <code>BCryptPasswordEncoder</code> to use for encryption purposes.
+	 */
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
 
+	/**
+	 * Configures the authentication filter.
+	 * @return the authentication filter.
+	 * @throws Exception thrown when an unknown configuration error occurs.
+	 */
 	@Bean
 	public JwtAuthenticationTokenFilter authenticationTokenFilterBean() throws Exception {
 		JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter = new JwtAuthenticationTokenFilter();

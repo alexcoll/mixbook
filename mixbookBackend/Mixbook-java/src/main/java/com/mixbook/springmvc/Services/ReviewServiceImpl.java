@@ -18,16 +18,28 @@ import com.mixbook.springmvc.Models.User;
 import com.mixbook.springmvc.Models.UserRatingReview;
 import com.mixbook.springmvc.Models.UserRecipeHasReview;
 
+/**
+ * Provides the concrete implementation of the modular service layer functionality for review related tasks for the controller layer.
+ * @author John Tyler Preston
+ * @version 1.0
+ */
 @Service("reviewService")
 @Transactional
 public class ReviewServiceImpl implements ReviewService {
 
+	/**
+	 * Provides ability to access review data layer functions.
+	 */
 	@Autowired
 	private ReviewDao dao;
-	
+
+	/**
+	 * Provides ability to access user service layer functions.
+	 */
 	@Autowired
 	private UserService userService;
-	
+
+	@Override
 	public void createReview(UserRecipeHasReview review) throws ReviewOwnRecipeException, PersistenceException, NoDataWasChangedException, UnknownServerErrorException {
 		try {
 			review.setNumberOfUpVotes(0);
@@ -44,6 +56,7 @@ public class ReviewServiceImpl implements ReviewService {
 		}
 	}
 
+	@Override
 	public void editReview(UserRecipeHasReview review) throws NoDataWasChangedException, UnknownServerErrorException {
 		try {
 			dao.editReview(review);
@@ -54,6 +67,7 @@ public class ReviewServiceImpl implements ReviewService {
 		}
 	}
 
+	@Override
 	public void deleteReview(UserRecipeHasReview review) throws NoDataWasChangedException, UnknownServerErrorException {
 		try {
 			dao.deleteReview(review);
@@ -88,6 +102,7 @@ public class ReviewServiceImpl implements ReviewService {
 		}
 	}
 
+	@Override
 	public List<UserRecipeHasReview> viewAllReviewsByUser(User user) throws UnknownServerErrorException {
 		try {
 			return dao.viewAllReviewsByUser(user);
@@ -96,6 +111,7 @@ public class ReviewServiceImpl implements ReviewService {
 		}
 	}
 
+	@Override
 	public List<UserRecipeHasReview> loadReviewsForRecipe(Recipe recipe) throws UnknownServerErrorException {
 		try {
 			return dao.loadReviewsForRecipe(recipe);
@@ -104,6 +120,7 @@ public class ReviewServiceImpl implements ReviewService {
 		}
 	}
 
+	@Override
 	public boolean isReviewInfoValid(UserRecipeHasReview review) throws UnknownServerErrorException {
 		try {
 			if (!isReviewCommentaryValid(review.getReviewCommentary())) {
@@ -118,6 +135,7 @@ public class ReviewServiceImpl implements ReviewService {
 		return true;
 	}
 
+	@Override
 	public boolean isReviewCommentaryValid(String reviewCommentary) throws UnknownServerErrorException {
 		if (reviewCommentary == null) {
 			return false;
@@ -131,6 +149,7 @@ public class ReviewServiceImpl implements ReviewService {
 		return true;
 	}
 
+	@Override
 	public boolean isReviewRatingValid(int rating) throws UnknownServerErrorException {
 		if (rating < 1 || rating > 5) {
 			return false;

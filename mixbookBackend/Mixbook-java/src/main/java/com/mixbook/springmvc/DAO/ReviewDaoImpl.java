@@ -22,14 +22,26 @@ import com.mixbook.springmvc.Models.UserRatingReview;
 import com.mixbook.springmvc.Models.UserRecipeHasReview;
 import com.mixbook.springmvc.Services.UserService;
 
+/**
+ * Provides the concrete implementation of the modular data layer functionality for review related tasks for the service layer.
+ * @author John Tyler Preston
+ * @version 1.0
+ */
 @Repository("reviewDao")
 public class ReviewDaoImpl extends AbstractDao<Integer, UserRecipeHasReview> implements ReviewDao {
 
+	/**
+	 * Provides ability to access user service layer functions.
+	 */
 	@Autowired
 	UserService userService;
 
+	/**
+	 * Standard logger used to log the exceptions and do audit logging.
+	 */
 	private static final Logger logger = LogManager.getLogger(ReviewDaoImpl.class);
 
+	@Override
 	public void createReview(UserRecipeHasReview review) throws ReviewOwnRecipeException, PersistenceException, NoDataWasChangedException, Exception {
 		User user = this.userService.findByEntityUsername(review.getUser().getUsername());
 		NativeQuery query = getSession().createNativeQuery("SELECT COUNT(*) FROM recipe WHERE recipe_id = :recipe_id AND user_recipe_id != :user_recipe_id");
@@ -67,6 +79,7 @@ public class ReviewDaoImpl extends AbstractDao<Integer, UserRecipeHasReview> imp
 		}
 	}
 
+	@Override
 	public void editReview(UserRecipeHasReview review) throws NoDataWasChangedException, Exception {
 		User user = this.userService.findByEntityUsername(review.getUser().getUsername());
 		//Updating both review commentary and review rating
@@ -176,6 +189,7 @@ public class ReviewDaoImpl extends AbstractDao<Integer, UserRecipeHasReview> imp
 
 	}
 
+	@Override
 	public void deleteReview(UserRecipeHasReview review) throws NoDataWasChangedException, Exception {
 		User user = this.userService.findByEntityUsername(review.getUser().getUsername());
 		NativeQuery lookupQuery = getSession().createNativeQuery("SELECT rating AS result FROM users_recipe_has_review WHERE users_user_id = :users_user_id AND recipe_recipe_id = :recipe_recipe_id");
@@ -279,6 +293,7 @@ public class ReviewDaoImpl extends AbstractDao<Integer, UserRecipeHasReview> imp
 		}
 	}
 
+	@Override
 	public List<UserRecipeHasReview> viewAllReviewsByUser(User user) throws Exception {
 		Query q = getSession().createQuery("select r from UserRecipeHasReview r where r.user.userId = :userId");
 		user = this.userService.findByEntityUsername(user.getUsername());
@@ -287,6 +302,7 @@ public class ReviewDaoImpl extends AbstractDao<Integer, UserRecipeHasReview> imp
 		return result;
 	}
 
+	@Override
 	public List<UserRecipeHasReview> loadReviewsForRecipe(Recipe recipe) throws Exception {
 		Query q = getSession().createQuery("select r from UserRecipeHasReview r inner join fetch r.user where r.recipe.recipeId = :recipeId");
 		q.setParameter("recipeId", recipe.getRecipeId());

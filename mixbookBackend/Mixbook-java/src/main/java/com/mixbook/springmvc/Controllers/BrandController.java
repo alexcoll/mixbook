@@ -15,13 +15,27 @@ import com.mixbook.springmvc.Exceptions.UnknownServerErrorException;
 import com.mixbook.springmvc.Models.Brand;
 import com.mixbook.springmvc.Services.BrandService;
 
+/**
+ * Provides API endpoints for brand functions.
+ * @author John Tyler Preston
+ * @version 1.0
+ */
 @Controller
 @RequestMapping("/brand")
 public class BrandController {
 
+	/**
+	 * Provides ability to access brand service layer functions.
+	 */
 	@Autowired
 	BrandService brandService;
 
+	/**
+	 * Loads a complete list of brands (ingredients).
+	 * @return a <code>ResponseEntity</code> of type <code>List</code> of type <code>Brand</code> of all brands (ingredients). It contains each brand's
+	 * information, information regarding the success or failure of request, along with an HTTP status code, 200 for success and 500 for an internal
+	 * server error.
+	 */
 	@RequestMapping(value = "/getBrands", method = RequestMethod.GET)
 	@ResponseBody
 	public ResponseEntity<List<Brand>> getBrands() {

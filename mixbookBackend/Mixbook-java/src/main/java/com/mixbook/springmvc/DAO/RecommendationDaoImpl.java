@@ -11,6 +11,11 @@ import org.springframework.stereotype.Repository;
 import com.mixbook.springmvc.Models.Recommendation;
 import com.mixbook.springmvc.Models.User;
 
+/**
+ * Provides the concrete implementation of the modular data layer functionality for recommendation related tasks for the service layer.
+ * @author John Tyler Preston
+ * @version 1.0
+ */
 @Repository("recommendationDao")
 public class RecommendationDaoImpl extends AbstractDao<Integer, Recommendation> implements RecommendationDao {
 
@@ -29,7 +34,7 @@ public class RecommendationDaoImpl extends AbstractDao<Integer, Recommendation> 
 
 	@Override
 	public Set<Recommendation> loadRecommendations(User user) throws Exception {
-		Query query = getSession().createQuery("select u from User u inner join fetch u.recommendationsReceived r inner join fetch r.recommender inner join fetch r.recommendedRecipe where u.username = :username");
+		Query query = getSession().createQuery("select u from User u inner join fetch u.recommendationsReceived r inner join fetch r.recommender inner join fetch r.recommendedRecipe rr inner join fetch rr.user where u.username = :username");
 		query.setParameter("username", user.getUsername());
 		User loadedUser = (User) query.getSingleResult();
 		Set<Recommendation> recommendations = loadedUser.getRecommendationsReceived();

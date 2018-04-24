@@ -17,10 +17,18 @@ import com.mixbook.springmvc.Exceptions.UnknownServerErrorException;
 import com.mixbook.springmvc.Models.PasswordResetToken;
 import com.mixbook.springmvc.Models.User;
 
+/**
+ * Provides the concrete implementation of the modular service layer functionality for password reset related tasks for the controller layer.
+ * @author John Tyler Preston
+ * @version 1.0
+ */
 @Service("passwordResetTokenService")
 @Transactional
 public class PasswordResetTokenServiceImpl implements PasswordResetTokenService {
 
+	/**
+	 * Provides ability to access password reset data layer functions.
+	 */
 	@Autowired
 	private PasswordResetTokenDao dao;
 	

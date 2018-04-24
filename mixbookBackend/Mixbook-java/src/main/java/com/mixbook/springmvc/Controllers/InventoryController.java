@@ -25,18 +25,41 @@ import com.mixbook.springmvc.Models.User;
 import com.mixbook.springmvc.Security.JwtTokenUtil;
 import com.mixbook.springmvc.Services.InventoryService;
 
+/**
+ * Provides API endpoints for inventory functions.
+ * @author John Tyler Preston
+ * @version 1.0
+ */
 @Controller
 @RequestMapping("/inventory")
 public class InventoryController {
 
+	/**
+	 * Provides ability to access inventory service layer functions.
+	 */
 	@Autowired
 	InventoryService inventoryService;
 
+	/**
+	 * Used to extract authentication information from the token.
+	 */
 	private String tokenHeader = "Authorization";
 
+	/**
+	 * Allows access to JWT token utilities.
+	 */
 	@Autowired
 	private JwtTokenUtil jwtTokenUtil;
 
+	/**
+	 * Adds an ingredient to a user's inventory.
+	 * <p>
+	 * Request must include the brand name of a <code>Brand</code> to add an ingredient to a user's inventory.
+	 * @param request the request coming in to identify the user.
+	 * @param brand the brand object that will be added to a user's inventory.
+	 * @return a <code>ResponseEntity</code> of type <code>JsonResponse</code> that contains information regarding the success or failure of request along
+	 * with an HTTP status code, 200 for success, 400 for bad request/failure, and 500 for an internal server error.
+	 */
 	@RequestMapping(value = "/addIngredientToInventory",
 			method = RequestMethod.POST)
 	@ResponseBody
@@ -61,6 +84,15 @@ public class InventoryController {
 		return new ResponseEntity<JsonResponse>(new JsonResponse("OK",""), HttpStatus.OK);
 	}
 
+	/**
+	 * Removes an ingredient from a user's inventory.
+	 * <p>
+	 * Request must include the brand name of a <code>Brand</code> to remove an ingredient from a user's inventory.
+	 * @param request the request coming in to identify the user.
+	 * @param brand the brand object that will be removed from a user's inventory.
+	 * @return a <code>ResponseEntity</code> of type <code>JsonResponse</code> that contains information regarding the success or failure of request along
+	 * with an HTTP status code, 200 for success, 400 for bad request/failure, and 500 for an internal server error.
+	 */
 	@RequestMapping(value = "/deleteIngredientFromInventory",
 			method = RequestMethod.POST)
 	@ResponseBody
@@ -81,6 +113,13 @@ public class InventoryController {
 		return new ResponseEntity<JsonResponse>(new JsonResponse("OK",""), HttpStatus.OK);
 	}
 
+	/**
+	 * Loads a list of ingredients in a user's inventory.
+	 * @param request the request coming in to identify the user.
+	 * @return a <code>ResponseEntity</code> of type <code>List</code> of type <code>Brand</code> of all the ingredients in a user's inventory. It contains each brand's
+	 * information, information regarding the success or failure of request, along with an HTTP status code, 200 for success and 500 for an internal
+	 * server error.
+	 */
 	@RequestMapping(value = "/getUserInventory", method = RequestMethod.GET)
 	@ResponseBody
 	public ResponseEntity<List<Brand>> getUserInventory(HttpServletRequest request) {

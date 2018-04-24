@@ -5,6 +5,11 @@ import javax.servlet.Filter;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
+/**
+ * Initializes all Spring MVC stuff for bootstrapping.
+ * @author John Tyler Preston
+ * @version 1.0
+ */
 public class AppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
  
 	@Override

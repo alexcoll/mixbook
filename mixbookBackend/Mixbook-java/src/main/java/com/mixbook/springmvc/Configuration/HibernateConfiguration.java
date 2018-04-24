@@ -17,15 +17,27 @@ import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+/**
+ * Configures Hibernate to work with Spring MVC.
+ * @author John Tyler Preston
+ * @version 1.0
+ */
 @Configuration
 @EnableTransactionManagement
 @ComponentScan({ "com.mixbook.springmvc.Configuration" })
 @PropertySource(value = { "classpath:application.properties" })
 public class HibernateConfiguration {
-	
+
+	/**
+	 * Allows environment properties to be accessed.
+	 */
 	@Autowired
 	private Environment environment;
 
+	/**
+	 * Configures the Hibernate session factory.
+	 * @return a new instance of a Hibernate configured session factory.
+	 */
 	@Bean
 	public LocalSessionFactoryBean sessionFactory() {
 		LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
@@ -35,6 +47,10 @@ public class HibernateConfiguration {
 		return sessionFactory;
 	}
 
+	/**
+	 * Configures the data source.
+	 * @return a new instance of a data source.
+	 */
 	@Bean
 	public DataSource dataSource() {
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
@@ -45,6 +61,10 @@ public class HibernateConfiguration {
 		return dataSource;
 	}
 
+	/**
+	 * Adds to the properties some optional Hibernate properties.
+	 * @return a new properties object with the new Hibernate properties.
+	 */
 	private Properties hibernateProperties() {
 		Properties properties = new Properties();
 		properties.put("hibernate.dialect", environment.getRequiredProperty("hibernate.dialect"));
@@ -53,6 +73,11 @@ public class HibernateConfiguration {
 		return properties;        
 	}
 
+	/**
+	 * Configures the Hibernate transaction manager.
+	 * @param s the session factory to use to set up the Hibernate transaction manager.
+	 * @return a new instance of a Hibernate transaction manager.
+	 */
 	@Bean
 	@Autowired
 	public HibernateTransactionManager transactionManager(SessionFactory s) {

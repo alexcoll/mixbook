@@ -24,15 +24,27 @@ import com.mixbook.springmvc.Models.Brand;
 import com.mixbook.springmvc.Models.Recipe;
 import com.mixbook.springmvc.Models.User;
 
+/**
+ * Provides the concrete implementation of the modular service layer functionality for recipe related tasks for the controller layer.
+ * @author John Tyler Preston
+ * @version 1.0
+ */
 @Service("recipeService")
 @Transactional
 public class RecipeServiceImpl implements RecipeService {
 
+	/**
+	 * Provides ability to access recipe data layer functions.
+	 */
 	@Autowired
 	private RecipeDao dao;
 
+	/**
+	 * REGEX pattern used to validate recipe name.
+	 */
 	private static final String RECIPE_PATTERN = "^[\\p{L} .'-@&!#$%*_()]+$";
-	
+
+	@Override
 	public void createRecipe(Recipe recipe, User user) throws InvalidIngredientException, PersistenceException, UnknownServerErrorException {
 		try {
 			recipe.setNumberOfIngredients(recipe.getBrands().size());
@@ -51,6 +63,7 @@ public class RecipeServiceImpl implements RecipeService {
 		}
 	}
 
+	@Override
 	public void editRecipe(Recipe recipe, User user) throws NoDataWasChangedException, UnknownServerErrorException {
 		try {
 			dao.editRecipe(recipe, user);
@@ -61,6 +74,7 @@ public class RecipeServiceImpl implements RecipeService {
 		}
 	}
 
+	@Override
 	public void deleteRecipe(Recipe recipe, User user) throws NoDataWasChangedException, UnknownServerErrorException {
 		try {	
 			dao.deleteRecipe(recipe, user);
@@ -71,6 +85,7 @@ public class RecipeServiceImpl implements RecipeService {
 		}
 	}
 
+	@Override
 	public void addIngredientToRecipe(Recipe recipe, User user) throws InvalidPermissionsException, MaxRecipeIngredientsException, InvalidIngredientException, PersistenceException, NoDataWasChangedException, UnknownServerErrorException {
 		try {
 			dao.addIngredientToRecipe(recipe, user);
@@ -89,6 +104,7 @@ public class RecipeServiceImpl implements RecipeService {
 		}
 	}
 
+	@Override
 	public void removeIngredientFromRecipe(Recipe recipe, User user) throws InvalidPermissionsException, NotEnoughRecipeIngredientsException, InvalidIngredientException, NoDataWasChangedException, UnknownServerErrorException {
 		try {
 			dao.removeIngredientFromRecipe(recipe, user);
@@ -105,6 +121,7 @@ public class RecipeServiceImpl implements RecipeService {
 		}
 	}
 
+	@Override
 	public List<Recipe> getAllRecipes() throws UnknownServerErrorException {
 		try {
 			List<Recipe> tempList = dao.getAllRecipes();
@@ -114,6 +131,7 @@ public class RecipeServiceImpl implements RecipeService {
 		}
 	}
 
+	@Override
 	public List<Recipe> searchForRecipeByName(Recipe recipe) throws UnknownServerErrorException {
 		try {
 			List<Recipe> tempList = dao.searchForRecipeByName(recipe);
@@ -123,6 +141,7 @@ public class RecipeServiceImpl implements RecipeService {
 		}
 	}
 
+	@Override
 	public List<Recipe> getAllRecipesCreatedByUser(User user) throws UnknownServerErrorException {
 		List<Recipe> tempList = new ArrayList<Recipe>();
 		try {
@@ -133,6 +152,7 @@ public class RecipeServiceImpl implements RecipeService {
 		}	
 	}
 
+	@Override
 	public List<Recipe> getAllRecipesUserCanMake(User user) throws UnknownServerErrorException {
 		List<Recipe> tempList = new ArrayList<Recipe>();
 		try {
@@ -143,6 +163,7 @@ public class RecipeServiceImpl implements RecipeService {
 		}	
 	}
 
+	@Override
 	public List<Recipe> getAllRecipesAnonymousUserCanMake(List<Integer> brands) throws UnknownServerErrorException {
 		List<Recipe> tempList = new ArrayList<Recipe>();
 		try {
@@ -153,6 +174,7 @@ public class RecipeServiceImpl implements RecipeService {
 		}
 	}
 
+	@Override
 	public List<Brand> getBrandsForRecipe(Recipe recipe) throws UnknownServerErrorException {
 		List<Brand> tempList = new ArrayList<Brand>();
 		try {
@@ -163,6 +185,7 @@ public class RecipeServiceImpl implements RecipeService {
 		}
 	}
 
+	@Override
 	public boolean isRecipeInfoValid(Recipe recipe) throws UnknownServerErrorException {
 		try {
 			if (!isRecipeNameValid(recipe.getRecipeName())) {
@@ -183,6 +206,7 @@ public class RecipeServiceImpl implements RecipeService {
 		return true;
 	}
 
+	@Override
 	public boolean isRecipeNameValid(String recipeName) throws UnknownServerErrorException {
 		if (recipeName == null) {
 			return false;
@@ -202,6 +226,7 @@ public class RecipeServiceImpl implements RecipeService {
 		return true;
 	}
 
+	@Override
 	public boolean areRecipeDirectionsValid(String directions) throws UnknownServerErrorException {
 		if (directions == null) {
 			return false;
@@ -215,6 +240,7 @@ public class RecipeServiceImpl implements RecipeService {
 		return true;
 	}
 
+	@Override
 	public boolean isRecipeNumberOfIngredientsValid(Set<Brand> brands) {
 		if (brands.size() > 0 && brands.size() < 11) {
 			return true;
@@ -224,6 +250,7 @@ public class RecipeServiceImpl implements RecipeService {
 		}
 	}
 
+	@Override
 	public boolean isRecipeDifficultyValid(int difficulty) {
 		if (difficulty > 0 && difficulty < 6) {
 			return true;

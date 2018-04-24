@@ -17,10 +17,18 @@ import com.mixbook.springmvc.Exceptions.UnknownServerErrorException;
 import com.mixbook.springmvc.Models.AccountUnlockToken;
 import com.mixbook.springmvc.Models.User;
 
+/**
+ * Provides the concrete implementation of the modular service layer functionality for account unlock related tasks for the controller layer.
+ * @author John Tyler Preston
+ * @version 1.0
+ */
 @Service("accountUnlockTokenService")
 @Transactional
 public class AccountUnlockTokenServiceImpl implements AccountUnlockTokenService {
 
+	/**
+	 * Provides ability to access account unlock data layer functions.
+	 */
 	@Autowired
 	private AccountUnlockTokenDao dao;
 

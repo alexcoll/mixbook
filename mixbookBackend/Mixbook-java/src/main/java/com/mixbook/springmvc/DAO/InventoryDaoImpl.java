@@ -17,12 +17,21 @@ import com.mixbook.springmvc.Models.Brand;
 import com.mixbook.springmvc.Models.User;
 import com.mixbook.springmvc.Services.UserService;
 
+/**
+ * Provides the concrete implementation of the modular data layer functionality for inventory related tasks for the service layer.
+ * @author John Tyler Preston
+ * @version 1.0
+ */
 @Repository("inventoryDao")
 public class InventoryDaoImpl extends AbstractDao<Integer, Brand> implements InventoryDao {
 
+	/**
+	 * Provides ability to access user service layer functions.
+	 */
 	@Autowired
 	UserService userService;
 
+	@Override
 	public void addIngredientToInventory(Brand brand, User user) throws MaxInventoryItemsException, NullPointerException, PersistenceException, NoDataWasChangedException, Exception {
 		user = this.userService.findByEntityUsername(user.getUsername());
 		NativeQuery countQuery = getSession().createNativeQuery("SELECT COUNT(*) FROM user_has_brand WHERE user_user_id = :user_user_id");
@@ -44,6 +53,7 @@ public class InventoryDaoImpl extends AbstractDao<Integer, Brand> implements Inv
 		}
 	}
 
+	@Override
 	public void deleteIngredientFromInventory(Brand brand, User user) throws NullPointerException, NoDataWasChangedException, Exception {
 		user = this.userService.findByEntityUsername(user.getUsername());
 		NativeQuery searchQuery = getSession().createNativeQuery("SELECT brand_id FROM brand WHERE brand_name = :brand_name");
@@ -59,6 +69,7 @@ public class InventoryDaoImpl extends AbstractDao<Integer, Brand> implements Inv
 		}
 	}
 
+	@Override
 	public List<Brand> getUserInventory(User user) throws Exception {
 		user = this.userService.findByEntityUsername(user.getUsername());
 		Query query = getSession().createQuery("select b from Brand b inner join b.users u where u.userId = :userId");

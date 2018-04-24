@@ -17,13 +17,22 @@ import com.mixbook.springmvc.Exceptions.UnknownServerErrorException;
 import com.mixbook.springmvc.Models.Brand;
 import com.mixbook.springmvc.Models.User;
 
+/**
+ * Provides the concrete implementation of the modular service layer functionality for inventory related tasks for the controller layer.
+ * @author John Tyler Preston
+ * @version 1.0
+ */
 @Service("inventoryService")
 @Transactional
 public class InventoryServiceImpl implements InventoryService {
 
+	/**
+	 * Provides ability to access account unlock data layer functions.
+	 */
 	@Autowired
 	private InventoryDao dao;
 
+	@Override
 	public void addIngredientToInventory(Brand brand, User user) throws MaxInventoryItemsException, InvalidIngredientException, PersistenceException, NoDataWasChangedException, UnknownServerErrorException {
 		try {
 			dao.addIngredientToInventory(brand, user);
@@ -40,6 +49,7 @@ public class InventoryServiceImpl implements InventoryService {
 		}
 	}
 
+	@Override
 	public void deleteIngredientFromInventory(Brand brand, User user) throws InvalidIngredientException, NoDataWasChangedException, UnknownServerErrorException {
 		try {
 			dao.deleteIngredientFromInventory(brand, user);
@@ -52,6 +62,7 @@ public class InventoryServiceImpl implements InventoryService {
 		}
 	}
 
+	@Override
 	public List<Brand> getUserInventory(User user) throws UnknownServerErrorException {
 		List<Brand> tempList = new ArrayList<Brand>();
 		try {

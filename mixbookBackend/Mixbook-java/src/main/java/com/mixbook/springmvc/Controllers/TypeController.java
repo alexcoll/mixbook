@@ -15,13 +15,27 @@ import com.mixbook.springmvc.Exceptions.UnknownServerErrorException;
 import com.mixbook.springmvc.Models.Type;
 import com.mixbook.springmvc.Services.TypeService;
 
+/**
+ * Provides API endpoints for type functions.
+ * @author John Tyler Preston
+ * @version 1.0
+ */
 @Controller
 @RequestMapping("/type")
 public class TypeController {
 
+	/**
+	 * Provides ability to access type service layer functions.
+	 */
 	@Autowired
 	TypeService typeService;
 
+	/**
+	 * Loads a complete list of types.
+	 * @return a <code>ResponseEntity</code> of type <code>List</code> of type <code>Type</code> of all types. It contains each type's
+	 * information, information regarding the success or failure of request, along with an HTTP status code, 200 for success and 500 for an internal
+	 * server error.
+	 */
 	@RequestMapping(value = "/getTypes", method = RequestMethod.GET)
 	@ResponseBody
 	public ResponseEntity<List<Type>> getTypes() {

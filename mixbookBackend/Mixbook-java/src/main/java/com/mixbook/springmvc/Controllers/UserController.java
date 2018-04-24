@@ -37,27 +37,60 @@ import com.mixbook.springmvc.Services.EmailService;
 import com.mixbook.springmvc.Services.PasswordResetTokenService;
 import com.mixbook.springmvc.Services.UserService;
 
+/**
+ * Provides API endpoints for user functions.
+ * @author John Tyler Preston
+ * @version 1.0
+ */
 @Controller
 @RequestMapping("/user")
 public class UserController {
 
+	/**
+	 * Provides ability to access user service layer functions.
+	 */
 	@Autowired
 	UserService userService;
-	
+
+	/**
+	 * Provides ability to access password reset service layer functions.
+	 */
 	@Autowired
 	PasswordResetTokenService passwordResetTokenService;
-	
+
+	/**
+	 * Provides ability to access email service layer functions.
+	 */
 	@Autowired
 	EmailService emailService;
-	
+
+	/**
+	 * Provides ability to access account unlock service layer functions.
+	 */
 	@Autowired
 	AccountUnlockTokenService accountUnlockTokenService;
 
+	/**
+	 * Used to extract authentication information from the token.
+	 */
 	private String tokenHeader = "Authorization";
 
+	/**
+	 * Allows access to JWT token utilities.
+	 */
 	@Autowired
 	private JwtTokenUtil jwtTokenUtil;
-	
+
+	/**
+	 * Creates a user.
+	 * <p>
+	 * Request must include all of the fields of a <code>User</code> to create a user. The request does not need to include
+	 * the fields indicated if an account is enabled, the last password reset date, the profile statistics fields, or the user permissions roles to be associated
+	 * with the account. All fields are validated by the <code>isUserInfoValid</code> method.
+	 * @param user the user object that will be persisted in the system.
+	 * @return a <code>ResponseEntity</code> of type <code>JsonResponse</code> that contains information regarding the success or failure of request along
+	 * with an HTTP status code, 200 for success, 400 for bad request/failure, and 500 for an internal server error.
+	 */
 	@RequestMapping(value = "/createUser", 
 			method = RequestMethod.POST,
 			headers = {"Content-type=application/json"})
@@ -80,6 +113,13 @@ public class UserController {
 		return new ResponseEntity<JsonResponse>(new JsonResponse("OK",""), HttpStatus.OK);
 	}
 
+	/**
+	 * Deletes a user.
+	 * @param request the request coming in to identify the user.
+	 * @param response the response to send out should a more custom response be needed.
+	 * @return a <code>ResponseEntity</code> of type <code>JsonResponse</code> that contains information regarding the success or failure of request along
+	 * with an HTTP status code, 200 for success and 500 for an internal server error.
+	 */
 	@RequestMapping(value = "/deleteUser", 
 			method = RequestMethod.POST)
 	@ResponseBody
@@ -96,6 +136,15 @@ public class UserController {
 		return new ResponseEntity<JsonResponse>(new JsonResponse("OK",""), HttpStatus.OK);
 	}
 
+	/**
+	 * Edits a user.
+	 * <p>
+	 * Request must include at-least the first name or the last name and any/all fields are validated by the <code>isUserFirstNameValid</code> and/or <code>isUserLastNameValid</code> methods.
+	 * @param request the request coming in to identify the user to edit.
+	 * @param user the user object containing the user information to edit.
+	 * @return a <code>ResponseEntity</code> of type <code>JsonResponse</code> that contains information regarding the success or failure of request
+	 * along with an HTTP status code, 200 for success, 400 for bad request/failure, and 500 for an internal server error.
+	 */
 	@RequestMapping(value = "/editUser",
 			method = RequestMethod.POST)
 	@ResponseBody
@@ -139,6 +188,15 @@ public class UserController {
 		return new ResponseEntity<JsonResponse>(new JsonResponse("OK",""), HttpStatus.OK);
 	}
 
+	/**
+	 * Edits a user's email address.
+	 * <p>
+	 * Request must include a valid email address.
+	 * @param request the request coming in to identity the user to change their email address.
+	 * @param user the user object containing the user email to change to.
+	 * @return a <code>ResponseEntity</code> of type <code>JsonResponse</code> that contains information regarding the success or failure of request
+	 * along with an HTTP status code, 200 for success, 400 for bad request/failure, and 500 for an internal server error.
+	 */
 	@RequestMapping(value = "/changeEmail",
 			method = RequestMethod.POST)
 	@ResponseBody
@@ -163,6 +221,15 @@ public class UserController {
 		return new ResponseEntity<JsonResponse>(new JsonResponse("OK",""), HttpStatus.OK);
 	}
 
+	/**
+	 * Edits a user's password.
+	 * <p>
+	 * Request must include a valid password.
+	 * @param request the request coming in to identify the user to change their password.
+	 * @param user the user object containing the user password to change to.
+	 * @return a <code>ResponseEntity</code> of type <code>JsonResponse</code> that contains information regarding the success or failure of request
+	 * along with an HTTP status code, 200 for success, 400 for bad request/failure, and 500 for an internal server error.
+	 */
 	@RequestMapping(value = "/changePassword",
 			method = RequestMethod.POST)
 	@ResponseBody
@@ -184,7 +251,16 @@ public class UserController {
 		}
 		return new ResponseEntity<JsonResponse>(new JsonResponse("OK",""), HttpStatus.OK);
 	}
-	
+
+	/**
+	 * Generates a password reset request.
+	 * <p>
+	 * Request must include a valid email address.
+	 * @param request the request coming in to identify the context path and the likes needed for password reset link generation.
+	 * @param email the email of the user requesting to reset their password.
+	 * @return a <code>ResponseEntity</code> of type <code>JsonResponse</code> that contains information regarding the success or failure of request
+	 * along with an HTTP status code, 200 for success, 400 for bad request/failure, and 500 for an internal server error.
+	 */
 	@RequestMapping(value = "/resetPassword",
 			method = RequestMethod.POST)
 	@ResponseBody
@@ -204,7 +280,16 @@ public class UserController {
 		}
 		return new ResponseEntity<JsonResponse>(new JsonResponse("OK",""), HttpStatus.OK);
 	}
-	
+
+	/**
+	 * Saves a new password after a user completes the form that is linked from the password recovery email.
+	 * <p>
+	 * Request must include a valid new password.
+	 * @param request the request coming in to identify the context's authentication needed to determine the authenticated user.
+	 * @param passwordDto the password object containing the new password.
+	 * @return a <code>ResponseEntity</code> of type <code>JsonResponse</code> that contains information regarding the success or failure of request
+	 * along with an HTTP status code, 200 for success, 400 for bad request/failure, and 500 for an internal server error.
+	 */
 	@RequestMapping(value = "/savePassword",
 			method = RequestMethod.POST)
 	@ResponseBody
@@ -237,7 +322,17 @@ public class UserController {
 		session.invalidate();
 		return new ResponseEntity<JsonResponse>(new JsonResponse("OK",""), HttpStatus.OK);
 	}
-	
+
+	/**
+	 * Validates a password reset token and redirects a user to the page to change reset their password upon successful validation, or redirects them to the home page is validation fails.
+	 * <p>
+	 * Request must include a valid token string as well as a valid primary key of a user.
+	 * @param request the request coming in to get the user's current session.
+	 * @param response the response to send out if a request fails for some reason.
+	 * @param id the primary key of the user requesting to reset their password.
+	 * @param token the token string of the password reset token to validate.
+	 * @return a redirect along with an HTTP status code, 200 for success, 401 for an unauthorized request, and 500 for an internal server error.
+	 */
 	@RequestMapping(value = "/updatePassword", method = RequestMethod.GET)
 	public String showChangePasswordPage(HttpServletRequest request, HttpServletResponse response, @RequestParam("id") Integer id, @RequestParam("token") String token) {
 		try {
@@ -258,17 +353,31 @@ public class UserController {
 			return "redirect:https://mymixbook.com";
 		}
 	}
-	
+
+	/**
+	 * Loads a page containing a form to reset a user's password.
+	 * @return a page containing a form to reset a user's password.
+	 */
 	@RequestMapping(value = "/loadSavePasswordPage", method = RequestMethod.GET)
 	public String showSavePasswordPage() {
 		return "savePassword";
 	}
-	
+
+	/**
+	 * Loads a page containing a form to request a reset of a user's password.
+	 * @return a page containing a form to request a reset of a user's password.
+	 */
 	@RequestMapping(value = "/requestReset", method = RequestMethod.GET)
 	public String requestReset() {
 		return "requestResetPassword";
 	}
-	
+
+	/**
+	 * Locks a user's account.
+	 * @param request the request coming in to identify the user.
+	 * @return a <code>ResponseEntity</code> of type <code>JsonResponse</code> that contains information regarding the success or failure of request
+	 * along with an HTTP status code, 200 for success and 500 for an internal server error.
+	 */
 	@RequestMapping(value = "/lockAccount", method = RequestMethod.POST)
 	@ResponseBody
 	public ResponseEntity<JsonResponse> lockAccount(HttpServletRequest request) {
@@ -283,7 +392,15 @@ public class UserController {
 			return new ResponseEntity<JsonResponse>(new JsonResponse("FAILED","Unknown server error"), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-	
+
+	/**
+	 * Validates an account unlock token and redirects a user to the page to indicate a successful account unlock after unlocking a user's account.
+	 * @param request the request coming in to identify the user (not used here).
+	 * @param response the response to send out if a request fails for some reason.
+	 * @param id the primary key of the user requesting to unlock their account.
+	 * @param token the token string of the account unlock token to validate.
+	 * @return a redirect along with an HTTP status code, 200 for success, 401 for an unauthorized request, and 500 for an internal server error.
+	 */
 	@RequestMapping(value = "/unlockAccount", method = RequestMethod.GET)
 	public String unlockAccount(HttpServletRequest request, HttpServletResponse response, @RequestParam("id") Integer id, @RequestParam("token") String token) {
 		try {
@@ -302,7 +419,16 @@ public class UserController {
 			return "redirect:https://mymixbook.com";
 		}
 	}
-	
+
+	/**
+	 * Generates an account unlock request.
+	 * <p>
+	 * Request must include a valid email address.
+	 * @param request the request coming in to identify the user to unlock their account.
+	 * @param email the email of the user requesting to unlock their account.
+	 * @return a <code>ResponseEntity</code> of type <code>JsonResponse</code> that contains information regarding the success or failure of request
+	 * along with an HTTP status code, 200 for success, 400 for bad request/failure, and 500 for an internal server error.
+	 */
 	@RequestMapping(value = "/requestAccountUnlock",
 			method = RequestMethod.POST)
 	@ResponseBody
@@ -325,17 +451,32 @@ public class UserController {
 		}
 		return new ResponseEntity<JsonResponse>(new JsonResponse("OK",""), HttpStatus.OK);
 	}
-	
+
+	/**
+	 * Loads a page containing a form to request an unlock of a user's account.
+	 * @return a page containing a form to request an unlock of a user's account.
+	 */
 	@RequestMapping(value = "/requestUnlock", method = RequestMethod.GET)
 	public String loadUnlockAccountPage() {
 		return "requestAccountUnlock";
 	}
-	
+
+	/**
+	 * Loads a page to indicate a successful account unlock.
+	 * @return a page to indicate a successful account unlock.
+	 */
 	@RequestMapping(value = "/loadUnlockAccountSuccessPage", method = RequestMethod.GET)
 	public String loadUnlockAccountSuccessPage() {
 		return "unlockAccountSuccess";
 	}
 
+	/**
+	 * Loads a user's profile and the badges that they have earned.
+	 * @param username the username of the user to load.
+	 * @return a <code>ResponseEntity</code> of type <code>User</code> of the user's profile. It contains a user's
+	 * information, information regarding the success or failure of request, along with an HTTP status code, 200 for success, 400 for bad request/failure, and 500 for an internal
+	 * server error.
+	 */
 	@RequestMapping(value = "/getUserInfo", method = RequestMethod.GET)
 	@ResponseBody
 	public ResponseEntity<User> getUserInfo(@RequestParam("username") String username) {
@@ -354,7 +495,13 @@ public class UserController {
 			return new ResponseEntity<User>(emptyUser, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-	
+
+	/**
+	 * Loads a complete list of users.
+	 * @return a <code>ResponseEntity</code> of type <code>List</code> of type <code>User</code> of all the user profiles. It contains each user's
+	 * information, information regarding the success or failure of request, along with an HTTP status code, 200 for success and 500 for an internal
+	 * server error.
+	 */
 	@RequestMapping(value = "/loadAllUsers", method = RequestMethod.GET)
 	@ResponseBody
 	public ResponseEntity<List<User>> loadAllUsers() {
