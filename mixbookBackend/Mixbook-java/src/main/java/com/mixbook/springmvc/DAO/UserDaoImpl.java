@@ -15,12 +15,23 @@ import org.springframework.stereotype.Repository;
 import com.mixbook.springmvc.Models.User;
 import com.mixbook.springmvc.Services.UserService;
 
+/**
+ * Provides the concrete implementation of the modular data layer functionality for user related tasks for the service layer.
+ * @author John Tyler Preston
+ * @version 1.0
+ */
 @Repository("userDao")
 public class UserDaoImpl extends AbstractDao<Integer, User> implements UserDao {
 
+	/**
+	 * Provides ability to access user service layer functions.
+	 */
 	@Autowired
 	UserService userService;
 
+	/**
+	 * Standard logger used to log the exceptions and do audit logging.
+	 */
 	private static final Logger logger = LogManager.getLogger(UserDaoImpl.class);
 
 	@Override
