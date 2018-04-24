@@ -21,7 +21,7 @@ public interface InventoryDao {
 	 * @param brand the ingredient to add to a user's inventory.
 	 * @param user the user for whom to add the ingredient.
 	 * @throws MaxInventoryItemsException the exception is thrown when a user tries to add more than the maximum number of ingredients to their inventory.
-	 * @throws NullPointerException the exception is the data provided yields null results.
+	 * @throws NullPointerException the exception is thrown when the data provided yields null results.
 	 * @throws PersistenceException the exception is thrown when a user tries to add a duplicate ingredient to their inventory.
 	 * @throws NoDataWasChangedException the exception is thrown when a user tries to add an ingredient that became invalid.
 	 * @throws Exception the exception is thrown when an unknown server error occurs.
@@ -32,7 +32,7 @@ public interface InventoryDao {
 	 * Removes an ingredient to a user's inventory.
 	 * @param brand the ingredient to remove from a user's inventory.
 	 * @param user the user for whom to remove the ingredient.
-	 * @throws NullPointerException the exception is the data provided yields null results.
+	 * @throws NullPointerException the exception is thrown when the data provided yields null results.
 	 * @throws NoDataWasChangedException the exception is thrown when a user tries to remove an ingredient that became invalid.
 	 * @throws Exception the exception is thrown when an unknown server error occurs.
 	 */
