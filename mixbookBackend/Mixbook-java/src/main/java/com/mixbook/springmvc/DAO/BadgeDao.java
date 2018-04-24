@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.persistence.PersistenceException;
 
-import com.mixbook.springmvc.Exceptions.UnknownServerErrorException;
 import com.mixbook.springmvc.Models.Badge;
 import com.mixbook.springmvc.Models.User;
 

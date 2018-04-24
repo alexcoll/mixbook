@@ -4,7 +4,6 @@ import java.util.Date;
 
 import javax.persistence.PersistenceException;
 
-import com.mixbook.springmvc.Exceptions.UnknownServerErrorException;
 import com.mixbook.springmvc.Models.AccountUnlockToken;
 
 /**

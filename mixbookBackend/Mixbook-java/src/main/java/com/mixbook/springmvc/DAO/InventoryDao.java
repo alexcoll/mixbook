@@ -6,7 +6,6 @@ import javax.persistence.PersistenceException;
 
 import com.mixbook.springmvc.Exceptions.MaxInventoryItemsException;
 import com.mixbook.springmvc.Exceptions.NoDataWasChangedException;
-import com.mixbook.springmvc.Exceptions.UnknownServerErrorException;
 import com.mixbook.springmvc.Models.Brand;
 import com.mixbook.springmvc.Models.User;
 
