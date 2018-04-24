@@ -409,6 +409,24 @@ class Reviews extends Component {
     }
   }
 
+  getDifficultyLevel()
+  {
+    switch(this.state.difficulty) {
+      case 1:
+        return "Beginner";
+      case 2:
+        return "Easy";
+      case 3:
+        return "Average";
+      case 4:
+        return "Challenging";
+      case 5:
+        return "Expert";
+      default:
+        return "";
+    }
+  }
+
   navigateTo(route) {
     this.props.navigateTo(route, 'review');
   }
@@ -443,7 +461,7 @@ class Reviews extends Component {
                   </List>
               </ListItem>
               <ListItem>
-                <Text>Difficulty: {this.state.difficulty}</Text>
+                <Text>Difficulty: {this.getDifficultyLevel()}</Text>
                 </ListItem>
               <ListItem>
                 <Text>
