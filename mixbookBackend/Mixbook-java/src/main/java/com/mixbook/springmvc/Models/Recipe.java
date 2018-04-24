@@ -188,7 +188,7 @@ public class Recipe implements Serializable {
 
 	/**
 	 * Standard setter method that sets the name for the recipe.
-	 * @param recipeId the name to set for the recipe.
+	 * @param recipeName the name to set for the recipe.
 	 */
 	public void setRecipeName(String recipeName) {
 		this.recipeName = recipeName;
@@ -204,7 +204,7 @@ public class Recipe implements Serializable {
 
 	/**
 	 * Standard setter method that sets the directions for the recipe.
-	 * @param recipeId the directions to set for the recipe.
+	 * @param directions the directions to set for the recipe.
 	 */
 	public void setDirections(String directions) {
 		this.directions = directions;
@@ -220,7 +220,7 @@ public class Recipe implements Serializable {
 
 	/**
 	 * Standard setter method that sets the number of ingredients for the recipe.
-	 * @param recipeId the number of ingredients to set for the recipe.
+	 * @param numberOfIngredients the number of ingredients to set for the recipe.
 	 */
 	public void setNumberOfIngredients(int numberOfIngredients) {
 		this.numberOfIngredients = numberOfIngredients;
@@ -236,7 +236,7 @@ public class Recipe implements Serializable {
 
 	/**
 	 * Standard setter method that sets the difficulty for the recipe.
-	 * @param recipeId the difficulty to set for the recipe.
+	 * @param difficulty the difficulty to set for the recipe.
 	 */
 	public void setDifficulty(int difficulty) {
 		this.difficulty = difficulty;
@@ -252,7 +252,7 @@ public class Recipe implements Serializable {
 
 	/**
 	 * Standard setter method that sets the number of ratings for the recipe.
-	 * @param recipeId the number of ratings to set for the recipe.
+	 * @param numberOfRatings the number of ratings to set for the recipe.
 	 */
 	public void setNumberOfRatings(int numberOfRatings) {
 		this.numberOfRatings = numberOfRatings;
@@ -268,7 +268,7 @@ public class Recipe implements Serializable {
 
 	/**
 	 * Standard setter method that sets the total rating for the recipe.
-	 * @param recipeId the total rating to set for the recipe.
+	 * @param totalRating the total rating to set for the recipe.
 	 */
 	public void setTotalRating(int totalRating) {
 		this.totalRating = totalRating;
@@ -284,7 +284,7 @@ public class Recipe implements Serializable {
 
 	/**
 	 * Standard setter method that sets the creator for the recipe.
-	 * @param recipeId the creator to set for the recipe.
+	 * @param user the creator to set for the recipe.
 	 */
 	public void setUser(User user) {
 		this.user = user;
@@ -300,7 +300,7 @@ public class Recipe implements Serializable {
 
 	/**
 	 * Standard setter method that sets the brands (ingredients) for the recipe.
-	 * @param recipeId the brands (ingredients) to set for the recipe.
+	 * @param brands the brands (ingredients) to set for the recipe.
 	 */
 	public void setBrands(Set<Brand> brands) {
 		this.brands = brands;
@@ -316,7 +316,7 @@ public class Recipe implements Serializable {
 
 	/**
 	 * Standard setter method that sets the reviews for the recipe.
-	 * @param recipeId the reviews to set for the recipe.
+	 * @param userRecipeHasReviews the reviews to set for the recipe.
 	 */
 	public void setUserRecipeHasReviews(Set<UserRecipeHasReview> userRecipeHasReviews) {
 		this.userRecipeHasReviews = userRecipeHasReviews;
@@ -332,7 +332,7 @@ public class Recipe implements Serializable {
 
 	/**
 	 * Standard setter method that sets the recommendations for the recipe.
-	 * @param recipeId the recommendations to set for the recipe.
+	 * @param recommendations the recommendations to set for the recipe.
 	 */
 	public void setRecommendations(Set<Recommendation> recommendations) {
 		this.recommendations = recommendations;

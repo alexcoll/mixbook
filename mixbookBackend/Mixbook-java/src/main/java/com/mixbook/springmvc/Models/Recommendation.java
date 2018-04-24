@@ -176,7 +176,7 @@ public class Recommendation implements Serializable {
 
 	/**
 	 * Standard setter method that sets the recommender for the recommendation.
-	 * @param recipient the recommender to set for the recommendation.
+	 * @param recommender the recommender to set for the recommendation.
 	 */
 	public void setRecommender(User recommender) {
 		this.recommender = recommender;
@@ -192,7 +192,7 @@ public class Recommendation implements Serializable {
 
 	/**
 	 * Standard setter method that sets the recommended recipe for the recommendation.
-	 * @param recipient the recommended recipe to set for the recommendation.
+	 * @param recommendedRecipe the recommended recipe to set for the recommendation.
 	 */
 	public void setRecommendedRecipe(Recipe recommendedRecipe) {
 		this.recommendedRecipe = recommendedRecipe;

@@ -167,7 +167,7 @@ public class UserRecipeHasReview implements Serializable {
 
 	/**
 	 * Standard setter method that sets the text/commentary for the review.
-	 * @param recipe the text/commentary to set for the review.
+	 * @param reviewCommentary the text/commentary to set for the review.
 	 */
 	public void setReviewCommentary(String reviewCommentary) {
 		this.reviewCommentary = reviewCommentary;
@@ -183,7 +183,7 @@ public class UserRecipeHasReview implements Serializable {
 
 	/**
 	 * Standard setter method that sets the rating for the review.
-	 * @param recipe the rating to set for the review.
+	 * @param rating the rating to set for the review.
 	 */
 	public void setRating(int rating) {
 		this.rating = rating;
@@ -199,7 +199,7 @@ public class UserRecipeHasReview implements Serializable {
 
 	/**
 	 * Standard setter method that sets the number of up votes for the review.
-	 * @param recipe the number of up votes to set for the review.
+	 * @param numberOfUpVotes the number of up votes to set for the review.
 	 */
 	public void setNumberOfUpVotes(int numberOfUpVotes) {
 		this.numberOfUpVotes = numberOfUpVotes;
@@ -215,7 +215,7 @@ public class UserRecipeHasReview implements Serializable {
 
 	/**
 	 * Standard setter method that sets the number of down votes for the review.
-	 * @param recipe the number of down votes to set for the review.
+	 * @param numberOfDownVotes the number of down votes to set for the review.
 	 */
 	public void setNumberOfDownVotes(int numberOfDownVotes) {
 		this.numberOfDownVotes = numberOfDownVotes;
@@ -231,7 +231,7 @@ public class UserRecipeHasReview implements Serializable {
 
 	/**
 	 * Standard setter method that sets the ratings for the review.
-	 * @param recipe the ratings to set for the review.
+	 * @param userRatingReviews the ratings to set for the review.
 	 */
 	public void setUserRatingReviews(Set<UserRatingReview> userRatingReviews) {
 		this.userRatingReviews = userRatingReviews;

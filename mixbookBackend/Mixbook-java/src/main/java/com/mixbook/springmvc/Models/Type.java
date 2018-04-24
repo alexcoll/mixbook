@@ -102,8 +102,8 @@ public class Type implements Serializable {
 	}
 
 	/**
-	 * Standard getter method that returns the users associated with the type.
-	 * @return the users associated with the type.
+	 * Standard getter method that returns the styles associated with the type.
+	 * @return the styles associated with the type.
 	 */
 	public Set<Style> getStyles() {
 		return styles;
