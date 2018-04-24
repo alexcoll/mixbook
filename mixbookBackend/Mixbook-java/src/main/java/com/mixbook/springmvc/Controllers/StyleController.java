@@ -15,13 +15,27 @@ import com.mixbook.springmvc.Exceptions.UnknownServerErrorException;
 import com.mixbook.springmvc.Models.Style;
 import com.mixbook.springmvc.Services.StyleService;
 
+/**
+ * Provides API endpoints for style functions.
+ * @author John Tyler Preston
+ * @version 1.0
+ */
 @Controller
 @RequestMapping("/style")
 public class StyleController {
 
+	/**
+	 * Provides ability to access style service layer functions.
+	 */
 	@Autowired
 	StyleService styleService;
 
+	/**
+	 * Loads a complete list of styles.
+	 * @return a <code>ResponseEntity</code> of type <code>List</code> of type <code>Style</code> of all styles. It contains each style's
+	 * information, information regarding the success or failure of request, along with an HTTP status code, 200 for success and 500 for an internal
+	 * server error.
+	 */
 	@RequestMapping(value = "/getStyles", method = RequestMethod.GET)
 	@ResponseBody
 	public ResponseEntity<List<Style>> getStyles() {
