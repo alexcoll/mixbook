@@ -14,6 +14,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import '../recipes/index.js';
 import '../login/index.js';
 
+import { openDrawer } from '../../actions/drawer';
 import styles from './styles';
 import store from 'react-native-simple-store';
 import ModalDropdown from 'react-native-modal-dropdown';
@@ -27,6 +28,7 @@ const {
 class Reviews extends Component {
 
   static propTypes = {
+    openDrawer: React.PropTypes.func,
     replaceAt: React.PropTypes.func,
     navigation: React.PropTypes.shape({
       key: React.PropTypes.string,
@@ -173,7 +175,7 @@ class Reviews extends Component {
 
 
   replaceAt(route) {
-    this.props.replaceAt('recipes', { key: route }, this.props.navigation.key);
+    this.props.replaceAt(global.back, { key: route }, this.props.navigation.key);
   }
 
   onSubmit() {
@@ -415,6 +417,9 @@ class Reviews extends Component {
     return (
       <View style={styles.container}>
         <Header>
+        <Button transparent onPress={this.props.openDrawer}>
+            <Icon name="ios-menu" />
+          </Button>
           <Title>{this.state.name}</Title>
         </Header>
         <Content>
@@ -430,7 +435,7 @@ class Reviews extends Component {
                       <ListItem>
                         <Grid>
                           <Col>
-                            <Text style={styles.listTest}>{data.recipeName}</Text>
+                            <Text style={styles.listTest}>{data.brandName}</Text>
                           </Col>
                          </Grid>
                       </ListItem>
@@ -566,6 +571,7 @@ class Reviews extends Component {
 
 function bindAction(dispatch) {
   return {
+    openDrawer: () => dispatch(openDrawer()),
     replaceAt: (routeKey, route, key) => dispatch(replaceAt(routeKey, route, key)),
     navigateTo: (route, homeRoute) => dispatch(navigateTo(route, homeRoute)),
   };

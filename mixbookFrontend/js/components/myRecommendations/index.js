@@ -19,7 +19,7 @@ import ModalDropdown from 'react-native-modal-dropdown';
 
 var filter = require('lodash/filter');
 var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => true});
-class Recipes extends Component {
+class MyRecommendations extends Component {
 
   constructor(props) {
     super(props);
@@ -28,15 +28,14 @@ class Recipes extends Component {
       isGuest: true,
       refreshing: false,
       dataSource: ds.cloneWithRows([]),
+      pagedDataSource: ds.cloneWithRows([]),
       searchText: "",
       sortDirection: "",
       isLoading: false,
       empty: false,
       rawData: [],
-      pagedDataSource: ds.cloneWithRows([]),
-      page: 1,
       outOfData: false,
-      pagedData: [],
+      page: 1,
     };
   }
 
@@ -104,10 +103,15 @@ class Recipes extends Component {
         isGuest: data.isGuest,
       });
 
-      fetch(GLOBAL.API.BASE_URL + '/mixbook/recipe/getAllRecipes', {
+      if (data.isGuest) {
+        console.log("IS GUEST");
+      }
+
+      fetch(GLOBAL.API.BASE_URL + '/mixbook/recommendation/loadRecommendations', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': data.token,
         }
       }).then(async (response) => {
         if (response.status == 200) {
@@ -121,7 +125,6 @@ class Recipes extends Component {
           isLoading: false,
           empty: false,
           rawData: json,
-          pagedData: json,
           page: 1,
         });
         this.getPagedData();
@@ -142,58 +145,14 @@ class Recipes extends Component {
     });
   }
 
-  getPagedData(){
-    console.log("Getting paged data");
-    var list = this.state.pagedData;
-
-    var length = this.state.page * 14;
-    console.log("Length: " + length);
-
-    if(list.length > length)
-    {
-      list = list.slice(0, length);
-    }
-    else
-    {
-      this.setState({
-        outOfData: true,
-      });
-      console.log("Out of data: " + this.state.outOfData);
-
-    }
-    
-
-
-    this.setState({
-      pagedDataSource: this.state.dataSource.cloneWithRows(list),
-      page: this.state.page + 1,
-    });
-  }
-
-  fetchMoreData() {
-    
-    var currPage = this.state.page;
-
-
-
-    console.log("Getting more data for page " + this.state.page);
-
-    if(this.state.sortDirection != "")
-      this._recipeSortOnSelect(this.state.sortDirection, 0)
-
-    else  
-      this.filterOnSearchText(this.state.searchText, this.state.rawData);
-
-
-    this.getPagedData();
-    
-  }
 
   setSearchText(event) {
     let searchText = event.nativeEvent.text;
     this.setState({searchText});
 
     this.filterOnSearchText(searchText, this.state.rawData);
+
+  
   }
 
   filterOnSearchText(searchText, data) {
@@ -203,11 +162,7 @@ class Recipes extends Component {
     
     this.setState({
         dataSource: this.state.dataSource.cloneWithRows(filteredData),
-        pagedData: filteredData,
     });
-
-
-    this.getPagedData();
 
 
   }
@@ -219,48 +174,52 @@ class Recipes extends Component {
       return items;
 
     return filter(items, (n) => {
-      let item = n[1].toLowerCase();
+      let item = n.recommendedRecipe.recipeName.toLowerCase();
       return item.search(text) !== -1;
     });
   }
 
-  _recipeSortOnSelect(idx, value) {
+  getPagedData(){
+    console.log("Getting paged data for page: " + this.state.page);
+    var list = this.state.rawData;
 
-    let sortedData = this.sortRecipes(this.state.rawData, idx.toString());
+    var length = this.state.page * 14;
+    console.log("List length: " + list.length);
+    console.log("Length: " + length);
+
+    if(list.length > length)
+    {
+      list = list.slice(0, length);
+    }
+    else
+    {
+      this.setState({
+        outOfData: true,
+      });
+      console.log(this.state.outOfData);
+
+    }
+    
+    console.log(list);
 
     this.setState({
-      rawData: sortedData,
-      dataSource: ds.cloneWithRows(sortedData)
+      pagedDataSource: this.state.dataSource.cloneWithRows(list),
+      page: this.state.page + 1,
     });
 
 
-    this.filterOnSearchText(this.state.searchText, this.state.rawData);
-
-
   }
 
-  sortRecipes(items, idx) {
+  fetchMoreData() {
+    
+    var currPage = this.state.page;
 
-    this.setState({
-      sortDirection: idx,
-    })
-    if(idx === '0')
-    {
-      return items.sort(function (a,b) {
-        if ((b[6]/b[5]) < (a[6]/a[5]) || b[5] == 0) return -1;
-        if ((b[6]/b[5]) > (a[6]/a[5])) return 1;
-        return 0;
-      })
-    }
+    console.log("Getting more data for page " + this.state.page);
 
-    if(idx === '1') {
-      return items.sort(function (a,b) {
-        if ((b[6]/b[5]) > (a[6]/a[5])  || a[5] == 0) return -1;
-        if ((b[6]/b[5]) < (a[6]/a[5])) return 1;
-        return 0;
-      })
-    }
+    this.getPagedData();
+    
   }
+
 
 
 
@@ -276,7 +235,7 @@ class Recipes extends Component {
           'Authorization': data.token,
         },
         body: JSON.stringify({
-          recipeId: item[0]
+          recipeId: item.recipeId
         })
       }).then((response) => {
         if (response.status == 200) {
@@ -309,14 +268,13 @@ class Recipes extends Component {
         'What do you want to do?',
         [
           {text: 'Details', onPress: () => this.goToReviewPage(item)},
-          {text: 'Recommend', onPress: () => this.goToRecommend(item)},
           {text: 'Cancel', style: 'cancel'},
         ],
         { cancelable: true }
       )
     } else {
       Alert.alert(
-        item.recipeName,
+        item[1],
         'What do you want to do?',
         [
           {text: 'Details', onPress: () => this.goToReviewPage(item)},
@@ -330,32 +288,22 @@ class Recipes extends Component {
 
   goToReviewPage(item: string) {
     //this.props.navigator.push({name:'review', data:item});
-    global.recipeName = item.recipeName;
-    global.recipeId = item.recipeId;
-    global.directions = item.directions;
-    global.difficulty = item.difficulty;
-    global.reviewOwner = item.user.username;
-    global.back = 'recipes'
+    global.recipeName = item.recommendedRecipe.recipeName;
+    global.recipeId = item.recommendedRecipe.recipeId;
+    global.directions = item.recommendedRecipe.directions;
+    global.difficulty = item.recommendedRecipe.difficulty;
+    global.reviewOwner = item.recommendedRecipe.user.username;
+
+
+    global.back = 'myRecommendations';
     //console.warn(global.recipeName);
     this.navigateTo('review');
   }
 
-  goToRecommend(item: string) {
-
-        global.recipeId = item.recipeId;
-        global.recipeName = item.recipeName;
-
-        //console.warn(global.recipeName);
-        this.navigateTo('recommendation');
-  }
-
   goToEditPage(item: string) {
 
-    global.recipeName = item.recipeName;
-    global.recipeId = item.recipeId;
-    global.directions = item.directions;
-    global.reviewOwner = item.user.username;
-    global.back = 'recipes'
+
+
     //console.warn(global.recipeName);
     this.navigateTo('editRecipe');
   }
@@ -395,7 +343,7 @@ class Recipes extends Component {
             <Icon name="ios-menu" />
           </Button>
 
-          <Title>Recipes</Title>
+          <Title>Recommended To Me</Title>
 
           <Button transparent onPress={() => this._onRefresh()}>
             <Icon name="ios-refresh" />
@@ -406,7 +354,7 @@ class Recipes extends Component {
 
         <TextInput
           style={styles.searchBar}
-          placeholder="Search Recipes"
+          placeholder="Search Recommendations"
           value={this.state.searchText}
           onChange={this.setSearchText.bind(this)}
           multiline={false}
@@ -415,13 +363,6 @@ class Recipes extends Component {
           autoCorrect={false}
         />
 
-        <ModalDropdown 
-          options={['Ranking ↑', 'Ranking ↓']}
-          defaultValue='Sort'
-          style={styles.dropDownStyle}
-          textStyle={styles.dropDownTextStyle}
-          onSelect={(idx, value) => this._recipeSortOnSelect(idx, value)}
-          />
 
           
 
@@ -435,7 +376,7 @@ class Recipes extends Component {
               onRefresh={this._onRefresh.bind(this)}
             />
           }
-          dataSource={this.state.pagedDataSource}
+          dataSource={this.state.dataSource}
           renderRow={(rowData: string, sectionID: number, rowID: number, highlightRow: (sectionID: number, rowID: number) => void) =>
             <TouchableHighlight onPress={() => {
               this._pressRow(rowData);
@@ -444,7 +385,7 @@ class Recipes extends Component {
               <View>
                 <View style={styles.row}>
                   <Text style={styles.rowText}>
-                    {rowData.recipeName}
+                    {rowData.recommendedRecipe.recipeName}
                   </Text>
                 </View>
               </View>
@@ -475,4 +416,4 @@ const mapStateToProps = state => ({
   navigation: state.cardNavigation,
 });
 
-export default connect(mapStateToProps, bindAction)(Recipes);
+export default connect(mapStateToProps, bindAction)(MyRecommendations);
