@@ -147,7 +147,7 @@ class AddIngredient extends Component {
               'Authorization': data.token,
             },
             body: JSON.stringify({
-              brandName: item
+              brandName: item.brandName
             })
           })
           .then((response) => {
@@ -191,15 +191,15 @@ class AddIngredient extends Component {
   filterItems(searchText, items) {
     let text = searchText.toLowerCase();
     return filter(items, (n) => {
-      let item = n.toLowerCase();
+      let item = n.brandName.toLowerCase();
       return item.search(text) !== -1;
     });
   }
 
   _pressRow(item: string) {
     Alert.alert(
-      "Add " + item + "?",
-      "Are you sure you want to add " + item + " to your inventory?",
+      "Add " + item.brandName + "?",
+      "Are you sure you want to add " + item.brandName + " to your inventory?",
       [
         {text: 'Add', onPress: () => this.onItemAdd(item)},
         {text: 'Cancel', style: 'cancel'},
@@ -256,7 +256,7 @@ class AddIngredient extends Component {
               }}>
                 <View style={styles.row}>
                   <Text style={styles.rowText}>
-                    {rowData}
+                    {rowData.brandName}
                   </Text>
                 </View>
               </TouchableHighlight>

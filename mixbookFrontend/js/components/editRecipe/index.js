@@ -441,7 +441,7 @@ class EditRecipe extends Component {
                 editable={false}
               />
               <Text style={styles.headers}> Ingredients: </Text>
-              <Text style={styles.headers}> {this.state.ingredientsList}</Text>
+              <Text style={styles.headers}> {this.state.ingredientsList.brandName}</Text>
               
 
 

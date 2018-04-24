@@ -219,7 +219,7 @@ class Recipes extends Component {
       return items;
 
     return filter(items, (n) => {
-      let item = n[1].toLowerCase();
+      let item = n.recipeName.toLowerCase();
       return item.search(text) !== -1;
     });
   }
@@ -276,7 +276,7 @@ class Recipes extends Component {
           'Authorization': data.token,
         },
         body: JSON.stringify({
-          recipeId: item[0]
+          recipeId: item.recipeId
         })
       }).then((response) => {
         if (response.status == 200) {

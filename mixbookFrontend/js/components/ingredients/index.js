@@ -96,7 +96,7 @@ class Ingredients extends Component {
       });
     })
     .catch(error => {
-      console.warn("error getting the inventory list from the local store");
+      console.warn("error getting the inventory guest list from the local store");
       this.setState({
         empty: true,
         isLoading: false,
@@ -212,7 +212,7 @@ class Ingredients extends Component {
   filterItems(searchText, items) {
     let text = searchText.toLowerCase();
     return filter(items, (n) => {
-      let item = n.toLowerCase();
+      let item = n.brandName.toLowerCase();
       return item.search(text) !== -1;
     });
   }
@@ -284,7 +284,7 @@ class Ingredients extends Component {
 
   _pressRow(item: string) {
     Alert.alert(
-      "Edit " + item,
+      "Edit " + item.brandName,
       'What do you want to do?',
       [
         {text: 'Delete', onPress: () => this.onListItemRemove(item)},
