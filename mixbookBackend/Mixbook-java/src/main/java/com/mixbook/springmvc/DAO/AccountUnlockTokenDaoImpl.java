@@ -9,6 +9,11 @@ import org.springframework.stereotype.Repository;
 
 import com.mixbook.springmvc.Models.AccountUnlockToken;
 
+/**
+ * Provides the concrete implementation of the modular data layer functionality for account unlock related tasks for the service layer.
+ * @author John Tyler Preston
+ * @version 1.0
+ */
 @Repository("accountUnlockTokenDao")
 public class AccountUnlockTokenDaoImpl extends AbstractDao<Integer, AccountUnlockToken>
 		implements AccountUnlockTokenDao {
