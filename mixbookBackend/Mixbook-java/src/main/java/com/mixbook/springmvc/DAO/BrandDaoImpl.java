@@ -7,6 +7,11 @@ import org.springframework.stereotype.Repository;
 
 import com.mixbook.springmvc.Models.Brand;
 
+/**
+ * Provides the concrete implementation of the modular data layer functionality for brand related tasks for the service layer.
+ * @author John Tyler Preston
+ * @version 1.0
+ */
 @Repository("brandDao")
 public class BrandDaoImpl extends AbstractDao<Integer, Brand> implements BrandDao {
 
