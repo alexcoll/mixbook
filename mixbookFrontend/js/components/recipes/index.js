@@ -303,7 +303,17 @@ class Recipes extends Component {
   }
 
   _pressRow(item: string) {
-    if (this.state.isGuest || item[7] !== this.state.username) {
+    if (this.state.isGuest) {
+      Alert.alert(
+        item.recipeName,
+        'What do you want to do?',
+        [
+          {text: 'Details', onPress: () => this.goToReviewPage(item)},
+          {text: 'Cancel', style: 'cancel'},
+        ],
+        { cancelable: true }
+      )
+    } else if (item[7] !== this.state.username) {
       Alert.alert(
         item.recipeName,
         'What do you want to do?',
@@ -314,7 +324,8 @@ class Recipes extends Component {
         ],
         { cancelable: true }
       )
-    } else {
+    }
+    else {
       Alert.alert(
         item.recipeName,
         'What do you want to do?',

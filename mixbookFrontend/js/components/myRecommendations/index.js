@@ -175,7 +175,14 @@ class MyRecommendations extends Component {
 
     return filter(items, (n) => {
       let item = n.recommendedRecipe.recipeName.toLowerCase();
-      return item.search(text) !== -1;
+      let recommender = n.description.split(' ')[0];
+      if(item.search(text) !== -1)  
+        return true;
+      else if(recommender.search(text) !== -1)
+        return true;
+      else
+        return false;
+      //return item.search(text) !== -1;
     });
   }
 
