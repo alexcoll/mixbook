@@ -7,6 +7,11 @@ import org.springframework.stereotype.Repository;
 
 import com.mixbook.springmvc.Models.Type;
 
+/**
+ * Provides the concrete implementation of the modular data layer functionality for type related tasks for the service layer.
+ * @author John Tyler Preston
+ * @version 1.0
+ */
 @Repository("typeDao")
 public class TypeDaoImpl extends AbstractDao<Integer, Type> implements TypeDao {
 
