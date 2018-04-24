@@ -11,6 +11,11 @@ import org.springframework.stereotype.Repository;
 import com.mixbook.springmvc.Models.Badge;
 import com.mixbook.springmvc.Models.User;
 
+/**
+ * Provides the concrete implementation of the modular data layer functionality for badge related tasks for the service layer.
+ * @author John Tyler Preston
+ * @version 1.0
+ */
 @Repository("badgeDao")
 public class BadgeDaoImpl extends AbstractDao<Integer, Badge> implements BadgeDao {
 
