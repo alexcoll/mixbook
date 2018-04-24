@@ -9,6 +9,11 @@ import org.springframework.stereotype.Repository;
 
 import com.mixbook.springmvc.Models.PasswordResetToken;
 
+/**
+ * Provides the concrete implementation of the modular data layer functionality for password reset related tasks for the service layer.
+ * @author John Tyler Preston
+ * @version 1.0
+ */
 @Repository("passwordResetTokenDao")
 public class PasswordResetTokenDaoImpl extends AbstractDao<Integer, PasswordResetToken> implements PasswordResetTokenDao {
 
