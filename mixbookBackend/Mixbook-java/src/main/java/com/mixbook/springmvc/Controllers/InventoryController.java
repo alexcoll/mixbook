@@ -114,7 +114,7 @@ public class InventoryController {
 	}
 
 	/**
-	 * Loads a list of ingredients in a user's inventory
+	 * Loads a list of ingredients in a user's inventory.
 	 * @param request the request coming in to identify the user.
 	 * @return a <code>ResponseEntity</code> of type <code>List</code> of type <code>Brand</code> of all the ingredients in a user's inventory. It contains each brand's
 	 * information, information regarding the success or failure of request, along with an HTTP status code, 200 for success and 500 for an internal
