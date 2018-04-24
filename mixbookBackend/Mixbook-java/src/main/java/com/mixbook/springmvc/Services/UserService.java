@@ -33,7 +33,7 @@ public interface UserService {
 	/**
 	 * Loads a user including their badges by their username.
 	 * @param username the username of the user to load.
-	 * @return the user including their badges matching the userame specified.
+	 * @return the user including their badges matching the username specified.
 	 * @throws PersistenceException the exception is thrown when a nonexistent user is searched.
 	 * @throws UnknownServerErrorException the exception is thrown when an unknown server error occurs.
 	 */
