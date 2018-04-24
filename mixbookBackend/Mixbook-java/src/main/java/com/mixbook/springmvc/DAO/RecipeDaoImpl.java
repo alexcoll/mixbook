@@ -24,12 +24,23 @@ import com.mixbook.springmvc.Models.Recipe;
 import com.mixbook.springmvc.Models.User;
 import com.mixbook.springmvc.Services.UserService;
 
+/**
+ * Provides the concrete implementation of the modular data layer functionality for recipe related tasks for the service layer.
+ * @author John Tyler Preston
+ * @version 1.0
+ */
 @Repository("recipeDao")
 public class RecipeDaoImpl extends AbstractDao<Integer, Recipe> implements RecipeDao {
 
+	/**
+	 * Provides ability to access user service layer functions.
+	 */
 	@Autowired
 	UserService userService;
 
+	/**
+	 * Standard logger used to log the exceptions and do audit logging.
+	 */
 	private static final Logger logger = LogManager.getLogger(RecipeDaoImpl.class);
 
 	@Override
