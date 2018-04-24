@@ -335,7 +335,7 @@ class Recipes extends Component {
     global.directions = item.directions;
     global.difficulty = item.difficulty;
     global.reviewOwner = item.user.username;
-
+    global.back = 'recipes'
     //console.warn(global.recipeName);
     this.navigateTo('review');
   }
@@ -355,7 +355,7 @@ class Recipes extends Component {
     global.recipeId = item.recipeId;
     global.directions = item.directions;
     global.reviewOwner = item.user.username;
-
+    global.back = 'recipes'
     //console.warn(global.recipeName);
     this.navigateTo('editRecipe');
   }

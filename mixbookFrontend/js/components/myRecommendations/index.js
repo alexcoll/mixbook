@@ -267,7 +267,7 @@ class MyRecommendations extends Component {
         item.recipeName,
         'What do you want to do?',
         [
-          {text: 'Edit', onPress: () => this.goToEditPage(item)},
+          {text: 'Details', onPress: () => this.goToReviewPage(item)},
           {text: 'Cancel', style: 'cancel'},
         ],
         { cancelable: true }
@@ -288,22 +288,21 @@ class MyRecommendations extends Component {
 
   goToReviewPage(item: string) {
     //this.props.navigator.push({name:'review', data:item});
-    global.recipeName = item.recipeName;
-    global.recipeId = item.recipeId;
-    global.directions = item.directions;
-    global.difficulty = item.difficulty;
-    global.reviewOwner = item.user.username;
+    global.recipeName = item.recommendedRecipe.recipeName;
+    global.recipeId = item.recommendedRecipe.recipeId;
+    global.directions = item.recommendedRecipe.directions;
+    global.difficulty = item.recommendedRecipe.difficulty;
+    global.reviewOwner = item.recommendedRecipe.user.username;
 
+
+    global.back = 'myRecommendations';
     //console.warn(global.recipeName);
     this.navigateTo('review');
   }
 
   goToEditPage(item: string) {
 
-    global.recipeName = item.recipeName;
-    global.recipeId = item.recipeId;
-    global.directions = item.directions;
-    global.reviewOwner = item.user.username;
+
 
     //console.warn(global.recipeName);
     this.navigateTo('editRecipe');
