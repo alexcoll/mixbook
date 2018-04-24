@@ -7,6 +7,11 @@ import org.springframework.stereotype.Repository;
 
 import com.mixbook.springmvc.Models.Style;
 
+/**
+ * Provides the concrete implementation of the modular data layer functionality for style related tasks for the service layer.
+ * @author John Tyler Preston
+ * @version 1.0
+ */
 @Repository("styleDao")
 public class StyleDaoImpl extends AbstractDao<Integer, Style> implements StyleDao {
 
