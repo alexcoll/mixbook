@@ -430,7 +430,7 @@ class Reviews extends Component {
                       <ListItem>
                         <Grid>
                           <Col>
-                            <Text style={styles.listTest}>{data.recipeName}</Text>
+                            <Text style={styles.listTest}>{data.brandName}</Text>
                           </Col>
                          </Grid>
                       </ListItem>
