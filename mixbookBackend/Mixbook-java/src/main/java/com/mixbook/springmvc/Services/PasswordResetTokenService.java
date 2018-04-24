@@ -7,7 +7,7 @@ import com.mixbook.springmvc.Models.PasswordResetToken;
 import com.mixbook.springmvc.Models.User;
 
 /**
- * Interface to provide modular service layer functionality for password related tasks for the controller layer.
+ * Interface to provide modular service layer functionality for password reset related tasks for the controller layer.
  * @author John Tyler Preston
  * @version 1.0
  */
