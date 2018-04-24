@@ -175,7 +175,8 @@ class Reviews extends Component {
 
 
   replaceAt(route) {
-    this.props.replaceAt(global.back, { key: route }, this.props.navigation.key);
+    console.log("REPLACE WITH " + route);
+    this.props.replaceAt('review', { key: route }, this.props.navigation.key);
   }
 
   onSubmit() {

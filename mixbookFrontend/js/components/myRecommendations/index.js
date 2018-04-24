@@ -225,23 +225,22 @@ class MyRecommendations extends Component {
 
 
 
-  onListItemRemove(item: string) {
+  deleteRecommendation(item: string) {
     // Delete the ingredient from the server
     store.get('account').then((data) => {
-      fetch(GLOBAL.API.BASE_URL + '/mixbook/recipe/deleteRecipe', {
+      fetch(GLOBAL.API.BASE_URL + '/mixbook/recommendation/deleteRecommendation', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': data.token,
         },
         body: JSON.stringify({
-          recipeId: item.recipeId
+          recommendationId: item.recommendationId
         })
       }).then((response) => {
         if (response.status == 200) {
-          ToastAndroid.show("Recipe removed", ToastAndroid.SHORT);
+          ToastAndroid.show("Recommendation removed", ToastAndroid.SHORT);
           this.fetchData();
-          console.log("recipe list pushed successfully");
         } else {
           this.showServerErrorAlert(response);
           return;
@@ -262,32 +261,20 @@ class MyRecommendations extends Component {
   }
 
   _pressRow(item: string) {
-    if (this.state.isGuest || item[7] !== this.state.username) {
       Alert.alert(
         item.recipeName,
         'What do you want to do?',
         [
           {text: 'Details', onPress: () => this.goToReviewPage(item)},
-          {text: 'Cancel', style: 'cancel'},
+          {text: 'Delete', onPress: () => this.deleteRecommendation(item)},
         ],
         { cancelable: true }
       )
-    } else {
-      Alert.alert(
-        item[1],
-        'What do you want to do?',
-        [
-          {text: 'Details', onPress: () => this.goToReviewPage(item)},
-          {text: 'Edit', onPress: () => this.goToEditPage(item)},
-          {text: 'Delete', onPress: () => this.onListItemRemove(item)},
-        ],
-        { cancelable: true }
-      )
-    }
+  
   }
 
   goToReviewPage(item: string) {
-    //this.props.navigator.push({name:'review', data:item});
+
     global.recipeName = item.recommendedRecipe.recipeName;
     global.recipeId = item.recommendedRecipe.recipeId;
     global.directions = item.recommendedRecipe.directions;
