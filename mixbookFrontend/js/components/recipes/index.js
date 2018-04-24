@@ -337,6 +337,7 @@ class Recipes extends Component {
     global.difficulty = item.difficulty;
     global.reviewOwner = item.user.username;
 
+    global.backPage = 'recipes';
     //console.warn(global.recipeName);
     this.navigateTo('review');
   }

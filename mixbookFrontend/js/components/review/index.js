@@ -418,6 +418,10 @@ class Reviews extends Component {
     return (
       <View style={styles.container}>
         <Header>
+        <Button transparent onPress={this.navigateTo(global.backPage)}>
+            <Icon name="ios-arrow-back" />
+          </Button>
+        
           <Title>{this.state.name}</Title>
         </Header>
         <Content>

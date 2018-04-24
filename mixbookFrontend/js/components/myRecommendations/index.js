@@ -268,52 +268,6 @@ class MyRecommendations extends Component {
   }
 
   _pressRow(item: string) {
-    var uri = encodeURI(GLOBAL.API.BASE_URL + '/mixbook/recipe/searchForRecipeByName?name=' + item.recommendedRecipe.recipeName.split(' ')[0])
-    
-    fetch(uri, {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      }
-    }).then(async (response) => {
-      if (response.status == 200) {
-        var json = await response.json();
-        console.log("JSON: " + json);
-
-
-        for (var i = 0; i < json.length; i++)
-        {
-          console.log(json[i].recipeName);
-          //Found target recipe
-          if(json[i].recipeName == item.recommendedRecipe.recipeName)
-          {
-            console.log("Found it!");
-
-            global.recipeName = json[i].recipeName;
-            global.recipeId = json[i].recipeId;
-            global.directions = json[i].directions;
-            global.difficulty = json[i].difficulty;
-            global.reviewOwner = json[i].user.username;
-
-            //this.navigateTo('review');
-          }
-        }
-
-
-
-        
-      } else {
-        this.showServerErrorAlert(response);
-        return;
-      }
-    }).catch((error) => {
-      console.error(error);
-      this.setState({
-        empty: true,
-        isLoading: false,
-      });
-    });
 
     
     if (this.state.isGuest || item[7] !== this.state.username) {
@@ -344,7 +298,14 @@ class MyRecommendations extends Component {
 
   goToReviewPage(item: string) {
 
-      this.navigateTo('review');
+    global.recipeName = item.recommendedRecipe.recipeName;
+    global.recipeId = item.recommendedRecipe.recipeId;
+    global.directions = item.recommendedRecipe.directions;
+    global.difficulty = item.recommendedRecipe.difficulty;
+    global.reviewOwner = item.recommendedRecipe.user.username;
+    global.backPage = 'myRecommendations';
+
+    this.navigateTo('review');
   }
 
   goToEditPage(item: string) {
@@ -354,11 +315,7 @@ class MyRecommendations extends Component {
     
     
 
-    global.recipeName = item.recipeName;
-    global.recipeId = item.recipeId;
-    global.directions = item.directions;
-    global.difficulty = item.difficulty;
-    global.reviewOwner = this.state.selectedUserName;
+
 
     //console.warn(global.recipeName);
     this.navigateTo('editRecipe');
