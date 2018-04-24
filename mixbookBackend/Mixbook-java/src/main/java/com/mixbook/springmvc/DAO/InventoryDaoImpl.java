@@ -17,9 +17,17 @@ import com.mixbook.springmvc.Models.Brand;
 import com.mixbook.springmvc.Models.User;
 import com.mixbook.springmvc.Services.UserService;
 
+/**
+ * Provides the concrete implementation of the modular data layer functionality for inventory related tasks for the service layer.
+ * @author John Tyler Preston
+ * @version 1.0
+ */
 @Repository("inventoryDao")
 public class InventoryDaoImpl extends AbstractDao<Integer, Brand> implements InventoryDao {
 
+	/**
+	 * Provides ability to access user service layer functions.
+	 */
 	@Autowired
 	UserService userService;
 
