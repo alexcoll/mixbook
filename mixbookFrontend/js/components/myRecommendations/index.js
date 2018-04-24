@@ -309,17 +309,7 @@ class MyRecommendations extends Component {
 
 
 
-  _renderFAB() {
-    if (!this.state.isGuest) {
-      return (
-        <ActionButton
-          buttonColor="rgba(231,76,60,1)"
-          onPress={() => this.navigateTo('addRecipe')}
-        />
-      );
-    }
-  }
-
+  
 
   render() { // eslint-disable-line
     return (
@@ -385,7 +375,7 @@ class MyRecommendations extends Component {
                   block
                   style={styles.button}
                   onPress={() => this.fetchMoreData()}>Load More</Button>
-        {this._renderFAB()}
+
       </View>
     );
   }
