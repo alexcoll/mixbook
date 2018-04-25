@@ -9,6 +9,7 @@ import navigateTo from '../../actions/pageNav';
 import { openDrawer } from '../../actions/drawer';
 import myTheme from '../../themes/base-theme';
 import styles from './styles';
+import logError from '../../actions/logger';
 
 import store from 'react-native-simple-store';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -40,7 +41,7 @@ class MyDrinks extends Component {
       });
     })
     .catch((error) => {
-      console.warn("error getting account guest data from local store");
+      logError('error getting account guest data from local store:\n' + error, 2);
     });
   }
 
@@ -57,18 +58,8 @@ class MyDrinks extends Component {
     this.props.navigateTo(route, 'mydrinks');
   }
 
-  componentWillReceiveProps() {
-    // console.warn("willProps");
-    // this.getRemoteData();
-  }
-
   componentWillMount() {
-    // console.warn("willMount");
     this.getRemoteData();
-  }
-
-  componentDidMount() {
-    // console.warn("didMount");
   }
 
   getPagedData(){
@@ -78,39 +69,28 @@ class MyDrinks extends Component {
     var length = this.state.page * 14;
     console.log("Length: " + length);
 
-    if(list.length > length)
-    {
+    if (list.length > length) {
       list = list.slice(0, length);
-    }
-    else
-    {
+    } else {
       this.setState({
         outOfData: true,
       });
       console.log(this.state.outOfData);
-
     }
-    
+
     console.log(list);
 
     this.setState({
       pagedDataSource: this.state.dataSource.cloneWithRows(list),
       page: this.state.page + 1,
     });
-
-    
-
   }
 
+
   fetchMoreData() {
-    
     var currPage = this.state.page;
-
-
     console.log("Getting more data for page " + this.state.page);
-
     this.getPagedData();
-    
   }
 
   showServerErrorAlert(response) {
@@ -121,7 +101,8 @@ class MyDrinks extends Component {
       {text: 'Dismiss', style: 'cancel'}
       ],
       { cancelable: true }
-      );
+    );
+    logError("Server error, got response: " + response.status + ' ' + response.statusText, 1);
   }
 
   getLocalData() {
@@ -134,7 +115,7 @@ class MyDrinks extends Component {
       });
       this.getPagedData();
     }).catch(error => {
-      console.warn("error getting the recipe list from the local store");
+      logError('error getting the recipe list from local store:\n' + error, 2);
       this.setState({
         empty: true,
         isLoading: false,
@@ -152,8 +133,7 @@ class MyDrinks extends Component {
       }
     })
     .catch((error) => {
-      console.warn(error);
-      console.warn("1error getting user token from local store");
+      logError('error getting user token from local store:\n' + error, 2);
     });
   }
 
@@ -184,7 +164,7 @@ class MyDrinks extends Component {
         return;
       }
     }).catch((error) => {
-      console.error(error);
+      logError('Error with request /mixbook/recipe/getAllRecipesUserCanMake\n' + error, 2);
       this.setState({
         empty: true,
         isLoading: false,
@@ -234,6 +214,7 @@ class MyDrinks extends Component {
         }
       }).catch((error) => {
         console.error(error);
+          logError('Error with request /mixbook/recipe/getAllRecipesAnonymousUserCanMake\n' + error, 2);
         this.setState({
           empty: true,
           isLoading: false,
@@ -241,8 +222,7 @@ class MyDrinks extends Component {
       });
     })
     .catch((error) => {
-      console.warn("error getting ingredients from store");
-      console.warn(error);
+      logError('error getting ingredients from store:\n' + error, 2);
     });
   }
 
@@ -303,11 +283,10 @@ class MyDrinks extends Component {
             return;
           }
         }).catch((error) => {
-          console.error(error);
+          logError('Error with request //mixbook/recipe/deleteRecipe\n' + error, 2);
         });
       }).catch((error) => {
-        console.warn("error getting user token from local store");
-        console.warn(error);
+        logError('error getting user token from local store:\n' + error, 2);
       });
 
     }
@@ -428,7 +407,7 @@ class MyDrinks extends Component {
           }
           renderSeparator={this._renderSeparator}
         />
-        <Button 
+        <Button
                   disabled={this.state.outOfData}
                   block
                   style={styles.button}

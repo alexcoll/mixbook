@@ -12,6 +12,7 @@ import store from 'react-native-simple-store';
 import ProgressBar from './components/loaders/ProgressBar';
 
 import theme from './themes/base-theme';
+import FileSystem from 'react-native-filesystem-v1';
 
 const styles = StyleSheet.create({
   container: {
@@ -39,6 +40,24 @@ class App extends Component {
     };
   }
 
+  setupErrorLog() {
+    async function createLogFile(filePath) {
+      const fileExists = await FileSystem.fileExists(filePath, FileSystem.storage.temporary);
+      console.log(`log file exists: ${fileExists}`);
+      if (!fileExists) {
+        // Create the logfile
+        const fileContents = 'Start of log file\n';
+        await FileSystem.writeToFile('logs/error-log.txt', fileContents, false, FileSystem.storage.temporary);
+        console.log('log file was created');
+        console.log("path of logfile: " + FileSystem.absolutePath(filePath, FileSystem.storage.temporary));
+      } else {
+        // start new section of logfile
+      }
+    }
+
+    createLogFile('logs/error-log.txt');
+    console.log("path of logfile: " + FileSystem.absolutePath('logs/error-log.txt', FileSystem.storage.temporary));
+  }
 
   setupAsyncStore() {
     // Setup account store
@@ -141,6 +160,7 @@ class App extends Component {
     );
 
     this.setupAsyncStore();
+    this.setupErrorLog();
   }
 
 

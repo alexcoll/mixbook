@@ -8,13 +8,13 @@ import { openDrawer } from '../../actions/drawer';
 import { actions } from 'react-native-navigation-redux-helpers';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import * as GLOBAL from '../../globals';
+import logError from '../../actions/logger';
+import store from 'react-native-simple-store';
 //import StarRating from 'react-native-star-rating';
 
 import styles from './styles';
 
 const camera = require('../../../img/camera.png');
-
-import store from 'react-native-simple-store';
 
 const {
   replaceAt,
@@ -29,7 +29,6 @@ class Account extends Component {
       key: React.PropTypes.string,
     })
   }
-
 
   constructor(props) {
     super(props);
@@ -50,11 +49,9 @@ class Account extends Component {
     };
   }
 
-
   replaceAt(route) {
     this.props.replaceAt('account', { key: route }, this.props.navigation.key);
   }
-
 
   componentDidMount() {
     store.get('account')
@@ -75,7 +72,7 @@ class Account extends Component {
       console.log("PROF: " + this.state.profRating);
     })
     .catch((error) => {
-      console.warn("error getting settings from local store");
+      logError("error getting settings from local store\n" + error.message, 1);
     });
   }
 
@@ -101,7 +98,7 @@ class Account extends Component {
       ToastAndroid.show("Logged out", ToastAndroid.SHORT);
     })
     .catch((error) => {
-      console.warn("error clearing account data from local store");
+      logError("error clearing account data from local store\n" + error.message, 2);
     });
 
     store.save('inventory', []);
@@ -124,11 +121,10 @@ class Account extends Component {
       ToastAndroid.show("Account Locked", ToastAndroid.SHORT);
       this.onLogout();
     }).catch((error) => {
-      console.error(error);
+      logError("error with request\n" + error, 1);
     });
   }).catch((error) => {
-    console.warn("error getting user token from local store");
-    console.warn(error);
+    logError("error getting user token from local store\n" + error.message, 2);
   });
   }
 
@@ -165,8 +161,7 @@ class Account extends Component {
       }
     })
     .catch((error) => {
-      console.warn("error getting account data from local store");
-      console.warn(error);
+      logError("error getting account data from local store\n" + error.message, 2);
     });
   }
 
@@ -181,6 +176,7 @@ class Account extends Component {
         ],
         { cancelable: true }
       )
+      logError("error changing passwords: passwords do not match", 1);
       return;
     }
 
@@ -194,6 +190,7 @@ class Account extends Component {
         ],
         { cancelable: true }
       )
+      logError("error changing passwords: passwords are not different", 1);
       return;
     }
 
@@ -237,6 +234,8 @@ class Account extends Component {
                 ],
                 { cancelable: true }
               )
+              logError("Server error when changing password, got response: " + response.status + ' ' + response.statusText, 2);
+
             }
           } else if (response.status === 400 && response.status === 401) {
             var json = await response.json();
@@ -248,13 +247,13 @@ class Account extends Component {
               ],
               { cancelable: true }
             )
+            logError("Server error when changing password, got response: " + response.status + ' ' + response.statusText + '\n Error: ' + json.errorMessage, 2);
           } else {
-            Alert("Something went wrong with the server");
-            console.warn(response.status + response.message);
+            showServerErrorAlert(response);
             return;
           }
         }).catch((error) => {
-          console.error(error);
+          logError("Request error: " + error, 2);
         });
 
       } else if (response.status === 401) {
@@ -267,12 +266,24 @@ class Account extends Component {
           { cancelable: true }
         )
       } else {
-        Alert("something went wrong");
+        showServerErrorAlert(response);
       }
     })
     .catch((error) => {
-      console.error(error);
+      logError("Request error: " + error, 2);
     });
+  }
+
+  showServerErrorAlert(response) {
+    Alert.alert(
+        "Server error",
+        "Got: " + response.status + response.message,
+        [
+          {text: 'Dismiss', style: 'cancel'},
+        ],
+        { cancelable: true }
+      )
+    logError('Server error: ' + response.status + '\n' + response.message, 1);
   }
 
   updateNames(token: string, firstName: string, lastName: string) {
@@ -296,15 +307,13 @@ class Account extends Component {
             data.userInfo.lastName = lastName;
             store.save('account', data)
             .catch((error) => {
-              console.warn("error storing account data into local store");
-              console.warn(error);
+              logError("error storing account data into local store: " + error, 2);
             })
           }).catch((error) => {
-            console.warn("error getting account data from local store");
-            console.warn(error);
+              logError("error getting account data from local store: " + error, 2);
           });
         } else {
-          Alert("something went wrong");
+          showServerErrorAlert(response);
         }
       } else if (response.status === 400) {
         var json = await response.json();
@@ -316,18 +325,12 @@ class Account extends Component {
           ],
           { cancelable: true }
         )
+        logError('Error updating names: ' + json.errorMessage);
       } else {
-        Alert.alert(
-          "Server error",
-          "Got: " + response.status + response.message,
-          [
-            {text: 'Ok', style: 'cancel'},
-          ],
-          { cancelable: true }
-        )
+        showServerErrorAlert(response);
       }
     }).catch((error) => {
-      console.error(error);
+      logError("Request error: " + error, 2);
     });
   }
 
@@ -353,15 +356,13 @@ class Account extends Component {
               // ToastAndroid.show("Profile updated", ToastAndroid.SHORT);
             })
             .catch((error) => {
-              console.warn("error storing account data into local store");
-              console.warn(error);
+              logError("error storing account data into local store: " + error, 2);
             })
           }).catch((error) => {
-            console.warn("error getting account data from local store");
-            console.warn(error);
+            logError("error getting account data from local store: " + error, 2);
           });
         } else {
-          Alert("something went wrong");
+          showServerErrorAlert(response);
         }
       } else if (response.status === 400) {
         var json = await response.json();
@@ -373,12 +374,13 @@ class Account extends Component {
           ],
           { cancelable: true }
         )
+        logError('Error updating email: ' + json.errorMessage, 1);
       } else {
-        Alert(response.status + response.message);
+        showServerErrorAlert(response);
         return;
       }
     }).catch((error) => {
-      console.error(error);
+      logError(error, 2);
     });
   }
 
@@ -447,55 +449,55 @@ class Account extends Component {
   }
 
   fillRecipeBadges(goal : number) {
-    
+
         if(goal == 1 && this.state.recipes >= goal) {
           return {
             color: "#4F8EF7"
           }
         }
-    
+
         if(goal == 5 && this.state.recipes >= goal) {
           return {
             color: "#cc9900"
           }
         }
-    
+
         if(goal == 25 && this.state.recipes >= goal) {
           return {
             color: "#808080"
           }
         }
-    
+
         if(goal == 50 && this.state.recipes >= goal) {
           return {
             color: "#ffff00"
           }
         }
-    
+
         if(goal == 100 && this.state.recipes >= goal) {
           return {
             color: "#4d4d4d"
           }
         }
-    
+
         if(goal == 250 && this.state.recipes >= goal) {
           return {
             color: "#b9f2ff"
           }
         }
-    
+
         if(goal == 500 && this.state.recipes >= goal) {
           return {
             color: "#b36b00"
           }
         }
-    
+
         if(goal == 1000 && this.state.recipes >= goal) {
           return {
             color: "#cc0000"
           }
         }
-    
+
         else {
           return {
             color: "#e6e6e6"
@@ -509,7 +511,7 @@ class Account extends Component {
           var leftToGo = target - this.state.ratings;
           var currentValue = this.state.ratings;
         }
-          
+
 
         if(badgeName.startsWith("recipe"))
         {
@@ -519,7 +521,7 @@ class Account extends Component {
 
 
         //User has not gotten badge yet
-        if(leftToGo > 0)  
+        if(leftToGo > 0)
         {
           Alert.alert(
             badgeLevel,
@@ -555,7 +557,7 @@ class Account extends Component {
     }
 
     return result;
-    
+
   }
 
   render() {
@@ -567,10 +569,10 @@ class Account extends Component {
             <Button transparent onPress={this.props.openDrawer}>
               <Icon name="ios-menu" />
             </Button>
-  
+
             <Title>My Profile</Title>
           </Header>
-  
+
           <Content>
             <Text style={styles.rating}> Profile Rating: {this.state.profRating}</Text>
             <List>
@@ -618,100 +620,100 @@ class Account extends Component {
               <ListItem>
                 <View>
                   <Text>{`Badges\n`} </Text>
-                  
+
                   <View style={{flexDirection: 'row'}}>
                     <Text>{`      `}</Text>
                     <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("review", "First Review", 1)}}>
                       <MaterialIcons name="border-color" size={25} style={this.fillReviewBadges(1)} />
                     </TouchableOpacity>
                     <Text>{`    `}</Text>
-  
+
                     <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("reviews", "Bronze", 5)}}>
                       <MaterialIcons name="border-color" size={25} style={this.fillReviewBadges(5)}/>
                     </TouchableOpacity>
                     <Text>{`    `}</Text>
-  
+
                     <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("reviews", "Silver", 25)}}>
                       <MaterialIcons name="border-color" size={25} style={this.fillReviewBadges(25)}/>
                     </TouchableOpacity>
                     <Text>{`    `}</Text>
-  
-  
+
+
                     <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("reviews", "Gold", 50)}}>
                       <MaterialIcons name="border-color" size={25} style={this.fillReviewBadges(50)}/>
                     </TouchableOpacity>
                     <Text>{`    `}</Text>
-  
-  
+
+
                     <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("reviews", "Platinum", 100)}}>
                       <MaterialIcons name="border-color" size={25} style={this.fillReviewBadges(100)}/>
                     </TouchableOpacity>
                     <Text>{`    `}</Text>
-  
-  
+
+
                     <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("reviews", "Diamond", 250)}}>
                       <MaterialIcons name="border-color" size={25} style={this.fillReviewBadges(250)}/>
                     </TouchableOpacity>
                     <Text>{`    `}</Text>
-  
-  
+
+
                     <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("reviews", "Centurion", 500)}}>
                       <MaterialIcons name="border-color" size={25} style={this.fillReviewBadges(500)}/>
                     </TouchableOpacity>
                     <Text>{`    `}</Text>
-  
-  
+
+
                     <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("reviews", "Mixologist", 1000)}}>
                       <MaterialIcons name="border-color" size={25} style={this.fillReviewBadges(1000)}/>
                     </TouchableOpacity>
                     <Text>{`    `}</Text>
-                  
+
                 </View>
-  
+
                 <Text>{`\n`}</Text>
-              
+
               <View style={{flexDirection: 'row'}}>
                 <Text>{`      `}</Text>
                 <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("recipe", "First Review", 1)}}>
                 <MaterialIcons name="local-drink" size={25} style={this.fillRecipeBadges(1)} />
               </TouchableOpacity>
               <Text>{`    `}</Text>
-  
+
               <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("recipes", "Bronze", 5)}}>
                 <MaterialIcons name="local-drink" size={25} style={this.fillRecipeBadges(5)}/>
               </TouchableOpacity>
               <Text>{`    `}</Text>
-  
+
               <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("recipes", "Silver", 25)}}>
                 <MaterialIcons name="local-drink" size={25} style={this.fillRecipeBadges(25)}/>
               </TouchableOpacity>
               <Text>{`    `}</Text>
-  
-  
+
+
               <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("recipes", "Gold", 50)}}>
                 <MaterialIcons name="local-drink" size={25} style={this.fillRecipeBadges(50)}/>
               </TouchableOpacity>
               <Text>{`    `}</Text>
-  
-  
+
+
               <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("recipes", "Platinum", 100)}}>
                 <MaterialIcons name="local-drink" size={25} style={this.fillRecipeBadges(100)}/>
               </TouchableOpacity>
               <Text>{`    `}</Text>
-  
-  
+
+
               <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("recipes", "Diamond", 250)}}>
                 <MaterialIcons name="local-drink" size={25} style={this.fillRecipeBadges(250)}/>
               </TouchableOpacity>
               <Text>{`    `}</Text>
-  
-  
+
+
               <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("recipes", "Centurion", 500)}}>
                 <MaterialIcons name="local-drink" size={25} style={this.fillRecipeBadges(500)}/>
               </TouchableOpacity>
               <Text>{`    `}</Text>
-  
-  
+
+
               <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("recipes", "Mixologist", 1000)}}>
                 <MaterialIcons name="local-drink" size={25} style={this.fillRecipeBadges(1000)}/>
               </TouchableOpacity>
@@ -796,10 +798,10 @@ class Account extends Component {
             <Button transparent onPress={this.props.openDrawer}>
               <Icon name="ios-menu" />
             </Button>
-  
+
             <Title>My Profile</Title>
           </Header>
-  
+
           <Content>
             <Text style={styles.rating}> Profile Rating: {this.state.profRating}</Text>
             <List>
@@ -847,100 +849,100 @@ class Account extends Component {
               <ListItem>
                 <View>
                   <Text>{`Badges\n`} </Text>
-                  
+
                   <View style={{flexDirection: 'row'}}>
                     <Text>{`      `}</Text>
                     <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("review", "First Review", 1)}}>
                       <MaterialIcons name="border-color" size={25} style={this.fillReviewBadges(1)} />
                     </TouchableOpacity>
                     <Text>{`    `}</Text>
-  
+
                     <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("reviews", "Bronze", 5)}}>
                       <MaterialIcons name="border-color" size={25} style={this.fillReviewBadges(5)}/>
                     </TouchableOpacity>
                     <Text>{`    `}</Text>
-  
+
                     <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("reviews", "Silver", 25)}}>
                       <MaterialIcons name="border-color" size={25} style={this.fillReviewBadges(25)}/>
                     </TouchableOpacity>
                     <Text>{`    `}</Text>
-  
-  
+
+
                     <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("reviews", "Gold", 50)}}>
                       <MaterialIcons name="border-color" size={25} style={this.fillReviewBadges(50)}/>
                     </TouchableOpacity>
                     <Text>{`    `}</Text>
-  
-  
+
+
                     <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("reviews", "Platinum", 100)}}>
                       <MaterialIcons name="border-color" size={25} style={this.fillReviewBadges(100)}/>
                     </TouchableOpacity>
                     <Text>{`    `}</Text>
-  
-  
+
+
                     <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("reviews", "Diamond", 250)}}>
                       <MaterialIcons name="border-color" size={25} style={this.fillReviewBadges(250)}/>
                     </TouchableOpacity>
                     <Text>{`    `}</Text>
-  
-  
+
+
                     <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("reviews", "Centurion", 500)}}>
                       <MaterialIcons name="border-color" size={25} style={this.fillReviewBadges(500)}/>
                     </TouchableOpacity>
                     <Text>{`    `}</Text>
-  
-  
+
+
                     <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("reviews", "Mixologist", 1000)}}>
                       <MaterialIcons name="border-color" size={25} style={this.fillReviewBadges(1000)}/>
                     </TouchableOpacity>
                     <Text>{`    `}</Text>
-                  
+
                 </View>
-  
+
                 <Text>{`\n`}</Text>
-              
+
               <View style={{flexDirection: 'row'}}>
                 <Text>{`      `}</Text>
                 <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("recipe", "First Review", 1)}}>
                 <MaterialIcons name="local-drink" size={25} style={this.fillRecipeBadges(1)} />
               </TouchableOpacity>
               <Text>{`    `}</Text>
-  
+
               <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("recipes", "Bronze", 5)}}>
                 <MaterialIcons name="local-drink" size={25} style={this.fillRecipeBadges(5)}/>
               </TouchableOpacity>
               <Text>{`    `}</Text>
-  
+
               <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("recipes", "Silver", 25)}}>
                 <MaterialIcons name="local-drink" size={25} style={this.fillRecipeBadges(25)}/>
               </TouchableOpacity>
               <Text>{`    `}</Text>
-  
-  
+
+
               <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("recipes", "Gold", 50)}}>
                 <MaterialIcons name="local-drink" size={25} style={this.fillRecipeBadges(50)}/>
               </TouchableOpacity>
               <Text>{`    `}</Text>
-  
-  
+
+
               <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("recipes", "Platinum", 100)}}>
                 <MaterialIcons name="local-drink" size={25} style={this.fillRecipeBadges(100)}/>
               </TouchableOpacity>
               <Text>{`    `}</Text>
-  
-  
+
+
               <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("recipes", "Diamond", 250)}}>
                 <MaterialIcons name="local-drink" size={25} style={this.fillRecipeBadges(250)}/>
               </TouchableOpacity>
               <Text>{`    `}</Text>
-  
-  
+
+
               <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("recipes", "Centurion", 500)}}>
                 <MaterialIcons name="local-drink" size={25} style={this.fillRecipeBadges(500)}/>
               </TouchableOpacity>
               <Text>{`    `}</Text>
-  
-  
+
+
               <TouchableOpacity style={styles.buttonContainer} onPress={() => {this._pressBadge("recipes", "Mixologist", 1000)}}>
                 <MaterialIcons name="local-drink" size={25} style={this.fillRecipeBadges(1000)}/>
               </TouchableOpacity>
@@ -1009,7 +1011,7 @@ class Account extends Component {
         </Container>
       );
     }
-    
+
   }
 }
 

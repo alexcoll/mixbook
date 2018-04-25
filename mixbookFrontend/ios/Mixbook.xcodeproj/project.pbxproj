@@ -49,6 +49,11 @@
 		FAE0F8DE4905445C805C7252 /* libRNSearchBar.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BAFE71D334124DAD8F31A64A /* libRNSearchBar.a */; };
 		E2B8672D36154ACB92BCA547 /* libRNMultiPickerIOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7652FFDF45B44B8CB4D8E10F /* libRNMultiPickerIOS.a */; };
 		F8C1DC18BB804479BE0B1C71 /* libToolTipMenu.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BF02E3198EB54008B494EB91 /* libToolTipMenu.a */; };
+		05F2C4E23F8A42C9A25631F4 /* libRNFileSystem.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7974E7376388416C9C398BD7 /* libRNFileSystem.a */; };
+		A41FC2E982B643699DCE4C78 /* libRNMail.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 362A01FA11884F449C403F9D /* libRNMail.a */; };
+		5AD388D490844CE2A0E9BB1B /* libRCTContacts.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E45BDCB29D4E49DF9803334C /* libRCTContacts.a */; };
+		F583FFB95CC348A59AD25279 /* liblibRCTMailer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 28DE8267B14D42AAB13C814F /* liblibRCTMailer.a */; };
+		8FEA4CB39EE84A4F82AF30F4 /* libRCTMailer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FC579AF518EC426C9CADA115 /* libRCTMailer.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -199,6 +204,14 @@
 		7652FFDF45B44B8CB4D8E10F /* libRNMultiPickerIOS.a */ = {isa = PBXFileReference; name = "libRNMultiPickerIOS.a"; path = "libRNMultiPickerIOS.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 		6A1AFACC03654790A9BE7610 /* ToolTipMenu.xcodeproj */ = {isa = PBXFileReference; name = "ToolTipMenu.xcodeproj"; path = "../node_modules/react-native-tooltip/ToolTipMenu.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
 		BF02E3198EB54008B494EB91 /* libToolTipMenu.a */ = {isa = PBXFileReference; name = "libToolTipMenu.a"; path = "libToolTipMenu.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		484D445954974F6F92337CEE /* RNFileSystem.xcodeproj */ = {isa = PBXFileReference; name = "RNFileSystem.xcodeproj"; path = "../node_modules/react-native-filesystem-v1/ios/RNFileSystem.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		7974E7376388416C9C398BD7 /* libRNFileSystem.a */ = {isa = PBXFileReference; name = "libRNFileSystem.a"; path = "libRNFileSystem.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		BD6275538EB0410F8EE06711 /* RNMail.xcodeproj */ = {isa = PBXFileReference; name = "RNMail.xcodeproj"; path = "../node_modules/react-native-mail/RNMail.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		362A01FA11884F449C403F9D /* libRNMail.a */ = {isa = PBXFileReference; name = "libRNMail.a"; path = "libRNMail.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		F517E63A1E6849EA9B5332DC /* RCTMailer.xcodeproj */ = {isa = PBXFileReference; name = "RCTMailer.xcodeproj"; path = "../node_modules/react-native-mailer/ios/RCTMailer.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		E45BDCB29D4E49DF9803334C /* libRCTContacts.a */ = {isa = PBXFileReference; name = "libRCTContacts.a"; path = "libRCTContacts.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		28DE8267B14D42AAB13C814F /* liblibRCTMailer.a */ = {isa = PBXFileReference; name = "liblibRCTMailer.a"; path = "liblibRCTMailer.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		FC579AF518EC426C9CADA115 /* libRCTMailer.a */ = {isa = PBXFileReference; name = "libRCTMailer.a"; path = "libRCTMailer.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -231,6 +244,11 @@
 				FAE0F8DE4905445C805C7252 /* libRNSearchBar.a in Frameworks */,
 				E2B8672D36154ACB92BCA547 /* libRNMultiPickerIOS.a in Frameworks */,
 				F8C1DC18BB804479BE0B1C71 /* libToolTipMenu.a in Frameworks */,
+				05F2C4E23F8A42C9A25631F4 /* libRNFileSystem.a in Frameworks */,
+				A41FC2E982B643699DCE4C78 /* libRNMail.a in Frameworks */,
+				5AD388D490844CE2A0E9BB1B /* libRCTContacts.a in Frameworks */,
+				F583FFB95CC348A59AD25279 /* liblibRCTMailer.a in Frameworks */,
+				8FEA4CB39EE84A4F82AF30F4 /* libRCTMailer.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -368,6 +386,9 @@
 				110C9A57E78F48B9ABDA11A2 /* RNSearchBar.xcodeproj */,
 				EB3394EACC864DCB95B169BA /* RNMultiPicker.xcodeproj */,
 				6A1AFACC03654790A9BE7610 /* ToolTipMenu.xcodeproj */,
+				484D445954974F6F92337CEE /* RNFileSystem.xcodeproj */,
+				BD6275538EB0410F8EE06711 /* RNMail.xcodeproj */,
+				F517E63A1E6849EA9B5332DC /* RCTMailer.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -763,6 +784,11 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 			};
 			name = Debug;
@@ -779,6 +805,11 @@
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Mixbook.app/Mixbook";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -866,6 +897,9 @@
 					"$(SRCROOT)/../node_modules/react-native-search-bar",
 					"$(SRCROOT)/../node_modules/react-native-multipicker/RNMultiPicker",
 					"$(SRCROOT)/../node_modules/react-native-tooltip/ToolTipMenu",
+					"$(SRCROOT)/../node_modules/react-native-filesystem-v1/ios/RNFileSystem",
+					"$(SRCROOT)/../node_modules/react-native-mail/RNMail",
+					"$(SRCROOT)/../node_modules/react-native-mailer/ios/RCTMailer",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -911,6 +945,9 @@
 					"$(SRCROOT)/../node_modules/react-native-search-bar",
 					"$(SRCROOT)/../node_modules/react-native-multipicker/RNMultiPicker",
 					"$(SRCROOT)/../node_modules/react-native-tooltip/ToolTipMenu",
+					"$(SRCROOT)/../node_modules/react-native-filesystem-v1/ios/RNFileSystem",
+					"$(SRCROOT)/../node_modules/react-native-mail/RNMail",
+					"$(SRCROOT)/../node_modules/react-native-mailer/ios/RCTMailer",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;

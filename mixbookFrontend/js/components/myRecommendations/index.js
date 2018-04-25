@@ -11,6 +11,7 @@ import navigateTo from '../../actions/pageNav'
 import { openDrawer } from '../../actions/drawer';
 import myTheme from '../../themes/base-theme';
 import styles from './styles';
+import logError from '../../actions/logger';
 
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import ActionButton from 'react-native-action-button';
@@ -53,20 +54,12 @@ class MyRecommendations extends Component {
   }
 
   componentWillReceiveProps() {
-    // console.warn("willProps");
     this.fetchData();
   }
 
   componentWillMount() {
-    // console.warn("willMount");
     this.fetchData();
   }
-
-  componentDidMount() {
-    // console.warn("didMount");
-  }
-
-
 
   showServerErrorAlert(response) {
     Alert.alert(
@@ -76,7 +69,8 @@ class MyRecommendations extends Component {
       {text: 'Dismiss', style: 'cancel'}
       ],
       { cancelable: true }
-      );
+    );
+    logError("Got response: " + response.status + " " + response.statusText, 1);
   }
 
   getData() {
@@ -88,7 +82,7 @@ class MyRecommendations extends Component {
         rawData: data,
       });
     }).catch(error => {
-      console.warn("error getting the recipe list from the local store");
+      logError('error getting the recipe list from the local store:\n' + error, 2);
       this.setState({
         empty: true,
         isLoading: false,
@@ -103,10 +97,6 @@ class MyRecommendations extends Component {
         isGuest: data.isGuest,
       });
 
-      if (data.isGuest) {
-        console.log("IS GUEST");
-      }
-
       fetch(GLOBAL.API.BASE_URL + '/mixbook/recommendation/loadRecommendations', {
         method: 'GET',
         headers: {
@@ -116,9 +106,9 @@ class MyRecommendations extends Component {
       }).then(async (response) => {
         if (response.status == 200) {
           var json = await response.json();
-        // console.warn(json[0]);
-        store.save("recipe", json).catch(error => {
-          console.warn("error storing the recipe list into the local store");
+        store.save("recipe", json)
+        .catch(error => {
+          logError('error storing the recipe list into the local store:\n' + error, 2);
         });
         this.setState({
           dataSource: this.state.dataSource.cloneWithRows(json),
@@ -134,14 +124,14 @@ class MyRecommendations extends Component {
           return;
         }
       }).catch((error) => {
-        console.error(error);
+        logError('error with request /mixbook/recommendation/loadRecommendations:\n' + error, 2);
         this.setState({
           empty: true,
           isLoading: false,
         });
       });
     }).catch((error) => {
-      console.warn("error getting user token from local store");
+      logError('error getting user token from local store:\n' + error, 2);
     });
   }
 
@@ -149,40 +139,33 @@ class MyRecommendations extends Component {
   setSearchText(event) {
     let searchText = event.nativeEvent.text;
     this.setState({searchText});
-
     this.filterOnSearchText(searchText, this.state.rawData);
-
-  
   }
 
   filterOnSearchText(searchText, data) {
-
     let filteredData = this.filterItems(searchText, data);
-    
-    
     this.setState({
-        dataSource: this.state.dataSource.cloneWithRows(filteredData),
+      dataSource: this.state.dataSource.cloneWithRows(filteredData),
     });
-
-
   }
 
   filterItems(searchText, items) {
     let text = searchText.toLowerCase();
 
-    if(text === "")
+    if (text === "") {
       return items;
+    }
 
     return filter(items, (n) => {
       let item = n.recommendedRecipe.recipeName.toLowerCase();
       let recommender = n.description.split(' ')[0];
-      if(item.search(text) !== -1)  
+      if (item.search(text) !== -1) {
         return true;
-      else if(recommender.search(text) !== -1)
+      } else if (recommender.search(text) !== -1) {
         return true;
-      else
+      } else {
         return false;
-      //return item.search(text) !== -1;
+      }
     });
   }
 
@@ -194,43 +177,28 @@ class MyRecommendations extends Component {
     console.log("List length: " + list.length);
     console.log("Length: " + length);
 
-    if(list.length > length)
-    {
+    if (list.length > length) {
       list = list.slice(0, length);
-    }
-    else
-    {
+    } else {
       this.setState({
         outOfData: true,
       });
       console.log(this.state.outOfData);
-
     }
-    
+
     console.log(list);
 
     this.setState({
       pagedDataSource: this.state.dataSource.cloneWithRows(list),
       page: this.state.page + 1,
     });
-
-
   }
 
   fetchMoreData() {
-    
     var currPage = this.state.page;
-
     console.log("Getting more data for page " + this.state.page);
-
     this.getPagedData();
-    
   }
-
-
-
-
-
 
   deleteRecommendation(item: string) {
     // Delete the ingredient from the server
@@ -253,11 +221,10 @@ class MyRecommendations extends Component {
           return;
         }
       }).catch((error) => {
-        console.error(error);
+        logError('Error with request /mixbook/recommendation/deleteRecommendation:\n' + error, 2);
       });
     }).catch((error) => {
-      console.warn("error getting user token from local store");
-      console.warn(error);
+      logError('error getting user token from local store:\n' + error, 2);
     });
   }
 
@@ -277,28 +244,20 @@ class MyRecommendations extends Component {
         ],
         { cancelable: true }
       )
-  
   }
 
   goToReviewPage(item: string) {
-
     global.recipeName = item.recommendedRecipe.recipeName;
     global.recipeId = item.recommendedRecipe.recipeId;
     global.directions = item.recommendedRecipe.directions;
     global.difficulty = item.recommendedRecipe.difficulty;
     global.reviewOwner = item.recommendedRecipe.user.username;
 
-
     global.back = 'myRecommendations';
-    //console.warn(global.recipeName);
     this.navigateTo('review');
   }
 
   goToEditPage(item: string) {
-
-
-
-    //console.warn(global.recipeName);
     this.navigateTo('editRecipe');
   }
 
@@ -315,8 +274,8 @@ class MyRecommendations extends Component {
   }
 
 
-  
-  
+
+
 
   render() { // eslint-disable-line
     return (
@@ -348,7 +307,7 @@ class MyRecommendations extends Component {
         />
 
 
-          
+
 
           </View>
 
@@ -377,7 +336,7 @@ class MyRecommendations extends Component {
           }
           renderSeparator={this._renderSeparator}
         />
-        <Button 
+        <Button
                   disabled={this.state.outOfData}
                   block
                   style={styles.button}

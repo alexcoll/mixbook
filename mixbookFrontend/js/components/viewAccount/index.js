@@ -11,6 +11,8 @@ import * as GLOBAL from '../../globals';
 
 import styles from './styles';
 
+import logError from '../../actions/logger';
+
 const camera = require('../../../img/camera.png');
 
 import store from 'react-native-simple-store';
@@ -28,7 +30,6 @@ class ViewAccount extends Component {
       key: React.PropTypes.string,
     })
   }
-
 
   constructor(props) {
     super(props);
@@ -66,7 +67,7 @@ class ViewAccount extends Component {
 
     })
     .catch((error) => {
-      console.warn("error getting settings from local store");
+      logError('error getting settings from local store:\n' + error, 2);
     });
   }
 
@@ -74,13 +75,11 @@ class ViewAccount extends Component {
   getProfRating(sumOfRatings: number, numberOfRatings: number) {
     var result = 0;
 
-    if(numberOfRatings > 0)
-    {
+    if (numberOfRatings > 0) {
       result = sumOfRatings / numberOfRatings;
     }
 
     return result;
-    
   }
 
 

@@ -138,6 +138,8 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-mail')
+    compile project(':react-native-filesystem-v1')
     compile project(':react-native-vector-icons')
     compile project(':react-native-code-push')
     compile fileTree(dir: "libs", include: ["*.jar"])

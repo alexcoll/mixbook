@@ -9,6 +9,7 @@ import navigateTo from '../../actions/pageNav';
 import { actions } from 'react-native-navigation-redux-helpers';
 import { Container, Header, Title, Content, Button, Icon, List, ListItem, Text, Picker, Input, InputGroup, Grid, Col } from 'native-base';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import logError from '../../actions/logger';
 
 //Load global variables
 import '../recipes/index.js';
@@ -80,6 +81,7 @@ class Reviews extends Component {
       ],
       { cancelable: true }
     );
+    logError("Got response: " + response.status + " " + response.statusText, 1);
   }
 
   getLocalData() {
@@ -101,7 +103,7 @@ class Reviews extends Component {
         });
       }
     }).catch((error) => {
-      console.warn("store.get(account): error getting user token from local store");
+      logError('store.get(account): error getting user token from local store:\n' + error, 2);
     });
   }
 
@@ -144,7 +146,7 @@ class Reviews extends Component {
         );
       }
     }).catch((error) => {
-      console.error(error);
+      logError('error with request loadReviewsForRecipe:\n' + error, 2);
     });
   }
 
@@ -169,7 +171,7 @@ class Reviews extends Component {
         );
       }
     }).catch((error) => {
-      console.error(error);
+      logError('error with request getBrandsForRecipe:\n' + error, 2);
     });
   }
 
@@ -226,7 +228,7 @@ class Reviews extends Component {
         return;
       }
     }).catch((error) => {
-      console.error(error);
+      logError('error with request createReview:\n' + error, 2);
     });
   }
 
@@ -254,7 +256,7 @@ class Reviews extends Component {
         return;
       }
     }).catch((error) => {
-      console.error(error);
+      logError('error with request editReview:\n' + error, 2);
     });
   }
 
@@ -286,22 +288,21 @@ class Reviews extends Component {
       if (response.status == 200) {
         var json = await response.json();
 
-          global.viewUsername = json.username;
-          global.viewEmail = json.email;
-          global.viewFirstName = json.firstName;
-          global.viewLastName = json.lastName;
-          global.viewSumRecipeRatings = json.sumOfPersonalRecipeRatings;
-          global.viewNumRecipeRatings = json.numberOfPersonalRecipeRatings;
+        global.viewUsername = json.username;
+        global.viewEmail = json.email;
+        global.viewFirstName = json.firstName;
+        global.viewLastName = json.lastName;
+        global.viewSumRecipeRatings = json.sumOfPersonalRecipeRatings;
+        global.viewNumRecipeRatings = json.numberOfPersonalRecipeRatings;
 
-          this.navigateTo('viewAccount');
-
+        this.navigateTo('viewAccount');
       } else {
         this.showServerErrorAlert(response);
         return;
       }
     })
     .catch((error) => {
-      console.error(error);
+      logError('error with request getUserInfo:\n' + error, 2);
     });
   }
 
@@ -334,7 +335,7 @@ class Reviews extends Component {
         return;
       }
     }).catch((error) => {
-      console.error(error);
+      logError('error with request upVoteReview:\n' + error, 2);
     });
   }
 
@@ -367,7 +368,7 @@ class Reviews extends Component {
         return;
       }
     }).catch((error) => {
-      console.error(error);
+      logError('error with request downVoteReview:\n' + error, 2);
     });
   }
 
@@ -410,8 +411,7 @@ class Reviews extends Component {
     }
   }
 
-  getDifficultyLevel()
-  {
+  getDifficultyLevel() {
     switch(this.state.difficulty) {
       case 1:
         return "Beginner";

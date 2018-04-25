@@ -11,6 +11,7 @@ import navigateTo from '../../actions/pageNav'
 import { openDrawer } from '../../actions/drawer';
 import myTheme from '../../themes/base-theme';
 import styles from './styles';
+import logError from '../../actions/logger';
 
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import ActionButton from 'react-native-action-button';
@@ -54,20 +55,12 @@ class Recipes extends Component {
   }
 
   componentWillReceiveProps() {
-    // console.warn("willProps");
     this.fetchData();
   }
 
   componentWillMount() {
-    // console.warn("willMount");
     this.fetchData();
   }
-
-  componentDidMount() {
-    // console.warn("didMount");
-  }
-
-
 
   showServerErrorAlert(response) {
     Alert.alert(
@@ -77,7 +70,8 @@ class Recipes extends Component {
       {text: 'Dismiss', style: 'cancel'}
       ],
       { cancelable: true }
-      );
+    );
+    logError("Got response: " + response.status + " " + response.statusText, 1);
   }
 
   getData() {
@@ -89,7 +83,7 @@ class Recipes extends Component {
         rawData: data,
       });
     }).catch(error => {
-      console.warn("error getting the recipe list from the local store");
+      logError('error getting the recipe list from the local store:\n' + error, 2);
       this.setState({
         empty: true,
         isLoading: false,
@@ -112,9 +106,8 @@ class Recipes extends Component {
       }).then(async (response) => {
         if (response.status == 200) {
           var json = await response.json();
-        // console.warn(json[0]);
         store.save("recipe", json).catch(error => {
-          console.warn("error storing the recipe list into the local store");
+          logError('error storing the recipe list into the local store:\n' + error, 2);
         });
         this.setState({
           dataSource: this.state.dataSource.cloneWithRows(json),
@@ -131,14 +124,14 @@ class Recipes extends Component {
           return;
         }
       }).catch((error) => {
-        console.error(error);
+        logError('error with request getAllRecipes:\n' + error, 2);
         this.setState({
           empty: true,
           isLoading: false,
         });
       });
     }).catch((error) => {
-      console.warn("error getting user token from local store");
+      logError('error getting user token from local store:\n' + error, 2);
     });
   }
 
@@ -149,20 +142,14 @@ class Recipes extends Component {
     var length = this.state.page * 14;
     console.log("Length: " + length);
 
-    if(list.length > length)
-    {
+    if (list.length > length) {
       list = list.slice(0, length);
-    }
-    else
-    {
+    } else {
       this.setState({
         outOfData: true,
       });
       console.log("Out of data: " + this.state.outOfData);
-
     }
-    
-
 
     this.setState({
       pagedDataSource: this.state.dataSource.cloneWithRows(list),
@@ -171,52 +158,39 @@ class Recipes extends Component {
   }
 
   fetchMoreData() {
-    
     var currPage = this.state.page;
-
-
-
     console.log("Getting more data for page " + this.state.page);
 
-    if(this.state.sortDirection != "")
+    if (this.state.sortDirection != "") {
       this._recipeSortOnSelect(this.state.sortDirection, 0)
-
-    else  
+    } else {
       this.filterOnSearchText(this.state.searchText, this.state.rawData);
-
+    }
 
     this.getPagedData();
-    
   }
 
   setSearchText(event) {
     let searchText = event.nativeEvent.text;
     this.setState({searchText});
-
     this.filterOnSearchText(searchText, this.state.rawData);
   }
 
   filterOnSearchText(searchText, data) {
-
     let filteredData = this.filterItems(searchText, data);
-    
-    
     this.setState({
         dataSource: this.state.dataSource.cloneWithRows(filteredData),
         pagedData: filteredData,
     });
-
-
     this.getPagedData();
-
-
   }
 
   filterItems(searchText, items) {
     let text = searchText.toLowerCase();
 
-    if(text === "")
+    if (text === "") {
       return items;
+    }
 
     return filter(items, (n) => {
       let item = n.recipeName.toLowerCase();
@@ -225,7 +199,6 @@ class Recipes extends Component {
   }
 
   _recipeSortOnSelect(idx, value) {
-
     let sortedData = this.sortRecipes(this.state.rawData, idx.toString());
 
     this.setState({
@@ -233,15 +206,11 @@ class Recipes extends Component {
       dataSource: ds.cloneWithRows(sortedData)
     });
 
-
     this.filterOnSearchText(this.state.searchText, this.state.rawData);
-
-
   }
 
   sortRecipes(items, idx) {
-    if(idx === '0')
-    {
+    if (idx === '0') {
       return items.sort(function (a,b) {
         if ((b.totalRating/b.numberOfRatings) < (a.totalRating/a.numberOfRatings) || b.numberOfRatings == 0) return -1;
         if ((b.totalRating/b.numberOfRatings) > (a.totalRating/a.numberOfRatings)) return 1;
@@ -249,7 +218,7 @@ class Recipes extends Component {
       })
     }
 
-    if(idx === '1') {
+    if (idx === '1') {
       return items.sort(function (a,b) {
         if ((b.totalRating/b.numberOfRatings) > (a.totalRating/a.numberOfRatings)  || a.numberOfRatings == 0) return -1;
         if ((b.totalRating/b.numberOfRatings) < (a.totalRating/a.numberOfRatings)) return 1;
@@ -257,10 +226,6 @@ class Recipes extends Component {
       })
     }
   }
-
-
-
-
 
   onListItemRemove(item: string) {
     // Delete the ingredient from the server
@@ -284,11 +249,10 @@ class Recipes extends Component {
           return;
         }
       }).catch((error) => {
-        console.error(error);
+        logError('error with request deleteRecipe:\n' + error, 2);
       });
     }).catch((error) => {
-      console.warn("error getting user token from local store");
-      console.warn(error);
+      logError('error getting user token from local store:\n' + error, 2);
     });
   }
 
@@ -319,9 +283,8 @@ class Recipes extends Component {
           {text: 'Cancel', style: 'cancel'},
         ],
         { cancelable: true }
-      )
-    }
-    else {
+      );
+    } else {
       Alert.alert(
         item.recipeName,
         'What do you want to do?',
@@ -331,7 +294,7 @@ class Recipes extends Component {
           {text: 'Delete', onPress: () => this.onListItemRemove(item)},
         ],
         { cancelable: true }
-      )
+      );
     }
   }
 
@@ -343,27 +306,23 @@ class Recipes extends Component {
     global.difficulty = item.difficulty;
     global.reviewOwner = item.user.username;
     global.back = 'recipes'
-    //console.warn(global.recipeName);
     this.navigateTo('review');
   }
 
   goToRecommend(item: string) {
+    global.recipeId = item.recipeId;
+    global.recipeName = item.recipeName;
 
-        global.recipeId = item.recipeId;
-        global.recipeName = item.recipeName;
-
-        //console.warn(global.recipeName);
-        this.navigateTo('recommendation');
+    this.navigateTo('recommendation');
   }
 
   goToEditPage(item: string) {
-
     global.recipeName = item.recipeName;
     global.recipeId = item.recipeId;
     global.directions = item.directions;
     global.reviewOwner = item.user.username;
     global.back = 'recipes'
-    //console.warn(global.recipeName);
+
     this.navigateTo('editRecipe');
   }
 
@@ -378,8 +337,6 @@ class Recipes extends Component {
       />
     );
   }
-
-
 
   _renderFAB() {
     if (!this.state.isGuest) {
@@ -422,7 +379,7 @@ class Recipes extends Component {
           autoCorrect={false}
         />
 
-        <ModalDropdown 
+        <ModalDropdown
           options={['Ranking ↑', 'Ranking ↓']}
           defaultValue='Sort'
           style={styles.dropDownStyle}
@@ -430,7 +387,7 @@ class Recipes extends Component {
           onSelect={(idx, value) => this._recipeSortOnSelect(idx, value)}
           />
 
-          
+
 
           </View>
 
@@ -459,7 +416,7 @@ class Recipes extends Component {
           }
           renderSeparator={this._renderSeparator}
         />
-        <Button 
+        <Button
                   disabled={this.state.outOfData}
                   block
                   style={styles.button}
