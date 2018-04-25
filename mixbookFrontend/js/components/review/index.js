@@ -122,11 +122,11 @@ class Reviews extends Component {
 
         // Check if user has already written a review
         for (i = 0; i < json.length; i++) {
-          if (json[i][3] == this.current_user) {
+          if (json[i].user.username == this.current_user) {
             this.setState({
               hasUserReviewed: true,
-              inputRating: String(json[i][2]),
-              inputReviewText: json[i][1],
+              inputRating: String(json[i].rating),
+              inputReviewText: json[i].reviewCommentary,
             })
           }
           break;
@@ -549,7 +549,7 @@ class Reviews extends Component {
                               <Button
                                 disabled={this.state.isGuest || (this.current_user == data.user.username)}
                                 style={{ alignSelf: 'center', marginTop: 20, marginBottom: 20 }}
-                                onPress={() => this.submitUpvote(data[0])}
+                                onPress={() => this.submitUpvote(data.usersRecipeHasReviewId)}
                               >
                                 <MaterialIcons name="thumb-up" />
                               </Button>
@@ -558,7 +558,7 @@ class Reviews extends Component {
                               <Button
                                 disabled={this.state.isGuest || (this.current_user == data.user.username)}
                                 style={{ alignSelf: 'center', marginTop: 20, marginBottom: 20 }}
-                                onPress={() => this.submitDownvote(data[0])}
+                                onPress={() => this.submitDownvote(data.usersRecipeHasReviewId)}
                               >
                                 <MaterialIcons name="thumb-down" />
                               </Button>
