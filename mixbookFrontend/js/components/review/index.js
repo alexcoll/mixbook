@@ -395,15 +395,15 @@ class Reviews extends Component {
     switch (idx) {
       case '1':
         return items.sort(function (a, b) {
-          if (a[4] > b[4]) return -1;
-          if (b[4] < a[4]) return 1;
+          if (a.rating > b.rating) return -1;
+          if (b.rating < a.rating) return 1;
           return 0;
         })
         break;
       case '2':
         return items.sort(function (a, b) {
-          if (a[5] > b[5]) return -1;
-          if (b[5] < a[5]) return 1;
+          if (a.numberOfUpVotes > b.numberOfUpVotes) return -1;
+          if (b.numberOfUpVotes < a.numberOfUpVotes) return 1;
           return 0;
         })
         break;
@@ -547,7 +547,7 @@ class Reviews extends Component {
                           }}>
                             <View style={{justifyContent: 'center'}}>
                               <Button
-                                disabled={this.state.isGuest || (this.current_user == data[3])}
+                                disabled={this.state.isGuest || (this.current_user == data.user.username)}
                                 style={{ alignSelf: 'center', marginTop: 20, marginBottom: 20 }}
                                 onPress={() => this.submitUpvote(data[0])}
                               >
@@ -556,7 +556,7 @@ class Reviews extends Component {
                             </View>
                             <View style={{justifyContent: 'center'}}>
                               <Button
-                                disabled={this.state.isGuest || (this.current_user == data[3])}
+                                disabled={this.state.isGuest || (this.current_user == data.user.username)}
                                 style={{ alignSelf: 'center', marginTop: 20, marginBottom: 20 }}
                                 onPress={() => this.submitDownvote(data[0])}
                               >
@@ -565,13 +565,13 @@ class Reviews extends Component {
                             </View>
                           </View>
                           <View style={{justifyContent: 'center'}}>
-                            <Text style={styles.upCountText}>{data[4]}</Text>
+                            <Text style={styles.upCountText}>{data.numberOfUpVotes}</Text>
                           </View>
                           <View style={{justifyContent: 'center'}}>
                             <Text style={styles.listTest}>:</Text>
                           </View>
                           <View style={{justifyContent: 'center'}}>
-                            <Text style={styles.downCountText}>{data[5]}</Text>
+                            <Text style={styles.downCountText}>{data.numberOfDownVotes}</Text>
                           </View>
                         </View>
                       </View>

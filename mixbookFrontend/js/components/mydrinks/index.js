@@ -261,7 +261,7 @@ class MyDrinks extends Component {
   filterItems(searchText, items) {
     let text = searchText.toLowerCase();
     return filter(items, (n) => {
-      let item = n[1].toLowerCase();
+      let item = n.recipeName.toLowerCase();
       return item.search(text) !== -1;
     });
   }

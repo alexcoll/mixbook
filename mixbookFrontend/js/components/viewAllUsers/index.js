@@ -254,7 +254,7 @@ class ViewAllUsers extends Component {
   }
 
   _pressRow(item: string) {
-    if (this.state.isGuest || item[7] !== this.state.username) {
+    if (this.state.isGuest || item.user.username !== this.state.username) {
       Alert.alert(
         item.username,
         'What do you want to do?',

@@ -240,23 +240,19 @@ class Recipes extends Component {
   }
 
   sortRecipes(items, idx) {
-
-    this.setState({
-      sortDirection: idx,
-    })
     if(idx === '0')
     {
       return items.sort(function (a,b) {
-        if ((b[6]/b[5]) < (a[6]/a[5]) || b[5] == 0) return -1;
-        if ((b[6]/b[5]) > (a[6]/a[5])) return 1;
+        if ((b.totalRating/b.numberOfRatings) < (a.totalRating/a.numberOfRatings) || b.numberOfRatings == 0) return -1;
+        if ((b.totalRating/b.numberOfRatings) > (a.totalRating/a.numberOfRatings)) return 1;
         return 0;
       })
     }
 
     if(idx === '1') {
       return items.sort(function (a,b) {
-        if ((b[6]/b[5]) > (a[6]/a[5])  || a[5] == 0) return -1;
-        if ((b[6]/b[5]) < (a[6]/a[5])) return 1;
+        if ((b.totalRating/b.numberOfRatings) > (a.totalRating/a.numberOfRatings)  || a.numberOfRatings == 0) return -1;
+        if ((b.totalRating/b.numberOfRatings) < (a.totalRating/a.numberOfRatings)) return 1;
         return 0;
       })
     }
@@ -313,7 +309,7 @@ class Recipes extends Component {
         ],
         { cancelable: true }
       )
-    } else if (item[7] !== this.state.username) {
+    } else if (item.user.username !== this.state.username) {
       Alert.alert(
         item.recipeName,
         'What do you want to do?',
