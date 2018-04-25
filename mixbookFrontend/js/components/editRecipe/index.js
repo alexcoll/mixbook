@@ -33,8 +33,9 @@ class EditRecipe extends Component {
       rawData: ['Start typing to search possible ingredients'],
       ingredientsList:[],
       drinkName: "",
-      difficulty: 0,
+      difficulty: "",
       directions: "",
+      oldDifficulty: global.difficulty.toString()
     };
   }
 
@@ -92,7 +93,7 @@ class EditRecipe extends Component {
         for (var key in json) {
           myBrands.push(json[key].brandName + "\n");
         }
-        console.log(myBrands);
+        console.log("difficulty is " + global.difficulty);
         this.setState({ingredientsList: myBrands});
 
      } else {
@@ -171,13 +172,13 @@ class EditRecipe extends Component {
       var list = this.state.ingredients;
       var key = "brandName";
       var obj = {};
-      obj[key] = item;
+      obj[key] = item.brandName;
       list.push(
         obj
       );
       Alert.alert(
         "Recipe now includes:",
-        "" +  item,
+        "" +  item.brandName,
         [
         {text: 'Dismiss', style: 'cancel'}
         ],
@@ -342,8 +343,8 @@ class EditRecipe extends Component {
 
   _pressRow(item: string) {
     Alert.alert(
-      "Add " + item + "?",
-      "Are you sure you want to add " + item + " to your recipe?",
+      "Add " + item.brandName + "?",
+      "Are you sure you want to add " + item.brandName + " to your recipe?",
       [
         {text: 'Add', onPress: () => this.onAddIngredient(item)},
         {text: 'Delete', onPress: () => this.onRemoveIngredient(item)},
@@ -427,16 +428,6 @@ class EditRecipe extends Component {
 
         </View>
 
-             {/* <View style={styles.Bcontainer}>
-
-            <TouchableOpacity
-              style={styles.buttonContainer}
-              onPress={() => this.navigateTo('addIngredient')}
-            >
-              <Text style={styles.buttonText}>Add More Ingredients</Text>
-            </TouchableOpacity>
-
-            </View> */}
 
 
             <View style ={styles.formContainer}>
@@ -448,31 +439,12 @@ class EditRecipe extends Component {
                 style={styles.input}
                 returnKeyType="next"
                 keyboardType="numeric"
-                onChangeText={(difficulty) => this.setState({ difficulty})}
+                onChangeText={(drinkName) => this.setState({drinkName})}
                 editable={false}
               />
 
               <Text style={styles.headers}> Ingredients: </Text>
-              {/* <View>
-                <List> 
-                <ListItem>
-                <List dataArray={this.state.ingredientsList}
-                      renderRow={(data) =>
-                        <ListItem>
-                          <Grid>
-                            <Col>
-                              <Text style={styles.listTest}>{data.brandName}</Text>
-                            </Col>
-                          </Grid>
-                        </ListItem>
-                      }>
-                </List>
-                </ListItem>
-                </List>
-              </View>
-       */}
-
-            <Text style={styles.headers}> {this.state.ingredientsList}</Text> 
+              <Text style={styles.headers}> {this.state.ingredientsList}</Text> 
               
 
 
@@ -487,10 +459,10 @@ class EditRecipe extends Component {
                 multiline={true}
                 onChangeText={(directions) => this.setState({ directions })}
              />
-               <Text style={styles.headers}> Recipe Difficulty: </Text> 
+               <Text style={styles.headers}> Recipe Difficulty: (1-5) </Text> 
               <TextInput
                 underlineColorAndroid={'transparent'}
-                defaultValue={global.difficulty}
+                defaultValue={this.state.oldDifficulty}
                 style={styles.input}
                 returnKeyType="next"
                 keyboardType="numeric"

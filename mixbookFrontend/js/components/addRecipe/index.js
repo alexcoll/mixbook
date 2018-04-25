@@ -232,7 +232,7 @@ class AddRecipe extends Component {
   filterItems(searchText, items) {
     let text = searchText.toLowerCase();
     return filter(items, (n) => {
-      let item = n.toLowerCase();
+      let item = n.brandName.toLowerCase();
       return item.search(text) !== -1;
     });
   }
