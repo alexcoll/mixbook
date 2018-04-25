@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ToastAndroid, ActionButton, TouchableHighlight, Alert, View, Text, TextInput, ListView, RefreshControl, List, ListItem, TouchableOpacity} from 'react-native';
+import { ToastAndroid, ActionButton, TouchableHighlight, Alert, View, Text, TextInput, ListView, RefreshControl, List, ListItem, TouchableOpacity, StyleSheet} from 'react-native';
 import { connect } from 'react-redux';
 import { Header, Title, Button, Icon } from 'native-base';
 
@@ -31,10 +31,10 @@ class EditRecipe extends Component {
       isLoading: false,
       empty: false,
       rawData: ['Start typing to search possible ingredients'],
-      ingredients: [],
+      ingredientsList:[],
       drinkName: "",
       difficulty: 0,
-      directions: ""
+      directions: "",
     };
   }
 
@@ -43,6 +43,7 @@ class EditRecipe extends Component {
   }
 
   componentDidMount() {
+    console.log(global.recipeId);
     this.getBrands();
     this.getRemoteData();
   }
@@ -60,6 +61,7 @@ class EditRecipe extends Component {
   }
 
   getBrands() {
+  
     store.get('brands').then((data) => {
       this.setState({
         dataSource: this.state.dataSource.cloneWithRows(data),
@@ -77,6 +79,7 @@ class EditRecipe extends Component {
   }
 
   getBrandsForRecipe() {
+    console.log(global.recipeId);
     fetch(`${GLOBAL.API.BASE_URL}/mixbook/recipe/getBrandsForRecipe?id=${global.recipeId}`, {
       method: 'GET',
       headers: {
@@ -85,8 +88,14 @@ class EditRecipe extends Component {
     }).then(async (response) => {
       if (response.status == 200) {
         var json = await response.json();
-        this.setState({ingredientsList: json});
-      } else {
+        var myBrands = [];
+        for (var key in json) {
+          myBrands.push(json[key].brandName + "\n");
+        }
+        console.log(myBrands);
+        this.setState({ingredientsList: myBrands});
+
+     } else {
         Alert.alert(
           "Server Error",
           "Could Not Load Ingredients",
@@ -114,12 +123,14 @@ class EditRecipe extends Component {
   }
 
   getRemoteData() {
+  
     fetch(GLOBAL.API.BASE_URL + '/mixbook/brand/getBrands', {
       method: 'GET',
     })
     .then(async (response) => {
       if (response.status == 200) {
         var brandList = await response.json();
+    
 
         store.save("brands", brandList)
         .catch(error => {
@@ -140,7 +151,7 @@ class EditRecipe extends Component {
     .catch((error) => {
       console.error(error);
     });
-
+    
     this.getBrandsForRecipe();
   }
 
@@ -182,7 +193,7 @@ class EditRecipe extends Component {
 
 
   onAddIngredient(item) {
-    console.log()
+   
     var key = "brandName";
     var obj = {};
     obj[key] = item;
@@ -323,7 +334,7 @@ class EditRecipe extends Component {
   filterItems(searchText, items) {
     let text = searchText.toLowerCase();
     return filter(items, (n) => {
-      let item = n.toLowerCase();
+      let item = n.brandName.toLowerCase();
       return item.search(text) !== -1;
     });
   }
@@ -404,7 +415,7 @@ class EditRecipe extends Component {
               }}>
                 <View style={styles.row}>
                   <Text style={styles.rowText}>
-                    {rowData}
+                    {rowData.brandName}
                   </Text>
                 </View>
               </TouchableHighlight>
@@ -440,8 +451,28 @@ class EditRecipe extends Component {
                 onChangeText={(difficulty) => this.setState({ difficulty})}
                 editable={false}
               />
+
               <Text style={styles.headers}> Ingredients: </Text>
-              <Text style={styles.headers}> {this.state.ingredientsList.brandName}</Text>
+              {/* <View>
+                <List> 
+                <ListItem>
+                <List dataArray={this.state.ingredientsList}
+                      renderRow={(data) =>
+                        <ListItem>
+                          <Grid>
+                            <Col>
+                              <Text style={styles.listTest}>{data.brandName}</Text>
+                            </Col>
+                          </Grid>
+                        </ListItem>
+                      }>
+                </List>
+                </ListItem>
+                </List>
+              </View>
+       */}
+
+            <Text style={styles.headers}> {this.state.ingredientsList}</Text> 
               
 
 
