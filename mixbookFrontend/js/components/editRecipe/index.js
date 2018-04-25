@@ -197,7 +197,7 @@ class EditRecipe extends Component {
    
     var key = "brandName";
     var obj = {};
-    obj[key] = item;
+    obj[key] = item.brandName;
     store.get('account').then((data) => {
       fetch(GLOBAL.API.BASE_URL + '/mixbook/recipe/addIngredientToRecipe', {
         method: 'POST',
@@ -241,7 +241,7 @@ class EditRecipe extends Component {
     console.log()
     var key = "brandName";
     var obj = {};
-    obj[key] = item;
+    obj[key] = item.brandName;
     store.get('account').then((data) => {
       fetch(GLOBAL.API.BASE_URL + '/mixbook/recipe/removeIngredientFromRecipe', {
         method: 'POST',

@@ -248,7 +248,7 @@ class Ingredients extends Component {
               'Authorization': data.token,
             },
             body: JSON.stringify({
-              brandName: item
+              brandName: item.brandName
             })
           }).then((response) => {
             if (response.status == 200) {
