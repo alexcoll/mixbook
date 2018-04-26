@@ -119,7 +119,7 @@ class AddIngredient extends Component {
       if (list.indexOf(item) >= 0) {
         Alert.alert(
           "Cannot Add Item",
-          "You already have " + item + " in your inventory.",
+          "You already have " + item.brandName + " in your inventory.",
           [
 
             {text: 'Dismiss', style: 'cancel'},
