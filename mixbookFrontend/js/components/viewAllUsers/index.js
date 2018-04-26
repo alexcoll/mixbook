@@ -11,6 +11,7 @@ import navigateTo from '../../actions/pageNav'
 import { openDrawer } from '../../actions/drawer';
 import myTheme from '../../themes/base-theme';
 import styles from './styles';
+import logError from '../../actions/logger';
 
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import ActionButton from 'react-native-action-button';
@@ -54,20 +55,12 @@ class ViewAllUsers extends Component {
   }
 
   componentWillReceiveProps() {
-    // console.warn("willProps");
     this.fetchData();
   }
 
   componentWillMount() {
-    // console.warn("willMount");
     this.fetchData();
   }
-
-  componentDidMount() {
-    // console.warn("didMount");
-  }
-
-
 
   showServerErrorAlert(response) {
     Alert.alert(
@@ -77,7 +70,8 @@ class ViewAllUsers extends Component {
       {text: 'Dismiss', style: 'cancel'}
       ],
       { cancelable: true }
-      );
+    );
+    logError("Got response: " + response.status + " " + response.statusText, 1);
   }
 
   fetchData() {
@@ -96,14 +90,12 @@ class ViewAllUsers extends Component {
       }).then(async (response) => {
         if (response.status == 200) {
           var json = await response.json();
-        // Alert.alert(json[1].username);
         this.setState({dataSource: this.state.dataSource.cloneWithRows(json),
           isLoading: false,
           empty: false,
           rawData: json,
           page: 1,
         });
-        // Alert.alert(users[0].username);
         this.getPagedData();
         return json;
         } else {
@@ -111,14 +103,14 @@ class ViewAllUsers extends Component {
           return;
         }
       }).catch((error) => {
-        console.error(error);
+        logError('error with request loadAllUsers:\n' + error, 2);
         this.setState({
           empty: true,
           isLoading: false,
         });
       });
     }).catch((error) => {
-      console.warn("error getting user token from local store");
+      logError('error getting user token from local store:\n' + error, 2);
     });
   }
 
@@ -129,17 +121,14 @@ class ViewAllUsers extends Component {
     var length = this.state.page * 14;
     console.log("Length: " + length);
 
-    if(list.length > length)
-    {
+    if (list.length > length) {
       list = list.slice(0, length);
-    }
-    else
-    {
+    } else {
       this.setState({
         outOfData: true,
       });
     }
-    
+
     console.log(list);
 
     this.setState({
@@ -149,20 +138,17 @@ class ViewAllUsers extends Component {
   }
 
   fetchMoreData() {
-    
     var currPage = this.state.page;
 
     console.log("Getting more data for page " + this.state.page);
 
-    if(this.state.sortDirection != "")
+    if (this.state.sortDirection != "") {
       this._userSortOnSelect(this.state.sortDirection, 0)
-
-    else  
+    } else {
       this.filterOnSearchText(this.state.searchText, this.state.rawData);
-
+    }
 
     this.getPagedData();
-    
   }
 
   setSearchText(event) {
@@ -173,32 +159,22 @@ class ViewAllUsers extends Component {
     this.setState({
       dataSource: this.state.dataSource.cloneWithRows(filteredData),
     });
-
   }
 
-
-
-
-
   filterOnSearchText(searchText, data) {
-
     let filteredData = this.filterItems(searchText, data);
-    
-    
     this.setState({
         dataSource: this.state.dataSource.cloneWithRows(filteredData),
         rawData: filteredData,
     });
-
-
   }
-
 
   filterItems(searchText, items) {
     let text = searchText.toLowerCase();
 
-    if(text === "")
-    return items;
+    if (text === "") {
+      return items;
+    }
 
     return filter(items, (n) => {
       let item = n.username.toLowerCase();
@@ -206,29 +182,20 @@ class ViewAllUsers extends Component {
     });
   }
 
-
   _userSortOnSelect(idx, value) {
-
     let sortedData = this.sortUsers(this.state.rawData, idx.toString());
-
     this.setState({
       rawData: sortedData,
       dataSource: ds.cloneWithRows(sortedData)
     });
-
-
     this.filterOnSearchText(this.state.searchText, this.state.rawData);
-
-
   }
 
   sortUsers(items, idx) {
-
     this.setState({
       sortDirection: idx,
     })
-    if(idx === '0')
-    {
+    if (idx === '0') {
       return items.sort(function (a,b) {
         if ((b.sumOfPersonalRecipeRatings/b.numberOfPersonalRecipeRatings) < (a.sumOfPersonalRecipeRatings/a.numberOfPersonalRecipeRatings) || b.sumOfPersonalRecipeRatings == 0) return -1;
         if ((b.sumOfPersonalRecipeRatings/b.numberOfPersonalRecipeRatings) > (a.sumOfPersonalRecipeRatings/a.numberOfPersonalRecipeRatings)) return 1;
@@ -236,7 +203,7 @@ class ViewAllUsers extends Component {
       })
     }
 
-    if(idx === '1') {
+    if (idx === '1') {
       return items.sort(function (a,b) {
         if ((b.sumOfPersonalRecipeRatings/b.numberOfPersonalRecipeRatings) > (a.sumOfPersonalRecipeRatings/a.numberOfPersonalRecipeRatings)  || a.sumOfPersonalRecipeRatings == 0) return -1;
         if ((b.sumOfPersonalRecipeRatings/b.numberOfPersonalRecipeRatings) < (a.sumOfPersonalRecipeRatings/a.numberOfPersonalRecipeRatings)) return 1;
@@ -244,8 +211,6 @@ class ViewAllUsers extends Component {
       })
     }
   }
-
-
 
   _onRefresh() {
     this.setState({refreshing: true});
@@ -276,8 +241,7 @@ class ViewAllUsers extends Component {
   }
 
 
-  visitProfile(username: string)
-  {
+  visitProfile(username: string){
     fetch(`${GLOBAL.API.BASE_URL}/mixbook/user/getUserInfo?username=${username}`, {
       method: 'GET',
       headers: {
@@ -288,22 +252,21 @@ class ViewAllUsers extends Component {
       if (response.status == 200) {
         var json = await response.json();
 
-          global.viewUsername = json.username;
-          global.viewEmail = json.email;
-          global.viewFirstName = json.firstName;
-          global.viewLastName = json.lastName;
-          global.viewSumRecipeRatings = json.sumOfPersonalRecipeRatings;
-          global.viewNumRecipeRatings = json.numberOfPersonalRecipeRatings;
+        global.viewUsername = json.username;
+        global.viewEmail = json.email;
+        global.viewFirstName = json.firstName;
+        global.viewLastName = json.lastName;
+        global.viewSumRecipeRatings = json.sumOfPersonalRecipeRatings;
+        global.viewNumRecipeRatings = json.numberOfPersonalRecipeRatings;
 
-          this.navigateTo('viewAccount');
-
+        this.navigateTo('viewAccount');
       } else {
         this.showServerErrorAlert(response);
         return;
       }
     })
     .catch((error) => {
-      console.error(error);
+      logError('error with request getUserInfo:\n' + error, 2);
     });
   }
 
@@ -362,7 +325,7 @@ class ViewAllUsers extends Component {
         />
 
 
-        <ModalDropdown 
+        <ModalDropdown
           options={['Ranking ↑', 'Ranking ↓']}
           defaultValue='Sort'
           style={styles.dropDownStyle}
@@ -370,7 +333,7 @@ class ViewAllUsers extends Component {
           onSelect={(idx, value) => this._userSortOnSelect(idx, value)}
           />
 
-          
+
 
           </View>
 
@@ -397,7 +360,7 @@ class ViewAllUsers extends Component {
           //     </View>
           //   </TouchableHighlight>
           // }
-          renderRow={(rowData: string, sectionID: number, rowID: number, highlightRow: (sectionID: number, rowID: number) => void) =>        
+          renderRow={(rowData: string, sectionID: number, rowID: number, highlightRow: (sectionID: number, rowID: number) => void) =>
           <TouchableHighlight onPress={() => {
             this._pressRow(rowData);
             // highlightRow(sectionID, rowID);
@@ -412,7 +375,7 @@ class ViewAllUsers extends Component {
           </TouchableHighlight> }
           renderSeparator={this._renderSeparator}
         />
-        <Button 
+        <Button
                   disabled={this.state.outOfData}
                   block
                   style={styles.button}

@@ -11,6 +11,7 @@ import navigateTo from '../../actions/pageNav'
 import { openDrawer } from '../../actions/drawer';
 import myTheme from '../../themes/base-theme';
 import styles from './styles';
+import logError from '../../actions/logger';
 
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import ActionButton from 'react-native-action-button';
@@ -53,30 +54,23 @@ class MyRecipes extends Component {
   }
 
   componentWillReceiveProps() {
-    // console.warn("willProps");
     this.fetchData();
   }
 
   componentWillMount() {
-    // console.warn("willMount");
     this.fetchData();
   }
-
-  componentDidMount() {
-    // console.warn("didMount");
-  }
-
-
 
   showServerErrorAlert(response) {
     Alert.alert(
       "Server Error",
-      "Got response: " + response.status + " " + response.statusText,
+      "Got response: " + response.status + ' ' + response.statusText,
       [
       {text: 'Dismiss', style: 'cancel'}
       ],
       { cancelable: true }
-      );
+    );
+    logError('server error, got response:' + response.status + ' ' + response.statusText, 1);
   }
 
   getData() {
@@ -88,7 +82,7 @@ class MyRecipes extends Component {
         rawData: data,
       });
     }).catch(error => {
-      console.warn("error getting the recipe list from the local store");
+      logError('error getting the recipe list from the local store:\n' + error, 2);
       this.setState({
         empty: true,
         isLoading: false,
@@ -103,10 +97,6 @@ class MyRecipes extends Component {
         isGuest: data.isGuest,
       });
 
-      if (data.isGuest) {
-        console.log("IS GUEST");
-      }
-
       fetch(GLOBAL.API.BASE_URL + '/mixbook/recipe/getAllRecipesCreatedByUser', {
         method: 'GET',
         headers: {
@@ -116,9 +106,8 @@ class MyRecipes extends Component {
       }).then(async (response) => {
         if (response.status == 200) {
           var json = await response.json();
-        // console.warn(json[0]);
         store.save("recipe", json).catch(error => {
-          console.warn("error storing the recipe list into the local store");
+          logError('error storing the recipe list into the local store:\n' + error, 2);
         });
         this.setState({
           dataSource: this.state.dataSource.cloneWithRows(json),
@@ -141,30 +130,21 @@ class MyRecipes extends Component {
         });
       });
     }).catch((error) => {
-      console.warn("error getting user token from local store");
+      logError('error getting user token from local store:\n' + error, 2);
     });
   }
-
 
   setSearchText(event) {
     let searchText = event.nativeEvent.text;
     this.setState({searchText});
-
     this.filterOnSearchText(searchText, this.state.rawData);
-
-  
   }
 
   filterOnSearchText(searchText, data) {
-
     let filteredData = this.filterItems(searchText, data);
-    
-    
     this.setState({
-        dataSource: this.state.dataSource.cloneWithRows(filteredData),
+      dataSource: this.state.dataSource.cloneWithRows(filteredData),
     });
-
-
   }
 
   filterItems(searchText, items) {
@@ -187,41 +167,30 @@ class MyRecipes extends Component {
     console.log("List length: " + list.length);
     console.log("Length: " + length);
 
-    if(list.length > length)
-    {
+    if (list.length > length) {
       list = list.slice(0, length);
-    }
-    else
-    {
+    } else {
       this.setState({
         outOfData: true,
       });
       console.log(this.state.outOfData);
-
     }
-    
+
     console.log(list);
 
     this.setState({
       pagedDataSource: this.state.dataSource.cloneWithRows(list),
       page: this.state.page + 1,
     });
-
-
   }
 
   fetchMoreData() {
-    
     var currPage = this.state.page;
-
     console.log("Getting more data for page " + this.state.page);
-
     this.getPagedData();
-    
   }
 
   _recipeSortOnSelect(idx, value) {
-
     let sortedData = this.sortRecipes(this.state.rawData, idx.toString());
 
     this.setState({
@@ -229,15 +198,11 @@ class MyRecipes extends Component {
       dataSource: ds.cloneWithRows(sortedData)
     });
 
-
     this.filterOnSearchText(this.state.searchText, this.state.rawData);
-
-
   }
 
   sortRecipes(items, idx) {
-    if(idx === '0')
-    {
+    if (idx === '0') {
       return items.sort(function (a,b) {
         if ((b.totalRating/b.numberOfRatings) < (a.totalRating/a.numberOfRatings) || b.numberOfRatings == 0) return -1;
         if ((b.totalRating/b.numberOfRatings) > (a.totalRating/a.numberOfRatings)) return 1;
@@ -245,7 +210,7 @@ class MyRecipes extends Component {
       })
     }
 
-    if(idx === '1') {
+    if (idx === '1') {
       return items.sort(function (a,b) {
         if ((b.totalRating/b.numberOfRatings) > (a.totalRating/a.numberOfRatings)  || a.numberOfRatings == 0) return -1;
         if ((b.totalRating/b.numberOfRatings) < (a.totalRating/a.numberOfRatings)) return 1;
@@ -253,10 +218,6 @@ class MyRecipes extends Component {
       })
     }
   }
-
-
-
-
 
   onListItemRemove(item: string) {
     // Delete the ingredient from the server
@@ -283,8 +244,7 @@ class MyRecipes extends Component {
         console.error(error);
       });
     }).catch((error) => {
-      console.warn("error getting user token from local store");
-      console.warn(error);
+      logError('error getting user token from local store:\n' + error, 2);
     });
   }
 
@@ -294,8 +254,8 @@ class MyRecipes extends Component {
     this.setState({refreshing: false});
   }
 
-  _pressRow(item: string) {
-    if (this.state.isGuest || item.username !== this.state.username) {
+  _pressRow(item) {
+    if (this.state.isGuest) {
       Alert.alert(
         item.recipeName,
         'What do you want to do?',
@@ -326,22 +286,17 @@ class MyRecipes extends Component {
     global.directions = item.directions;
     global.difficulty = item.difficulty;
     global.reviewOwner = item.user.username;
-    
-    
 
-    //console.warn(global.recipeName);
     this.navigateTo('review');
   }
 
   goToEditPage(item: string) {
-
     global.recipeName = item.recipeName;
     global.recipeId = item.recipeId;
     global.directions = item.directions;
     global.reviewOwner = item.user.username;
     global.difficulty = item.difficulty;
 
-    //console.warn(global.recipeName);
     this.navigateTo('editRecipe');
   }
 
@@ -356,8 +311,6 @@ class MyRecipes extends Component {
       />
     );
   }
-
-
 
   _renderFAB() {
     if (!this.state.isGuest) {
@@ -400,15 +353,13 @@ class MyRecipes extends Component {
           autoCorrect={false}
         />
 
-        <ModalDropdown 
+        <ModalDropdown
           options={['Ranking ↑', 'Ranking ↓']}
           defaultValue='Sort'
           style={styles.dropDownStyle}
           textStyle={styles.dropDownTextStyle}
           onSelect={(idx, value) => this._recipeSortOnSelect(idx, value)}
           />
-
-          
 
           </View>
 
@@ -437,11 +388,13 @@ class MyRecipes extends Component {
           }
           renderSeparator={this._renderSeparator}
         />
-        <Button 
-                  disabled={this.state.outOfData}
-                  block
-                  style={styles.button}
-                  onPress={() => this.fetchMoreData()}>Load More</Button>
+        <Button
+          disabled={this.state.outOfData}
+          block
+          style={styles.button}
+          onPress={() => this.fetchMoreData()}>
+            Load More
+          </Button>
         {this._renderFAB()}
       </View>
     );

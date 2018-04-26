@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { StyleSheet, View, Image, Text, KeyboardAvoidingView, TouchableOpacity, Alert, Linking } from 'react-native';
 
 import * as GLOBAL from '../../globals';
+import logError from '../../actions/logger';
 
 import LoginForm from './LoginForm';
 import navigateTo from '../../actions/sideBarNav';
@@ -70,7 +71,6 @@ class Login extends Component {
       );
       return false;
     }
-
     return true;
   }
 
@@ -84,8 +84,8 @@ class Login extends Component {
       ],
       { cancelable: true }
     );
+    logError("Server error, got response: " + response.status + ' ' + response.statusText, 1);
   }
-
 
   showBadInfoAlert() {
     Alert.alert(
@@ -96,6 +96,7 @@ class Login extends Component {
       ],
       { cancelable: true }
     );
+    logError('failed login', 1);
   }
 
 
@@ -127,7 +128,7 @@ class Login extends Component {
       }
     })
     .catch((error) => {
-      console.error(error);
+      logError(error, 2);
     });
   }
 
@@ -164,14 +165,13 @@ class Login extends Component {
           }
         })
         .then(() => {
-          
+
           global.isGuest = false;
           console.log("IsGuest:"+global.isGuest);
           this.replaceAt('mydrinks');
         })
         .catch((error) => {
-          console.warn("error updating account local store");
-          console.warn(error.message);
+          logError("error updating account local store\n" + error.message, 1);
         });
         return;
       } else {
@@ -180,7 +180,7 @@ class Login extends Component {
       }
     })
     .catch((error) => {
-      console.error(error);
+      logError(error, 2);
     });
   }
 
@@ -205,16 +205,15 @@ class Login extends Component {
         firstName: "Guest",
         lastName: "User",
       },
-      
+
     }).then(() => {
       store.save('inventory', []);
       store.save('recipes', []);
-      
-      
+
+
       this.replaceAt('mydrinks');
     }).catch((error) => {
-      console.warn("error updating account local store");
-      console.warn(error.message);
+      logError("error updating account local store" + error.message, 1);
     })
   }
 
