@@ -40,7 +40,7 @@ class AddRecipe extends Component {
   }
 
   navigateTo(route) {
-    this.props.navigateTo(route, 'addRecipe');
+    this.props.navigateTo(route, 'myRecipes');
   }
 
   componentDidMount() {
@@ -192,6 +192,7 @@ class AddRecipe extends Component {
             ],
             { cancelable: true }
           );
+          this.navigateTo('myRecipes');
           // store.get("inventory").then((data) => {
           //   var list = data;
           //   list.push(item);
@@ -270,6 +271,9 @@ class AddRecipe extends Component {
       <View style={{flex: 1}}>
         <View style={styles.container}>
           <Header>
+            <Button transparent onPress={() => this.navigateTo('myRecipes')}>
+              <Icon name="ios-arrow-back" />
+            </Button>
             <Title>Add Recipe</Title>
             <Button transparent onPress={() => this.onTapRefresh()}>
               <Icon name="ios-refresh" />
@@ -313,7 +317,7 @@ class AddRecipe extends Component {
           </View>
 
         </View>
-        
+
         <View>
             <Text>Current Ingredients</Text>
             <Text>{this.state.currentIngriedents}</Text>
@@ -327,7 +331,7 @@ class AddRecipe extends Component {
             directions = {this.updateDirections}
           />
           <View>
-            <Text>Difficulty:</Text> 
+            <Text>Difficulty:</Text>
             <Picker selectedValue = {this.state.difficulty} onValueChange = {this.updateDifficulty}>
                <Picker.Item label = "Beginner" value = "1" />
                <Picker.Item label = "Easy" value = "2" />

@@ -50,7 +50,7 @@ class MyRecipes extends Component {
   }
 
   navigateTo(route) {
-    this.props.navigateTo(route, 'recipes');
+    this.props.navigateTo(route, 'myRecipes');
   }
 
   componentWillReceiveProps() {
