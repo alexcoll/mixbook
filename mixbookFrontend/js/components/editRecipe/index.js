@@ -462,7 +462,7 @@ class EditRecipe extends Component {
                 multiline={true}
                 onChangeText={(directions) => this.setState({ directions })}
              />
-               <Text style={styles.headers}> Recipe Difficulty: (1-5) </Text> 
+
 
 
               <View>
