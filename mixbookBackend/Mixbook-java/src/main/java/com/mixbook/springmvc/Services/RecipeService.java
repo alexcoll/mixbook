@@ -158,6 +158,6 @@ public interface RecipeService {
 	 * @param difficulty the recipe's difficulty to validate.
 	 * @return true if a recipe's difficulty is valid, or false if it is not valid.
 	 */
-	boolean isRecipeDifficultyValid(int difficulty);
+	boolean isRecipeDifficultyValid(byte difficulty);
 
 }

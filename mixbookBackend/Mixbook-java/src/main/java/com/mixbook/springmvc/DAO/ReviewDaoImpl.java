@@ -87,8 +87,7 @@ public class ReviewDaoImpl extends AbstractDao<Integer, UserRecipeHasReview> imp
 			NativeQuery lookupQuery = getSession().createNativeQuery("SELECT rating AS result FROM users_recipe_has_review WHERE users_user_id = :users_user_id AND recipe_recipe_id = :recipe_recipe_id");
 			lookupQuery.setParameter("users_user_id", user.getUserId());
 			lookupQuery.setParameter("recipe_recipe_id", review.getRecipe().getRecipeId());
-			Integer tempNum = (Integer) lookupQuery.getSingleResult();
-			int previousRating = tempNum.intValue();
+			byte previousRating = (byte) lookupQuery.getSingleResult();
 			NativeQuery updateQuery = getSession().createNativeQuery("UPDATE users_recipe_has_review SET review_commentary = :review_commentary, rating = :rating WHERE users_user_id = :users_user_id AND recipe_recipe_id = :recipe_recipe_id");
 			updateQuery.setParameter("review_commentary", review.getReviewCommentary());
 			updateQuery.setParameter("rating", review.getRating());
@@ -143,9 +142,8 @@ public class ReviewDaoImpl extends AbstractDao<Integer, UserRecipeHasReview> imp
 			NativeQuery lookupQuery = getSession().createNativeQuery("SELECT rating AS result FROM users_recipe_has_review WHERE users_user_id = :users_user_id AND recipe_recipe_id = :recipe_recipe_id");
 			lookupQuery.setParameter("users_user_id", user.getUserId());
 			lookupQuery.setParameter("recipe_recipe_id", review.getRecipe().getRecipeId());
-			Integer tempNum = (Integer) lookupQuery.getSingleResult();
-			int previousRating = tempNum.intValue();
-			NativeQuery updateQuery = getSession().createSQLQuery("UPDATE users_recipe_has_review SET rating = :rating WHERE users_user_id = :users_user_id AND recipe_recipe_id = :recipe_recipe_id");
+			byte previousRating = (byte) lookupQuery.getSingleResult();
+			NativeQuery updateQuery = getSession().createNativeQuery("UPDATE users_recipe_has_review SET rating = :rating WHERE users_user_id = :users_user_id AND recipe_recipe_id = :recipe_recipe_id");
 			updateQuery.setParameter("rating", review.getRating());
 			updateQuery.setParameter("users_user_id", user.getUserId());
 			updateQuery.setParameter("recipe_recipe_id", review.getRecipe().getRecipeId());
@@ -195,8 +193,7 @@ public class ReviewDaoImpl extends AbstractDao<Integer, UserRecipeHasReview> imp
 		NativeQuery lookupQuery = getSession().createNativeQuery("SELECT rating AS result FROM users_recipe_has_review WHERE users_user_id = :users_user_id AND recipe_recipe_id = :recipe_recipe_id");
 		lookupQuery.setParameter("users_user_id", user.getUserId());
 		lookupQuery.setParameter("recipe_recipe_id", review.getRecipe().getRecipeId());
-		Integer tempNum = (Integer) lookupQuery.getSingleResult();
-		int previousRating = tempNum.intValue();
+		byte previousRating = (byte) lookupQuery.getSingleResult();
 		NativeQuery q = getSession().createNativeQuery("DELETE FROM users_recipe_has_review WHERE users_user_id = :users_user_id AND recipe_recipe_id = :recipe_recipe_id");
 		q.setParameter("users_user_id", user.getUserId());
 		q.setParameter("recipe_recipe_id", review.getRecipe().getRecipeId());

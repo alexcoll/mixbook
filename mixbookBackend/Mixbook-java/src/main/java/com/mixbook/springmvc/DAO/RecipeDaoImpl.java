@@ -127,8 +127,7 @@ public class RecipeDaoImpl extends AbstractDao<Integer, Recipe> implements Recip
 		NativeQuery countQuery = getSession().createNativeQuery("SELECT number_of_ingredients as result FROM recipe WHERE recipe_id = :recipe_id AND user_recipe_id = :user_recipe_id");
 		countQuery.setParameter("recipe_id", recipe.getRecipeId());
 		countQuery.setParameter("user_recipe_id", user.getUserId());
-		Integer tempNum = (Integer) countQuery.getSingleResult();
-		int numberOfIngredients = tempNum.intValue();
+		byte numberOfIngredients = (byte) countQuery.getSingleResult();
 		if (numberOfIngredients == 0) {
 			throw new InvalidPermissionsException("Invalid permissions!");
 		}
@@ -165,8 +164,7 @@ public class RecipeDaoImpl extends AbstractDao<Integer, Recipe> implements Recip
 		NativeQuery countQuery = getSession().createNativeQuery("SELECT number_of_ingredients as result FROM recipe WHERE recipe_id = :recipe_id AND user_recipe_id = :user_recipe_id");
 		countQuery.setParameter("recipe_id", recipe.getRecipeId());
 		countQuery.setParameter("user_recipe_id", user.getUserId());
-		Integer tempNum = (Integer) countQuery.getSingleResult();
-		int numberOfIngredients = tempNum.intValue();
+		byte numberOfIngredients = (byte) countQuery.getSingleResult();
 		if (numberOfIngredients == 0) {
 			throw new InvalidPermissionsException("Invalid permissions!");
 		}

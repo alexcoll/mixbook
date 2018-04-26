@@ -47,7 +47,7 @@ public class RecipeServiceImpl implements RecipeService {
 	@Override
 	public void createRecipe(Recipe recipe, User user) throws InvalidIngredientException, PersistenceException, UnknownServerErrorException {
 		try {
-			recipe.setNumberOfIngredients(recipe.getBrands().size());
+			recipe.setNumberOfIngredients((byte) recipe.getBrands().size());
 			recipe.setNumberOfRatings(0);
 			recipe.setTotalRating(0);
 			String after = recipe.getRecipeName().trim().replaceAll(" +", " ");
@@ -251,7 +251,7 @@ public class RecipeServiceImpl implements RecipeService {
 	}
 
 	@Override
-	public boolean isRecipeDifficultyValid(int difficulty) {
+	public boolean isRecipeDifficultyValid(byte difficulty) {
 		if (difficulty > 0 && difficulty < 6) {
 			return true;
 		}

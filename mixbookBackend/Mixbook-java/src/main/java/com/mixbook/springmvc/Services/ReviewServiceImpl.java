@@ -150,7 +150,7 @@ public class ReviewServiceImpl implements ReviewService {
 	}
 
 	@Override
-	public boolean isReviewRatingValid(int rating) throws UnknownServerErrorException {
+	public boolean isReviewRatingValid(byte rating) throws UnknownServerErrorException {
 		if (rating < 1 || rating > 5) {
 			return false;
 		}

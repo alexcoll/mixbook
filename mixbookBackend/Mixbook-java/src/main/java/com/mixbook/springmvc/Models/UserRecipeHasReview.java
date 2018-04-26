@@ -60,7 +60,7 @@ public class UserRecipeHasReview implements Serializable {
 	 * Rating on a scale of 1 to 5 of the recipe, with 1 being the worst and 5 being the best.
 	 */
 	@Column(name = "rating", nullable = false)
-	private int rating;
+	private byte rating;
 
 	/**
 	 * Number of up votes on the review.
@@ -98,7 +98,7 @@ public class UserRecipeHasReview implements Serializable {
 	 * @param numberOfDownVotes the number of down votes on the review.
 	 * @param userRatingReviews the ratings of the review.
 	 */
-	public UserRecipeHasReview(Integer usersRecipeHasReviewId, User user, Recipe recipe, String reviewCommentary, int rating, int numberOfUpVotes, int numberOfDownVotes, Set<UserRatingReview> userRatingReviews) {
+	public UserRecipeHasReview(Integer usersRecipeHasReviewId, User user, Recipe recipe, String reviewCommentary, byte rating, int numberOfUpVotes, int numberOfDownVotes, Set<UserRatingReview> userRatingReviews) {
 		this.usersRecipeHasReviewId = usersRecipeHasReviewId;
 		this.user = user;
 		this.recipe = recipe;
@@ -177,7 +177,7 @@ public class UserRecipeHasReview implements Serializable {
 	 * Standard getter method that returns the rating of the review.
 	 * @return the rating of the review.
 	 */
-	public int getRating() {
+	public byte getRating() {
 		return rating;
 	}
 
@@ -185,7 +185,7 @@ public class UserRecipeHasReview implements Serializable {
 	 * Standard setter method that sets the rating for the review.
 	 * @param rating the rating to set for the review.
 	 */
-	public void setRating(int rating) {
+	public void setRating(byte rating) {
 		this.rating = rating;
 	}
 

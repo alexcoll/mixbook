@@ -100,6 +100,6 @@ public interface ReviewService {
 	 * @return true if a review's rating is valid, or false if it is not valid.
 	 * @throws UnknownServerErrorException the exception is thrown when an unknown server error occurs.
 	 */
-	boolean isReviewRatingValid(int rating) throws UnknownServerErrorException;
+	boolean isReviewRatingValid(byte rating) throws UnknownServerErrorException;
 
 }

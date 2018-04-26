@@ -59,13 +59,13 @@ public class Recipe implements Serializable {
 	 * Number of ingredients of the recipe.
 	 */
 	@Column(name = "number_of_ingredients", nullable = false)
-	private int numberOfIngredients;
+	private byte numberOfIngredients;
 
 	/**
 	 * Difficulty of the recipe, ranging from 1 to 5, with 1 being the easiest and 5 being the hardest.
 	 */
 	@Column(name = "difficulty", nullable = false)
-	private int difficulty;
+	private byte difficulty;
 
 	/**
 	 * Number of ratings of the recipe.
@@ -146,7 +146,7 @@ public class Recipe implements Serializable {
 	 * @param recommendations the recommendations of the recipe.
 	 */
 	public Recipe(Integer recipeId, String recipeName, String directions,
-			int numberOfIngredients, int difficulty, int numberOfRatings,
+			byte numberOfIngredients, byte difficulty, int numberOfRatings,
 			int	totalRating, User user, Set<Brand> brands, Set<UserRecipeHasReview> userRecipeHasReviews,
 			Set<Recommendation> recommendations) {
 		this.recipeId = recipeId;
@@ -214,7 +214,7 @@ public class Recipe implements Serializable {
 	 * Standard getter method that returns the number of ingredients of the recipe.
 	 * @return the number of ingredients of the recipe.
 	 */
-	public int getNumberOfIngredients() {
+	public byte getNumberOfIngredients() {
 		return numberOfIngredients;
 	}
 
@@ -222,7 +222,7 @@ public class Recipe implements Serializable {
 	 * Standard setter method that sets the number of ingredients for the recipe.
 	 * @param numberOfIngredients the number of ingredients to set for the recipe.
 	 */
-	public void setNumberOfIngredients(int numberOfIngredients) {
+	public void setNumberOfIngredients(byte numberOfIngredients) {
 		this.numberOfIngredients = numberOfIngredients;
 	}
 
@@ -230,7 +230,7 @@ public class Recipe implements Serializable {
 	 * Standard getter method that returns the difficulty of the recipe.
 	 * @return the difficulty of the recipe.
 	 */
-	public int getDifficulty() {
+	public byte getDifficulty() {
 		return difficulty;
 	}
 
@@ -238,7 +238,7 @@ public class Recipe implements Serializable {
 	 * Standard setter method that sets the difficulty for the recipe.
 	 * @param difficulty the difficulty to set for the recipe.
 	 */
-	public void setDifficulty(int difficulty) {
+	public void setDifficulty(byte difficulty) {
 		this.difficulty = difficulty;
 	}
 
