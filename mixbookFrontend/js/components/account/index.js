@@ -10,6 +10,8 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import * as GLOBAL from '../../globals';
 import logError from '../../actions/logger';
 import store from 'react-native-simple-store';
+import Mailer from 'react-native-mail';
+import FileSystem from 'react-native-filesystem-v1';
 //import StarRating from 'react-native-star-rating';
 
 import styles from './styles';
@@ -105,7 +107,6 @@ class Account extends Component {
   }
 
   onLock() {
-    //TODO when tyler implements back end
     store.get('account').then((data) => {
       if (data.isGuest) {
         ToastAndroid.show("Item removed", ToastAndroid.SHORT);
@@ -163,6 +164,42 @@ class Account extends Component {
     .catch((error) => {
       logError("error getting account data from local store\n" + error.message, 2);
     });
+  }
+
+  handleEmail() {
+    async function readLogFile() {
+      const fileContents = await FileSystem.readFile('logs/error-log.txt', FileSystem.storage.temporary);
+      console.log(`read from file: ${fileContents}`);
+
+      var emailBody = '<b>Support Request</b><br>Please explain the issue here. Be sure to include steps to reproduce the problem, and username.';
+      emailBody = emailBody + '<br><br><br><b>Log file</b><br>Please do not modify this section<br><br>' + fileContents;
+
+      Mailer.mail({
+        subject: '[SUPPORT] mixbook Support Request',
+        recipients: ['mixbookhelp@gmail.com'],
+        ccRecipients: ['acoll@purdue.edu'],
+        bccRecipients: [],
+        body: emailBody,
+        isHTML: true,
+        attachment: {
+          path: '',  // The absolute path of the file from which to read data.
+          type: '',   // Mime Type: jpg, png, doc, ppt, html, pdf, csv
+          name: '',   // Optional: Custom filename for attachment
+        }
+      }, (error, event) => {
+        Alert.alert(
+          error,
+          event,
+          [
+            {text: 'Ok', onPress: () => console.log('OK: Email Error Response')},
+            {text: 'Cancel', onPress: () => console.log('CANCEL: Email Error Response')}
+          ],
+          { cancelable: true }
+        )
+      });
+    }
+
+    readLogFile();
   }
 
   updatePassword(token, oldPass, newPass1, newPass2) {
@@ -783,6 +820,14 @@ class Account extends Component {
                   >
                     Lock Account
                   </Button>
+
+                  <Button
+                    block
+                    style={styles.saveButton}
+                    onPress={() => this.handleEmail()}
+                  >
+                    Contact Us
+                  </Button>
                 </View>
               </ListItem>
             </List>
@@ -1002,6 +1047,14 @@ class Account extends Component {
                     onPress={() => this.onLogout()}
                   >
                     Logout
+                  </Button>
+
+                  <Button
+                    block
+                    style={styles.saveButton}
+                    onPress={() => this.handleEmail()}
+                  >
+                    Contact Us
                   </Button>
 
                 </View>
