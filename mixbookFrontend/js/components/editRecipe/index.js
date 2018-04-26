@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ToastAndroid, ActionButton, TouchableHighlight, Alert, View, Text, TextInput, ListView, RefreshControl, List, ListItem, TouchableOpacity, StyleSheet} from 'react-native';
+import { ToastAndroid, ActionButton, TouchableHighlight, Alert, View, Text, TextInput, ListView, RefreshControl, List, ListItem, Picker, TouchableOpacity, StyleSheet} from 'react-native';
 import { connect } from 'react-redux';
 import { Header, Title, Button, Icon } from 'native-base';
 
@@ -33,7 +33,7 @@ class EditRecipe extends Component {
       rawData: ['Start typing to search possible ingredients'],
       ingredientsList:[],
       drinkName: "",
-      difficulty: "",
+      difficulty: global.difficulty.toString(),
       directions: "",
       oldDifficulty: global.difficulty.toString()
     };
@@ -361,6 +361,9 @@ class EditRecipe extends Component {
   }
 
 
+  updateDifficulty = (diff) => {
+    this.setState({difficulty: diff})
+  }
 
 
   _renderSeparator(sectionID, rowID, adjacentRowHighlighted) {
@@ -459,15 +462,20 @@ class EditRecipe extends Component {
                 multiline={true}
                 onChangeText={(directions) => this.setState({ directions })}
              />
-               <Text style={styles.headers}> Recipe Difficulty: (1-5) </Text> 
-              <TextInput
-                underlineColorAndroid={'transparent'}
-                defaultValue={this.state.oldDifficulty}
-                style={styles.input}
-                returnKeyType="next"
-                keyboardType="numeric"
-                onChangeText={(difficulty) => this.setState({ difficulty})}
-              />
+
+
+
+              <View>
+                <Text>Difficulty:</Text> 
+                  <Picker selectedValue = {this.state.difficulty} onValueChange = {this.updateDifficulty}>
+                    <Picker.Item label = "Beginner" value = "1" />
+                    <Picker.Item label = "Easy" value = "2" />
+                    <Picker.Item label = "Average" value = "3" />
+                    <Picker.Item label = "Challenging" value = "4" />
+                    <Picker.Item label = "Expert" value = "5" />
+                  </Picker>
+
+              </View>
 
         </View>
         <View style={styles.Bcontainer}>
