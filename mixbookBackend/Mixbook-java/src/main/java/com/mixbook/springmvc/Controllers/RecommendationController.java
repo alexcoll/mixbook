@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.mixbook.springmvc.Exceptions.NoRecommendationsFoundException;
 import com.mixbook.springmvc.Exceptions.UnknownServerErrorException;
 import com.mixbook.springmvc.Models.JsonResponse;
 import com.mixbook.springmvc.Models.Recommendation;
@@ -135,6 +136,9 @@ public class RecommendationController {
 				recommendation.getRecommendedRecipe().setUser(onlyUsername);
 			}
 			return new ResponseEntity<Set<Recommendation>>(recommendations, HttpStatus.OK);
+		} catch (NoRecommendationsFoundException e) {
+			Set<Recommendation> emptyRecommendations = new HashSet<>();
+			return new ResponseEntity<Set<Recommendation>>(emptyRecommendations, HttpStatus.OK);
 		} catch (UnknownServerErrorException e) {
 			Set<Recommendation> emptyRecommendations = new HashSet<>();
 			return new ResponseEntity<Set<Recommendation>>(emptyRecommendations, HttpStatus.INTERNAL_SERVER_ERROR);

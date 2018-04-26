@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.NoResultException;
+
 import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
@@ -33,7 +35,7 @@ public class RecommendationDaoImpl extends AbstractDao<Integer, Recommendation> 
 	}
 
 	@Override
-	public Set<Recommendation> loadRecommendations(User user) throws Exception {
+	public Set<Recommendation> loadRecommendations(User user) throws NoResultException, Exception {
 		Query query = getSession().createQuery("select u from User u inner join fetch u.recommendationsReceived r inner join fetch r.recommender inner join fetch r.recommendedRecipe rr inner join fetch rr.user where u.username = :username");
 		query.setParameter("username", user.getUsername());
 		User loadedUser = (User) query.getSingleResult();

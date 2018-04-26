@@ -2,6 +2,7 @@ package com.mixbook.springmvc.Services;
 
 import java.util.Set;
 
+import com.mixbook.springmvc.Exceptions.NoRecommendationsFoundException;
 import com.mixbook.springmvc.Exceptions.UnknownServerErrorException;
 import com.mixbook.springmvc.Models.Recommendation;
 import com.mixbook.springmvc.Models.User;
@@ -31,8 +32,9 @@ public interface RecommendationService {
 	 * Loads a list of recommendations that a user has received.
 	 * @param user the user for whom to load the recommendations.
 	 * @return a list of recommendations that a user has received.
+	 * @throws NoRecommendationsFoundException the exception is thrown when a user loads their recommendations however none are found.
 	 * @throws UnknownServerErrorException the exception is thrown when an unknown server error occurs.
 	 */
-	Set<Recommendation> loadRecommendations(User user) throws UnknownServerErrorException;
+	Set<Recommendation> loadRecommendations(User user) throws NoRecommendationsFoundException, UnknownServerErrorException;
 
 }

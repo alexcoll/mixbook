@@ -2,6 +2,8 @@ package com.mixbook.springmvc.DAO;
 
 import java.util.Set;
 
+import javax.persistence.NoResultException;
+
 import com.mixbook.springmvc.Models.Recommendation;
 import com.mixbook.springmvc.Models.User;
 
@@ -30,8 +32,9 @@ public interface RecommendationDao {
 	 * Loads a list of recommendations that a user has received.
 	 * @param user the user for whom to load the recommendations.
 	 * @return a list of recommendations that a user has received.
+	 * @throws NoResultException the exception is thrown when no recommendations are found.
 	 * @throws Exception the exception is thrown when an unknown server error occurs.
 	 */
-	Set<Recommendation> loadRecommendations(User user) throws Exception;
+	Set<Recommendation> loadRecommendations(User user) throws NoResultException, Exception;
 
 }

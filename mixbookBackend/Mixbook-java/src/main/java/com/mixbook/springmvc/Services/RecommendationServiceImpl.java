@@ -2,11 +2,14 @@ package com.mixbook.springmvc.Services;
 
 import java.util.Set;
 
+import javax.persistence.NoResultException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mixbook.springmvc.DAO.RecommendationDao;
+import com.mixbook.springmvc.Exceptions.NoRecommendationsFoundException;
 import com.mixbook.springmvc.Exceptions.UnknownServerErrorException;
 import com.mixbook.springmvc.Models.Recommendation;
 import com.mixbook.springmvc.Models.User;
@@ -46,9 +49,11 @@ public class RecommendationServiceImpl implements RecommendationService {
 	}
 
 	@Override
-	public Set<Recommendation> loadRecommendations(User user) throws UnknownServerErrorException {
+	public Set<Recommendation> loadRecommendations(User user) throws NoRecommendationsFoundException, UnknownServerErrorException {
 		try {
 			return dao.loadRecommendations(user);
+		} catch (NoResultException e) {
+			throw new NoRecommendationsFoundException("No recommendations found for the user!");
 		} catch (Exception e) {
 			throw new UnknownServerErrorException("Unknown server error!");
 		}
