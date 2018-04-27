@@ -155,7 +155,7 @@ class Ingredients extends Component {
         this.getLocalData();
         return;
       }
-
+      console.log("Token: " + data.token);
       fetch(GLOBAL.API.BASE_URL + '/mixbook/inventory/getUserInventory', {
         method: 'GET',
         headers: {
@@ -222,20 +222,22 @@ class Ingredients extends Component {
     this.setState({
       isLoading: true,
     });
-
+    console.log(item);
+    /*
     var list = this.state.rawData;
     var index = list.indexOf(item);
     if (index > -1) {
+      console.log("BEFORE: " + list);
       list.splice(index, 1);
+      console.log("AFTER: " + list);
       this.setState({
         dataSource: this.state.dataSource.cloneWithRows(list),
         isLoading: false,
         rawData: list,
       });
-      store.save('inventory', list)
-      .then(() => {
-        // Delete the ingredient from the server
-        store.get('account').then((data) => {
+      console.log("SET STATE");
+      */
+      store.get('account').then((data) => {
           if (data.isGuest) {
             ToastAndroid.show("Item removed", ToastAndroid.SHORT);
             return;
@@ -267,13 +269,8 @@ class Ingredients extends Component {
           console.warn("error getting user token from local store");
           console.warn(error);
         });
-      })
-      .catch((error) => {
-        console.warn("error storing inventory into local store");
-      });
-    } else {
-      Alert.alert("Error");
-    }
+      
+     
   }
 
   _onRefresh() {
