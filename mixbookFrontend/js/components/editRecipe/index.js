@@ -40,7 +40,7 @@ class EditRecipe extends Component {
   }
 
   navigateTo(route) {
-    this.props.navigateTo(route, 'editRecipe');
+    this.props.navigateTo(route, 'myRecipes');
   }
 
   componentDidMount() {
@@ -62,7 +62,7 @@ class EditRecipe extends Component {
   }
 
   getBrands() {
-  
+
     store.get('brands').then((data) => {
       this.setState({
         dataSource: this.state.dataSource.cloneWithRows(data),
@@ -124,14 +124,14 @@ class EditRecipe extends Component {
   }
 
   getRemoteData() {
-  
+
     fetch(GLOBAL.API.BASE_URL + '/mixbook/brand/getBrands', {
       method: 'GET',
     })
     .then(async (response) => {
       if (response.status == 200) {
         var brandList = await response.json();
-    
+
 
         store.save("brands", brandList)
         .catch(error => {
@@ -152,7 +152,7 @@ class EditRecipe extends Component {
     .catch((error) => {
       console.error(error);
     });
-    
+
     this.getBrandsForRecipe();
   }
 
@@ -194,7 +194,7 @@ class EditRecipe extends Component {
 
 
   onAddIngredient(item) {
-   
+
     var key = "brandName";
     var obj = {};
     obj[key] = item.brandName;
@@ -206,7 +206,7 @@ class EditRecipe extends Component {
           'Authorization': data.token,
         },
 
-        
+
         body: JSON.stringify({
           recipeId: global.recipeId,
           brands: [obj],
@@ -250,7 +250,7 @@ class EditRecipe extends Component {
           'Authorization': data.token,
         },
 
-        
+
         body: JSON.stringify({
           recipeId: global.recipeId,
           brands: [obj],
@@ -283,7 +283,6 @@ class EditRecipe extends Component {
 
 
   onSubmitLogin() {
-    console.log()
     store.get('account').then((data) => {
       fetch(GLOBAL.API.BASE_URL + '/mixbook/recipe/editRecipe', {
         method: 'POST',
@@ -299,14 +298,16 @@ class EditRecipe extends Component {
       }).then((response) => {
         if (response.status == 200) {
           console.log("recipe updated successfully");
-          Alert.alert(
-            "Recipe has been updated",
-            "",
-            [
-              {text: 'Dismiss', style: 'cancel'}
-            ],
-            { cancelable: true }
-          );
+          // Alert.alert(
+          //   "Recipe has been updated",
+          //   "",
+          //   [
+          //     {text: 'Dismiss', style: 'cancel'}
+          //   ],
+          //   { cancelable: true }
+          // );
+          ToastAndroid.show("Item added", ToastAndroid.SHORT);
+          this.navigateTo('myRecipes');
         } else {
           this.showServerErrorAlert(response);
           return;
@@ -339,7 +340,7 @@ class EditRecipe extends Component {
       return item.search(text) !== -1;
     });
   }
-  
+
 
   _pressRow(item: string) {
     Alert.alert(
@@ -353,7 +354,7 @@ class EditRecipe extends Component {
       { cancelable: true }
     )
   }
-  
+
   _onRefresh() {
     this.setState({refreshing: true});
     this.getRemoteData();
@@ -383,6 +384,9 @@ class EditRecipe extends Component {
       <View style={{flex: 1}}>
         <View style={styles.container}>
           <Header>
+            <Button transparent onPress={() => this.navigateTo('myRecipes')}>
+              <Icon name="ios-arrow-back" />
+            </Button>
             <Title>Edit Recipe</Title>
             <Button transparent onPress={() => this.onTapRefresh()}>
               <Icon name="ios-refresh" />
@@ -435,7 +439,7 @@ class EditRecipe extends Component {
 
             <View style ={styles.formContainer}>
 
-              <Text style={styles.headers}> Recipe Name:  </Text> 
+              <Text style={styles.headers}> Recipe Name:  </Text>
               <TextInput
                 underlineColorAndroid={'transparent'}
                 value={global.recipeName}
@@ -447,13 +451,13 @@ class EditRecipe extends Component {
               />
 
               <Text style={styles.headers}> Ingredients: </Text>
-              <Text style={styles.headers}> {this.state.ingredientsList}</Text> 
-              
+              <Text style={styles.headers}> {this.state.ingredientsList}</Text>
+
 
 
 
               <View></View>
-              <Text style={styles.headers}> Recipe Directions: </Text> 
+              <Text style={styles.headers}> Recipe Directions: </Text>
               <TextInput
                 underlineColorAndroid={'transparent'}
                 defaultValue={global.directions}
@@ -466,7 +470,7 @@ class EditRecipe extends Component {
 
 
               <View>
-                <Text>Difficulty:</Text> 
+                <Text>Difficulty:</Text>
                   <Picker selectedValue = {this.state.difficulty} onValueChange = {this.updateDifficulty}>
                     <Picker.Item label = "Beginner" value = "1" />
                     <Picker.Item label = "Easy" value = "2" />
@@ -487,11 +491,11 @@ class EditRecipe extends Component {
             </TouchableOpacity>
 
 
-            
+
 
           </View>
 
-  
+
         </View>
     );
   }
