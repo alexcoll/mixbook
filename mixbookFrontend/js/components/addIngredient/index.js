@@ -132,7 +132,7 @@ class AddIngredient extends Component {
       list.push(item);
       store.save("inventory", list)
       .then(() => {
-        this.navigateTo('ingredients');
+        
         ToastAndroid.show("Item added", ToastAndroid.SHORT);
 
         store.get('account').then((data) => {
@@ -153,6 +153,7 @@ class AddIngredient extends Component {
           .then((response) => {
             if (response.status == 200) {
               console.log("inventory list pushed successfully");
+              this.navigateTo('ingredients');
             } else {
               this.showServerErrorAlert(response);
               return;
