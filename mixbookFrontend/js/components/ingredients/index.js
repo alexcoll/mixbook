@@ -55,13 +55,13 @@ class Ingredients extends Component {
   }
 
   componentWillReceiveProps() {
-    //console.log("willProps");
-    this.getLocalData();
+    console.log("willProps");
+    this.getRemoteData();
     // this.getRemoteData();
   }
 
   componentWillMount() {
-    //console.log("willMount");
+    console.log("willMount");
     store.get('account').then((data) => {
       this.setState({
         isGuest: data.isGuest,
